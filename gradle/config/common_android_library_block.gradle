@@ -1,0 +1,13 @@
+android {
+    compileSdkVersion compileSdkVersionSet
+    buildToolsVersion buildToolsVersionSet
+
+    defaultConfig {
+        minSdkVersion minSdkVersionSet
+        targetSdkVersion targetSdkVersionSet
+    }
+
+    dexOptions {
+        preDexLibraries = false
+    }
+}

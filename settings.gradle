@@ -1,0 +1,7 @@
+include ':testdata'
+include ':services'
+include ':entities'
+include ':dataaccess'
+include ':usecases'
+include ':app'
+rootProject.name = "Shopshop Shopping List"

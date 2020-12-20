@@ -1,0 +1,15 @@
+plugins {
+    id 'java-library'
+    id 'kotlin'
+    id 'kotlin-kapt'
+}
+
+apply from: '../gradle/config/common_java_library_block.gradle'
+
+dependencies {
+    implementation project(':entities')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
+    testImplementation project(':testdata')
+}

@@ -1,0 +1,14 @@
+ext {
+
+    kotlinVersion = '1.4.10'
+    daggerVersion = '2.30.1'
+    fragmentVersion = '1.2.5'
+
+    // Android testing libraries
+    assertJVersion = '2.8.0'
+    junitVersion = '4.13.1'
+    mockitoVersion = '2.19.0'
+    mockkVersion = '1.9.3'
+    mockitoKotlinVersion = '2.0.0-alpha03'
+    mockitoDexmakerVersion = '1.4'
+}
