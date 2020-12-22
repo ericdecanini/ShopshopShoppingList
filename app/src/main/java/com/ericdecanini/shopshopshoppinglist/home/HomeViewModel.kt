@@ -5,6 +5,6 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor() : BaseViewModel() {
 
-    var someString = "Hello Kenobi"
+
 
 }

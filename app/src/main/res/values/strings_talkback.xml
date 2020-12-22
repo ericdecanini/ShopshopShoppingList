@@ -2,5 +2,6 @@
 <resources>
 
     <string name="talkback_add_new_list">Add new list</string>
+    <string name="talkback_add_new_item">Add new item</string>
 
 </resources>

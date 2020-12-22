@@ -3,6 +3,7 @@ ext {
     kotlinVersion = '1.4.10'
     daggerVersion = '2.30.1'
     fragmentVersion = '1.2.5'
+    navVersion = '2.3.2'
 
     // Android testing libraries
     assertJVersion = '2.8.0'

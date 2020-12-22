@@ -16,4 +16,32 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="ListFragmentTitleEditText" parent="Medium">
+        <item name="android:textSize">30sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textColorHint">@color/gray_300</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="ListFragmentItemText" parent="Regular">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="ListFragmentQuantityText" parent="Medium">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="ButtonPrimary">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:backgroundTint">@color/colorSecondary</item>
+    </style>
+
+    <style name="EditTextPrimary">
+        <item name="android:background">@drawable/bg_edit_new_item</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
 </resources>
