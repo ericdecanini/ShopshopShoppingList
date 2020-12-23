@@ -66,6 +66,13 @@ dependencies {
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
     testImplementation "junit:junit:${junitVersion}"
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+
+    // Mockito & Mockk
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}"
+    testImplementation "org.mockito:mockito-core:${mockitoVersion}"
+    testImplementation "org.mockito:mockito-inline:${mockitoVersion}"
+    testImplementation "io.mockk:mockk:${mockkVersion}"
 
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

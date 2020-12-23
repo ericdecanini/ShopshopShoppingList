@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.list
+package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericdecanini.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.R
-import com.ericdecanini.shopshopshoppinglist.base.BaseFragment
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.base.BaseFragment
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
 
 class ListFragment : BaseFragment<ListViewModel>() {
@@ -20,7 +20,9 @@ class ListFragment : BaseFragment<ListViewModel>() {
     private lateinit var binding: FragmentListBinding
 
     private val shopItems = mutableListOf<ShopItem>()
-    private val shopListAdapter = ShopItemAdapter(shopItems)
+    private val shopListAdapter by lazy {
+        ShopItemAdapter(shopItems, viewModel.onItemNameChanged)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +41,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
     private fun initClicks() {
         binding.addItemButton.setOnClickListener {
             viewModel.onAddItemClick(binding.addItemEdit.text.toString())
+            binding.addItemEdit.text = null
         }
     }
 

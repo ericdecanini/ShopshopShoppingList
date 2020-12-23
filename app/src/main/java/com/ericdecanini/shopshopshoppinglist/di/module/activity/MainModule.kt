@@ -1,18 +1,14 @@
 package com.ericdecanini.shopshopshoppinglist.di.module.activity
 
-import com.ericdecanini.shopshopshoppinglist.di.module.fragment.HomeModule
-import com.ericdecanini.shopshopshoppinglist.di.module.fragment.ListModule
-import com.ericdecanini.shopshopshoppinglist.home.HomeFragment
-import com.ericdecanini.shopshopshoppinglist.list.ListFragment
+import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigatorImpl
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
+import dagger.Provides
 
-@Module
-abstract class MainModule {
+@Module(includes = [MainFragmentsModule::class])
+class MainModule {
 
-    @ContributesAndroidInjector(modules = [HomeModule::class])
-    abstract fun contributeHomeFragment(): HomeFragment
+    @Provides
+    fun provideMainNavigator(): MainNavigator = MainNavigatorImpl()
 
-    @ContributesAndroidInjector(modules = [ListModule::class])
-    abstract fun contributeListFragment(): ListFragment
 }

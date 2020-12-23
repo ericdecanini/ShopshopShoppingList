@@ -3,7 +3,7 @@ package com.ericdecanini.shopshopshoppinglist.di.module.fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ericdecanini.shopshopshoppinglist.di.ViewModelFactory
-import com.ericdecanini.shopshopshoppinglist.list.ListViewModel
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewModel
 import dagger.Module
 import dagger.Provides
 

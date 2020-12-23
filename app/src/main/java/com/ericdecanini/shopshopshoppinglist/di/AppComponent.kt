@@ -2,7 +2,7 @@ package com.ericdecanini.shopshopshoppinglist.di
 
 import android.app.Application
 import com.ericdecanini.shopshopshoppinglist.ShopshopApplication
-import com.ericdecanini.shopshopshoppinglist.di.module.ActivityBuildersModule
+import com.ericdecanini.shopshopshoppinglist.di.module.activity.ActivityBuildersModule
 import com.ericdecanini.shopshopshoppinglist.di.module.AppModule
 import dagger.BindsInstance
 import dagger.Component

@@ -4,6 +4,9 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:focusableInTouchMode="true"
+    android:focusable="true"
+    android:clickable="true"
     android:background="@color/white">
 
     <CheckBox
@@ -15,16 +18,21 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:text=" " />
 
-    <TextView
+    <EditText
         android:id="@+id/name"
         style="@style/ListFragmentItemText"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:hint="@string/talkback_item_name"
+        android:autofillHints="@string/talkback_item_name"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:background="@drawable/bg_ripple_primary"
         app:layout_constraintStart_toEndOf="@id/checkbox"
         app:layout_constraintEnd_toStartOf="@id/quantity"
         app:layout_constraintTop_toTopOf="@id/checkbox"
         app:layout_constraintBottom_toBottomOf="@id/checkbox"
-        android:layout_marginStart="16dp"
         tools:text="Oringe" />
 
     <View

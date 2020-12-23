@@ -1,7 +1,6 @@
-package com.ericdecanini.shopshopshoppinglist.di.module
+package com.ericdecanini.shopshopshoppinglist.di.module.activity
 
-import com.ericdecanini.shopshopshoppinglist.di.module.activity.MainModule
-import com.ericdecanini.shopshopshoppinglist.main.MainActivity
+import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 

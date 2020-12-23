@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.home
+package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.ericdecanini.shopshopshoppinglist.R
-import com.ericdecanini.shopshopshoppinglist.base.BaseFragment
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.base.BaseFragment
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentHomeBinding
 
 class HomeFragment : BaseFragment<HomeViewModel>() {
@@ -29,6 +30,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     }
 
     private fun initClicks() {
-        binding.fab.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.listFragment, null))
+        binding.fab.setOnClickListener { viewModel.navigateToListFragment(findNavController()) }
     }
 }

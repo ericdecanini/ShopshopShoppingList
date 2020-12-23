@@ -2,6 +2,6 @@
     <string name="app_name">Shopshop Shopping List</string>
     <string name="app_name_short">Shopshop</string>
 
-    <string name="hint_title">List title</string>
+    <string name="new_list">New List</string>
     <string name="new_item">New item</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.main
+package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
 import android.os.Bundle
 import com.ericdecanini.shopshopshoppinglist.R

@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.base
+package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.base
 
 import androidx.lifecycle.ViewModel
 

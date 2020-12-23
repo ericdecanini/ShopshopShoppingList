@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.ericdecanini.shopshopshoppinglist.home.HomeViewModel" />
+            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
