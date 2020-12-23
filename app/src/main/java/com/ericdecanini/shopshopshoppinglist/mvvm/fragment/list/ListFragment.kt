@@ -33,7 +33,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
 
         initClicks()
         initList()
-        observeList()
+        observeState()
 
         return binding.root
     }
@@ -55,11 +55,9 @@ class ListFragment : BaseFragment<ListViewModel>() {
         }
     }
 
-    private fun observeList() {
-        viewModel.listLiveData.observe(viewLifecycleOwner, Observer { items ->
-            shopItems.clear()
-            shopItems.addAll(items)
-            adapter.notifyDataSetChanged()
+    private fun observeState() {
+        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer {
+            updateList(it.list)
         })
     }
 
@@ -67,5 +65,11 @@ class ListFragment : BaseFragment<ListViewModel>() {
         binding.shopList.adapter = adapter
         binding.shopList.layoutManager = LinearLayoutManager(context)
         binding.shopList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+    }
+
+    private fun updateList(items: List<ShopItem>) {
+        shopItems.clear()
+        shopItems.addAll(items)
+        adapter.notifyDataSetChanged()
     }
 }

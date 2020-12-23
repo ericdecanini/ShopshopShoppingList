@@ -7,21 +7,21 @@ import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.base.BaseViewModel
 
 class ListViewModel : BaseViewModel() {
 
-    private val shopList = mutableListOf<ShopItem>()
-
-    private val _listLiveData = MutableLiveData<List<ShopItem>>(shopList)
-    val listLiveData: LiveData<List<ShopItem>> get() = _listLiveData
+    private val state get() = _stateLiveData.value
+    private val _stateLiveData = MutableLiveData<ListViewState>(ListViewState())
+    val stateLiveData: LiveData<ListViewState> get() = _stateLiveData
 
     //region: UI Interaction events
 
-     val onItemNameChanged: (ShopItem, String) -> Unit = { shopItem, newName ->
-        val index = shopList.indexOf(shopItem)
-        shopList[index] = shopItem.copy(name = newName)
+    val onItemNameChanged: (ShopItem, String) -> Unit = { shopItem, newName ->
+        _stateLiveData.value = state?.replaceListItem(
+            shopItem,
+            ShopItem.newItem(newName)
+        )
     }
 
     fun onAddItemClick(itemName: String) {
-        shopList.add(ShopItem.newItem(itemName))
-        _listLiveData.value = shopList
+        _stateLiveData.value = state?.addNewItem(ShopItem.newItem(itemName))
     }
 
     //endregion

@@ -19,7 +19,7 @@ class ListViewModelTest {
 
         viewModel.onAddItemClick(itemName)
 
-        val list = viewModel.listLiveData.value
+        val list = viewModel.stateLiveData.value!!.list
         val expectedList = listOf(ShopItemBuilder.aShopItem().withName(itemName).build())
         assertThat(list).isEqualTo(expectedList)
     }
@@ -32,7 +32,7 @@ class ListViewModelTest {
         viewModel.onAddItemClick(itemName1)
         viewModel.onAddItemClick(itemName2)
 
-        val listData = viewModel.listLiveData.value
+        val listData = viewModel.stateLiveData.value!!.list
         val expectedList = listOf(
             ShopItemBuilder.aShopItem().withName(itemName1).build(),
             ShopItemBuilder.aShopItem().withName(itemName2).build()
@@ -44,12 +44,13 @@ class ListViewModelTest {
     fun givenListWithShopItem_whenOnItemNameChanged_thenNewItemSet() {
         viewModel.onAddItemClick("name1")
         viewModel.onAddItemClick("name2")
-        val list = viewModel.listLiveData.value
+        val list = viewModel.stateLiveData.value!!.list
 
         val newName = "newName2"
-        val expectedNewShopItem = list!![1].copy(name = newName)
+        val expectedNewShopItem = list[1].copy(name = newName)
         viewModel.onItemNameChanged(list[1], newName)
 
-        assertThat(list[1]).isEqualTo(expectedNewShopItem)
+        val newList = viewModel.stateLiveData.value!!.list
+        assertThat(newList[1]).isEqualTo(expectedNewShopItem)
     }
 }
