@@ -59,6 +59,7 @@
                     android:background="@android:color/transparent"
                     android:autofillHints="@string/new_item"
                     android:inputType="text"
+                    app:returnKeyClick="@{addItemButton}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/add_item_button"
                     app:layout_constraintTop_toTopOf="parent" />
