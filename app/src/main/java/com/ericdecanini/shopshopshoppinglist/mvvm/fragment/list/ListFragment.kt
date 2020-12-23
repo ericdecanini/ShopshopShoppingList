@@ -20,7 +20,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
     private lateinit var binding: FragmentListBinding
 
     private val shopItems = mutableListOf<ShopItem>()
-    private val shopListAdapter by lazy {
+    private val adapter by lazy {
         ShopItemAdapter(shopItems, viewModel.onItemNameChanged)
     }
 
@@ -38,6 +38,16 @@ class ListFragment : BaseFragment<ListViewModel>() {
         return binding.root
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        adapter.saveStates(outState)
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.let { adapter.restoreStates(it) }
+    }
+
     private fun initClicks() {
         binding.addItemButton.setOnClickListener {
             viewModel.onAddItemClick(binding.addItemEdit.text.toString())
@@ -49,12 +59,12 @@ class ListFragment : BaseFragment<ListViewModel>() {
         viewModel.listLiveData.observe(viewLifecycleOwner, Observer { items ->
             shopItems.clear()
             shopItems.addAll(items)
-            shopListAdapter.notifyDataSetChanged()
+            adapter.notifyDataSetChanged()
         })
     }
 
     private fun initList() {
-        binding.shopList.adapter = shopListAdapter
+        binding.shopList.adapter = adapter
         binding.shopList.layoutManager = LinearLayoutManager(context)
         binding.shopList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }

@@ -4,4 +4,9 @@
     <dimen name="toolbarTextSize">28sp</dimen>
     <dimen name="shoppingListTitleSize">18sp</dimen>
     <dimen name="listFragmentAppbarSize">200dp</dimen>
+
+    <dimen name="shopitem_height">60dp</dimen>
+    <dimen name="quantity_padding">24dp</dimen>
+    <dimen name="quantity_buttons_padding">16dp</dimen>
+
 </resources>
