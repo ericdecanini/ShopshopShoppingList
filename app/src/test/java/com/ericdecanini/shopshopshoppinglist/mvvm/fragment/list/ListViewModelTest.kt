@@ -1,8 +1,17 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.ericdecanini.entities.ShopItem
+import com.ericdecanini.entities.ViewState
+import com.ericdecanini.shopshopshoppinglist.mvvm.viewstate.ListViewState
+import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import com.ericdecanini.testdata.testdatabuilders.ShopItemBuilder
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
+import io.mockk.every
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -11,46 +20,35 @@ class ListViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val viewModel = ListViewModel()
+    private val viewStateProvider: ViewStateProvider = mock()
+    private val viewState: ListViewState = mock()
 
-    @Test
-    fun givenNewItemName_whenOnAddItemClick_thenItemAddedAndSet() {
-        val itemName = "name"
+    private val viewModel = ListViewModel(viewStateProvider)
 
-        viewModel.onAddItemClick(itemName)
+    private val sampleShopItem = ShopItem.newItem("name")
 
-        val list = viewModel.stateLiveData.value!!.list
-        val expectedList = listOf(ShopItemBuilder.aShopItem().withName(itemName).build())
-        assertThat(list).isEqualTo(expectedList)
+    @Before
+    fun setUp() {
+        given(viewStateProvider.create<ListViewState>(any())).willReturn(viewState)
     }
 
     @Test
-    fun givenNewItemNames_whenOnMultipleAddItemClick_thenItemAddedAndSet() {
-        val itemName1 = "name1"
-        val itemName2 = "name2"
+    fun givenReplaceListItemReturnsShopItem_whenOnItemNameChanged_thenStateLiveDataIsUpdated() {
+        val outputViewState = viewState.copy(list = listOf(sampleShopItem))
+        given(viewState.replaceListItem(any(), any())).willReturn(outputViewState)
 
-        viewModel.onAddItemClick(itemName1)
-        viewModel.onAddItemClick(itemName2)
+        viewModel.onItemNameChanged.invoke(sampleShopItem, sampleShopItem)
 
-        val listData = viewModel.stateLiveData.value!!.list
-        val expectedList = listOf(
-            ShopItemBuilder.aShopItem().withName(itemName1).build(),
-            ShopItemBuilder.aShopItem().withName(itemName2).build()
-        )
-        assertThat(listData).isEqualTo(expectedList)
+        assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }
 
     @Test
-    fun givenListWithShopItem_whenOnItemNameChanged_thenNewItemSet() {
-        viewModel.onAddItemClick("name1")
-        viewModel.onAddItemClick("name2")
-        val list = viewModel.stateLiveData.value!!.list
+    fun givenAddNewItemReturns_whenOnAddItemClick_thenStateLiveDataIsUpdated() {
+        val outputViewState = viewState.copy(list = listOf(sampleShopItem))
+        given(viewState.addNewItem(any())).willReturn(outputViewState)
 
-        val newName = "newName2"
-        val expectedNewShopItem = list[1].copy(name = newName)
-        viewModel.onItemNameChanged(list[1], newName)
+        viewModel.onAddItemClick("")
 
-        val newList = viewModel.stateLiveData.value!!.list
-        assertThat(newList[1]).isEqualTo(expectedNewShopItem)
+        assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }
 }

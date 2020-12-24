@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.list_item_shopitem.view.*
 
 class ShopItemAdapter(
     private val items: List<ShopItem>,
-    private val onItemNameChanged: (ShopItem, String) -> Unit
+    private val onItemNameChanged: (ShopItem, ShopItem) -> Unit
 ) : RecyclerView.Adapter<ShopItemAdapter.ViewHolder>() {
 
     private val viewBinderHelper = ViewBinderHelper()
@@ -38,13 +38,13 @@ class ShopItemAdapter(
     fun restoreStates(inState: Bundle) = viewBinderHelper.restoreStates(inState)
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        fun bind(shopItem: ShopItem, onItemNameChanged: (ShopItem, String) -> Unit) = with(shopItem) {
+        fun bind(shopItem: ShopItem, onItemNameChanged: (ShopItem, ShopItem) -> Unit) = with(shopItem) {
             itemView.checkbox.isChecked = shopItem.checked
             itemView.name.setText(shopItem.name)
             itemView.quantity.text = shopItem.quantity.toString()
 
             itemView.name.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus) { onItemNameChanged(shopItem, itemView.name.text.toString()) }
+                if (!hasFocus) { onItemNameChanged(shopItem, ShopItem.newItem(itemView.name.text.toString())) }
             }
         }
     }
