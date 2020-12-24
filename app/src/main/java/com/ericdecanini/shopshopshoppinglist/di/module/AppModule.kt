@@ -1,6 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist.di.module
 
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
+import com.ericdecanini.shopshopshoppinglist.util.ViewStateProviderImpl
 import dagger.Module
 import dagger.Provides
 
@@ -10,6 +11,6 @@ import dagger.Provides
 class AppModule {
 
     @Provides
-    fun provideViewStateProvider() = ViewStateProvider()
+    fun provideViewStateProvider(): ViewStateProvider = ViewStateProviderImpl()
 
 }
