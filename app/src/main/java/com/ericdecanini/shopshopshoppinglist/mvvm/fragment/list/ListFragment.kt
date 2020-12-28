@@ -19,7 +19,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
 
     private val shopItems = mutableListOf<ShopItem>()
     private val adapter by lazy {
-        ShopItemAdapter(shopItems, viewModel.onItemNameChanged)
+        ShopItemAdapter(shopItems, viewModel.onShopItemUpdate)
     }
 
     override fun onCreateView(
@@ -68,6 +68,6 @@ class ListFragment : BaseFragment<ListViewModel>() {
     private fun updateList(items: List<ShopItem>) {
         shopItems.clear()
         shopItems.addAll(items)
-        adapter.notifyDataSetChanged()
+        binding.shopList.post { adapter.notifyDataSetChanged() }
     }
 }

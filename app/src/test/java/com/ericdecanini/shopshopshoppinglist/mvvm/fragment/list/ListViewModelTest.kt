@@ -30,11 +30,11 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenReplaceListItemReturnsShopItem_whenOnItemNameChanged_thenStateLiveDataIsUpdated() {
+    fun givenReplaceListItemReturnsShopItem_whenOnShopItemUpdate_thenStateLiveDataIsUpdated() {
         val outputViewState = viewState.copy(list = listOf(sampleShopItem))
         given(viewState.replaceListItem(any(), any())).willReturn(outputViewState)
 
-        viewModel.onItemNameChanged.invoke(sampleShopItem, sampleShopItem)
+        viewModel.onShopItemUpdate.invoke(sampleShopItem, sampleShopItem)
 
         assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }

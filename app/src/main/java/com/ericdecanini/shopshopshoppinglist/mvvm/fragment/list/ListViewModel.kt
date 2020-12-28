@@ -19,7 +19,7 @@ class ListViewModel(
 
     //region: UI Interaction events
 
-    val onItemNameChanged: (ShopItem, ShopItem) -> Unit = { oldItem, newItem ->
+    val onShopItemUpdate: (ShopItem, ShopItem) -> Unit = { oldItem, newItem ->
         _stateLiveData.value = state?.replaceListItem(
             oldItem,
             newItem

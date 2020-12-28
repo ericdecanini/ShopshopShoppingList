@@ -2,6 +2,7 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.viewstate
 
 import com.ericdecanini.entities.ShopItem
 import com.ericdecanini.entities.ViewState
+import java.util.*
 
 data class ListViewState(
     val list: List<ShopItem> = listOf(),
@@ -17,7 +18,7 @@ data class ListViewState(
         return if (index == -1)
             this
         else copy(
-            list = list.toMutableList().apply { set(list.indexOf(oldItem), newItem) }
+            list = list.toMutableList().apply { set(index, newItem) }
         )
     }
 }
