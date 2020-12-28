@@ -12,13 +12,13 @@ import dagger.Provides
 class ListModule {
 
     @Provides
-    internal fun provideViewModelFactory(
+    internal fun provideViewModel(
         viewStateProvider: ViewStateProvider
-    ): ViewModelProvider.Factory {
+    ): ListViewModel {
         return object: ViewModelFactory() {
             override fun create(): ViewModel = ListViewModel(
                 viewStateProvider
             )
-        }
+        }.create(ListViewModel::class.java)
     }
 }

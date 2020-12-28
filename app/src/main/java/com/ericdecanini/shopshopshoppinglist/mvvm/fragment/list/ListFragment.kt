@@ -15,8 +15,6 @@ import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
 
 class ListFragment : BaseFragment<ListViewModel>() {
 
-    override fun getViewModelClass() = ListViewModel::class.java
-
     private lateinit var binding: FragmentListBinding
 
     private val shopItems = mutableListOf<ShopItem>()

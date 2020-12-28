@@ -12,11 +12,11 @@ import dagger.Provides
 class HomeModule {
 
     @Provides
-    internal fun provideViewModelFactory(
+    internal fun provideViewModel(
         mainNavigator: MainNavigator
-    ): ViewModelProvider.Factory = object: ViewModelFactory() {
+    ): HomeViewModel = object: ViewModelFactory() {
         override fun create(): ViewModel = HomeViewModel(
             mainNavigator
         )
-    }
+    }.create(HomeViewModel::class.java)
 }

@@ -13,8 +13,6 @@ import com.ericdecanini.shopshopshoppinglist.databinding.FragmentHomeBinding
 
 class HomeFragment : BaseFragment<HomeViewModel>() {
 
-    override fun getViewModelClass() = HomeViewModel::class.java
-
     private lateinit var binding: FragmentHomeBinding
 
     override fun onCreateView(
