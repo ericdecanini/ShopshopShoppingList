@@ -9,11 +9,11 @@ data class ListViewState(
     val quantityExpanded: Boolean = false
 ): ViewState {
 
-    fun addNewItem(newItem: ShopItem) = copy(
+    fun addItem(newItem: ShopItem) = copy(
         list = list.toMutableList().apply { add(newItem) }
     )
 
-    fun replaceListItem(oldItem: ShopItem, newItem: ShopItem): ListViewState {
+    fun replaceItem(oldItem: ShopItem, newItem: ShopItem): ListViewState {
         val index = list.indexOf(oldItem)
         return if (index == -1)
             this
@@ -21,4 +21,8 @@ data class ListViewState(
             list = list.toMutableList().apply { set(index, newItem) }
         )
     }
+
+    fun deleteItem(item: ShopItem) = copy(
+        list = list.toMutableList().apply { remove(item) }
+    )
 }

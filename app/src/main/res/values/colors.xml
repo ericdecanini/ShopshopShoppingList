@@ -28,6 +28,9 @@
     <color name="red_500">#F44336</color>
     <color name="red_700">#D32F2F</color>
 
+    <color name="deeporange_500">#FF5722</color>
+    <color name="deeporange_700">#E64A19</color>
+
     <color name="indigo_secondary">#4f4caf</color>
     <color name="indigo_secondary_dark">#3f3797</color>
 </resources>

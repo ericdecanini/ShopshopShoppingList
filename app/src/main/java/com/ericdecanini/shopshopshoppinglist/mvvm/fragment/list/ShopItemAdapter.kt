@@ -13,7 +13,8 @@ import kotlinx.android.synthetic.main.list_item_shopitem.view.*
 
 class ShopItemAdapter(
     private val items: List<ShopItem>,
-    private val onShopItemUpdate: (ShopItem, ShopItem) -> Unit
+    private val onItemUpdate: (ShopItem, ShopItem) -> Unit,
+    private val onItemDelete: (ShopItem) -> Unit
 ) : RecyclerView.Adapter<ShopItemAdapter.ViewHolder>() {
 
     private val viewBinderHelper = ViewBinderHelper()
@@ -30,7 +31,7 @@ class ShopItemAdapter(
 
         viewBinderHelper.bind(holder.itemView as SwipeRevealLayout, item.name)
 
-        holder.bind(item, onShopItemUpdate)
+        holder.bind(item, onItemUpdate, onItemDelete)
     }
 
     fun saveStates(outState: Bundle) = viewBinderHelper.saveStates(outState)
@@ -41,7 +42,8 @@ class ShopItemAdapter(
 
         fun bind(
             shopItem: ShopItem,
-            onShopItemUpdate: (ShopItem, ShopItem) -> Unit
+            onItemUpdate: (ShopItem, ShopItem) -> Unit,
+            onItemDelete: (ShopItem) -> Unit
         ) = with(shopItem) {
             itemView.checkbox.isChecked = shopItem.checked
             itemView.name.setText(shopItem.name)
@@ -49,7 +51,7 @@ class ShopItemAdapter(
 
             itemView.name.setOnFocusChangeListener { _, hasFocus ->
                 if (!hasFocus)
-                    onShopItemUpdate(shopItem, shopItem.withName(itemView.name.text.toString()))
+                    onItemUpdate(shopItem, shopItem.withName(itemView.name.text.toString()))
             }
 
             itemView.quantity.setOnClickListener {
@@ -59,15 +61,19 @@ class ShopItemAdapter(
             }
 
             itemView.quantity_down.setOnClickListener {
-                onShopItemUpdate(shopItem, shopItem.withQuantity(quantity - 1))
+                onItemUpdate(shopItem, shopItem.withQuantity(quantity - 1))
             }
 
             itemView.quantity_up.setOnClickListener {
-                onShopItemUpdate(shopItem, shopItem.withQuantity(quantity + 1))
+                onItemUpdate(shopItem, shopItem.withQuantity(quantity + 1))
             }
 
             itemView.checkbox.setOnCheckedChangeListener { _, isChecked ->
-                onShopItemUpdate(shopItem, shopItem.withChecked(isChecked))
+                onItemUpdate(shopItem, shopItem.withChecked(isChecked))
+            }
+
+            itemView.delete.setOnClickListener {
+                onItemDelete(shopItem)
             }
         }
     }

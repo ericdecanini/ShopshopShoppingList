@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="@dimen/shopitem_height"
     app:mode="same_level"
@@ -34,6 +35,17 @@
             android:paddingEnd="@dimen/quantity_buttons_padding"
             android:contentDescription="@string/talkback_quantity_down"
             app:layout_constraintStart_toEndOf="@id/quantity_down" />
+
+        <ImageButton
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_ripple_deeporange_bg"
+            android:src="@drawable/ic_delete_white"
+            android:paddingStart="@dimen/quantity_buttons_padding"
+            android:paddingEnd="@dimen/quantity_buttons_padding"
+            android:contentDescription="@string/talkback_quantity_down"
+            app:layout_constraintStart_toEndOf="@id/quantity_up" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

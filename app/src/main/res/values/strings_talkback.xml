@@ -6,5 +6,6 @@
     <string name="talkback_list_title">List title</string>
     <string name="talkback_item_name">Item name</string>
     <string name="talkback_quantity_down">Quantity Down</string>
+    <string name="talkback_delete_item">Delete Item</string>
 
 </resources>

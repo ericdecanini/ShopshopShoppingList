@@ -13,7 +13,7 @@ data class ShopItem(
 
     fun withName(name: String) = copy(name = name)
 
-    fun withQuantity(quantity: Int) = copy(quantity = max(quantity, 0))
+    fun withQuantity(quantity: Int) = copy(quantity = max(quantity, 1))
 
     fun withChecked(checked: Boolean) = copy(checked = checked)
 

@@ -19,7 +19,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
 
     private val shopItems = mutableListOf<ShopItem>()
     private val adapter by lazy {
-        ShopItemAdapter(shopItems, viewModel.onShopItemUpdate)
+        ShopItemAdapter(shopItems, viewModel.onItemUpdate, viewModel.onItemDelete)
     }
 
     override fun onCreateView(

@@ -19,15 +19,19 @@ class ListViewModel(
 
     //region: UI Interaction events
 
-    val onShopItemUpdate: (ShopItem, ShopItem) -> Unit = { oldItem, newItem ->
-        _stateLiveData.value = state?.replaceListItem(
+    val onItemUpdate: (ShopItem, ShopItem) -> Unit = { oldItem, newItem ->
+        _stateLiveData.value = state?.replaceItem(
             oldItem,
             newItem
         )
     }
 
+    val onItemDelete: (ShopItem) -> Unit = { item ->
+        _stateLiveData.value = state?.deleteItem(item)
+    }
+
     fun onAddItemClick(itemName: String) {
-        _stateLiveData.value = state?.addNewItem(ShopItem.newItem(itemName))
+        _stateLiveData.value = state?.addItem(ShopItem.newItem(itemName))
     }
 
     //endregion

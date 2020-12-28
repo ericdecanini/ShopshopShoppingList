@@ -30,21 +30,31 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenReplaceListItemReturnsShopItem_whenOnShopItemUpdate_thenStateLiveDataIsUpdated() {
+    fun givenReplaceItemReturnsShopItem_whenOnItemUpdate_thenStateLiveDataIsUpdated() {
         val outputViewState = viewState.copy(list = listOf(sampleShopItem))
-        given(viewState.replaceListItem(any(), any())).willReturn(outputViewState)
+        given(viewState.replaceItem(any(), any())).willReturn(outputViewState)
 
-        viewModel.onShopItemUpdate.invoke(sampleShopItem, sampleShopItem)
+        viewModel.onItemUpdate.invoke(sampleShopItem, sampleShopItem)
 
         assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }
 
     @Test
-    fun givenAddNewItemReturns_whenOnAddItemClick_thenStateLiveDataIsUpdated() {
+    fun givenAddItemReturns_whenOnAddItemClick_thenStateLiveDataIsUpdated() {
         val outputViewState = viewState.copy(list = listOf(sampleShopItem))
-        given(viewState.addNewItem(any())).willReturn(outputViewState)
+        given(viewState.addItem(any())).willReturn(outputViewState)
 
         viewModel.onAddItemClick("")
+
+        assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
+    }
+
+    @Test
+    fun givenDeleteItemReturns_whenOnItemDelete_thenStateLiveDataIsUpdated() {
+        val outputViewState = viewState.copy(list = listOf(sampleShopItem))
+        given(viewState.deleteItem(any())).willReturn(outputViewState)
+
+        viewModel.onItemDelete.invoke(sampleShopItem)
 
         assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }
