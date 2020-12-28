@@ -12,11 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-    modules = [
-        AndroidSupportInjectionModule::class,
-        ActivityBuildersModule::class,
-        AppModule::class
-    ]
+    modules = [AppModule::class]
 )
 interface AppComponent : AndroidInjector<ShopshopApplication> {
 

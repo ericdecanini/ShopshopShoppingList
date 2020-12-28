@@ -7,7 +7,7 @@ import javax.inject.Inject
 abstract class BaseFragment<V : BaseViewModel>: DaggerFragment() {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    protected lateinit var viewModelFactory: ViewModelProvider.Factory
 
     protected val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)
