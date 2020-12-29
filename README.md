@@ -6,3 +6,4 @@ TODO:
 3. Implement showing lists in HomeFragment
 4. Implement loading list in ListFragment
 5. Implement Python backend on Heroku
+6. Implement databinding for adapters

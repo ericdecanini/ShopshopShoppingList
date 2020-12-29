@@ -22,7 +22,7 @@ class HomeViewModel @Inject constructor(
     val stateLiveData: LiveData<HomeViewState> get() = _stateLiveData
 
     init {
-        _stateLiveData.value = state?.withLists(generateDummyLists())
+        _stateLiveData.value = state?.withShoppingLists(generateDummyLists())
     }
 
     fun navigateToListFragment(navController: NavController)

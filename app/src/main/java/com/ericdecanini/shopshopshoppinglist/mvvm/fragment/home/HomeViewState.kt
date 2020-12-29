@@ -4,9 +4,9 @@ import com.ericdecanini.entities.ShoppingList
 import com.ericdecanini.entities.ViewState
 
 data class HomeViewState(
-    val lists: List<ShoppingList> = listOf()
+    val shoppingLists: List<ShoppingList> = listOf()
 ): ViewState {
 
-    fun withLists(lists: List<ShoppingList>) = copy(lists = lists)
+    fun withShoppingLists(lists: List<ShoppingList>) = copy(shoppingLists = lists)
 
 }

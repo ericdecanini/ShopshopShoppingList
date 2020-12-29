@@ -10,7 +10,7 @@ import com.ericdecanini.shopshopshoppinglist.R
 import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 
 class ShoppingListAdapter(
-    private val lists: List<ShoppingList>
+    private val shoppingLists: List<ShoppingList>
 ): RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -18,10 +18,10 @@ class ShoppingListAdapter(
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = lists.size
+    override fun getItemCount(): Int = shoppingLists.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(lists[position])
+        holder.bind(shoppingLists[position])
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {

@@ -10,12 +10,12 @@ class HomeViewStateTest {
     private val state = HomeViewState(listOf())
 
     @Test
-    fun givenListOfShoppingList_whenWithLists_thenViewStateCreatedWithLists() {
+    fun givenListOfShoppingList_whenWithShoppingLists_thenViewStateCreatedWithShoppingLists() {
         val lists = generateDummyLists()
 
-        val newState = state.withLists(lists)
+        val newState = state.withShoppingLists(lists)
 
-        assertThat(newState).isEqualTo(state.copy(lists = lists))
+        assertThat(newState).isEqualTo(state.copy(shoppingLists = lists))
     }
 
     companion object {
