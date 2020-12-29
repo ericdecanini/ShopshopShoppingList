@@ -19,7 +19,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
     private val shoppingLists = mutableListOf<ShoppingList>()
     private val adapter by lazy {
-        ShoppingListAdapter(shoppingLists)
+        ShoppingListAdapter(shoppingLists, viewModel.onShoppingListClick, findNavController())
     }
 
     override fun onCreateView(

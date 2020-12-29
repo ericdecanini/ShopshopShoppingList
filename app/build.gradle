@@ -35,6 +35,11 @@ android {
     buildFeatures {
         dataBinding true
     }
+    testOptions {
+        unitTests {
+            unitTests.returnDefaultValues = true
+        }
+    }
 }
 
 dependencies {

@@ -25,19 +25,23 @@ class HomeViewModel @Inject constructor(
         _stateLiveData.value = state?.withShoppingLists(generateDummyLists())
     }
 
+    val onShoppingListClick: (ShoppingList, NavController) -> Unit = { shoppingList, navController ->
+        mainNavigator.goToList(shoppingList, navController)
+    }
+
     fun navigateToListFragment(navController: NavController)
             = mainNavigator.goToList(navController)
 
 
     companion object {
         private fun generateDummyLists(): List<ShoppingList> = listOf(
-            ShoppingList("Shoplist Juan", listOf(
+            ShoppingList(0, "Shoplist Juan", listOf(
                 ShopItem.newItem("Oringe"), ShopItem.newItem("Limen"), ShopItem.newItem("Egg Nudels"), ShopItem.newItem("Rais"), ShopItem.newItem("Whine")
             )),
-            ShoppingList("Shoplist Toooh", listOf(
+            ShoppingList(1, "Shoplist Toooh", listOf(
                 ShopItem.newItem("Oringe"), ShopItem.newItem("Limen"), ShopItem.newItem("Egg Nudels"), ShopItem.newItem("Rais"), ShopItem.newItem("Whine")
             )),
-            ShoppingList("Shoplist Tree", listOf(
+            ShoppingList(2, "Shoplist Tree", listOf(
                 ShopItem.newItem("Oringe"), ShopItem.newItem("Limen"), ShopItem.newItem("Egg Nudels"), ShopItem.newItem("Rais"), ShopItem.newItem("Whine")
             ))
         )

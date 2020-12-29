@@ -70,4 +70,8 @@ class ListFragment : BaseFragment<ListViewModel>() {
         shopItems.addAll(items)
         binding.shopList.post { adapter.notifyDataSetChanged() }
     }
+
+    companion object {
+        const val KEY_LIST_ID = "KEY_LIST_ID"
+    }
 }

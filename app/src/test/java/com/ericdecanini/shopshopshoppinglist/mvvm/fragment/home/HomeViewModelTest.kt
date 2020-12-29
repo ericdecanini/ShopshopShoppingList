@@ -3,8 +3,8 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
-import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
+import com.ericdecanini.testdata.testdatabuilders.ShoppingListBuilder
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
@@ -23,6 +23,8 @@ class HomeViewModelTest {
     private val viewStateProvider: ViewStateProvider = mock()
     private lateinit var viewModel: HomeViewModel
 
+    private val navController: NavController = mock()
+
     @Before
     fun setUp() {
         given(viewStateProvider.create<HomeViewState>(any())).willReturn(viewState)
@@ -30,9 +32,16 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun whenNavigateToListFragment_thenMainNavigatorGoToList() {
-        val navController: NavController = mock()
+    fun givenShoppingList_whenOnShoppingListClick_thenMainNavigatorWithShoppingList() {
+        val shoppingList = ShoppingListBuilder.aShoppingList().build()
 
+        viewModel.onShoppingListClick.invoke(shoppingList, navController)
+
+        verify(mainNavigator).goToList(shoppingList, navController)
+    }
+
+    @Test
+    fun whenNavigateToListFragment_thenMainNavigatorGoToList() {
         viewModel.navigateToListFragment(navController)
 
         verify(mainNavigator).goToList(navController)
