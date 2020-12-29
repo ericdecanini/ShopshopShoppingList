@@ -2,7 +2,6 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.entities.ShopItem
-import com.ericdecanini.shopshopshoppinglist.mvvm.viewstate.ListViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProviderImpl
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.given

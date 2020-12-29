@@ -1,8 +1,7 @@
-package com.ericdecanini.shopshopshoppinglist.mvvm.viewstate
+package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import com.ericdecanini.entities.ShopItem
 import com.ericdecanini.entities.ViewState
-import java.util.*
 
 data class ListViewState(
     val list: List<ShopItem> = listOf(),

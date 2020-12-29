@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.entities.ShopItem
-import com.ericdecanini.shopshopshoppinglist.mvvm.viewstate.ListViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 
 class ListViewModel(
