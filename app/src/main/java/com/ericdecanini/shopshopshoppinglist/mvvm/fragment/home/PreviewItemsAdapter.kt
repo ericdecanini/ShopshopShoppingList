@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ericdecanini.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.R
 import kotlinx.android.synthetic.main.list_item_previewitem.view.*
+import kotlin.math.min
 
 class PreviewItemsAdapter(
     private val items: List<ShopItem>
@@ -17,7 +18,7 @@ class PreviewItemsAdapter(
         return ViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = items.size
+    override fun getItemCount(): Int = min(3, items.size)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(items[position])

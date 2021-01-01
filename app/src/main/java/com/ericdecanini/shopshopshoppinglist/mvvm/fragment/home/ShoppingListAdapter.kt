@@ -37,6 +37,7 @@ class ShoppingListAdapter(
             itemView.title.text = shoppingList.title
             itemView.preview_items.adapter = PreviewItemsAdapter(shoppingList.items)
             itemView.preview_items.layoutManager = LinearLayoutManager(itemView.context)
+            itemView.preview_items.suppressLayout(true)
 
             itemView.setOnClickListener { onShoppingListClick(shoppingList, navController) }
         }

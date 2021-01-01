@@ -16,7 +16,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val state get() = _stateLiveData.value
-    private val _stateLiveData = MutableLiveData<HomeViewState>(
+    private val _stateLiveData = MutableLiveData(
         viewStateProvider.create(HomeViewState::class.java)
     )
     val stateLiveData: LiveData<HomeViewState> get() = _stateLiveData

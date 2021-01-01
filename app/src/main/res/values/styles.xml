@@ -14,6 +14,7 @@
 
     <style name="ShoppingListPreviewText" parent="Regular">
         <item name="android:textSize">14sp</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
     <style name="ListFragmentTitleEditText" parent="Medium">
