@@ -1,3 +1,3 @@
-package com.ericdecanini.entities
+package com.ericdecanini.shopshopshoppinglist.entities
 
 interface ViewState

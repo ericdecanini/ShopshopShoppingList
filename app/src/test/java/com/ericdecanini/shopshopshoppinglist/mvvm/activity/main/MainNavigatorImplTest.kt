@@ -2,7 +2,7 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
 import androidx.navigation.NavController
 import com.ericdecanini.shopshopshoppinglist.R
-import com.ericdecanini.testdata.testdatabuilders.ShoppingListBuilder
+import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.mock

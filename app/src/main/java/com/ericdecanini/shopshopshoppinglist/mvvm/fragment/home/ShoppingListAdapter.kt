@@ -3,10 +3,9 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ericdecanini.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.R
 import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 

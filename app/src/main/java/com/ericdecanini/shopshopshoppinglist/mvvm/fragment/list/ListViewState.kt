@@ -1,11 +1,11 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
-import com.ericdecanini.entities.ShopItem
-import com.ericdecanini.entities.ViewState
+import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.entities.ViewState
 
 data class ListViewState(
-    val list: List<ShopItem> = listOf(),
-    val quantityExpanded: Boolean = false
+    val title: String = "",
+    val list: List<ShopItem> = listOf()
 ): ViewState {
 
     fun addItem(newItem: ShopItem) = copy(

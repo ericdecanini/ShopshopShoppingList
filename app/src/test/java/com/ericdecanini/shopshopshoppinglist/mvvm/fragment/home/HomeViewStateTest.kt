@@ -1,6 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 
-import com.ericdecanini.testdata.testdatabuilders.ShoppingListBuilder
+import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 

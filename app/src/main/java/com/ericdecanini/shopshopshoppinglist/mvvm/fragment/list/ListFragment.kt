@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ericdecanini.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.base.BaseFragment
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
@@ -32,6 +31,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
         initClicks()
         initList()
         observeState()
+        arguments?.let { autofill(it) }
 
         return binding.root
     }
@@ -55,7 +55,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
 
     private fun observeState() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) {
-            updateList(it.list)
+            renderView(it)
         }
     }
 
@@ -65,10 +65,16 @@ class ListFragment : BaseFragment<ListViewModel>() {
         binding.shopList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
-    private fun updateList(items: List<ShopItem>) {
+    private fun renderView(state: ListViewState) {
+        binding.title.setText(state.title)
+
         shopItems.clear()
-        shopItems.addAll(items)
+        shopItems.addAll(state.list)
         binding.shopList.post { adapter.notifyDataSetChanged() }
+    }
+
+    private fun autofill(args: Bundle) {
+        viewModel.loadShoppingList(args.getInt(KEY_LIST_ID))
     }
 
     companion object {

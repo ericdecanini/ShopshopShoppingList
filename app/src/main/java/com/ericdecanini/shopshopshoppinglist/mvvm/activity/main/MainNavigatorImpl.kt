@@ -1,8 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
 import android.os.Bundle
-import androidx.navigation.NavController
-import com.ericdecanini.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListFragment
 

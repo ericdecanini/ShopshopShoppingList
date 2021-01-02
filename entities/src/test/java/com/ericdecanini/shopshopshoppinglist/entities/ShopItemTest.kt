@@ -1,4 +1,4 @@
-package com.ericdecanini.entities
+package com.ericdecanini.shopshopshoppinglist.entities
 
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

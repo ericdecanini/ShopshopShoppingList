@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.ericdecanini.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.R
 import kotlinx.android.synthetic.main.list_item_previewitem.view.*
 import kotlin.math.min

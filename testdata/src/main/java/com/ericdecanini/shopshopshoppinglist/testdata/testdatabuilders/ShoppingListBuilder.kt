@@ -1,7 +1,7 @@
-package com.ericdecanini.testdata.testdatabuilders
+package com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders
 
-import com.ericdecanini.entities.ShopItem
-import com.ericdecanini.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 
 class ShoppingListBuilder private constructor() {
 

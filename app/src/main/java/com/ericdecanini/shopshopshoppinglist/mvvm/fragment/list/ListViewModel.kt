@@ -2,8 +2,8 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.ericdecanini.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.base.BaseViewModel
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 
@@ -16,6 +16,12 @@ class ListViewModel(
         viewStateProvider.create(ListViewState::class.java)
     )
     val stateLiveData: LiveData<ListViewState> get() = _stateLiveData
+
+    fun loadShoppingList(id: Int) {
+        // TODO: Replace with loading list from service
+        val shoppingList = loadDummyList()
+        _stateLiveData.postValue(ListViewState(shoppingList.title, shoppingList.items))
+    }
 
     //region: UI Interaction events
 
@@ -35,5 +41,9 @@ class ListViewModel(
     }
 
     //endregion
+
+    private fun loadDummyList(): ShoppingList {
+        return ShoppingList.generateDummyList()
+    }
 
 }

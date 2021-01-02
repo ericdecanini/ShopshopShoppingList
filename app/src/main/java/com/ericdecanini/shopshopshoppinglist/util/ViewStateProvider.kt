@@ -1,6 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.util
 
-import com.ericdecanini.entities.ViewState
+import com.ericdecanini.shopshopshoppinglist.entities.ViewState
 
 interface ViewStateProvider {
 

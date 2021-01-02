@@ -1,4 +1,4 @@
-package com.ericdecanini.entities
+package com.ericdecanini.shopshopshoppinglist.entities
 
 import kotlin.math.max
 

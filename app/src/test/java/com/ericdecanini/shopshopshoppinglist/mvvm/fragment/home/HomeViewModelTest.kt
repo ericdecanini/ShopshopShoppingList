@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.navigation.NavController
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
-import com.ericdecanini.testdata.testdatabuilders.ShoppingListBuilder
+import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
