@@ -3,7 +3,6 @@
 TODO:
 
 Important:
-- Implement loading list in ListFragment
 - Implement Python backend on Heroku (or Chaquopy)
 
 Extra:
