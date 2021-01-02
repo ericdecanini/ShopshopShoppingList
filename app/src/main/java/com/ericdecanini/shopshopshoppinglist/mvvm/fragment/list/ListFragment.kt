@@ -54,9 +54,9 @@ class ListFragment : BaseFragment<ListViewModel>() {
     }
 
     private fun observeState() {
-        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) {
             updateList(it.list)
-        })
+        }
     }
 
     private fun initList() {

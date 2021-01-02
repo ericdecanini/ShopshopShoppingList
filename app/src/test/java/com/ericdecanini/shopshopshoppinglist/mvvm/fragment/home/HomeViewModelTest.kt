@@ -29,22 +29,23 @@ class HomeViewModelTest {
     fun setUp() {
         given(viewStateProvider.create<HomeViewState>(any())).willReturn(viewState)
         viewModel = HomeViewModel(mainNavigator, viewStateProvider)
+        viewModel.setControllerForNavigator(navController)
     }
 
     @Test
     fun givenShoppingList_whenOnShoppingListClick_thenMainNavigatorWithShoppingList() {
         val shoppingList = ShoppingListBuilder.aShoppingList().build()
 
-        viewModel.onShoppingListClick.invoke(shoppingList, navController)
+        viewModel.onShoppingListClick.invoke(shoppingList)
 
-        verify(mainNavigator).goToList(shoppingList, navController)
+        verify(mainNavigator).goToList(shoppingList)
     }
 
     @Test
     fun whenNavigateToListFragment_thenMainNavigatorGoToList() {
-        viewModel.navigateToListFragment(navController)
+        viewModel.navigateToListFragment()
 
-        verify(mainNavigator).goToList(navController)
+        verify(mainNavigator).goToList()
     }
 
 }

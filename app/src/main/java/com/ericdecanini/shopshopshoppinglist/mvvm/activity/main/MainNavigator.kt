@@ -1,12 +1,12 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
-import androidx.navigation.NavController
 import com.ericdecanini.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.mvvm.Navigator
 
-interface MainNavigator {
+abstract class MainNavigator: Navigator() {
 
-    fun goToList(navController: NavController)
+    abstract fun goToList()
 
-    fun goToList(shoppingList: ShoppingList, navController: NavController)
+    abstract fun goToList(shoppingList: ShoppingList)
 
 }

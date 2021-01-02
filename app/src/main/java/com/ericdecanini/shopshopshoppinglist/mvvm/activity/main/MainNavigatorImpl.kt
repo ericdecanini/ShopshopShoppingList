@@ -6,12 +6,11 @@ import com.ericdecanini.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListFragment
 
-class MainNavigatorImpl : MainNavigator {
+class MainNavigatorImpl : MainNavigator() {
 
-    override fun goToList(navController: NavController)
-            = navController.navigate(R.id.listFragment)
+    override fun goToList() = navController.navigate(R.id.listFragment)
 
-    override fun goToList(shoppingList: ShoppingList, navController: NavController) {
+    override fun goToList(shoppingList: ShoppingList) {
         val args = Bundle()
         args.putInt(ListFragment.KEY_LIST_ID, shoppingList.id)
         navController.navigate(R.id.listFragment, args)

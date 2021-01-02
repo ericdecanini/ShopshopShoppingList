@@ -4,14 +4,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.base.BaseViewModel
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 
 class ListViewModel(
     viewStateProvider: ViewStateProvider
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val state get() = _stateLiveData.value
-    private val _stateLiveData = MutableLiveData<ListViewState>(
+    private val _stateLiveData = MutableLiveData(
         viewStateProvider.create(ListViewState::class.java)
     )
     val stateLiveData: LiveData<ListViewState> get() = _stateLiveData

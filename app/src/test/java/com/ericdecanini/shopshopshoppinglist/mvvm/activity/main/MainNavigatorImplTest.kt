@@ -14,20 +14,24 @@ class MainNavigatorImplTest {
     private val mainNavigator = MainNavigatorImpl()
     private val navController: NavController = mock()
 
+    init {
+      mainNavigator.navController = navController
+    }
+
     @Test
     fun whenGoToList_thenNavigateToListFragment() {
-        mainNavigator.goToList(navController)
+        mainNavigator.goToList()
 
-        verify(navController).navigate(R.id.listFragment)
+        verify(mainNavigator.navController).navigate(R.id.listFragment)
     }
 
     @Test
     fun givenShoppingList_whenGoToList_thenNavigateToListFragmentWithBundle() {
         val shoppingList = ShoppingListBuilder.aShoppingList().build()
 
-        mainNavigator.goToList(shoppingList, navController)
+        mainNavigator.goToList(shoppingList)
 
-        verify(navController).navigate(eq(R.id.listFragment), any())
+        verify(mainNavigator.navController).navigate(eq(R.id.listFragment), any())
     }
 
 }

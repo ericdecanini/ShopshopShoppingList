@@ -12,8 +12,7 @@ import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 
 class ShoppingListAdapter(
     private val shoppingLists: List<ShoppingList>,
-    private val onShoppingListClick: (ShoppingList, NavController) -> Unit,
-    private val navController: NavController
+    private val onShoppingListClick: (ShoppingList) -> Unit
 ): RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,22 +23,21 @@ class ShoppingListAdapter(
     override fun getItemCount(): Int = shoppingLists.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(shoppingLists[position], onShoppingListClick, navController)
+        holder.bind(shoppingLists[position], onShoppingListClick)
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         fun bind(
             shoppingList: ShoppingList,
-            onShoppingListClick: (ShoppingList, NavController) -> Unit,
-            navController: NavController
+            onShoppingListClick: (ShoppingList) -> Unit
         ) {
             itemView.title.text = shoppingList.title
             itemView.preview_items.adapter = PreviewItemsAdapter(shoppingList.items)
             itemView.preview_items.layoutManager = LinearLayoutManager(itemView.context)
             itemView.preview_items.suppressLayout(true)
 
-            itemView.setOnClickListener { onShoppingListClick(shoppingList, navController) }
+            itemView.setOnClickListener { onShoppingListClick(shoppingList) }
         }
     }
 

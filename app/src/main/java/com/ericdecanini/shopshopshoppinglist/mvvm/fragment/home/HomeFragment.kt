@@ -19,7 +19,7 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
 
     private val shoppingLists = mutableListOf<ShoppingList>()
     private val adapter by lazy {
-        ShoppingListAdapter(shoppingLists, viewModel.onShoppingListClick, findNavController())
+        ShoppingListAdapter(shoppingLists, viewModel.onShoppingListClick)
     }
 
     override fun onCreateView(
@@ -37,9 +37,9 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     }
 
     private fun observeState() {
-        viewModel.stateLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) {
             updateShoppingLists(it.shoppingLists)
-        })
+        }
     }
 
     private fun initShoppingLists() {
@@ -54,6 +54,6 @@ class HomeFragment : BaseFragment<HomeViewModel>() {
     }
 
     private fun initClicks() {
-        binding.fab.setOnClickListener { viewModel.navigateToListFragment(findNavController()) }
+        binding.fab.setOnClickListener { viewModel.navigateToListFragment() }
     }
 }
