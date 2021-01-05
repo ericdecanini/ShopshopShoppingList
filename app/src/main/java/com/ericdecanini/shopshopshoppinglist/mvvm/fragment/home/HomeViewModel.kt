@@ -28,7 +28,6 @@ class HomeViewModel @Inject constructor(
         mainNavigator.goToList(shoppingList)
     }
 
-    fun navigateToListFragment()
-            = mainNavigator.goToList()
+    fun navigateToListFragment() = mainNavigator.goToList()
 
 }
