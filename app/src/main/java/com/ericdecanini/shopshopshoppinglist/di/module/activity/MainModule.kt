@@ -1,5 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.di.module.activity
 
+import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainActivity
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigatorImpl
 import dagger.Module
@@ -9,6 +10,8 @@ import dagger.Provides
 class MainModule {
 
     @Provides
-    fun provideMainNavigator(): MainNavigator = MainNavigatorImpl()
+    fun provideMainNavigator(mainActivity: MainActivity): MainNavigator {
+        return MainNavigatorImpl(mainActivity)
+    }
 
 }

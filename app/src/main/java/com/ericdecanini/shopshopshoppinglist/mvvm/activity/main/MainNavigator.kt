@@ -1,12 +1,11 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
-import com.ericdecanini.shopshopshoppinglist.mvvm.Navigator
 
-abstract class MainNavigator: Navigator() {
+interface MainNavigator {
 
-    abstract fun goToList()
+    fun goToList()
 
-    abstract fun goToList(shoppingList: ShoppingList)
+    fun goToList(shoppingList: ShoppingList)
 
 }

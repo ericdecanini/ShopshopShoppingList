@@ -23,13 +23,10 @@ class HomeViewModelTest {
     private val viewStateProvider: ViewStateProvider = mock()
     private lateinit var viewModel: HomeViewModel
 
-    private val navController: NavController = mock()
-
     @Before
     fun setUp() {
         given(viewStateProvider.create<HomeViewState>(any())).willReturn(viewState)
         viewModel = HomeViewModel(mainNavigator, viewStateProvider)
-        viewModel.setControllerForNavigator(navController)
     }
 
     @Test

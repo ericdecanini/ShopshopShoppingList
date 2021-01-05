@@ -1,28 +1,36 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.mockkStatic
+import io.mockk.verify
+import org.junit.Before
 import org.junit.Test
 
 class MainNavigatorImplTest {
 
-    private val mainNavigator = MainNavigatorImpl()
-    private val navController: NavController = mock()
 
-    init {
-      mainNavigator.navController = navController
+    private val activity: AppCompatActivity = mockk()
+    private val mainNavigator = MainNavigatorImpl(activity)
+
+    private val navController: NavController = mockk(relaxed = true)
+
+    @Before
+    fun setUp() {
+        mockkStatic(Navigation::class)
+        every { Navigation.findNavController(any(), any()) } returns navController
     }
 
     @Test
     fun whenGoToList_thenNavigateToListFragment() {
         mainNavigator.goToList()
 
-        verify(mainNavigator.navController).navigate(R.id.listFragment)
+        verify { navController.navigate(R.id.listFragment) }
     }
 
     @Test
@@ -31,7 +39,7 @@ class MainNavigatorImplTest {
 
         mainNavigator.goToList(shoppingList)
 
-        verify(mainNavigator.navController).navigate(eq(R.id.listFragment), any())
+        verify { navController.navigate(eq(R.id.listFragment), any()) }
     }
 
 }
