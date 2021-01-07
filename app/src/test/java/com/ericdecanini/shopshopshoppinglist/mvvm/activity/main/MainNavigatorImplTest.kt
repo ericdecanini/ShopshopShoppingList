@@ -3,17 +3,15 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.ericdecanini.shopshopshoppinglist.R
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeFragmentDirections
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.verify
+import io.mockk.*
+import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
+import org.junit.jupiter.api.assertThrows
 
 class MainNavigatorImplTest {
-
 
     private val activity: AppCompatActivity = mockk()
     private val mainNavigator = MainNavigatorImpl(activity)
@@ -27,19 +25,24 @@ class MainNavigatorImplTest {
     }
 
     @Test
-    fun whenGoToList_thenNavigateToListFragment() {
+    fun givenNoShoppingList_whenGoToList_thenNavigateToListFragmentWithNoShoppingListId() {
         mainNavigator.goToList()
 
-        verify { navController.navigate(R.id.listFragment) }
+        val slot = slot<HomeFragmentDirections.ActionHomeFragmentToListFragment>()
+        verify { navController.navigate(capture(slot)) }
+        assertThrows<NullPointerException> { slot.captured.shoppingListId }
     }
 
     @Test
-    fun givenShoppingList_whenGoToList_thenNavigateToListFragmentWithBundle() {
-        val shoppingList = ShoppingListBuilder.aShoppingList().build()
+    fun givenShoppingList_whenGoToList_thenNavigateToListFragmentWithListId() {
+        val listId = 5
+        val shoppingList = ShoppingListBuilder.aShoppingList().withId(listId).build()
 
         mainNavigator.goToList(shoppingList)
 
-        verify { navController.navigate(eq(R.id.listFragment), any()) }
+        val slot = slot<HomeFragmentDirections.ActionHomeFragmentToListFragment>()
+        verify { navController.navigate(capture(slot)) }
+        assertThat(slot.captured.shoppingListId).isEqualTo(listId)
     }
 
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
@@ -21,6 +22,8 @@ class ListFragment : BaseFragment<ListViewModel>() {
         ShopItemAdapter(shopItems, viewModel.onItemUpdate, viewModel.onItemDelete)
     }
 
+    private val args: ListFragmentArgs by navArgs()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +34,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
         initClicks()
         initList()
         observeState()
-        arguments?.let { autofill(it) }
+        autofill(args.shoppingListId)
 
         return binding.root
     }
@@ -73,11 +76,7 @@ class ListFragment : BaseFragment<ListViewModel>() {
         binding.shopList.post { adapter.notifyDataSetChanged() }
     }
 
-    private fun autofill(args: Bundle) {
-        viewModel.loadShoppingList(args.getInt(KEY_LIST_ID))
-    }
-
-    companion object {
-        const val KEY_LIST_ID = "KEY_LIST_ID"
+    private fun autofill(id: Int) {
+        if (id != -1) { viewModel.loadShoppingList(id) }
     }
 }

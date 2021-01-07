@@ -9,14 +9,23 @@
         android:id="@+id/homeFragment"
         android:name="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeFragment"
         android:label="HomeFragment" >
+
         <action
             android:id="@+id/action_homeFragment_to_listFragment"
             app:destination="@id/listFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/listFragment"
         android:name="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListFragment"
-        android:label="ListFragment" />
+        android:label="ListFragment" >
+
+        <argument
+            android:name="shoppingListId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+
+    </fragment>
 
 </navigation>

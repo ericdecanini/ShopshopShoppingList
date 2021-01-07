@@ -13,5 +13,5 @@ dependencies {
 
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
-    testImplementation "junit:junit:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
 }

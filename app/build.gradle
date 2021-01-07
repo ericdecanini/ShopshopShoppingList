@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
     id 'com.chaquo.python'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -89,7 +90,7 @@ dependencies {
 
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
-    testImplementation "junit:junit:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testImplementation 'android.arch.core:core-testing:1.1.1'
 
     // Mockito & Mockk
