@@ -6,8 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
+import javax.inject.Inject
 
-class ListViewModel(
+class ListViewModel @Inject constructor(
     viewStateProvider: ViewStateProvider
 ) : ViewModel() {
 

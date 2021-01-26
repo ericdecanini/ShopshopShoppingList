@@ -10,7 +10,8 @@ import dagger.android.support.AndroidSupportInjectionModule
 @Module(
     includes = [
         AndroidSupportInjectionModule::class,
-        ActivityBuildersModule::class
+        ActivityBuildersModule::class,
+        ViewModelFactoryModule::class
     ]
 )
 class AppModule {

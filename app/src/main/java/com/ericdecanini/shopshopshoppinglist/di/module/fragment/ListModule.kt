@@ -1,24 +1,20 @@
 package com.ericdecanini.shopshopshoppinglist.di.module.fragment
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.ericdecanini.shopshopshoppinglist.di.ViewModelFactory
+import com.ericdecanini.shopshopshoppinglist.di.ViewModelKey
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewModel
-import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
+import dagger.multibindings.IntoMap
 
-@Module
+@Module(includes = [ListModule.ViewModelModule::class])
 class ListModule {
 
-    @Provides
-    internal fun provideViewModel(
-        viewStateProvider: ViewStateProvider
-    ): ListViewModel {
-        return object: ViewModelFactory() {
-            override fun create(): ViewModel = ListViewModel(
-                viewStateProvider
-            )
-        }.create(ListViewModel::class.java)
+    @Module
+    internal abstract class ViewModelModule {
+        @Binds
+        @IntoMap
+        @ViewModelKey(ListViewModel::class)
+        internal abstract fun bindListViewModel(viewModel: ListViewModel): ViewModel
     }
 }

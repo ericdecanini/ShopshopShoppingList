@@ -1,25 +1,22 @@
 package com.ericdecanini.shopshopshoppinglist.di.module.fragment
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.ericdecanini.shopshopshoppinglist.di.ViewModelFactory
-import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericdecanini.shopshopshoppinglist.di.ViewModelKey
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel
-import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
+import dagger.multibindings.IntoMap
 
-@Module
+@Module(includes = [HomeModule.ViewModelModule::class])
 class HomeModule {
 
-    @Provides
-    internal fun provideViewModel(
-        mainNavigator: MainNavigator,
-        viewStateProvider: ViewStateProvider
-    ): HomeViewModel = object: ViewModelFactory() {
-        override fun create(): ViewModel = HomeViewModel(
-            mainNavigator,
-            viewStateProvider
-        )
-    }.create(HomeViewModel::class.java)
+
+
+    @Module
+    internal abstract class ViewModelModule {
+        @Binds
+        @IntoMap
+        @ViewModelKey(HomeViewModel::class)
+        internal abstract fun bindHomeViewModel(viewModel: HomeViewModel): ViewModel
+    }
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,10 +13,19 @@ import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.base.BaseFragment
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel
+import dagger.android.support.DaggerFragment
+import javax.inject.Inject
 
-class ListFragment : BaseFragment<ListViewModel>() {
+class ListFragment : DaggerFragment() {
 
     private lateinit var binding: FragmentListBinding
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ListViewModel::class.java)
+    }
 
     private val shopItems = mutableListOf<ShopItem>()
     private val adapter by lazy {
