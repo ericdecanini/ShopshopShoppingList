@@ -1,43 +1,44 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ericdecanini.shopshopshoppinglist.BR
+import com.ericdecanini.shopshopshoppinglist.databinding.ListItemShoppinglistBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
-import com.ericdecanini.shopshopshoppinglist.R
+import com.ericdecanini.shopshopshoppinglist.util.ItemClickListener
 import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 
 class ShoppingListAdapter(
     private val shoppingLists: List<ShoppingList>,
-    private val onShoppingListClick: (ShoppingList) -> Unit
+    private val onShoppingListClick: ItemClickListener<ShoppingList>
 ): RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.list_item_shoppinglist, parent, false)
-        return ViewHolder(itemView)
+        val binding = ListItemShoppinglistBinding.inflate(LayoutInflater.from(parent.context))
+        binding.previewItems.adapter = PreviewItemsAdapter()
+        binding.previewItems.layoutManager = LinearLayoutManager(parent.context)
+        return ViewHolder(binding)
     }
 
     override fun getItemCount(): Int = shoppingLists.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(shoppingLists[position], onShoppingListClick)
-    }
-
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-
-        fun bind(
-            shoppingList: ShoppingList,
-            onShoppingListClick: (ShoppingList) -> Unit
-        ) {
-            itemView.title.text = shoppingList.title
-            itemView.preview_items.adapter = PreviewItemsAdapter(shoppingList.items)
-            itemView.preview_items.layoutManager = LinearLayoutManager(itemView.context)
-            itemView.preview_items.suppressLayout(true)
-
-            itemView.setOnClickListener { onShoppingListClick(shoppingList) }
+        holder.apply {
+            binding.setVariable(BR.viewstate, shoppingLists[position])
+            binding.setVariable(BR.onShoppingListClick, onShoppingListClick)
+            bind(shoppingLists[position])
         }
     }
 
+    class ViewHolder(val binding: ListItemShoppinglistBinding): RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(shoppingList: ShoppingList) {
+            (itemView.preview_items.adapter as? PreviewItemsAdapter)?.apply {
+                replaceItems(shoppingList.items)
+                notifyDataSetChanged()
+            }
+        }
+    }
 }

@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.util.ItemClickListener
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import javax.inject.Inject
 
@@ -27,22 +28,56 @@ class ListViewModel @Inject constructor(
         _stateLiveData.postValue(ListViewState(shoppingList.title, shoppingList.items))
     }
 
-    //region: UI Interaction events
+    fun addItem(itemName: String) {
+        _stateLiveData.value = state?.addItem(ShopItem.newItem(itemName))
+        addItemText.set("")
+    }
 
-    val onItemUpdate: (ShopItem, ShopItem) -> Unit = { oldItem, newItem ->
+    private fun updateItem(oldItem: ShopItem, newItem: ShopItem) {
         _stateLiveData.value = state?.replaceItem(
             oldItem,
             newItem
         )
     }
 
-    val onItemDelete: (ShopItem) -> Unit = { item ->
+    private fun deleteItem(item: ShopItem) {
         _stateLiveData.value = state?.deleteItem(item)
     }
 
-    fun onAddItemClick(itemName: String) {
-        _stateLiveData.value = state?.addItem(ShopItem.newItem(itemName))
-        addItemText.set("")
+    //region: ui interaction events
+
+    fun createListListeners() = ShopItemListListeners(
+        onQuantityDownClick,
+        onQuantityUpClick,
+        onDeleteClick,
+        onCheckboxChecked,
+        onNameChanged
+    )
+
+    private val onQuantityDownClick = object : ItemClickListener<ShopItem> {
+        override fun onItemClicked(item: ShopItem) {
+            updateItem(item, item.withQuantity(item.quantity - 1))
+        }
+    }
+
+    private val onQuantityUpClick = object : ItemClickListener<ShopItem> {
+        override fun onItemClicked(item: ShopItem) {
+            updateItem(item, item.withQuantity(item.quantity + 1))
+        }
+    }
+
+    private val onDeleteClick = object : ItemClickListener<ShopItem> {
+        override fun onItemClicked(item: ShopItem) {
+            deleteItem(item)
+        }
+    }
+
+    private val onCheckboxChecked: (CheckboxCheckedParams) -> Unit = {
+        updateItem(it.shopItem, it.shopItem.withChecked(it.checked))
+    }
+
+    private val onNameChanged: (NameChangedParams) -> Unit = {
+        updateItem(it.shopItem, it.shopItem.withName(it.newName))
     }
 
     //endregion

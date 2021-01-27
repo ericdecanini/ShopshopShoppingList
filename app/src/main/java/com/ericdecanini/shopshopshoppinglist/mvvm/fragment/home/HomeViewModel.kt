@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList.Companion.generateDummyLists
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericdecanini.shopshopshoppinglist.util.ItemClickListener
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import javax.inject.Inject
 
@@ -24,8 +25,10 @@ class HomeViewModel @Inject constructor(
         _stateLiveData.value = state?.withShoppingLists(generateDummyLists())
     }
 
-    val onShoppingListClick: (ShoppingList) -> Unit = { shoppingList ->
-        mainNavigator.goToList(shoppingList)
+    val onShoppingListClick = object : ItemClickListener<ShoppingList> {
+        override fun onItemClicked(item: ShoppingList) {
+            mainNavigator.goToList(item)
+        }
     }
 
     fun navigateToListFragment() = mainNavigator.goToList()

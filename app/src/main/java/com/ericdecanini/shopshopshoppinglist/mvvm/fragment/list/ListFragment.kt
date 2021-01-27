@@ -29,7 +29,7 @@ class ListFragment : DaggerFragment() {
 
     private val shopItems = mutableListOf<ShopItem>()
     private val adapter by lazy {
-        ShopItemAdapter(shopItems, viewModel.onItemUpdate, viewModel.onItemDelete)
+        ShopItemAdapter(shopItems, viewModel.createListListeners())
     }
 
     override fun onCreateView(

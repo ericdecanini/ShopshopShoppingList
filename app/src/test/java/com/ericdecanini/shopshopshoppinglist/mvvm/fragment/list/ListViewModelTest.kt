@@ -43,7 +43,7 @@ class ListViewModelTest {
         val outputViewState = viewState.copy(list = listOf(sampleShopItem))
         given(viewState.addItem(any())).willReturn(outputViewState)
 
-        viewModel.onAddItemClick("")
+        viewModel.addItem("")
 
         assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }
