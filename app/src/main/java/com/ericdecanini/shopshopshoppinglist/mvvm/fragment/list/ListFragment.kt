@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
@@ -19,19 +20,17 @@ class ListFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(ListViewModel::class.java)
     }
 
     private lateinit var binding: FragmentListBinding
+    private val args: ListFragmentArgs by navArgs()
 
     private val shopItems = mutableListOf<ShopItem>()
     private val adapter by lazy {
         ShopItemAdapter(shopItems, viewModel.onItemUpdate, viewModel.onItemDelete)
     }
-
-    private val args: ListFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +38,9 @@ class ListFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false)
+        binding.setVariable(BR.viewmodel, viewModel)
+        binding.setVariable(BR.newitem, binding.addItemEdit)
 
-        initClicks()
         initList()
         observeState()
         autofill(args.shoppingListId)
@@ -58,23 +58,16 @@ class ListFragment : DaggerFragment() {
         savedInstanceState?.let { adapter.restoreStates(it) }
     }
 
-    private fun initClicks() {
-        binding.addItemButton.setOnClickListener {
-            viewModel.onAddItemClick(binding.addItemEdit.text.toString())
-            binding.addItemEdit.text = null
-        }
+    private fun initList() {
+        binding.shopList.adapter = adapter
+        binding.shopList.layoutManager = LinearLayoutManager(context)
+        binding.shopList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
     private fun observeState() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) {
             renderView(it)
         }
-    }
-
-    private fun initList() {
-        binding.shopList.adapter = adapter
-        binding.shopList.layoutManager = LinearLayoutManager(context)
-        binding.shopList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
     }
 
     private fun renderView(state: ListViewState) {

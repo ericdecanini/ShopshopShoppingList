@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
@@ -17,7 +18,6 @@ class HomeFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
     }
@@ -35,12 +35,17 @@ class HomeFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding.setVariable(BR.viewmodel, viewModel)
 
-        initClicks()
         initShoppingLists()
         observeState()
 
         return binding.root
+    }
+
+    private fun initShoppingLists() {
+        binding.shoppingLists.adapter = adapter
+        binding.shoppingLists.layoutManager = LinearLayoutManager(context)
     }
 
     private fun observeState() {
@@ -49,18 +54,9 @@ class HomeFragment : DaggerFragment() {
         }
     }
 
-    private fun initShoppingLists() {
-        binding.shoppingLists.adapter = adapter
-        binding.shoppingLists.layoutManager = LinearLayoutManager(context)
-    }
-
     private fun updateShoppingLists(lists: List<ShoppingList>) {
         this.shoppingLists.clear()
         this.shoppingLists.addAll(lists)
         adapter.notifyDataSetChanged()
-    }
-
-    private fun initClicks() {
-        binding.fab.setOnClickListener { viewModel.navigateToListFragment() }
     }
 }

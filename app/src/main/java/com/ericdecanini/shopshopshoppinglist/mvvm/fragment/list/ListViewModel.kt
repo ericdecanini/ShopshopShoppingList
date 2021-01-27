@@ -1,5 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,8 @@ class ListViewModel @Inject constructor(
         viewStateProvider.create(ListViewState::class.java)
     )
     val stateLiveData: LiveData<ListViewState> get() = _stateLiveData
+
+    val addItemText = ObservableField<String>()
 
     fun loadShoppingList(id: Int) {
         // TODO: Replace with loading list from service
@@ -39,6 +42,7 @@ class ListViewModel @Inject constructor(
 
     fun onAddItemClick(itemName: String) {
         _stateLiveData.value = state?.addItem(ShopItem.newItem(itemName))
+        addItemText.set("")
     }
 
     //endregion

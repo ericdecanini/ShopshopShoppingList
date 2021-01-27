@@ -7,6 +7,9 @@
         <variable
             name="viewmodel"
             type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewModel" />
+        <variable
+            name="newitem"
+            type="android.widget.EditText" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -60,6 +63,7 @@
                     android:background="@android:color/transparent"
                     android:autofillHints="@string/new_item"
                     android:inputType="text"
+                    android:text="@{viewmodel.addItemText}"
                     app:returnKeyClick="@{addItemButton}"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toStartOf="@id/add_item_button"
@@ -73,6 +77,7 @@
                     android:tint="@color/gray_700"
                     android:background="@drawable/bg_ripple_gray"
                     android:contentDescription="@string/talkback_add_new_item"
+                    android:onClick="@{() -> viewmodel.onAddItemClick(newitem.text.toString())}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent" />
