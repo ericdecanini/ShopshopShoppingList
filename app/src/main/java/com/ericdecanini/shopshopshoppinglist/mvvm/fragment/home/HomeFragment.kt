@@ -18,7 +18,7 @@ class HomeFragment : DaggerFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    val viewModel by lazy {
+    private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
     }
 
