@@ -1,5 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
+import android.view.View
+import android.widget.EditText
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProviderImpl
@@ -18,6 +20,7 @@ class ListViewModelTest {
 
     private val viewStateProvider: ViewStateProviderImpl = mock()
     private val viewState: ListViewState = mock()
+    private val view: EditText = mock()
 
     private val viewModel = ListViewModel(viewStateProvider)
 
@@ -34,7 +37,7 @@ class ListViewModelTest {
         given(viewState.replaceItem(any(), any())).willReturn(outputViewState)
 
         val listeners = viewModel.createListListeners()
-        listeners.onNameChangedListener.invoke(NameChangedParams(sampleShopItem, ""))
+        listeners.onNameChangedListener.onFocusChanged(view, sampleShopItem)
 
         assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }

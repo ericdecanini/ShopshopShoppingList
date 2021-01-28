@@ -41,19 +41,6 @@ class ShopItemAdapter(
             binding.setVariable(BR.viewstate, this)
             binding.setVariable(BR.listeners, shopItemListListeners)
 
-            binding.name.setOnFocusChangeListener { _, hasFocus ->
-                if (!hasFocus)
-                    shopItemListListeners.onNameChangedListener(
-                        NameChangedParams(shopItem, itemView.name.text.toString())
-                    )
-            }
-
-            binding.checkbox.setOnCheckedChangeListener { _, isChecked ->
-                shopItemListListeners.onCheckboxCheckedListener(
-                    CheckboxCheckedParams(shopItem, isChecked)
-                )
-            }
-
             binding.quantity.setOnClickListener {
                 with(itemView.swipe_layout) {
                     if (isClosed) { open(true) } else { close(true) }

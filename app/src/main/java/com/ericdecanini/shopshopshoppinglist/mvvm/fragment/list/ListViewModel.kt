@@ -1,11 +1,17 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
+import android.view.View
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.util.FocusChangeListener
+import com.ericdecanini.shopshopshoppinglist.util.ItemCheckedListener
 import com.ericdecanini.shopshopshoppinglist.util.ItemClickListener
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import javax.inject.Inject
@@ -34,10 +40,7 @@ class ListViewModel @Inject constructor(
     }
 
     private fun updateItem(oldItem: ShopItem, newItem: ShopItem) {
-        _stateLiveData.value = state?.replaceItem(
-            oldItem,
-            newItem
-        )
+        _stateLiveData.value = state?.replaceItem(oldItem, newItem)
     }
 
     private fun deleteItem(item: ShopItem) {
@@ -72,12 +75,16 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    private val onCheckboxChecked: (CheckboxCheckedParams) -> Unit = {
-        updateItem(it.shopItem, it.shopItem.withChecked(it.checked))
+    private val onCheckboxChecked = object : ItemCheckedListener<ShopItem> {
+        override fun onChecked(view: View, item: ShopItem) {
+            updateItem(item, item.withChecked((view as CheckBox).isChecked))
+        }
     }
 
-    private val onNameChanged: (NameChangedParams) -> Unit = {
-        updateItem(it.shopItem, it.shopItem.withName(it.newName))
+    private val onNameChanged = object : FocusChangeListener<ShopItem> {
+        override fun onFocusChanged(view: View, item: ShopItem) {
+            updateItem(item, item.withName((view as EditText).text.toString()))
+        }
     }
 
     //endregion
