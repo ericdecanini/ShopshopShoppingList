@@ -32,7 +32,7 @@ class HomeViewModelTest {
     fun givenShoppingList_whenOnShoppingListClick_thenMainNavigatorWithShoppingList() {
         val shoppingList = ShoppingListBuilder.aShoppingList().build()
 
-        viewModel.onShoppingListClick.invoke(shoppingList)
+        viewModel.onShoppingListClick.onItemClicked(shoppingList)
 
         verify(mainNavigator).goToList(shoppingList)
     }

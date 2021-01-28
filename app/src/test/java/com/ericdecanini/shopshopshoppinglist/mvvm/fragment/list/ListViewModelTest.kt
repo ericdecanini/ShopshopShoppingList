@@ -33,7 +33,8 @@ class ListViewModelTest {
         val outputViewState = viewState.copy(list = listOf(sampleShopItem))
         given(viewState.replaceItem(any(), any())).willReturn(outputViewState)
 
-        viewModel.onItemUpdate.invoke(sampleShopItem, sampleShopItem)
+        val listeners = viewModel.createListListeners()
+        listeners.onNameChangedListener.invoke(NameChangedParams(sampleShopItem, ""))
 
         assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }
@@ -53,7 +54,7 @@ class ListViewModelTest {
         val outputViewState = viewState.copy(list = listOf(sampleShopItem))
         given(viewState.deleteItem(any())).willReturn(outputViewState)
 
-        viewModel.onItemDelete.invoke(sampleShopItem)
+        viewModel.createListListeners().onDeleteClickListener.onItemClicked(sampleShopItem)
 
         assertThat(viewModel.stateLiveData.value).isEqualTo(outputViewState)
     }
