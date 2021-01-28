@@ -1,6 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
-import android.view.View
+import android.text.Editable
 import android.widget.EditText
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
@@ -21,6 +21,7 @@ class ListViewModelTest {
     private val viewStateProvider: ViewStateProviderImpl = mock()
     private val viewState: ListViewState = mock()
     private val view: EditText = mock()
+    private val editable: Editable = mock()
 
     private val viewModel = ListViewModel(viewStateProvider)
 
@@ -29,6 +30,8 @@ class ListViewModelTest {
     @Before
     fun setUp() {
         given(viewStateProvider.create<ListViewState>(any())).willReturn(viewState)
+        given(view.text).willReturn(editable)
+        given(editable.toString()).willReturn("")
     }
 
     @Test
