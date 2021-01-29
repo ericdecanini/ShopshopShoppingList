@@ -3,22 +3,19 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.Toast
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
-import com.ericdecanini.shopshopshoppinglist.util.FocusChangeListener
-import com.ericdecanini.shopshopshoppinglist.util.ItemCheckedListener
-import com.ericdecanini.shopshopshoppinglist.util.ItemClickListener
+import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
     viewStateProvider: ViewStateProvider
-) : ViewModel() {
+) : ViewModel(), ShopItemEventHandler {
 
     private val state get() = _stateLiveData.value
     private val _stateLiveData = MutableLiveData(
@@ -49,42 +46,24 @@ class ListViewModel @Inject constructor(
 
     //region: ui interaction events
 
-    fun createListListeners() = ShopItemListListeners(
-        onQuantityDownClick,
-        onQuantityUpClick,
-        onDeleteClick,
-        onCheckboxChecked,
-        onNameChanged
-    )
-
-    private val onQuantityDownClick = object : ItemClickListener<ShopItem> {
-        override fun onItemClicked(item: ShopItem) {
-            updateItem(item, item.withQuantity(item.quantity - 1))
-        }
+    override fun onQuantityDown(shopItem: ShopItem) {
+        updateItem(shopItem, shopItem.withQuantity(shopItem.quantity - 1))
     }
 
-    private val onQuantityUpClick = object : ItemClickListener<ShopItem> {
-        override fun onItemClicked(item: ShopItem) {
-            updateItem(item, item.withQuantity(item.quantity + 1))
-        }
+    override fun onQuantityUp(shopItem: ShopItem) {
+        updateItem(shopItem, shopItem.withQuantity(shopItem.quantity + 1))
     }
 
-    private val onDeleteClick = object : ItemClickListener<ShopItem> {
-        override fun onItemClicked(item: ShopItem) {
-            deleteItem(item)
-        }
+    override fun onDeleteClick(shopItem: ShopItem) {
+        deleteItem(shopItem)
     }
 
-    private val onCheckboxChecked = object : ItemCheckedListener<ShopItem> {
-        override fun onChecked(view: View, item: ShopItem) {
-            updateItem(item, item.withChecked((view as CheckBox).isChecked))
-        }
+    override fun onCheckboxChecked(view: View, shopItem: ShopItem) {
+        updateItem(shopItem, shopItem.withChecked((view as CheckBox).isChecked))
     }
 
-    private val onNameChanged = object : FocusChangeListener<ShopItem> {
-        override fun onFocusChanged(view: View, item: ShopItem) {
-            updateItem(item, item.withName((view as EditText).text.toString()))
-        }
+    override fun onNameChanged(view: View, shopItem: ShopItem) {
+        updateItem(shopItem, shopItem.withName((view as EditText).text.toString()))
     }
 
     //endregion

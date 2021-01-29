@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.list_item_shopitem.view.*
 
 class ShopItemAdapter(
     private val items: List<ShopItem>,
-    private val shopItemListListeners: ShopItemListListeners
+    private val shopItemEventHandler: ShopItemEventHandler
 ) : RecyclerView.Adapter<ShopItemAdapter.ViewHolder>() {
 
     private val viewBinderHelper = ViewBinderHelper()
@@ -28,7 +28,7 @@ class ShopItemAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
         viewBinderHelper.bind(holder.itemView as SwipeRevealLayout, item.name)
-        holder.bind(item, shopItemListListeners)
+        holder.bind(item, shopItemEventHandler)
     }
 
     fun saveStates(outState: Bundle) = viewBinderHelper.saveStates(outState)
@@ -37,9 +37,9 @@ class ShopItemAdapter(
 
     class ViewHolder(val binding: ListItemShopitemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(shopItem: ShopItem, shopItemListListeners: ShopItemListListeners) = with(shopItem) {
+        fun bind(shopItem: ShopItem, shopItemEventHandler: ShopItemEventHandler) = with(shopItem) {
             binding.setVariable(BR.viewstate, this)
-            binding.setVariable(BR.listeners, shopItemListListeners)
+            binding.setVariable(BR.handler, shopItemEventHandler)
 
             binding.quantity.setOnClickListener {
                 with(itemView.swipe_layout) {

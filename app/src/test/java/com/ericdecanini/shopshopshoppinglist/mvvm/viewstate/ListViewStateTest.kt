@@ -1,7 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.viewstate
 
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
-import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState
+import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test

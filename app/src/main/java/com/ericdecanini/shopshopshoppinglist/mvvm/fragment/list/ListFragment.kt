@@ -13,6 +13,7 @@ import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class ListFragment : DaggerFragment() {
 
     private val shopItems = mutableListOf<ShopItem>()
     private val adapter by lazy {
-        ShopItemAdapter(shopItems, viewModel.createListListeners())
+        ShopItemAdapter(shopItems, viewModel)
     }
 
     override fun onCreateView(

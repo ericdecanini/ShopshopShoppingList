@@ -3,8 +3,8 @@
 
     <data>
         <variable
-            name="listeners"
-            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ShopItemListListeners" />
+            name="handler"
+            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ShopItemEventHandler" />
         <variable
             name="viewstate"
             type="com.ericdecanini.shopshopshoppinglist.entities.ShopItem" />
@@ -34,7 +34,7 @@
                 android:paddingStart="@dimen/quantity_buttons_padding"
                 android:paddingEnd="@dimen/quantity_buttons_padding"
                 android:contentDescription="@string/talkback_quantity_down"
-                android:onClick="@{() -> listeners.onQuantityDownClickListener.onItemClicked(viewstate)}"
+                android:onClick="@{() -> handler.onQuantityDown(viewstate)}"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageButton
@@ -46,7 +46,7 @@
                 android:paddingStart="@dimen/quantity_buttons_padding"
                 android:paddingEnd="@dimen/quantity_buttons_padding"
                 android:contentDescription="@string/talkback_quantity_down"
-                android:onClick="@{() -> listeners.onQuantityUpClickListener.onItemClicked(viewstate)}"
+                android:onClick="@{() -> handler.onQuantityUp(viewstate)}"
                 app:layout_constraintStart_toEndOf="@id/quantity_down" />
 
             <ImageButton
@@ -58,7 +58,7 @@
                 android:paddingStart="@dimen/quantity_buttons_padding"
                 android:paddingEnd="@dimen/quantity_buttons_padding"
                 android:contentDescription="@string/talkback_quantity_down"
-                android:onClick="@{() -> listeners.onDeleteClickListener.onItemClicked(viewstate)}"
+                android:onClick="@{() -> handler.onDeleteClick(viewstate)}"
                 app:layout_constraintStart_toEndOf="@id/quantity_up" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:checked="@{viewstate.checked}"
-                app:onChecked="@{(view) -> listeners.onCheckboxCheckedListener.onChecked(view, viewstate)}"
+                app:onChecked="@{(view) -> handler.onCheckboxChecked(view, viewstate)}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -93,7 +93,7 @@
                 android:selectAllOnFocus="true"
                 android:background="@drawable/bg_ripple_primary"
                 android:text="@{viewstate.name}"
-                app:onFocusLost="@{(view) -> listeners.onNameChangedListener.onFocusChanged(view, viewstate)}"
+                app:onFocusLost="@{(view) -> handler.onNameChanged(view, viewstate)}"
                 app:layout_constraintStart_toEndOf="@id/checkbox"
                 app:layout_constraintEnd_toStartOf="@id/quantity"
                 app:layout_constraintTop_toTopOf="@id/checkbox"

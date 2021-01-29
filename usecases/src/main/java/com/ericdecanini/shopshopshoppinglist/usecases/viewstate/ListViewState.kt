@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
+package com.ericdecanini.shopshopshoppinglist.usecases.viewstate
 
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ViewState
