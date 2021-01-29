@@ -26,7 +26,7 @@ class HomeFragment : DaggerFragment() {
 
     private val shoppingLists = mutableListOf<ShoppingList>()
     private val adapter by lazy {
-        ShoppingListAdapter(shoppingLists, viewModel.onShoppingListClick)
+        ShoppingListAdapter(shoppingLists, viewModel)
     }
 
     override fun onCreateView(

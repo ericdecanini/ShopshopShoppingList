@@ -7,12 +7,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.databinding.ListItemShoppinglistBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
-import com.ericdecanini.shopshopshoppinglist.util.ItemClickListener
 import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 
 class ShoppingListAdapter(
     private val shoppingLists: List<ShoppingList>,
-    private val onShoppingListClick: ItemClickListener<ShoppingList>
+    private val onShoppingListClick: ShoppingListEventHandler
 ): RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +26,7 @@ class ShoppingListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.apply {
             binding.setVariable(BR.viewstate, shoppingLists[position])
-            binding.setVariable(BR.onShoppingListClick, onShoppingListClick)
+            binding.setVariable(BR.handler, onShoppingListClick)
             bind(shoppingLists[position])
         }
     }

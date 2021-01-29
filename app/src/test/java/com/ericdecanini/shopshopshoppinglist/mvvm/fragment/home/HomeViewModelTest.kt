@@ -3,6 +3,7 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
+import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.HomeViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.given
@@ -32,7 +33,7 @@ class HomeViewModelTest {
     fun givenShoppingList_whenOnShoppingListClick_thenMainNavigatorWithShoppingList() {
         val shoppingList = ShoppingListBuilder.aShoppingList().build()
 
-        viewModel.onShoppingListClick.onItemClicked(shoppingList)
+        viewModel.onShoppingListClick(shoppingList)
 
         verify(mainNavigator).goToList(shoppingList)
     }
@@ -43,5 +44,4 @@ class HomeViewModelTest {
 
         verify(mainNavigator).goToList()
     }
-
 }

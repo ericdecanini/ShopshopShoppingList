@@ -3,8 +3,8 @@
 
     <data>
         <variable
-            name="onShoppingListClick"
-            type="com.ericdecanini.shopshopshoppinglist.util.ItemClickListener" />
+            name="handler"
+            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.ShoppingListEventHandler" />
         <variable
             name="viewstate"
             type="com.ericdecanini.shopshopshoppinglist.entities.ShoppingList" />
@@ -15,7 +15,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{() -> onShoppingListClick.onItemClicked(viewstate)}"
+        android:onClick="@{() -> handler.onShoppingListClick(viewstate)}"
         android:descendantFocusability="blocksDescendants"
         android:paddingBottom="8dp">
 
