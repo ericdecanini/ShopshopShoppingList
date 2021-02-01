@@ -92,7 +92,7 @@
                 android:inputType="text"
                 android:selectAllOnFocus="true"
                 android:background="@drawable/bg_ripple_primary"
-                android:text="@{viewstate.name}"
+                android:text="@={viewstate.name}"
                 app:onFocusLost="@{(view) -> handler.onNameChanged(view, viewstate)}"
                 app:layout_constraintStart_toEndOf="@id/checkbox"
                 app:layout_constraintEnd_toStartOf="@id/quantity"

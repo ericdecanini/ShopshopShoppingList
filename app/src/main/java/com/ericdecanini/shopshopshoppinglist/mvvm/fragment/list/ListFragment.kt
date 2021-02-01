@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericdecanini.shopshopshoppinglist.BR
@@ -28,9 +29,8 @@ class ListFragment : DaggerFragment() {
     private lateinit var binding: FragmentListBinding
     private val args: ListFragmentArgs by navArgs()
 
-    private val shopItems = mutableListOf<ShopItem>()
     private val adapter by lazy {
-        ShopItemAdapter(shopItems, viewModel)
+        ShopItemAdapter(mutableListOf(), viewModel)
     }
 
     override fun onCreateView(
@@ -74,9 +74,9 @@ class ListFragment : DaggerFragment() {
     private fun renderView(state: ListViewState) {
         binding.title.setText(state.title)
 
-        shopItems.clear()
-        shopItems.addAll(state.list)
-        binding.shopList.post { adapter.notifyDataSetChanged() }
+        val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, state.list))
+        adapter.replaceItems(state.list)
+        diffResult.dispatchUpdatesTo(adapter)
     }
 
     private fun autofill(id: Int) {

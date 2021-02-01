@@ -8,9 +8,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import javax.inject.Inject
+import kotlin.math.max
 
 class ListViewModel @Inject constructor(
     viewStateProvider: ViewStateProvider
@@ -31,38 +33,42 @@ class ListViewModel @Inject constructor(
     }
 
     fun addItem(itemName: String) {
-        _stateLiveData.value = state?.addItem(ShopItem.newItem(itemName))
         addItemText.set("")
-    }
-
-    private fun updateItem(oldItem: ShopItem, newItem: ShopItem) {
-        _stateLiveData.value = state?.replaceItem(oldItem, newItem)
-    }
-
-    private fun deleteItem(item: ShopItem) {
-        _stateLiveData.value = state?.deleteItem(item)
+        state?.list?.add(ShopItem.newItem(itemName))
+        _stateLiveData.notifyObservers()
     }
 
     //region: ui interaction events
 
     override fun onQuantityDown(shopItem: ShopItem) {
-        updateItem(shopItem, shopItem.withQuantity(shopItem.quantity - 1))
+        state?.let { state ->
+            val index = state.list.indexOf(shopItem)
+            if (index > -1) { state.list[index] = ShopItem(shopItem.id, shopItem.name, max(1, shopItem.quantity - 1), shopItem.checked) }
+        }
+        _stateLiveData.notifyObservers()
     }
 
     override fun onQuantityUp(shopItem: ShopItem) {
-        updateItem(shopItem, shopItem.withQuantity(shopItem.quantity + 1))
+        state?.let { state ->
+            val index = state.list.indexOf(shopItem)
+            if (index > -1) { state.list[index] = ShopItem(shopItem.id, shopItem.name, shopItem.quantity + 1, shopItem.checked) }
+        }
+        _stateLiveData.notifyObservers()
     }
 
     override fun onDeleteClick(shopItem: ShopItem) {
-        deleteItem(shopItem)
+        state?.list?.remove(shopItem)
+        _stateLiveData.notifyObservers()
     }
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        updateItem(shopItem, shopItem.withChecked(checkbox.isChecked))
+        shopItem.checked = checkbox.isChecked
+        _stateLiveData.notifyObservers()
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
-        updateItem(shopItem, shopItem.withName(editText.text.toString()))
+        shopItem.name = editText.text.toString()
+        _stateLiveData.notifyObservers()
     }
 
     //endregion

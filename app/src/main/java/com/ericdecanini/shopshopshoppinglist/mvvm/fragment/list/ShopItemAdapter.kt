@@ -12,7 +12,7 @@ import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import kotlinx.android.synthetic.main.list_item_shopitem.view.*
 
 class ShopItemAdapter(
-    private val items: List<ShopItem>,
+    val items: MutableList<ShopItem>,
     private val shopItemEventHandler: ShopItemEventHandler
 ) : RecyclerView.Adapter<ShopItemAdapter.ViewHolder>() {
 
@@ -27,7 +27,7 @@ class ShopItemAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        viewBinderHelper.bind(holder.itemView as SwipeRevealLayout, item.name)
+        viewBinderHelper.bind(holder.itemView as SwipeRevealLayout, item.id)
         holder.bind(item, shopItemEventHandler)
     }
 
@@ -35,7 +35,12 @@ class ShopItemAdapter(
 
     fun restoreStates(inState: Bundle) = viewBinderHelper.restoreStates(inState)
 
-    class ViewHolder(val binding: ListItemShopitemBinding) : RecyclerView.ViewHolder(binding.root) {
+    fun replaceItems(newItems: List<ShopItem>) {
+        items.clear()
+        items.addAll(newItems)
+    }
+
+    class ViewHolder(private val binding: ListItemShopitemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(shopItem: ShopItem, shopItemEventHandler: ShopItemEventHandler) = with(shopItem) {
             binding.setVariable(BR.viewstate, this)
