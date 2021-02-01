@@ -4,6 +4,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
 import androidx.databinding.BindingAdapter
+import com.ericdecanini.shopshopshoppinglist.util.UiEventListeners
 
 @BindingAdapter("app:returnKeyClick")
 fun EditText.returnKeyClickView(view: View) {
@@ -16,8 +17,8 @@ fun EditText.returnKeyClickView(view: View) {
 }
 
 @BindingAdapter("app:onFocusLost")
-fun EditText.onFocusLost(callback: View.OnClickListener) {
-    setOnFocusChangeListener { view, hasFocus ->
-        if (!hasFocus) { callback.onClick(view) }
+fun EditText.onFocusLost(callback: UiEventListeners.OnFocusLostListener) {
+    setOnFocusChangeListener { _, hasFocus ->
+        if (!hasFocus) { callback.onFocusLost(this) }
     }
 }

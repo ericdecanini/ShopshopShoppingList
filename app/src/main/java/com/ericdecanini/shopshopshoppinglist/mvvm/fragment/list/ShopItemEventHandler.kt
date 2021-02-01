@@ -1,6 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
-import android.view.View
+import android.widget.CheckBox
+import android.widget.EditText
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 
 interface ShopItemEventHandler {
@@ -11,8 +12,8 @@ interface ShopItemEventHandler {
 
   fun onDeleteClick(shopItem: ShopItem)
 
-  fun onCheckboxChecked(view: View, shopItem: ShopItem)
+  fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem)
 
-  fun onNameChanged(view: View, shopItem: ShopItem)
+  fun onNameChanged(editText: EditText, shopItem: ShopItem)
 
 }

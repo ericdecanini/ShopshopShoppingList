@@ -1,6 +1,5 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
-import android.view.View
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.databinding.ObservableField
@@ -58,12 +57,12 @@ class ListViewModel @Inject constructor(
         deleteItem(shopItem)
     }
 
-    override fun onCheckboxChecked(view: View, shopItem: ShopItem) {
-        updateItem(shopItem, shopItem.withChecked((view as CheckBox).isChecked))
+    override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
+        updateItem(shopItem, shopItem.withChecked(checkbox.isChecked))
     }
 
-    override fun onNameChanged(view: View, shopItem: ShopItem) {
-        updateItem(shopItem, shopItem.withName((view as EditText).text.toString()))
+    override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
+        updateItem(shopItem, shopItem.withName(editText.text.toString()))
     }
 
     //endregion
