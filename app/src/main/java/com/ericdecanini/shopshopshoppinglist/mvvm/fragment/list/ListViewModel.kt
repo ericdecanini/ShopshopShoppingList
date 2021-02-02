@@ -1,5 +1,8 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
+import android.app.Activity
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.databinding.ObservableField
@@ -69,6 +72,12 @@ class ListViewModel @Inject constructor(
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
         _stateLiveData.notifyObservers()
+        hideKeyboard(editText)
+    }
+
+    fun hideKeyboard(view: View) {
+        val imm = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     //endregion
