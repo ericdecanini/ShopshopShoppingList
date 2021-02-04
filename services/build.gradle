@@ -2,3 +2,16 @@ plugins {
     id 'kotlin'
     id 'kotlin-kapt'
 }
+
+apply from: '../gradle/config/common_java_library_block.gradle'
+
+dependencies {
+    implementation project(':entities')
+    implementation project(':usecases')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+
+    testImplementation project(":testdata")
+    testImplementation "org.assertj:assertj-core:${assertJVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+}
