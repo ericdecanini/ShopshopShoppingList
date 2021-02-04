@@ -4,14 +4,10 @@ import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRep
 import com.ericdecanini.shopshopshoppinglist.usecases.service.ShoppingListDatabaseService
 
 class SQLiteShoppingListRepository(
-    shoppingListDatabaseService: ShoppingListDatabaseService
+    private val shoppingListDatabaseService: ShoppingListDatabaseService
 ) : ShoppingListRepository {
 
-    override fun getShoppingLists() {
-        TODO("Not yet implemented")
-    }
+    override fun getShoppingLists() = shoppingListDatabaseService.getShoppingLists()
 
-    override fun getShoppingListById(id: Int) {
-        TODO("Not yet implemented")
-    }
+    override fun getShoppingListById(id: Int) = shoppingListDatabaseService.getShoppingListById(id)
 }

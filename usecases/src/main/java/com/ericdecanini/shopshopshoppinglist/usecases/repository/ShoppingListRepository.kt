@@ -1,9 +1,11 @@
 package com.ericdecanini.shopshopshoppinglist.usecases.repository
 
+import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
+
 interface ShoppingListRepository {
 
-    fun getShoppingLists()
+    fun getShoppingLists(): List<ShoppingList>
 
-    fun getShoppingListById(id: Int)
+    fun getShoppingListById(id: Int): ShoppingList
 
 }

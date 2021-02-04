@@ -14,6 +14,8 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/dataaccess" />
+            <option value="$PROJECT_DIR$/dependencies" />
+            <option value="$PROJECT_DIR$/dependencies/chaquopy" />
             <option value="$PROJECT_DIR$/entities" />
             <option value="$PROJECT_DIR$/services" />
             <option value="$PROJECT_DIR$/testdata" />
