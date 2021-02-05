@@ -12,6 +12,7 @@ class ChaquopyDatabaseWrapper : PythonDatabaseWrapper {
     }
 
     override fun getShoppingListsJson(): String {
+//        insertSomeItems()
         return commands.callAttr("get_shoppinglists").toString()
     }
 

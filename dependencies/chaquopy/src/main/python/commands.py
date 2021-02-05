@@ -11,12 +11,8 @@ db_dir = os.path.join(package_dir, 'shopping_lists.db')
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
-        key = col[0]
-        if key == "list_id":
-            key = "id"
-        d[key] = row[idx]
+        d[col[0]] = row[idx]
     return d
-
 
 class Commands:
 
@@ -27,19 +23,19 @@ class Commands:
     def __init__(self):
         create_shoppinglists_table = f"""
         CREATE TABLE IF NOT EXISTS
-        {TABLE_SHOPPINGLISTS}(list_id INTEGER PRIMARY KEY, name TEXT NOT NULL)
+        {TABLE_SHOPPINGLISTS}(id INTEGER PRIMARY KEY, name TEXT NOT NULL)
         """
         self.cursor.execute(create_shoppinglists_table)
 
         create_shopitems_table = f"""
             CREATE TABLE IF NOT EXISTS
             {TABLE_SHOPITEMS} (
-            item_id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY,
             list_id INTEGER NOT NULL,
             name TEXT NOT NULL,
             quantity INTEGER NOT NULL,
             checked INTEGER NOT NULL,
-            FOREIGN KEY(list_id) REFERENCES {TABLE_SHOPPINGLISTS}(list_id)
+            FOREIGN KEY(list_id) REFERENCES {TABLE_SHOPPINGLISTS}(id)
             )
         """
         self.cursor.execute(create_shopitems_table)
@@ -53,7 +49,7 @@ class Commands:
 
     def get_shoppinglist_by_id(self, list_id):
         self.cursor.execute(
-            f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE list_id = {list_id}"
+            f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
         )
         return json.dumps(self.cursor.fetchall())
 
@@ -81,7 +77,7 @@ class Commands:
 
     def update_shoppinglist(self, list_id, name):
         self.cursor.execute(
-            f"UPDATE {TABLE_SHOPPINGLISTS} SET name = '{name}' WHERE list_id = {list_id}"
+            f"UPDATE {TABLE_SHOPPINGLISTS} SET name = '{name}' WHERE id = {list_id}"
         )
         self.connection.commit()
 
@@ -91,7 +87,7 @@ class Commands:
             f"""
             UPDATE {TABLE_SHOPITEMS}
             SET name = '{name}', quantity = {quantity}, checked = {checked}
-            WHERE item_id = {item_id}
+            WHERE id = {item_id}
             """
         )
         self.connection.commit()
@@ -99,14 +95,14 @@ class Commands:
 
     def delete_shoppinglist(self, list_id):
         self.cursor.execute(
-            f"DELETE FROM {TABLE_SHOPPINGLISTS} WHERE list_id = {list_id}"
+            f"DELETE FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
         )
         self.connection.commit()
 
 
     def delete_shopitem(self, item_id):
         self.cursor.execute(
-            f"DELETE FROM {TABLE_SHOPITEMS} WHERE item_id = {item_id}"
+            f"DELETE FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
         )
         self.connection.commit()
 
