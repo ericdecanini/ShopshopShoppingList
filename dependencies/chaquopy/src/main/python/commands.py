@@ -8,10 +8,20 @@ TABLE_SHOPITEMS = "shopitems"
 package_dir = os.path.abspath(os.path.dirname(__file__))
 db_dir = os.path.join(package_dir, 'shopping_lists.db')
 
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        key = col[0]
+        if key == "list_id":
+            key = "id"
+        d[key] = row[idx]
+    return d
+
 
 class Commands:
 
     connection = sqlite3.connect(db_dir)
+    connection.row_factory = dict_factory
     cursor = connection.cursor()
 
     def __init__(self):

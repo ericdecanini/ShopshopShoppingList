@@ -2,8 +2,8 @@ package com.ericdecanini.shopshopshoppinglist.entities
 
 data class ShoppingList(
     val id: Int,
-    val title: String,
-    val items: MutableList<ShopItem>
+    val name: String,
+    val items: MutableList<ShopItem> = mutableListOf()
 ) {
 
     companion object {

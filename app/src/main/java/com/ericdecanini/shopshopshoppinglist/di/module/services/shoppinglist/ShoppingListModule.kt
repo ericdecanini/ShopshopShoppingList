@@ -2,7 +2,7 @@ package com.ericdecanini.shopshopshoppinglist.di.module.services.shoppinglist
 
 import com.ericdecanini.shopshopshoppinglist.dataaccess.repository.SQLiteShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.services.shoppinglist.ShoppingListDatabaseServiceImpl
-import com.ericdecanini.shopshopshoppinglist.usecases.database.PythonDatabaseWrapper
+import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.usecases.service.ShoppingListDatabaseService
 import dagger.Module

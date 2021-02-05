@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.usecases.database
+package com.ericdecanini.shopshopshoppinglist.usecases.python
 
 interface PythonDatabaseWrapper {
 

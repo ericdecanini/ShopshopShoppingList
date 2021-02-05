@@ -4,7 +4,7 @@ import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 
 interface ShoppingListDatabaseService {
 
-    fun getShoppingLists(): List<ShoppingList>
+    fun getShoppingLists(): List<ShoppingList>?
 
     fun getShoppingListById(id: Int): ShoppingList
 

@@ -11,6 +11,11 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 
+    // Moshi
+    implementation "com.squareup.moshi:moshi:${moshiVersion}"
+    implementation "com.squareup.moshi:moshi-kotlin:${moshiVersion}"
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:${moshiVersion}"
+
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"

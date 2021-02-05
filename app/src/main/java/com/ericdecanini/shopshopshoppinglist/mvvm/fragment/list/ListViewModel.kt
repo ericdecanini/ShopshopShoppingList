@@ -32,7 +32,7 @@ class ListViewModel @Inject constructor(
     fun loadShoppingList(id: Int) {
         // TODO: Replace with loading list from service
         val shoppingList = loadDummyList()
-        _stateLiveData.postValue(ListViewState(shoppingList.title, shoppingList.items))
+        _stateLiveData.postValue(ListViewState(shoppingList.name, shoppingList.items))
     }
 
     fun addItem(itemName: String) {

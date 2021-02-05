@@ -1,18 +1,21 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList.Companion.generateDummyLists
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.HomeViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val mainNavigator: MainNavigator,
-    viewStateProvider: ViewStateProvider
+    viewStateProvider: ViewStateProvider,
+    private val shoppingListRepository: ShoppingListRepository
 ) : ViewModel(), ShoppingListEventHandler {
 
     private val state get() = _stateLiveData.value
@@ -23,11 +26,17 @@ class HomeViewModel @Inject constructor(
 
     init {
         _stateLiveData.value = state?.withShoppingLists(generateDummyLists())
+        getShoppingLists()
     }
 
     fun navigateToListFragment() = mainNavigator.goToList()
 
     override fun onShoppingListClick(shoppingList: ShoppingList) {
         mainNavigator.goToList(shoppingList)
+    }
+
+    private fun getShoppingLists() {
+        val shoppingLists = shoppingListRepository.getShoppingLists()!!
+        Log.d(HomeViewModel::class.java.simpleName, shoppingLists.toString())
     }
 }
