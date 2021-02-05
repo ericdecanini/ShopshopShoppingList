@@ -41,6 +41,12 @@ class Commands:
         )
         return json.dumps(self.cursor.fetchall())
 
+    def get_shoppinglist_by_id(self, list_id):
+        self.cursor.execute(
+            f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE list_id = {list_id}"
+        )
+        return json.dumps(self.cursor.fetchall())
+
 
     def get_shopitems(self, list_id):
         self.cursor.execute(

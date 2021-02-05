@@ -5,7 +5,7 @@ import com.ericdecanini.shopshopshoppinglist.usecases.database.PythonDatabaseWra
 import com.ericdecanini.shopshopshoppinglist.usecases.service.ShoppingListDatabaseService
 
 class ShoppingListDatabaseServiceImpl(
-//    private val pythonDatabaseWrapper: PythonDatabaseWrapper
+    private val pythonDatabaseWrapper: PythonDatabaseWrapper
 ) : ShoppingListDatabaseService {
 
     override fun getShoppingLists(): List<ShoppingList> {

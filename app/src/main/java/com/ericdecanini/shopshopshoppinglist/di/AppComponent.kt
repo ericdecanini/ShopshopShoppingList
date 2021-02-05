@@ -5,6 +5,7 @@ import com.ericdecanini.shopshopshoppinglist.ShopshopApplication
 import com.ericdecanini.shopshopshoppinglist.di.module.activity.ActivityBuildersModule
 import com.ericdecanini.shopshopshoppinglist.di.module.AppModule
 import com.ericdecanini.shopshopshoppinglist.di.module.ViewModelFactoryModule
+import com.ericdecanini.shopshopshoppinglist.di.module.dependencies.DependenciesModule
 import com.ericdecanini.shopshopshoppinglist.di.module.services.ServicesModule
 import dagger.BindsInstance
 import dagger.Component
@@ -15,8 +16,9 @@ import javax.inject.Singleton
 @Singleton
 @Component(
     modules = [
-        AppModule::class,
-        ServicesModule::class
+      AppModule::class,
+      ServicesModule::class,
+      DependenciesModule::class
     ]
 )
 interface AppComponent : AndroidInjector<ShopshopApplication> {
