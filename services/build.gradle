@@ -19,4 +19,5 @@ dependencies {
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation 'android.arch.core:core-testing:1.1.1'
 }

@@ -10,4 +10,6 @@ class SQLiteShoppingListRepository(
     override fun getShoppingLists() = shoppingListDatabaseService.getShoppingLists()
 
     override fun getShoppingListById(id: Int) = shoppingListDatabaseService.getShoppingListById(id)
+
+    override fun createNewShoppingList() = shoppingListDatabaseService.createShoppingList()
 }

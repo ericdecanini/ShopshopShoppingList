@@ -6,6 +6,8 @@ interface ShoppingListRepository {
 
     fun getShoppingLists(): List<ShoppingList>?
 
-    fun getShoppingListById(id: Int): ShoppingList
+    fun getShoppingListById(id: Int): ShoppingList?
+
+    fun createNewShoppingList(): ShoppingList
 
 }

@@ -23,7 +23,13 @@ class ShoppingListDatabaseServiceImpl(
         return adapter.fromJson(json)
     }
 
-    override fun getShoppingListById(id: Int): ShoppingList {
+    override fun getShoppingListById(id: Int): ShoppingList? {
+        val json = pythonDatabaseWrapper.getShoppingListJsonById(id)
+        val adapter: JsonAdapter<ShoppingList> = moshi.adapter(ShoppingList::class.java)
+        return adapter.fromJson(json)
+    }
+
+    override fun createShoppingList(): ShoppingList {
         TODO("Not yet implemented")
     }
 }

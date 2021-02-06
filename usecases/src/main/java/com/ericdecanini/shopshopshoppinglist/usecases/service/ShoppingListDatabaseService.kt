@@ -6,6 +6,8 @@ interface ShoppingListDatabaseService {
 
     fun getShoppingLists(): List<ShoppingList>?
 
-    fun getShoppingListById(id: Int): ShoppingList
+    fun getShoppingListById(id: Int): ShoppingList?
+
+    fun createShoppingList(): ShoppingList
 
 }

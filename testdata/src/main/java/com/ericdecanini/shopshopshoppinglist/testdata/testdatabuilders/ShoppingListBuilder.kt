@@ -7,7 +7,7 @@ class ShoppingListBuilder private constructor() {
 
     private var id: Int = DEFAULT_ID
     private var title: String = DEFAULT_TITLE
-    private var items: List<ShopItem> = DEFAULT_ITEMS
+    private var items: MutableList<ShopItem> = DEFAULT_ITEMS
 
     fun build() = ShoppingList(
         id,
@@ -23,14 +23,14 @@ class ShoppingListBuilder private constructor() {
         this.title = title
     }
 
-    fun withItems(items: List<ShopItem>) = apply {
+    fun withItems(items: MutableList<ShopItem>) = apply {
         this.items = items
     }
 
     companion object {
         private const val DEFAULT_ID = 0
         private const val DEFAULT_TITLE = "title"
-        private val DEFAULT_ITEMS = listOf<ShopItem>()
+        private val DEFAULT_ITEMS = mutableListOf<ShopItem>()
 
         fun aShoppingList() = ShoppingListBuilder()
     }

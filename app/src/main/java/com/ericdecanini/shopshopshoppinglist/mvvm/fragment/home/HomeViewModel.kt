@@ -25,18 +25,20 @@ class HomeViewModel @Inject constructor(
     val stateLiveData: LiveData<HomeViewState> get() = _stateLiveData
 
     init {
-        _stateLiveData.value = state?.withShoppingLists(generateDummyLists())
-        getShoppingLists()
+        _stateLiveData.value = state?.withShoppingLists(getShoppingLists())
     }
 
     fun navigateToListFragment() = mainNavigator.goToList()
 
-    override fun onShoppingListClick(shoppingList: ShoppingList) {
-        mainNavigator.goToList(shoppingList)
+    private fun getShoppingLists(): List<ShoppingList>
+        = shoppingListRepository.getShoppingLists() ?: emptyList()
+
+    //region: ui interaction events
+    fun onNewShoppingListClick() {
+
     }
 
-    private fun getShoppingLists() {
-        val shoppingLists = shoppingListRepository.getShoppingLists()!!
-        Log.d(HomeViewModel::class.java.simpleName, shoppingLists.toString())
+    override fun onShoppingListClick(shoppingList: ShoppingList) {
+        mainNavigator.goToList(shoppingList)
     }
 }
