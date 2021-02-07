@@ -8,11 +8,13 @@ TABLE_SHOPITEMS = "shopitems"
 package_dir = os.path.abspath(os.path.dirname(__file__))
 db_dir = os.path.join(package_dir, 'shopping_lists.db')
 
+
 def dict_factory(cursor, row):
     d = {}
     for idx, col in enumerate(cursor.description):
         d[col[0]] = row[idx]
     return d
+
 
 class Commands:
 
@@ -40,7 +42,6 @@ class Commands:
         """
         self.cursor.execute(create_shopitems_table)
 
-
     def get_shoppinglists(self):
         self.cursor.execute(
             f"SELECT * FROM {TABLE_SHOPPINGLISTS}"
@@ -51,8 +52,7 @@ class Commands:
         self.cursor.execute(
             f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
         )
-        return json.dumps(self.cursor.fetchall())
-
+        return json.dumps(self.cursor.fetchone())
 
     def get_shopitems(self, list_id):
         self.cursor.execute(
@@ -60,27 +60,35 @@ class Commands:
         )
         return json.dumps(self.cursor.fetchall())
 
-
     def insert_shoppinglist(self, name):
         self.cursor.execute(
             f"INSERT INTO {TABLE_SHOPPINGLISTS} VALUES (NULL, '{name}')"
         )
+        self.cursor.execute(
+            f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {self.cursor.lastrowid}"
+        )
         self.connection.commit()
-
+        return json.dumps(self.cursor.fetchone())
 
     def insert_shopitem(self, list_id, name, quantity, checked):
         self.cursor.execute(
             f"INSERT INTO {TABLE_SHOPITEMS} VALUES (NULL, {list_id}, '{name}', {quantity}, {checked})"
         )
+        self.cursor.execute(
+            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE id = {self.cursor.lastrowid}"
+        )
         self.connection.commit()
-
+        return json.dumps(self.cursor.fetchone())
 
     def update_shoppinglist(self, list_id, name):
         self.cursor.execute(
             f"UPDATE {TABLE_SHOPPINGLISTS} SET name = '{name}' WHERE id = {list_id}"
         )
+        self.cursor.execute(
+            f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
+        )
         self.connection.commit()
-
+        return json.dumps(self.cursor.fetchone())
 
     def update_shopitem(self, item_id, name, quantity, checked):
         self.cursor.execute(
@@ -90,8 +98,11 @@ class Commands:
             WHERE id = {item_id}
             """
         )
+        self.cursor.execute(
+            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
+        )
         self.connection.commit()
-
+        return json.dumps(self.cursor.fetchone())
 
     def delete_shoppinglist(self, list_id):
         self.cursor.execute(
@@ -99,19 +110,16 @@ class Commands:
         )
         self.connection.commit()
 
-
     def delete_shopitem(self, item_id):
         self.cursor.execute(
             f"DELETE FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
         )
         self.connection.commit()
 
-
     def clear_all(self):
         self.cursor.execute(f"DROP TABLE {TABLE_SHOPPINGLISTS}")
         self.cursor.execute(f"DROP TABLE {TABLE_SHOPITEMS}")
         self.connection.commit()
-
 
     def cleanup(self):
         self.cursor.close()
