@@ -1,6 +1,8 @@
 package com.ericdecanini.shopshopshoppinglist.di.module.services.shoppinglist
 
+import com.ericdecanini.shopshopshoppinglist.dataaccess.repository.SQLiteShoppingListMapper
 import com.ericdecanini.shopshopshoppinglist.dataaccess.repository.SQLiteShoppingListRepository
+import com.ericdecanini.shopshopshoppinglist.dataaccess.repository.ShoppingListMapper
 import com.ericdecanini.shopshopshoppinglist.services.shoppinglist.ShoppingListDatabaseServiceImpl
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
@@ -18,7 +20,14 @@ class ShoppingListModule {
 
     @Provides
     fun provideShoppingListRepository(
-        shoppingListDatabaseService: ShoppingListDatabaseService
-    ): ShoppingListRepository = SQLiteShoppingListRepository(shoppingListDatabaseService)
+        shoppingListDatabaseService: ShoppingListDatabaseService,
+        shoppingListMapper: ShoppingListMapper
+    ): ShoppingListRepository = SQLiteShoppingListRepository(
+        shoppingListDatabaseService,
+        shoppingListMapper
+    )
+
+    @Provides
+    fun provideShoppingListMapper(): ShoppingListMapper = SQLiteShoppingListMapper()
 
 }

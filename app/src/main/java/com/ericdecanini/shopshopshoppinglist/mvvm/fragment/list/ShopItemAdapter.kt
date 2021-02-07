@@ -27,7 +27,7 @@ class ShopItemAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        viewBinderHelper.bind(holder.itemView as SwipeRevealLayout, item.id)
+        viewBinderHelper.bind(holder.itemView as SwipeRevealLayout, item.id.toString())
         holder.bind(item, shopItemEventHandler)
     }
 

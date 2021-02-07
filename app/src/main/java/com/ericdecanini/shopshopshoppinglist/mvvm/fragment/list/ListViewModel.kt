@@ -31,13 +31,13 @@ class ListViewModel @Inject constructor(
 
     fun loadShoppingList(id: Int) {
         // TODO: Replace with loading list from service
-        val shoppingList = loadDummyList()
-        _stateLiveData.postValue(ListViewState(shoppingList.name, shoppingList.items))
+//        val shoppingList = loadDummyList()
+//        _stateLiveData.postValue(ListViewState(shoppingList.name, shoppingList.items))
     }
 
     fun addItem(itemName: String) {
         addItemText.set("")
-        state?.list?.add(ShopItem.newItem(itemName))
+//        state?.list?.add(ShopItem.newItem(itemName))
         _stateLiveData.notifyObservers()
     }
 
@@ -81,9 +81,4 @@ class ListViewModel @Inject constructor(
     }
 
     //endregion
-
-    private fun loadDummyList(): ShoppingList {
-        return ShoppingList.generateDummyList()
-    }
-
 }
