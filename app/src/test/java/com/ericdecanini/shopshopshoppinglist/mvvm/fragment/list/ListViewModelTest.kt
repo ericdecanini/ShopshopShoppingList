@@ -32,6 +32,10 @@ class ListViewModelTest {
     private val viewState: ListViewState = mock()
     private val mockList: MutableList<ShopItem> = mock()
 
+    private val context: Context = mock()
+    private val view: View = mock()
+    private val imm: InputMethodManager = mock()
+
     private val shopItem = aShopItem().withQuantity(5).build()
 
     private lateinit var viewModel: ListViewModel
@@ -109,23 +113,23 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenEditText_whenOnNameChanged_thenNameChangedToEditTextValue() {
+    fun givenEditText_whenOnNameChanged_thenNameChangedToEditTextValueAndKeyboardHidden() {
         val editText: EditText = mock()
         val editable: Editable = mock()
         val name = "sample_name"
         given(editable.toString()).willReturn(name)
         given(editText.text).willReturn(editable)
+        given(editText.context).willReturn(context)
+        given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
 
         viewModel.onNameChanged(editText, shopItem)
 
         assertThat(shopItem.name).isEqualTo(name)
+        verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
     }
 
     @Test
     fun givenView_whenHideKeyboard_thenKeyboardHidden() {
-        val context: Context = mock()
-        val view: View = mock()
-        val imm: InputMethodManager = mock()
         given(view.context).willReturn(context)
         given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
 
