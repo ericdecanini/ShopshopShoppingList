@@ -72,7 +72,6 @@ class ListViewModel @Inject constructor(
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
         _stateLiveData.notifyObservers()
-        hideKeyboard(editText)
     }
 
     fun hideKeyboard(view: View) {

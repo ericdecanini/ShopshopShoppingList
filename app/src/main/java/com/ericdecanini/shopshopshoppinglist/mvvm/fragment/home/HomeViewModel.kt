@@ -1,11 +1,9 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
-import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList.Companion.generateDummyLists
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.HomeViewState
