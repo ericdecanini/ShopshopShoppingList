@@ -25,8 +25,20 @@ class ShoppingListDatabaseServiceImplTest {
     assertThat(shoppingLists).isEqualTo(expectedLists)
   }
 
+  @Test
+  fun givenDbHasShoppingLists_whenGetShoppingListsById_thenReturnJson() {
+    val id = 1
+    given(pythonDatabaseWrapper.getShoppingListJsonById(id)).willReturn(SINGLE_SHOPPING_LIST_JSON)
+
+    val shoppingList = shoppingListDatabaseService.getShoppingListById(id)
+
+    val expectedList = ShoppingList(1, "Sample List")
+    assertThat(shoppingList).isEqualTo(expectedList)
+  }
+
   companion object {
     private const val SHOPPING_LISTS_JSON = "[{\"id\": 1, \"name\": \"Sample List 1\"}, {\"id\": 2, \"name\": \"Sample List 2\"}]"
+    private const val SINGLE_SHOPPING_LIST_JSON = "{\"id\": 1, \"name\": \"Sample List\"}"
   }
 
 }

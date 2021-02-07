@@ -16,7 +16,7 @@ class ChaquopyDatabaseWrapper : PythonDatabaseWrapper {
         return commands.callAttr("get_shoppinglists").toString()
     }
 
-    override fun getShoppingListJsonById(id: Int) = commands.callAttr("get_shoppinglist_by_id").toString()
+    override fun getShoppingListJsonById(id: Int) = commands.callAttr("get_shoppinglist_by_id", id).toString()
 
     override fun cleanup() {
         commands.callAttr("cleanup")
