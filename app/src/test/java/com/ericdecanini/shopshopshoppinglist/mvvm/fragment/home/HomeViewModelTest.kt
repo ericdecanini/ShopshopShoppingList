@@ -32,6 +32,12 @@ class HomeViewModelTest {
     }
 
     @Test
+    fun whenViewModelCreated_thenGetShoppingListsFromRepository() {
+
+        verify(shoppingListRepository).getShoppingLists()
+    }
+
+    @Test
     fun givenShoppingList_whenOnShoppingListClick_thenMainNavigatorWithShoppingList() {
         val shoppingList = ShoppingListBuilder.aShoppingList().build()
 

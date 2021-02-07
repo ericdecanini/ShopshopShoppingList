@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
-import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -44,7 +43,7 @@ class ListFragment : DaggerFragment() {
 
         initList()
         observeState()
-        autofill(args.shoppingListId)
+        inflateList(args.shoppingListId)
 
         return binding.root
     }
@@ -72,14 +71,17 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun renderView(state: ListViewState) {
-        binding.title.setText(state.title)
+        binding.title.setText(state.shoppingList.name)
 
-        val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, state.list))
-        adapter.replaceItems(state.list)
+        val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, state.shoppingList.items))
+        adapter.replaceItems(state.shoppingList.items)
         diffResult.dispatchUpdatesTo(adapter)
     }
 
-    private fun autofill(id: Int) {
-        if (id != -1) { viewModel.loadShoppingList(id) }
+    private fun inflateList(id: Int) {
+        if (id != -1)
+            viewModel.loadShoppingList(id)
+        else
+            viewModel.createNewShoppingList(requireContext())
     }
 }

@@ -8,8 +8,12 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
+import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
+import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import com.nhaarman.mockitokotlin2.any
@@ -29,13 +33,16 @@ class ListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val viewStateProvider: ViewStateProvider = mock()
+    private val shoppingListRepository: ShoppingListRepository = mock()
+    private val mainNavigator: MainNavigator = mock()
+
     private val viewState: ListViewState = mock()
     private val mockList: MutableList<ShopItem> = mock()
-
     private val context: Context = mock()
     private val view: View = mock()
     private val imm: InputMethodManager = mock()
 
+    private val shoppingList = aShoppingList().withItems(mockList).build()
     private val shopItem = aShopItem().withQuantity(5).build()
 
     private lateinit var viewModel: ListViewModel
@@ -43,21 +50,55 @@ class ListViewModelTest {
     @Before
     fun setUp() {
         given(viewStateProvider.create(ListViewState::class.java)).willReturn(viewState)
-        given(viewState.list).willReturn(mockList)
+        given(viewState.shoppingList).willReturn(shoppingList)
 
-        viewModel = ListViewModel(viewStateProvider)
+        viewModel = ListViewModel(viewStateProvider, shoppingListRepository, mainNavigator)
+    }
+
+    @Test
+    fun whenCreateNewShoppingList_shoppingListIsCreatedAndPosted() {
+        val name = "list_name"
+        given(context.getString(R.string.new_list)).willReturn(name)
+        given(shoppingListRepository.createNewShoppingList(name)).willReturn(shoppingList)
+
+        viewModel.createNewShoppingList(context)
+
+        assertThat(viewModel.stateLiveData.value?.shoppingList).isEqualTo(shoppingList)
+    }
+
+    @Test
+    fun givenRepositoryLoads_whenLoadShoppingList_thenShoppingListLoadedFromRepository() {
+        val id = shoppingList.id
+        given(shoppingListRepository.getShoppingListById(id)).willReturn(shoppingList)
+
+        viewModel.loadShoppingList(id)
+
+        val viewState = viewModel.stateLiveData.value
+        assertThat(viewState?.shoppingList).isEqualTo(shoppingList)
+    }
+
+    @Test
+    fun givenRepositoryFailsToLoad_whenLoadShoppingList_thenNavigateUp() {
+        val id = shoppingList.id
+        given(shoppingListRepository.getShoppingListById(id)).willReturn(null)
+
+        viewModel.loadShoppingList(id)
+
+        verify(mainNavigator).navigateUp()
     }
 
     @Test
     fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() {
         val itemName = "new_item"
+        val shopItem = aShopItem().withName(itemName).build()
+        given(shoppingListRepository.createNewShopItem(any(), eq(itemName))).willReturn(shopItem)
 
         viewModel.addItem(itemName)
 
         assertThat(viewModel.addItemText.get()).isEqualTo("")
         val newItemCaptor = argumentCaptor<ShopItem>()
         verify(mockList).add(newItemCaptor.capture())
-        assertThat(newItemCaptor.firstValue.name).isEqualTo(itemName)
+        assertThat(newItemCaptor.firstValue).isEqualTo(shopItem)
     }
 
     @Test

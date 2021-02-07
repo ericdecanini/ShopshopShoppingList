@@ -1,6 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import android.app.Activity
+import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
@@ -9,16 +10,20 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
-import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
+import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
 import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import javax.inject.Inject
 import kotlin.math.max
 
 class ListViewModel @Inject constructor(
-    viewStateProvider: ViewStateProvider
+    viewStateProvider: ViewStateProvider,
+    private val shoppingListRepository: ShoppingListRepository,
+    private val mainNavigator: MainNavigator
 ) : ViewModel(), ShopItemEventHandler {
 
     private val state get() = _stateLiveData.value
@@ -27,17 +32,30 @@ class ListViewModel @Inject constructor(
     )
     val stateLiveData: LiveData<ListViewState> get() = _stateLiveData
 
+    private var listId: Int = -1
+
     val addItemText = ObservableField<String>()
 
+    fun createNewShoppingList(context: Context) {
+        val newListName = context.getString(R.string.new_list)
+        val shoppingList = shoppingListRepository.createNewShoppingList(newListName)
+        _stateLiveData.postValue(ListViewState(shoppingList))
+    }
+
     fun loadShoppingList(id: Int) {
-        // TODO: Replace with loading list from service
-//        val shoppingList = loadDummyList()
-//        _stateLiveData.postValue(ListViewState(shoppingList.name, shoppingList.items))
+        listId = id
+        val shoppingList = shoppingListRepository.getShoppingListById(id)
+
+        if (shoppingList != null)
+            _stateLiveData.postValue(ListViewState(shoppingList))
+        else
+            mainNavigator.navigateUp()
     }
 
     fun addItem(itemName: String) {
         addItemText.set("")
-//        state?.list?.add(ShopItem.newItem(itemName))
+        val newItem = shoppingListRepository.createNewShopItem(listId, itemName)
+        state?.shoppingList?.items?.add(newItem)
         _stateLiveData.notifyObservers()
     }
 
@@ -45,22 +63,22 @@ class ListViewModel @Inject constructor(
 
     override fun onQuantityDown(shopItem: ShopItem) {
         state?.let { state ->
-            val index = state.list.indexOf(shopItem)
-            if (index > -1) { state.list[index] = ShopItem(shopItem.id, shopItem.name, max(1, shopItem.quantity - 1), shopItem.checked) }
+            val index = state.shoppingList.items.indexOf(shopItem)
+            if (index > -1) { state.shoppingList.items[index] = ShopItem(shopItem.id, shopItem.name, max(1, shopItem.quantity - 1), shopItem.checked) }
         }
         _stateLiveData.notifyObservers()
     }
 
     override fun onQuantityUp(shopItem: ShopItem) {
         state?.let { state ->
-            val index = state.list.indexOf(shopItem)
-            if (index > -1) { state.list[index] = ShopItem(shopItem.id, shopItem.name, shopItem.quantity + 1, shopItem.checked) }
+            val index = state.shoppingList.items.indexOf(shopItem)
+            if (index > -1) { state.shoppingList.items[index] = ShopItem(shopItem.id, shopItem.name, shopItem.quantity + 1, shopItem.checked) }
         }
         _stateLiveData.notifyObservers()
     }
 
     override fun onDeleteClick(shopItem: ShopItem) {
-        state?.list?.remove(shopItem)
+        state?.shoppingList?.items?.remove(shopItem)
         _stateLiveData.notifyObservers()
     }
 

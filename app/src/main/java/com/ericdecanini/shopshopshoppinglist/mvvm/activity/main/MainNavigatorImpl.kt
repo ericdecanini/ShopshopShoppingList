@@ -25,4 +25,7 @@ class MainNavigatorImpl(
         navController.navigate(action)
     }
 
+    override fun navigateUp() {
+        navController.navigateUp()
+    }
 }

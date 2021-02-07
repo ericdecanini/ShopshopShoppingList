@@ -8,4 +8,6 @@ interface MainNavigator {
 
     fun goToList(shoppingList: ShoppingList)
 
+    fun navigateUp()
+
 }

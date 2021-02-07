@@ -32,11 +32,10 @@ class HomeViewModel @Inject constructor(
         = shoppingListRepository.getShoppingLists() ?: emptyList()
 
     //region: ui interaction events
-    fun onNewShoppingListClick() {
-
-    }
 
     override fun onShoppingListClick(shoppingList: ShoppingList) {
         mainNavigator.goToList(shoppingList)
     }
+
+    //endregion
 }
