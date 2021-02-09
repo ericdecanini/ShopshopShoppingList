@@ -9,17 +9,10 @@ package_dir = os.path.abspath(os.path.dirname(__file__))
 db_dir = os.path.join(package_dir, 'shopping_lists.db')
 
 
-def dict_factory(cursor, row):
-    d = {}
-    for idx, col in enumerate(cursor.description):
-        d[col[0]] = row[idx]
-    return d
-
-
 class Commands:
 
     connection = sqlite3.connect(db_dir)
-    connection.row_factory = dict_factory
+    connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
     def __init__(self):
@@ -42,23 +35,43 @@ class Commands:
         """
         self.cursor.execute(create_shopitems_table)
 
+    def dict_from_row(self):
+        return [dict(row) for row in self.cursor.fetchall()]
+
     def get_shoppinglists(self):
         self.cursor.execute(
             f"SELECT * FROM {TABLE_SHOPPINGLISTS}"
         )
-        return json.dumps(self.cursor.fetchall())
+
+        shopping_lists = self.dict_from_row()
+        for shopping_list in shopping_lists:
+            self.cursor.execute(
+                f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {shopping_list['id']}"
+            )
+            shop_items = self.dict_from_row()
+            shopping_list['items'] = shop_items
+
+        return json.dumps(shopping_lists)
 
     def get_shoppinglist_by_id(self, list_id):
         self.cursor.execute(
             f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
         )
-        return json.dumps(self.cursor.fetchone())
+        shopping_list = dict(self.cursor.fetchone())
+
+        self.cursor.execute(
+            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {shopping_list['id']}"
+        )
+        shop_items = self.dict_from_row()
+        shopping_list['items'] = shop_items
+
+        return json.dumps(shopping_list)
 
     def get_shopitems(self, list_id):
         self.cursor.execute(
             f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {list_id}"
         )
-        return json.dumps(self.cursor.fetchall())
+        return json.dumps(self.dict_from_row())
 
     def insert_shoppinglist(self, name):
         self.cursor.execute(
@@ -68,7 +81,11 @@ class Commands:
             f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {self.cursor.lastrowid}"
         )
         self.connection.commit()
-        return json.dumps(self.cursor.fetchone())
+
+        shopping_list = dict(self.cursor.fetchone())
+        shopping_list['items'] = []
+
+        return json.dumps(shopping_list)
 
     def insert_shopitem(self, list_id, name, quantity, checked):
         self.cursor.execute(
@@ -78,17 +95,14 @@ class Commands:
             f"SELECT * FROM {TABLE_SHOPITEMS} WHERE id = {self.cursor.lastrowid}"
         )
         self.connection.commit()
-        return json.dumps(self.cursor.fetchone())
+        return json.dumps(dict(self.cursor.fetchone()))
 
     def update_shoppinglist(self, list_id, name):
         self.cursor.execute(
             f"UPDATE {TABLE_SHOPPINGLISTS} SET name = '{name}' WHERE id = {list_id}"
         )
-        self.cursor.execute(
-            f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
-        )
-        self.connection.commit()
-        return json.dumps(self.cursor.fetchone())
+
+        return self.get_shoppinglist_by_id(list_id)
 
     def update_shopitem(self, item_id, name, quantity, checked):
         self.cursor.execute(
@@ -102,7 +116,7 @@ class Commands:
             f"SELECT * FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
         )
         self.connection.commit()
-        return json.dumps(self.cursor.fetchone())
+        return json.dumps(dict(self.cursor.fetchone()))
 
     def delete_shoppinglist(self, list_id):
         self.cursor.execute(
@@ -124,3 +138,4 @@ class Commands:
     def cleanup(self):
         self.cursor.close()
         self.connection.close()
+
