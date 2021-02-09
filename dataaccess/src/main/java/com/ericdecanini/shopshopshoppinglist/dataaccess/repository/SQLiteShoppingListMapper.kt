@@ -8,7 +8,11 @@ import com.ericdecanini.shopshopshoppinglist.entities.network.ShoppingListRespon
 class SQLiteShoppingListMapper : ShoppingListMapper {
 
   override fun mapResponseToShoppingList(response: ShoppingListResponse) = with(response) {
-    ShoppingList(id, name, mutableListOf())
+    ShoppingList(
+        id,
+        name,
+        response.items.map { mapResponseToShopItem(it) }.toMutableList()
+    )
   }
 
   override fun mapResponseToShopItem(response: ShopItemResponse) = with(response) {

@@ -4,6 +4,7 @@ import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.entities.network.ShopItemResponse
 import com.ericdecanini.shopshopshoppinglist.entities.network.ShoppingListResponse
+import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemResponseBuilder.Companion.aShopItemResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows
@@ -16,11 +17,13 @@ class SQLiteShoppingListMapperTest {
   fun givenShoppingListResponse_whenConvertToShoppingList_thenConvertedCorrectly() {
     val id = 1
     val name = "list_name"
-    val response = ShoppingListResponse(id, name)
+    val shopItemResponse = aShopItemResponse().build()
+    val shoppingListResponse = ShoppingListResponse(id, name, listOf(shopItemResponse))
 
-    val shoppingList = shoppingListMapper.mapResponseToShoppingList(response)
+    val shoppingList = shoppingListMapper.mapResponseToShoppingList(shoppingListResponse)
+    val shopItem = shoppingListMapper.mapResponseToShopItem(shopItemResponse)
 
-    val expectedShoppingList = ShoppingList(id, name, mutableListOf())
+    val expectedShoppingList = ShoppingList(id, name, mutableListOf(shopItem))
     assertThat(shoppingList).isEqualTo(expectedShoppingList)
   }
 

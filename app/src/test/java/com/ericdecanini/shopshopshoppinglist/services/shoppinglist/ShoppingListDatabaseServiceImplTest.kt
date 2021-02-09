@@ -18,7 +18,7 @@ class ShoppingListDatabaseServiceImplTest {
   private val shoppingListDatabaseService = ShoppingListDatabaseServiceImpl(pythonDatabaseWrapper)
 
   @Test
-  fun givenDbHasShoppingLists_whenGetShoppingLists_thenReturnJson() {
+  fun givenDbHasShoppingLists_whenGetShoppingLists_thenReturnShoppingLists() {
     given(pythonDatabaseWrapper.getShoppingListsJson()).willReturn(SAMPLE_SHOPPING_LISTS_JSON)
 
     val shoppingLists = shoppingListDatabaseService.getShoppingLists()
@@ -27,13 +27,23 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbHasShoppingListWithId_whenGetShoppingListsById_thenReturnJson() {
+  fun givenDbHasShoppingListWithId_whenGetShoppingListsById_thenReturnShoppingList() {
     val id = 1
     given(pythonDatabaseWrapper.getShoppingListJsonById(id)).willReturn(SAMPLE_SINGLE_SHOPPING_LIST_JSON)
 
     val shoppingList = shoppingListDatabaseService.getShoppingListById(id)
 
     assertThat(shoppingList).isEqualTo(SAMPLE_SINGLE_SHOPPING_LIST)
+  }
+
+  @Test
+  fun givenDbHasShoppingListWithNoItems_whenGetShoppingListsById_thenReturnShoppingList() {
+    val id = 1
+    given(pythonDatabaseWrapper.getShoppingListJsonById(id)).willReturn(SAMPLE_SINGLE_SHOPPING_LIST_NO_ITEMS_JSON)
+
+    val shoppingList = shoppingListDatabaseService.getShoppingListById(id)
+
+    assertThat(shoppingList).isEqualTo(SAMPLE_SINGLE_SHOPPING_LIST_NO_ITEMS)
   }
 
   @Test
@@ -125,13 +135,26 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   companion object {
-    private const val SAMPLE_SHOPPING_LISTS_JSON = "[{\"id\": 1, \"name\": \"Sample List 1\"}, {\"id\": 2, \"name\": \"Sample List 2\"}]"
-    private const val SAMPLE_SINGLE_SHOPPING_LIST_JSON = "{\"id\": 1, \"name\": \"Sample List\"}"
+    private const val SAMPLE_SHOPPING_LISTS_JSON = "[{\"id\": 1, \"name\": \"Sample List 1\", \"items\": [{\"id\": 1, \"list_id\": 1, \"name\": \"Sample Item 1\", \"quantity\": 1, \"checked\": 0}, {\"id\": 2, \"list_id\": 1, \"name\": \"Sample Item 2\", \"quantity\": 1, \"checked\": 0}]}, {\"id\": 2, \"name\": \"Sample List 2\", \"items\": [{\"id\": 3, \"list_id\": 2, \"name\": \"Sample Item 1\", \"quantity\": 1, \"checked\": 0}, {\"id\": 4, \"list_id\": 2, \"name\": \"Sample Item 2\", \"quantity\": 1, \"checked\": 0}]}]"
+    private const val SAMPLE_SINGLE_SHOPPING_LIST_JSON = "{\"id\": 1, \"name\": \"Sample List\", \"items\": [{\"id\": 1, \"list_id\": 1, \"name\": \"Sample Item 1\", \"quantity\": 1, \"checked\": 0}, {\"id\": 2, \"list_id\": 1, \"name\": \"Sample Item 2\", \"quantity\": 1, \"checked\": 0}]}"
+    private const val SAMPLE_SINGLE_SHOPPING_LIST_NO_ITEMS_JSON = "{\"id\": 1, \"name\": \"Sample List\", \"items\": []}"
     private const val SAMPLE_SHOPITEM_JSON = "{\"id\": 1, \"list_id\": 1, \"name\": \"Sample Item\", \"quantity\": 1, \"checked\": 0}"
     private const val EMPTY_OBJECT_RESPONSE = "null"
 
-    private val SAMPLE_SHOPPING_LISTS = listOf(ShoppingListResponse(1, "Sample List 1"), ShoppingListResponse(2, "Sample List 2"))
-    private val SAMPLE_SINGLE_SHOPPING_LIST = ShoppingListResponse(1, "Sample List")
+    private val SAMPLE_ITEMS_LIST = listOf(
+        ShopItemResponse(1, "Sample Item 1", 1, 0),
+        ShopItemResponse(2, "Sample Item 2", 1, 0)
+    )
+    private val SAMPLE_ITEMS_LIST_2 = listOf(
+        ShopItemResponse(3, "Sample Item 1", 1, 0),
+        ShopItemResponse(4, "Sample Item 2", 1, 0)
+    )
+    private val SAMPLE_SHOPPING_LISTS = listOf(
+        ShoppingListResponse(1, "Sample List 1", SAMPLE_ITEMS_LIST),
+        ShoppingListResponse(2, "Sample List 2", SAMPLE_ITEMS_LIST_2)
+    )
+    private val SAMPLE_SINGLE_SHOPPING_LIST = ShoppingListResponse(1, "Sample List", SAMPLE_ITEMS_LIST)
+    private val SAMPLE_SINGLE_SHOPPING_LIST_NO_ITEMS = ShoppingListResponse(1, "Sample List", listOf())
     private val SAMPLE_SHOPITEM = ShopItemResponse(1, "Sample Item", 1, 0)
   }
 
