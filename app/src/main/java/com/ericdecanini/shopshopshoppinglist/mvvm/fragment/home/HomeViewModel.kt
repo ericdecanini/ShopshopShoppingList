@@ -10,13 +10,13 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val mainNavigator: MainNavigator,
-    shoppingListRepository: ShoppingListRepository
+    private val shoppingListRepository: ShoppingListRepository
 ) : ViewModel(), ShoppingListEventHandler {
 
     private val _shoppingListsLiveData = MutableLiveData<List<ShoppingList>>()
     val shoppingListsLiveData: LiveData<List<ShoppingList>> get() = _shoppingListsLiveData
 
-    init {
+    fun refreshLists() {
         _shoppingListsLiveData.value = shoppingListRepository.getShoppingLists() ?: emptyList()
     }
 

@@ -43,6 +43,11 @@ class HomeFragment : DaggerFragment() {
         return binding.root
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshLists()
+    }
+
     private fun initShoppingLists() {
         binding.shoppingLists.adapter = adapter
         binding.shoppingLists.layoutManager = LinearLayoutManager(context)

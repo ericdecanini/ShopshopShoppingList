@@ -9,7 +9,6 @@ import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -20,29 +19,24 @@ class HomeViewModelTest {
 
     private val mainNavigator: MainNavigator = mock()
     private val shoppingListRepository: ShoppingListRepository = mock()
-    private lateinit var viewModel: HomeViewModel
+    private val viewModel = HomeViewModel(mainNavigator, shoppingListRepository)
     private val shoppingList = ShoppingListBuilder.aShoppingList().build()
 
-    @Before
-    fun setUp() {
-        viewModel = HomeViewModel(mainNavigator, shoppingListRepository)
-    }
-
     @Test
-    fun givenRepositoryReturnsShoppingLists_whenViewModelInit_thenSetShoppingListsToLiveData() {
+    fun givenRepositoryReturnsShoppingLists_whenRefreshLists_thenSetShoppingListsToLiveData() {
         val shoppingLists = listOf(shoppingList)
         given(shoppingListRepository.getShoppingLists()).willReturn(shoppingLists)
 
-        viewModel = HomeViewModel(mainNavigator, shoppingListRepository)
+        viewModel.refreshLists()
 
         assertThat(viewModel.shoppingListsLiveData.value).isEqualTo(shoppingLists)
     }
 
     @Test
-    fun givenRepositoryReturnsNoShoppingLists_whenViewModelInit_thenSetEmptyListToLiveData() {
+    fun givenRepositoryReturnsNoShoppingLists_whenRefreshLists_thenSetEmptyListToLiveData() {
         given(shoppingListRepository.getShoppingLists()).willReturn(null)
 
-        viewModel = HomeViewModel(mainNavigator, shoppingListRepository)
+        viewModel.refreshLists()
 
         assertThat(viewModel.shoppingListsLiveData.value).isEqualTo(emptyList<ShoppingList>())
     }

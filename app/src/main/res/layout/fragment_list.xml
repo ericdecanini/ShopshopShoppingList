@@ -39,12 +39,12 @@
                 style="@style/ListFragmentTitleEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/new_list"
-                android:hint="@string/talkback_list_title"
+                android:labelFor="@id/title"
                 android:autofillHints="@string/new_list"
                 android:inputType="text"
                 android:layout_margin="16dp"
-                app:onFocusLost="@{(view) -> viewmodel.hideKeyboard(view)}" />
+                app:onFocusLost="@{(view) -> viewmodel.hideKeyboard(view)}"
+                tools:text="@string/new_list" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
