@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
-import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
+import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -65,16 +65,16 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun observeState() {
-        viewModel.stateLiveData.observe(viewLifecycleOwner) {
+        viewModel.shoppingListLiveData.observe(viewLifecycleOwner) {
             renderView(it)
         }
     }
 
-    private fun renderView(state: ListViewState) {
-        binding.title.setText(state.shoppingList.name)
+    private fun renderView(shoppingList: ShoppingList) {
+        binding.title.setText(shoppingList.name)
 
-        val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, state.shoppingList.items))
-        adapter.replaceItems(state.shoppingList.items)
+        val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, shoppingList.items))
+        adapter.replaceItems(shoppingList.items)
         diffResult.dispatchUpdatesTo(adapter)
     }
 

@@ -12,25 +12,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
-import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import javax.inject.Inject
 import kotlin.math.max
 
 class ListViewModel @Inject constructor(
-    viewStateProvider: ViewStateProvider,
     private val shoppingListRepository: ShoppingListRepository,
     private val mainNavigator: MainNavigator
 ) : ViewModel(), ShopItemEventHandler {
 
-    private val state get() = _stateLiveData.value
-    private val _stateLiveData = MutableLiveData(
-        viewStateProvider.create(ListViewState::class.java)
-    )
-    val stateLiveData: LiveData<ListViewState> get() = _stateLiveData
+    private val _shoppingListLiveData = MutableLiveData<ShoppingList>()
+    val shoppingListLiveData: LiveData<ShoppingList> get() = _shoppingListLiveData
 
     private var listId: Int = -1
 
@@ -39,57 +34,58 @@ class ListViewModel @Inject constructor(
     fun createNewShoppingList(context: Context) {
         val newListName = context.getString(R.string.new_list)
         val shoppingList = shoppingListRepository.createNewShoppingList(newListName)
-        _stateLiveData.postValue(ListViewState(shoppingList))
+        _shoppingListLiveData.postValue(shoppingList)
     }
 
     fun loadShoppingList(id: Int) {
         listId = id
         val shoppingList = shoppingListRepository.getShoppingListById(id)
 
-        if (shoppingList != null)
-            _stateLiveData.postValue(ListViewState(shoppingList))
-        else
+        if (shoppingList != null) {
+            _shoppingListLiveData.postValue(shoppingList)
+        } else {
             mainNavigator.navigateUp()
+        }
     }
 
     fun addItem(itemName: String) {
         addItemText.set("")
         val newItem = shoppingListRepository.createNewShopItem(listId, itemName)
-        state?.shoppingList?.items?.add(newItem)
-        _stateLiveData.notifyObservers()
+        shoppingListLiveData.value?.items?.add(newItem)
+        _shoppingListLiveData.notifyObservers()
     }
 
     //region: ui interaction events
 
     override fun onQuantityDown(shopItem: ShopItem) {
-        state?.let { state ->
-            val index = state.shoppingList.items.indexOf(shopItem)
-            if (index > -1) { state.shoppingList.items[index] = ShopItem(shopItem.id, shopItem.name, max(1, shopItem.quantity - 1), shopItem.checked) }
+        shoppingListLiveData.value?.let { shoppingList ->
+            val index = shoppingList.items.indexOf(shopItem)
+            if (index > -1) { shoppingList.items[index] = ShopItem(shopItem.id, shopItem.name, max(1, shopItem.quantity - 1), shopItem.checked) }
         }
-        _stateLiveData.notifyObservers()
+        _shoppingListLiveData.notifyObservers()
     }
 
     override fun onQuantityUp(shopItem: ShopItem) {
-        state?.let { state ->
-            val index = state.shoppingList.items.indexOf(shopItem)
-            if (index > -1) { state.shoppingList.items[index] = ShopItem(shopItem.id, shopItem.name, shopItem.quantity + 1, shopItem.checked) }
+        shoppingListLiveData.value?.let { shoppingList ->
+            val index = shoppingList.items.indexOf(shopItem)
+            if (index > -1) { shoppingList.items[index] = ShopItem(shopItem.id, shopItem.name, shopItem.quantity + 1, shopItem.checked) }
         }
-        _stateLiveData.notifyObservers()
+        _shoppingListLiveData.notifyObservers()
     }
 
     override fun onDeleteClick(shopItem: ShopItem) {
-        state?.shoppingList?.items?.remove(shopItem)
-        _stateLiveData.notifyObservers()
+        shoppingListLiveData.value?.items?.remove(shopItem)
+        _shoppingListLiveData.notifyObservers()
     }
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
         shopItem.checked = checkbox.isChecked
-        _stateLiveData.notifyObservers()
+        _shoppingListLiveData.notifyObservers()
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
-        _stateLiveData.notifyObservers()
+        _shoppingListLiveData.notifyObservers()
         hideKeyboard(editText)
     }
 

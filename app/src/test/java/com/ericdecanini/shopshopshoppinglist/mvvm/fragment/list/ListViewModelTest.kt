@@ -14,10 +14,7 @@ import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.ericdecanini.shopshopshoppinglist.usecases.viewstate.ListViewState
-import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
@@ -32,27 +29,24 @@ class ListViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val viewStateProvider: ViewStateProvider = mock()
     private val shoppingListRepository: ShoppingListRepository = mock()
     private val mainNavigator: MainNavigator = mock()
 
-    private val viewState: ListViewState = mock()
-    private val mockList: MutableList<ShopItem> = mock()
     private val context: Context = mock()
     private val view: View = mock()
     private val imm: InputMethodManager = mock()
 
-    private val shoppingList = aShoppingList().withItems(mockList).build()
     private val shopItem = aShopItem().withQuantity(5).build()
+    private val itemsList: MutableList<ShopItem> = mutableListOf(shopItem)
+    private val shoppingList = aShoppingList().withItems(itemsList).build()
 
     private lateinit var viewModel: ListViewModel
 
     @Before
     fun setUp() {
-        given(viewStateProvider.create(ListViewState::class.java)).willReturn(viewState)
-        given(viewState.shoppingList).willReturn(shoppingList)
+        viewModel = ListViewModel(shoppingListRepository, mainNavigator)
 
-        viewModel = ListViewModel(viewStateProvider, shoppingListRepository, mainNavigator)
+        givenShoppingList()
     }
 
     @Test
@@ -63,7 +57,7 @@ class ListViewModelTest {
 
         viewModel.createNewShoppingList(context)
 
-        assertThat(viewModel.stateLiveData.value?.shoppingList).isEqualTo(shoppingList)
+        assertThat(viewModel.shoppingListLiveData.value).isEqualTo(shoppingList)
     }
 
     @Test
@@ -73,8 +67,7 @@ class ListViewModelTest {
 
         viewModel.loadShoppingList(id)
 
-        val viewState = viewModel.stateLiveData.value
-        assertThat(viewState?.shoppingList).isEqualTo(shoppingList)
+        assertThat(viewModel.shoppingListLiveData.value).isEqualTo(shoppingList)
     }
 
     @Test
@@ -90,39 +83,34 @@ class ListViewModelTest {
     @Test
     fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() {
         val itemName = "new_item"
-        val shopItem = aShopItem().withName(itemName).build()
-        given(shoppingListRepository.createNewShopItem(any(), eq(itemName))).willReturn(shopItem)
+        val newShopItem = aShopItem().withName(itemName).build()
+        given(shoppingListRepository.createNewShopItem(any(), eq(itemName))).willReturn(newShopItem)
 
         viewModel.addItem(itemName)
 
         assertThat(viewModel.addItemText.get()).isEqualTo("")
-        val newItemCaptor = argumentCaptor<ShopItem>()
-        verify(mockList).add(newItemCaptor.capture())
-        assertThat(newItemCaptor.firstValue).isEqualTo(shopItem)
+        val itemsList = viewModel.shoppingListLiveData.value?.items
+        assertThat(itemsList?.last()).isEqualTo(newShopItem)
     }
 
     @Test
     fun givenShopItem_whenOnQuantityDown_thenItemReplacedWithMinusOneQuantity() {
-        val itemIndex = 1
-        given(mockList.indexOf(shopItem)).willReturn(itemIndex)
+        val itemIndex = shoppingList.items.indexOf(shopItem)
 
         viewModel.onQuantityDown(shopItem)
 
-        val itemCaptor = argumentCaptor<ShopItem>()
-        verify(mockList)[eq(itemIndex)] = itemCaptor.capture()
-        assertThat(itemCaptor.firstValue).isEqualTo(shopItem.copy(quantity = shopItem.quantity - 1))
+        val newShopItem = viewModel.shoppingListLiveData.value?.items
+        assertThat(newShopItem?.get(itemIndex)?.quantity).isEqualTo(shopItem.quantity - 1)
     }
 
     @Test
     fun givenShopItem_whenOnQuantityUp_thenItemReplacedWithPlusOneQuantity() {
-        val itemIndex = 1
-        given(mockList.indexOf(shopItem)).willReturn(itemIndex)
+        val itemIndex = shoppingList.items.indexOf(shopItem)
 
         viewModel.onQuantityUp(shopItem)
 
-        val itemCaptor = argumentCaptor<ShopItem>()
-        verify(mockList)[eq(itemIndex)] = itemCaptor.capture()
-        assertThat(itemCaptor.firstValue).isEqualTo(shopItem.copy(quantity = shopItem.quantity + 1))
+        val newShopItem = viewModel.shoppingListLiveData.value?.items
+        assertThat(newShopItem?.get(itemIndex)?.quantity).isEqualTo(shopItem.quantity + 1)
     }
 
     @Test
@@ -130,7 +118,8 @@ class ListViewModelTest {
 
         viewModel.onDeleteClick(shopItem)
 
-        verify(mockList).remove(shopItem)
+        val shopItem = viewModel.shoppingListLiveData.value?.items?.find { it == shopItem }
+        assertThat(shopItem).isNull()
     }
 
     @Test
@@ -179,4 +168,9 @@ class ListViewModelTest {
         verify(imm).hideSoftInputFromWindow(eq(view.windowToken), any())
     }
 
+    private fun givenShoppingList() {
+        val id = 1
+        given(shoppingListRepository.getShoppingListById(id)).willReturn(shoppingList)
+        viewModel.loadShoppingList(id)
+    }
 }
