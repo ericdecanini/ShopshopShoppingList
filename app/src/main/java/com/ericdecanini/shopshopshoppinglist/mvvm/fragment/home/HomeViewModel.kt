@@ -13,7 +13,7 @@ class HomeViewModel @Inject constructor(
     shoppingListRepository: ShoppingListRepository
 ) : ViewModel(), ShoppingListEventHandler {
 
-    private val _shoppingListsLiveData = MutableLiveData<List<ShoppingList>>(emptyList())
+    private val _shoppingListsLiveData = MutableLiveData<List<ShoppingList>>()
     val shoppingListsLiveData: LiveData<List<ShoppingList>> get() = _shoppingListsLiveData
 
     init {
