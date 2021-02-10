@@ -38,7 +38,7 @@ class HomeFragment : DaggerFragment() {
         binding.setVariable(BR.viewmodel, viewModel)
 
         initShoppingLists()
-        observeState()
+        observeShoppingLists()
 
         return binding.root
     }
@@ -48,10 +48,8 @@ class HomeFragment : DaggerFragment() {
         binding.shoppingLists.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun observeState() {
-        viewModel.stateLiveData.observe(viewLifecycleOwner) {
-            updateShoppingLists(it.shoppingLists)
-        }
+    private fun observeShoppingLists() {
+        viewModel.shoppingListsLiveData.observe(viewLifecycleOwner) { updateShoppingLists(it) }
     }
 
     private fun updateShoppingLists(lists: List<ShoppingList>) {
