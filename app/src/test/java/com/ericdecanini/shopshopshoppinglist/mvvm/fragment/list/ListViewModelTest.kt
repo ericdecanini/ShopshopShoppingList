@@ -7,6 +7,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
@@ -19,6 +20,7 @@ import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -94,23 +96,39 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenShopItem_whenOnQuantityDown_thenItemReplacedWithMinusOneQuantity() {
-        val itemIndex = shoppingList.items.indexOf(shopItem)
+    fun givenShopItemWithQuantityGreaterThanOne_whenOnQuantityDown_thenQuantityDecreasedAndViewUpdated() {
+        val quantity = 5
+        val quantityView: TextView = mock()
+        shopItem.quantity = quantity
 
-        viewModel.onQuantityDown(shopItem)
+        viewModel.onQuantityDown(quantityView, shopItem)
 
-        val newShopItem = viewModel.shoppingListLiveData.value?.items
-        assertThat(newShopItem?.get(itemIndex)?.quantity).isEqualTo(shopItem.quantity - 1)
+        assertThat(shopItem.quantity).isEqualTo(quantity - 1)
+        verify(quantityView).text = shopItem.quantity.toString()
     }
 
     @Test
-    fun givenShopItem_whenOnQuantityUp_thenItemReplacedWithPlusOneQuantity() {
-        val itemIndex = shoppingList.items.indexOf(shopItem)
+    fun givenShopItemWithQuantityOne_whenOnQuantityDown_thenQuantityStaysTheSame() {
+        val quantity = 1
+        val quantityView: TextView = mock()
+        shopItem.quantity = quantity
 
-        viewModel.onQuantityUp(shopItem)
+        viewModel.onQuantityDown(quantityView, shopItem)
 
-        val newShopItem = viewModel.shoppingListLiveData.value?.items
-        assertThat(newShopItem?.get(itemIndex)?.quantity).isEqualTo(shopItem.quantity + 1)
+        assertThat(shopItem.quantity).isEqualTo(quantity)
+        verifyZeroInteractions(quantityView)
+    }
+
+    @Test
+    fun givenShopItem_whenOnQuantityUp_thenQuantityIncreasedAndViewUpdated() {
+        val quantity = 5
+        val quantityView: TextView = mock()
+        shopItem.quantity = quantity
+
+        viewModel.onQuantityUp(quantityView, shopItem)
+
+        assertThat(shopItem.quantity).isEqualTo(quantity + 1)
+        verify(quantityView).text = shopItem.quantity.toString()
     }
 
     @Test

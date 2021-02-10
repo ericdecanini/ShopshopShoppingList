@@ -45,6 +45,7 @@ class ShopItemAdapter(
         fun bind(shopItem: ShopItem, shopItemEventHandler: ShopItemEventHandler) = with(shopItem) {
             binding.setVariable(BR.viewstate, this)
             binding.setVariable(BR.handler, shopItemEventHandler)
+            binding.setVariable(BR.quantity, binding.quantity)
 
             binding.quantity.setOnClickListener {
                 with(itemView.swipe_layout) {

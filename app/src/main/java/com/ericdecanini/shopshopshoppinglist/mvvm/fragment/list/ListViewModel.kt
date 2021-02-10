@@ -6,6 +6,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.TextView
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,7 +18,6 @@ import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import javax.inject.Inject
-import kotlin.math.max
 
 class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
@@ -57,20 +57,16 @@ class ListViewModel @Inject constructor(
 
     //region: ui interaction events
 
-    override fun onQuantityDown(shopItem: ShopItem) {
-        shoppingListLiveData.value?.let { shoppingList ->
-            val index = shoppingList.items.indexOf(shopItem)
-            if (index > -1) { shoppingList.items[index] = ShopItem(shopItem.id, shopItem.name, max(1, shopItem.quantity - 1), shopItem.checked) }
+    override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) {
+        if (shopItem.quantity > 1) {
+            shopItem.quantity -= 1
+            quantityView.text = shopItem.quantity.toString()
         }
-        _shoppingListLiveData.notifyObservers()
     }
 
-    override fun onQuantityUp(shopItem: ShopItem) {
-        shoppingListLiveData.value?.let { shoppingList ->
-            val index = shoppingList.items.indexOf(shopItem)
-            if (index > -1) { shoppingList.items[index] = ShopItem(shopItem.id, shopItem.name, shopItem.quantity + 1, shopItem.checked) }
-        }
-        _shoppingListLiveData.notifyObservers()
+    override fun onQuantityUp(quantityView: TextView, shopItem: ShopItem) {
+        shopItem.quantity += 1
+        quantityView.text = shopItem.quantity.toString()
     }
 
     override fun onDeleteClick(shopItem: ShopItem) {
@@ -80,12 +76,10 @@ class ListViewModel @Inject constructor(
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
         shopItem.checked = checkbox.isChecked
-        _shoppingListLiveData.notifyObservers()
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
-        _shoppingListLiveData.notifyObservers()
         hideKeyboard(editText)
     }
 

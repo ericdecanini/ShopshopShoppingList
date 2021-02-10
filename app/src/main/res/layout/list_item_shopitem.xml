@@ -8,6 +8,9 @@
         <variable
             name="viewstate"
             type="com.ericdecanini.shopshopshoppinglist.entities.ShopItem" />
+        <variable
+            name="quantity"
+            type="android.widget.TextView" />
     </data>
 
     <com.chauthai.swipereveallayout.SwipeRevealLayout
@@ -37,7 +40,7 @@
                 android:paddingStart="@dimen/quantity_buttons_padding"
                 android:paddingEnd="@dimen/quantity_buttons_padding"
                 android:contentDescription="@string/talkback_quantity_down"
-                android:onClick="@{() -> handler.onQuantityDown(viewstate)}"
+                android:onClick="@{() -> handler.onQuantityDown(quantity, viewstate)}"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <ImageButton
@@ -49,7 +52,7 @@
                 android:paddingStart="@dimen/quantity_buttons_padding"
                 android:paddingEnd="@dimen/quantity_buttons_padding"
                 android:contentDescription="@string/talkback_quantity_down"
-                android:onClick="@{() -> handler.onQuantityUp(viewstate)}"
+                android:onClick="@{() -> handler.onQuantityUp(quantity, viewstate)}"
                 app:layout_constraintStart_toEndOf="@id/quantity_down" />
 
             <ImageButton
