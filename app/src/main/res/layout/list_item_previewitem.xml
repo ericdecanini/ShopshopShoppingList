@@ -2,6 +2,8 @@
 <layout>
 
     <data>
+        <import type="android.view.View" />
+
         <variable
             name="viewstate"
             type="com.ericdecanini.shopshopshoppinglist.entities.ShopItem" />
@@ -26,9 +28,21 @@
             android:focusableInTouchMode="false"
             android:text="@{viewstate.name}"
             android:checked="@{viewstate.checked}"
+            android:visibility="@{viewstate != null ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="Oringe" />
+
+        <TextView
+            style="@style/ShoppingListPreviewEllipsisText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="4dp"
+            android:text="@string/ellipsis"
+            android:visibility="@{viewstate == null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

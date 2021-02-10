@@ -17,6 +17,11 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="ShoppingListPreviewEllipsisText" parent="Medium">
+        <item name="android:textSize">18sp</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <style name="ListFragmentTitleEditText" parent="Medium">
         <item name="android:textSize">30sp</item>
         <item name="android:textColor">@color/white</item>

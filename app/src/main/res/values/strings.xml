@@ -4,4 +4,5 @@
 
     <string name="new_list">New List</string>
     <string name="new_item">New item</string>
+    <string name="ellipsis">…</string>
 </resources>
