@@ -57,30 +57,41 @@ class ListViewModel @Inject constructor(
 
     //region: ui interaction events
 
-    override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) {
-        if (shopItem.quantity > 1) {
-            shopItem.quantity -= 1
-            quantityView.text = shopItem.quantity.toString()
+    override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) = with(shopItem) {
+        if (quantity > 1) {
+            quantity -= 1
+            quantityView.text = quantity.toString()
+            shoppingListRepository.updateShopItem(id, name, quantity, checked)
         }
     }
 
     override fun onQuantityUp(quantityView: TextView, shopItem: ShopItem) {
-        shopItem.quantity += 1
-        quantityView.text = shopItem.quantity.toString()
+        with(shopItem) {
+            quantity += 1
+            quantityView.text = quantity.toString()
+            shoppingListRepository.updateShopItem(id, name, quantity, checked)
+        }
     }
 
     override fun onDeleteClick(shopItem: ShopItem) {
         shoppingListLiveData.value?.items?.remove(shopItem)
         _shoppingListLiveData.notifyObservers()
+        shoppingListRepository.deleteShopItem(shopItem.id)
     }
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        shopItem.checked = checkbox.isChecked
+        with(shopItem) {
+            checked = checkbox.isChecked
+            shoppingListRepository.updateShopItem(id, name, quantity, checked)
+        }
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
-        shopItem.name = editText.text.toString()
-        hideKeyboard(editText)
+        with(shopItem) {
+            name = editText.text.toString()
+            hideKeyboard(editText)
+            shoppingListRepository.updateShopItem(id, name, quantity, checked)
+        }
     }
 
     fun hideKeyboard(view: View) {

@@ -14,9 +14,9 @@ interface PythonDatabaseWrapper {
 
     fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): String
 
-    fun deleteShoppingList(id: Int): String
+    fun deleteShoppingList(id: Int)
 
-    fun deleteShopItem(id: Int): String
+    fun deleteShopItem(id: Int)
 
     fun cleanup()
 }

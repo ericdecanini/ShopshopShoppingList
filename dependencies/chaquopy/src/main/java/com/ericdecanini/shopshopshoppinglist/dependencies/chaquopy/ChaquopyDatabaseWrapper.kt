@@ -29,11 +29,13 @@ class ChaquopyDatabaseWrapper : PythonDatabaseWrapper {
     override fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean)
         = commands.callAttr("update_shopitem", id, name, quantity, checked).toString()
 
-    override fun deleteShoppingList(id: Int)
-        = commands.callAttr("delete_shoppinglist", id).toString()
+    override fun deleteShoppingList(id: Int) {
+        commands.callAttr("delete_shoppinglist", id)
+    }
 
-    override fun deleteShopItem(id: Int)
-        = commands.callAttr("delete_shopitem", id).toString()
+    override fun deleteShopItem(id: Int) {
+        commands.callAttr("delete_shopitem", id)
+    }
 
     override fun cleanup() {
         commands.callAttr("cleanup")

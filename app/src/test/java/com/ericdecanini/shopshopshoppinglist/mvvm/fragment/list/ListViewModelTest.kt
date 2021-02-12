@@ -15,12 +15,7 @@ import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.nhaarman.mockitokotlin2.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -86,13 +81,14 @@ class ListViewModelTest {
     fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() {
         val itemName = "new_item"
         val newShopItem = aShopItem().withName(itemName).build()
-        given(shoppingListRepository.createNewShopItem(any(), eq(itemName))).willReturn(newShopItem)
+        given(shoppingListRepository.createNewShopItem(shoppingList.id, itemName)).willReturn(newShopItem)
 
         viewModel.addItem(itemName)
 
         assertThat(viewModel.addItemText.get()).isEqualTo("")
         val itemsList = viewModel.shoppingListLiveData.value?.items
         assertThat(itemsList?.last()).isEqualTo(newShopItem)
+        verify(shoppingListRepository).createNewShopItem(shoppingList.id, itemName)
     }
 
     @Test
@@ -105,6 +101,7 @@ class ListViewModelTest {
 
         assertThat(shopItem.quantity).isEqualTo(quantity - 1)
         verify(quantityView).text = shopItem.quantity.toString()
+        verify(shoppingListRepository).updateShopItem(shopItem.id, shopItem.name, quantity - 1, shopItem.checked)
     }
 
     @Test
@@ -117,6 +114,7 @@ class ListViewModelTest {
 
         assertThat(shopItem.quantity).isEqualTo(quantity)
         verifyZeroInteractions(quantityView)
+        verify(shoppingListRepository, never()).updateShopItem(any(), any(), any(), any())
     }
 
     @Test
@@ -129,6 +127,7 @@ class ListViewModelTest {
 
         assertThat(shopItem.quantity).isEqualTo(quantity + 1)
         verify(quantityView).text = shopItem.quantity.toString()
+        verify(shoppingListRepository).updateShopItem(shopItem.id, shopItem.name, quantity + 1, shopItem.checked)
     }
 
     @Test
@@ -136,8 +135,9 @@ class ListViewModelTest {
 
         viewModel.onDeleteClick(shopItem)
 
-        val shopItem = viewModel.shoppingListLiveData.value?.items?.find { it == shopItem }
-        assertThat(shopItem).isNull()
+        val deletedItem = viewModel.shoppingListLiveData.value?.items?.find { it == shopItem }
+        assertThat(deletedItem).isNull()
+        verify(shoppingListRepository).deleteShopItem(shopItem.id)
     }
 
     @Test
@@ -148,6 +148,7 @@ class ListViewModelTest {
         viewModel.onCheckboxChecked(checkBox, shopItem)
 
         assertThat(shopItem.checked).isTrue
+        verify(shoppingListRepository).updateShopItem(shopItem.id, shopItem.name, shopItem.quantity, true)
     }
 
     @Test
@@ -158,6 +159,7 @@ class ListViewModelTest {
         viewModel.onCheckboxChecked(checkBox, shopItem)
 
         assertThat(shopItem.checked).isFalse
+        verify(shoppingListRepository).updateShopItem(shopItem.id, shopItem.name, shopItem.quantity, false)
     }
 
     @Test
@@ -174,6 +176,7 @@ class ListViewModelTest {
 
         assertThat(shopItem.name).isEqualTo(name)
         verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
+        verify(shoppingListRepository).updateShopItem(shopItem.id, name, shopItem.quantity, shopItem.checked)
     }
 
     @Test
@@ -187,8 +190,7 @@ class ListViewModelTest {
     }
 
     private fun givenShoppingList() {
-        val id = 1
-        given(shoppingListRepository.getShoppingListById(id)).willReturn(shoppingList)
-        viewModel.loadShoppingList(id)
+        given(shoppingListRepository.getShoppingListById(shoppingList.id)).willReturn(shoppingList)
+        viewModel.loadShoppingList(shoppingList.id)
     }
 }
