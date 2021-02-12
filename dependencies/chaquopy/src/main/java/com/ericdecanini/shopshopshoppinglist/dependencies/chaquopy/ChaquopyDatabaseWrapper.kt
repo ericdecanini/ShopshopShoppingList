@@ -40,11 +40,5 @@ class ChaquopyDatabaseWrapper : PythonDatabaseWrapper {
     override fun cleanup() {
         commands.callAttr("cleanup")
     }
-
-    private fun insertSomeItems() {
-        commands.callAttr("insert_shoppinglist", "Sample List")
-        commands.callAttr("insert_shoppinglist", "Sample List")
-        commands.callAttr("insert_shoppinglist", "Sample List")
-    }
 }
 
