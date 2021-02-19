@@ -22,13 +22,6 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="ListFragmentTitleEditText" parent="Medium">
-        <item name="android:textSize">30sp</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorHint">@color/gray_300</item>
-        <item name="android:background">@android:color/transparent</item>
-    </style>
-
     <style name="ListFragmentItemText" parent="Regular">
         <item name="android:textSize">18sp</item>
     </style>

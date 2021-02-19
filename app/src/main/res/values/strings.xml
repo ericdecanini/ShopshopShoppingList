@@ -2,7 +2,11 @@
     <string name="app_name">Shopshop Shopping List</string>
     <string name="app_name_short">Shopshop</string>
 
-    <string name="new_list">New List</string>
-    <string name="new_item">New item</string>
     <string name="ellipsis">…</string>
+
+    <string name="new_list">New List</string>
+    <string name="delete_list">Delete List</string>
+
+    <string name="new_item">New item</string>
+
 </resources>

@@ -2,8 +2,11 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
@@ -40,6 +43,8 @@ class ListFragment : DaggerFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
         binding.setVariable(BR.newitem, binding.addItemEdit)
+        setHasOptionsMenu(true)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         initList()
         observeState()
@@ -71,7 +76,7 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun renderView(shoppingList: ShoppingList) {
-        binding.title.setText(shoppingList.name)
+        binding.title.text = shoppingList.name
 
         val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, shoppingList.items))
         adapter.replaceItems(shoppingList.items)
@@ -83,5 +88,9 @@ class ListFragment : DaggerFragment() {
             viewModel.loadShoppingList(id)
         else
             viewModel.createNewShoppingList(requireContext())
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_shopping_list, menu)
     }
 }
