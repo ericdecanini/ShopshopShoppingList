@@ -11,8 +11,7 @@ import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.DialogGenericBinding
 
-class GenericDialog(
-    context: Context,
+class GenericDialog private constructor(
     private val controller: DialogController
 ) : DialogFragment() {
 
@@ -26,9 +25,7 @@ class GenericDialog(
     return binding.root
   }
 
-
-
-  class Builder(private val context: Context) {
+  class Builder(context: Context) {
 
     private val controller = DialogController(context)
 
@@ -54,7 +51,7 @@ class GenericDialog(
       controller.cancellable = cancellable
     }
 
-    fun create(): GenericDialog = GenericDialog(context, controller)
+    fun create(): GenericDialog = GenericDialog(controller)
   }
 
 }

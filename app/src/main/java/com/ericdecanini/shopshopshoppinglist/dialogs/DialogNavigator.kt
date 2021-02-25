@@ -2,7 +2,7 @@ package com.ericdecanini.shopshopshoppinglist.dialogs
 
 interface DialogNavigator {
 
-  fun displayAlertDialog(
+  fun displayDialog(
       title: String? = null,
       message: String? = null,
       positiveText: String? = null,
