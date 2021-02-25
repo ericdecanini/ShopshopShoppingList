@@ -12,7 +12,59 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/DialogTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center_horizontal"
+        android:text="@{controller.title}"
+        android:padding="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Dialog Title" />
+
+    <TextView
+        style="@style/DialogBodyText"
+        android:id="@+id/message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@{controller.message}"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        tools:text="Lorem ipsum dolor sit amet consectetur adipiscing elit lorem ipsum dolor sit amet consectetur adipiscing elit" />
+
+    <Button
+        android:id="@+id/negative_button"
+        style="@style/DialogButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@{controller.negativeText}"
+        android:onClick="@{() -> controller.negativeOnClick}"
+        app:layout_constraintTop_toBottomOf="@id/message"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/positive_button"
+        tools:text="Cancel" />
+
+    <Button
+        android:id="@+id/positive_button"
+        style="@style/DialogButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@{controller.positiveText}"
+        android:onClick="@{() -> controller.positiveOnClick}"
+        app:layout_constraintTop_toBottomOf="@id/message"
+        app:layout_constraintStart_toEndOf="@id/negative_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="Ok" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,16 +1,28 @@
 package com.ericdecanini.shopshopshoppinglist.dialogs
 
-import android.content.Context
-import com.ericdecanini.shopshopshoppinglist.R
+import androidx.fragment.app.DialogFragment
 
-class DialogController(context: Context) {
+class DialogController(
+    private val dialogFragment: DialogFragment,
+    data: DialogControllerData
+) {
 
-  var title = ""
-  var message = ""
-  var positiveText: String? = context.getString(R.string.ok)
-  var positiveOnClick: (() -> Unit)? = null
-  var negativeText: String? = context.getString(R.string.cancel)
-  var negativeOnClick: (() -> Unit)? = null
-  var cancellable = true
+  val title = data.title
+  val message = data.message
 
+  val positiveText = data.positiveText
+  val positiveOnClick = {
+    data.positiveOnClick?.invoke()
+    dismiss()
+  }
+
+  val negativeText = data.negativeText
+  val negativeOnClick = {
+    data.negativeOnClick?.invoke()
+    dismiss()
+  }
+
+  private fun dismiss() {
+    dialogFragment.dismiss()
+  }
 }

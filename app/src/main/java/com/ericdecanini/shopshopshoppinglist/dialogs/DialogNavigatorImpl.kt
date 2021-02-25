@@ -37,6 +37,6 @@ class DialogNavigatorImpl(
   }
 
   companion object {
-    private const val DIALOG_TAG = "DIALOG_TAG"
+    internal const val DIALOG_TAG = "DIALOG_TAG"
   }
 }

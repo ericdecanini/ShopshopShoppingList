@@ -12,7 +12,7 @@ import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.DialogGenericBinding
 
 class GenericDialogFragment private constructor(
-    private val controller: DialogController
+    private val controllerData: DialogControllerData
 ) : DialogFragment() {
 
   override fun onCreateView(
@@ -21,37 +21,39 @@ class GenericDialogFragment private constructor(
       savedInstanceState: Bundle?
   ): View {
     val binding: DialogGenericBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_generic, null, false)
-    binding.setVariable(BR.controller, controller)
+    binding.setVariable(BR.controller, DialogController(this, controllerData))
     return binding.root
   }
 
   class Builder(context: Context) {
 
-    private val controller = DialogController(context)
+    private val controllerData = DialogControllerData(context)
 
     fun setTitle(title: String) = apply {
-      controller.title = title
+      controllerData.title = title
     }
 
     fun setMessage(message: String) = apply {
-      controller.message = message
+      controllerData.message = message
     }
 
     fun setPositiveButton(text: String, onClick: (() -> Unit)?) = apply {
-      controller.positiveText = text
-      controller.positiveOnClick = onClick
+      controllerData.positiveText = text
+      controllerData.positiveOnClick = onClick
     }
 
     fun setNegativeButton(text: String, onClick: (() -> Unit)?) = apply {
-      controller.negativeText = text
-      controller.negativeOnClick = onClick
+      controllerData.negativeText = text
+      controllerData.negativeOnClick = onClick
     }
 
     fun setCancellable(cancellable: Boolean) = apply {
-      controller.cancellable = cancellable
+      controllerData.cancellable = cancellable
     }
 
-    fun create(): GenericDialogFragment = GenericDialogFragment(controller)
+    fun create(): GenericDialogFragment = GenericDialogFragment(controllerData).apply {
+      isCancelable = controllerData.cancellable
+    }
   }
 
 }
