@@ -18,7 +18,7 @@ class DialogNavigatorImpl(
       negativeOnClick: (() -> Unit)?,
       cancellable: Boolean
   ) {
-    val builder = GenericDialog.Builder(activity)
+    val builder = GenericDialogFragment.Builder(activity)
     title?.let { builder.setTitle(it) }
     message?.let { builder.setMessage(it) }
     positiveText?.let { builder.setPositiveButton(it, positiveOnClick) }
