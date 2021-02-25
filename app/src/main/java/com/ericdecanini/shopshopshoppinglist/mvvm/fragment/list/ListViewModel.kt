@@ -12,6 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ericdecanini.shopshopshoppinglist.R
+import com.ericdecanini.shopshopshoppinglist.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
-    private val mainNavigator: MainNavigator
+    private val mainNavigator: MainNavigator,
+    private val dialogNavigator: DialogNavigator
 ) : ViewModel(), ShopItemEventHandler {
 
     private val _shoppingListLiveData = MutableLiveData<ShoppingList>()
@@ -97,6 +99,10 @@ class ListViewModel @Inject constructor(
     fun hideKeyboard(view: View) {
         val imm = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+
+    fun openDialog() {
+        dialogNavigator.displayDialog("Title", "Message", "Ok", {}, "Cancel", {}, true)
     }
 
     //endregion

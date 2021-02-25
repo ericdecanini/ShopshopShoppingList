@@ -1,13 +1,10 @@
 package com.ericdecanini.shopshopshoppinglist.dialogs
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 
-class DialogNavigatorImpl(
-    private val supportFragmentManager: FragmentManager,
-    private val activity: Activity
-) : DialogNavigator {
+class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavigator {
 
   override fun displayDialog(
       title: String?,
@@ -30,7 +27,7 @@ class DialogNavigatorImpl(
   }
 
   private fun DialogFragment.showAllowingStateLoss(tag: String) =
-      supportFragmentManager.showDialogAllowingStateLoss(this, tag)
+      this@DialogNavigatorImpl.activity.supportFragmentManager.showDialogAllowingStateLoss(this, tag)
 
   private fun FragmentManager.showDialogAllowingStateLoss(dialogFragment: DialogFragment, tag: String) {
     beginTransaction().add(dialogFragment, tag).commitAllowingStateLoss()

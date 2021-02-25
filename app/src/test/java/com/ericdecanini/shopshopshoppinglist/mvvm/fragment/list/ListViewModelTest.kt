@@ -10,12 +10,19 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.shopshopshoppinglist.R
+import com.ericdecanini.shopshopshoppinglist.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.eq
+import com.nhaarman.mockitokotlin2.given
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.verifyZeroInteractions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
@@ -28,6 +35,7 @@ class ListViewModelTest {
 
     private val shoppingListRepository: ShoppingListRepository = mock()
     private val mainNavigator: MainNavigator = mock()
+    private val dialogNavigator: DialogNavigator = mock()
 
     private val context: Context = mock()
     private val view: View = mock()
@@ -41,7 +49,7 @@ class ListViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ListViewModel(shoppingListRepository, mainNavigator)
+        viewModel = ListViewModel(shoppingListRepository, mainNavigator, dialogNavigator)
 
         givenShoppingList()
     }
