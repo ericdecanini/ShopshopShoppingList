@@ -6,7 +6,7 @@
     <data>
         <variable
             name="controller"
-            type="com.ericdecanini.shopshopshoppinglist.dialogs.DialogController"
+            type="com.ericdecanini.shopshopshoppinglist.dialogs.rename.RenameDialogController"
             />
     </data>
 
@@ -27,14 +27,15 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        style="@style/DialogBodyText"
         android:id="@+id/new_name"
+        style="@style/DialogBodyText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_edit_new_item"
         android:hint="@string/hint_list_title"
         android:inputType="text"
         android:importantForAutofill="no"
+        android:text="@={controller.listTitleText}"
         android:paddingTop="@dimen/edittext_box_vertical_padding"
         android:paddingBottom="@dimen/edittext_box_vertical_padding"
         android:paddingStart="@dimen/edittext_box_horizontal_padding"
@@ -50,7 +51,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dialog_body_vertical_padding_bottom"
-        android:text="@{controller.negativeText}"
+        android:text="@string/cancel"
         android:onClick="@{() -> controller.negativeOnClick.invoke()}"
         app:layout_constraintTop_toBottomOf="@id/new_name"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,8 +64,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dialog_body_vertical_padding_bottom"
-        android:text="@{controller.positiveText}"
-        android:onClick="@{() -> controller.positiveOnClick.invoke()}"
+        android:text="@string/ok"
+        android:onClick="@{() -> controller.positiveOnClick.invoke(controller.listTitleText)}"
         app:layout_constraintTop_toBottomOf="@id/new_name"
         app:layout_constraintStart_toEndOf="@id/negative_button"
         app:layout_constraintEnd_toEndOf="parent"

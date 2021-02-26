@@ -1,9 +1,9 @@
-package com.ericdecanini.shopshopshoppinglist.dialogs
+package com.ericdecanini.shopshopshoppinglist.dialogs.generic
 
 import android.content.Context
 import com.ericdecanini.shopshopshoppinglist.R
 
-class DialogControllerData(context: Context) {
+class GenericDialogControllerData(context: Context) {
 
   var title = ""
   var message = ""

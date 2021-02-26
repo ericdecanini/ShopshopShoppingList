@@ -102,7 +102,12 @@ class ListViewModel @Inject constructor(
     }
 
     fun openDialog() {
-        dialogNavigator.displayDialog("Title", "Message", "Ok", {}, "Cancel", {}, true)
+        shoppingListLiveData.value?.let {
+            dialogNavigator.displayRenameDialog(
+                it.name,
+                {  } // TODO: Implement
+            )
+        }
     }
 
     //endregion

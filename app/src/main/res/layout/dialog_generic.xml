@@ -6,7 +6,7 @@
     <data>
         <variable
             name="controller"
-            type="com.ericdecanini.shopshopshoppinglist.dialogs.DialogController"
+            type="com.ericdecanini.shopshopshoppinglist.dialogs.generic.GenericDialogController"
             />
     </data>
 

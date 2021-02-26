@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.dialogs
+package com.ericdecanini.shopshopshoppinglist.dialogs.rename
 
 import android.content.Context
 import android.os.Bundle
@@ -9,10 +9,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
-import com.ericdecanini.shopshopshoppinglist.databinding.DialogGenericBinding
+import com.ericdecanini.shopshopshoppinglist.databinding.DialogRenameBinding
 
-class GenericDialogFragment private constructor(
-    private val controllerData: DialogControllerData
+class RenameDialogFragment private constructor(
+    private val controllerData: RenameDialogControllerData
 ) : DialogFragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,30 +26,24 @@ class GenericDialogFragment private constructor(
       container: ViewGroup?,
       savedInstanceState: Bundle?
   ): View {
-    val binding: DialogGenericBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_generic, null, false)
-    binding.setVariable(BR.controller, DialogController(this, controllerData))
+    val binding: DialogRenameBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_rename, null, false)
+    binding.setVariable(BR.controller, RenameDialogController(this, controllerData))
     return binding.root
   }
 
   class Builder(context: Context) {
 
-    private val controllerData = DialogControllerData(context)
+    private val controllerData = RenameDialogControllerData(context)
 
-    fun setTitle(title: String) = apply {
-      controllerData.title = title
+    fun setListTitle(listTitle: String) = apply {
+      controllerData.listTitleText = listTitle
     }
 
-    fun setMessage(message: String) = apply {
-      controllerData.message = message
-    }
-
-    fun setPositiveButton(text: String, onClick: (() -> Unit)?) = apply {
-      controllerData.positiveText = text
+    fun setPositiveOnClick(onClick: ((String) -> Unit)?) = apply {
       controllerData.positiveOnClick = onClick
     }
 
-    fun setNegativeButton(text: String, onClick: (() -> Unit)?) = apply {
-      controllerData.negativeText = text
+    fun setNegativeOnClick(onClick: (() -> Unit)?) = apply {
       controllerData.negativeOnClick = onClick
     }
 
@@ -57,7 +51,7 @@ class GenericDialogFragment private constructor(
       controllerData.cancellable = cancellable
     }
 
-    fun create(): GenericDialogFragment = GenericDialogFragment(controllerData).apply {
+    fun create(): RenameDialogFragment = RenameDialogFragment(controllerData).apply {
       isCancelable = controllerData.cancellable
     }
   }

@@ -1,10 +1,10 @@
-package com.ericdecanini.shopshopshoppinglist.dialogs
+package com.ericdecanini.shopshopshoppinglist.dialogs.generic
 
 import androidx.fragment.app.DialogFragment
 
-class DialogController(
+class GenericDialogController(
     private val dialogFragment: DialogFragment,
-    data: DialogControllerData
+    data: GenericDialogControllerData
 ) {
 
   val title = data.title
