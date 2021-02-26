@@ -15,6 +15,12 @@ class GenericDialogFragment private constructor(
     private val controllerData: DialogControllerData
 ) : DialogFragment() {
 
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+
+    setStyle(STYLE_NORMAL, R.style.DialogTheme)
+  }
+
   override fun onCreateView(
       inflater: LayoutInflater,
       container: ViewGroup?,
