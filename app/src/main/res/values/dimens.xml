@@ -1,12 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Generics -->
     <dimen name="toolbarTextSize">28sp</dimen>
-    <dimen name="shoppingListTitleSize">18sp</dimen>
-    <dimen name="listFragmentAppbarSize">150dp</dimen>
+    <dimen name="edittext_box_horizontal_padding">16dp</dimen>
+    <dimen name="edittext_box_vertical_padding">8dp</dimen>
 
+    <!-- Home Fragment -->
+    <dimen name="shoppingListTitleSize">18sp</dimen>
     <dimen name="shopitem_height">60dp</dimen>
+
+    <!-- List Fragment -->
     <dimen name="quantity_padding">24dp</dimen>
     <dimen name="quantity_buttons_padding">16dp</dimen>
+
+    <!-- Generic Dialog -->
+    <dimen name="dialog_title_padding">4dp</dimen>
+    <dimen name="dialog_body_vertical_padding_top">24dp</dimen>
+    <dimen name="dialog_body_vertical_padding_bottom">32dp</dimen>
+    <dimen name="dialog_body_horizontal_padding">16dp</dimen>
 
 </resources>
