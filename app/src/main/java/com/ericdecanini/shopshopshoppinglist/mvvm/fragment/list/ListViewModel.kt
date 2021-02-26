@@ -11,6 +11,7 @@ import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.ericdecanini.dependencies.android.resources.ResourceProvider
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
@@ -23,7 +24,8 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
     private val mainNavigator: MainNavigator,
-    private val dialogNavigator: DialogNavigator
+    private val dialogNavigator: DialogNavigator,
+    private val resourceProvider: ResourceProvider
 ) : ViewModel(), ShopItemEventHandler {
 
     private val _shoppingListLiveData = MutableLiveData<ShoppingList>()
@@ -103,13 +105,17 @@ class ListViewModel @Inject constructor(
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun showRenameDialog() {
-        shoppingListLiveData.value?.let {
-            dialogNavigator.displayRenameDialog(
-                it.name,
-                { newName -> renameShoppingList(newName) }
-            )
-        }
+    fun showRenameDialog() = shoppingListLiveData.value?.let {
+        dialogNavigator.displayRenameDialog(
+            it.name,
+            { newName -> renameShoppingList(newName) }
+        )
+    }
+
+    fun showDeleteDialog() = shoppingListLiveData.value?.let {
+        dialogNavigator.displayGenericDialog(
+
+        )
     }
 
     //endregion

@@ -27,4 +27,8 @@ class AppModule {
     @Provides
     fun provideContext(application: Application): Context = application.applicationContext
 
+    @Singleton
+    @Provides
+    fun provideResources(context: Context) = context.resources
+
 }

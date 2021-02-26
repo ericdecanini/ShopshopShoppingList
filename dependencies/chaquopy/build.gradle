@@ -71,6 +71,7 @@ dependencies {
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testImplementation 'android.arch.core:core-testing:1.1.1'
+
     // Mockito & Mockk
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${mockitoKotlinVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
