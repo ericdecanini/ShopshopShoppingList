@@ -17,6 +17,7 @@ import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemB
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.argumentCaptor
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
@@ -73,6 +74,7 @@ class ListViewModelTest {
         viewModel.loadShoppingList(id)
 
         assertThat(viewModel.shoppingListLiveData.value).isEqualTo(shoppingList)
+        assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
     }
 
     @Test
@@ -195,6 +197,21 @@ class ListViewModelTest {
         viewModel.hideKeyboard(view)
 
         verify(imm).hideSoftInputFromWindow(eq(view.windowToken), any())
+    }
+
+    @Test
+    fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() {
+        val currentName = viewModel.shoppingListLiveData.value!!.name
+        val newName = "new_name"
+
+        viewModel.showRenameDialog()
+
+        val callbackCaptor = argumentCaptor<(String) -> Unit>()
+        verify(dialogNavigator).displayRenameDialog(eq(currentName), callbackCaptor.capture(), eq(null), eq(true))
+        callbackCaptor.firstValue.invoke(newName)
+
+        assertThat(viewModel.listName.get()).isEqualTo(newName)
+        verify(shoppingListRepository).updateShoppingList(any(), eq(newName))
     }
 
     private fun givenShoppingList() {

@@ -31,6 +31,7 @@ class ListViewModel @Inject constructor(
 
     private var listId: Int = -1
 
+    val listName = ObservableField<String>()
     val addItemText = ObservableField<String>()
 
     fun createNewShoppingList(context: Context) {
@@ -44,6 +45,7 @@ class ListViewModel @Inject constructor(
         val shoppingList = shoppingListRepository.getShoppingListById(id)
 
         if (shoppingList != null) {
+            listName.set(shoppingList.name)
             _shoppingListLiveData.postValue(shoppingList)
         } else {
             mainNavigator.navigateUp()
@@ -101,14 +103,19 @@ class ListViewModel @Inject constructor(
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun openDialog() {
+    fun showRenameDialog() {
         shoppingListLiveData.value?.let {
             dialogNavigator.displayRenameDialog(
                 it.name,
-                {  } // TODO: Implement
+                { newName -> renameShoppingList(newName) }
             )
         }
     }
 
     //endregion
+
+    private fun renameShoppingList(newName: String) {
+        listName.set(newName)
+        shoppingListRepository.updateShoppingList(listId, newName)
+    }
 }
