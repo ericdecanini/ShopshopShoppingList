@@ -15,7 +15,7 @@
     <dimen name="quantity_buttons_padding">16dp</dimen>
 
     <!-- Generic Dialog -->
-    <dimen name="dialog_title_padding">4dp</dimen>
+    <dimen name="dialog_title_padding">8dp</dimen>
     <dimen name="dialog_body_vertical_padding_top">24dp</dimen>
     <dimen name="dialog_body_vertical_padding_bottom">32dp</dimen>
     <dimen name="dialog_body_horizontal_padding">16dp</dimen>

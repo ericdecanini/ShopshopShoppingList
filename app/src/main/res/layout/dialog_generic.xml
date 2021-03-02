@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
         <variable
             name="controller"
             type="com.ericdecanini.shopshopshoppinglist.dialogs.generic.GenericDialogController"
@@ -46,6 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dialog_body_vertical_padding_bottom"
+        android:visibility="@{controller.negativeText != null ? View.VISIBLE : View.GONE}"
         android:text="@{controller.negativeText}"
         android:onClick="@{() -> controller.negativeOnClick.invoke()}"
         app:layout_constraintTop_toBottomOf="@id/message"

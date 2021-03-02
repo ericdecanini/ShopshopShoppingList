@@ -61,6 +61,10 @@ class ListViewModel @Inject constructor(
         _shoppingListLiveData.notifyObservers()
     }
 
+    private fun deleteList() {
+
+    }
+
     //region: ui interaction events
 
     override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) = with(shopItem) {
@@ -113,8 +117,15 @@ class ListViewModel @Inject constructor(
     }
 
     fun showDeleteDialog() = shoppingListLiveData.value?.let {
-        dialogNavigator.displayGenericDialog(
+        val listName = listName.get() ?: resourceProvider.getString(R.string.UNKNOWN_LIST)
 
+        dialogNavigator.displayGenericDialog(
+            title = resourceProvider.getString(R.string.delete),
+            message = resourceProvider.getString(R.string.delete_dialog_message, listName),
+            positiveText = resourceProvider.getString(R.string.ok),
+            positiveOnClick = { deleteList() },
+            negativeText = resourceProvider.getString(R.string.cancel),
+            negativeOnClick = { /* do nothing */ }
         )
     }
 

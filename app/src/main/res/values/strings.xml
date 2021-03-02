@@ -11,9 +11,14 @@
     <string name="new_list">New List</string>
     <string name="delete_list">Delete List</string>
     <string name="new_item">New item</string>
+    <string name="UNKNOWN_LIST">UNKNOWN LIST</string>
 
     <!-- Rename Dialog -->
     <string name="rename">Rename</string>
     <string name="hint_list_title">List title</string>
+
+    <!-- Delete Dialog -->
+    <string name="delete">Delete</string>
+    <string name="delete_dialog_message">Are you sure you want to delete %s?</string>
 
 </resources>

@@ -9,7 +9,7 @@ class GenericDialogControllerData(context: Context) {
   var message = ""
   var positiveText: String? = context.getString(R.string.ok)
   var positiveOnClick: (() -> Unit)? = null
-  var negativeText: String? = context.getString(R.string.cancel)
+  var negativeText: String? = null
   var negativeOnClick: (() -> Unit)? = null
   var cancellable = true
 
