@@ -61,8 +61,15 @@ class ListViewModel @Inject constructor(
         _shoppingListLiveData.notifyObservers()
     }
 
-    private fun deleteList() {
-
+    private fun deleteList() = shoppingListLiveData.value?.let { shoppingList ->
+        shoppingListRepository.deleteShoppingList(shoppingList.id)
+        mainNavigator.navigateUp()
+    } ?: run {
+        dialogNavigator.displayGenericDialog(
+            title = resourceProvider.getString(R.string.error),
+            message = resourceProvider.getString(R.string.something_went_wrong),
+            positiveText = resourceProvider.getString(R.string.ok)
+        )
     }
 
     //region: ui interaction events

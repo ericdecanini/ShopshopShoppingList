@@ -6,6 +6,8 @@
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="ellipsis">…</string>
+    <string name="error">Error</string>
+    <string name="something_went_wrong">Something went wrong. Please try again.</string>
 
     <!-- List Fragment -->
     <string name="new_list">New List</string>
