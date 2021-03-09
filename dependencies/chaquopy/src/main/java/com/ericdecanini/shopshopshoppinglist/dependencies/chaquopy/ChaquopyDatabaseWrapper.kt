@@ -11,33 +11,33 @@ class ChaquopyDatabaseWrapper : PythonDatabaseWrapper {
             .callAttr("Commands")
     }
 
-    override fun getShoppingListsJson()
+    override suspend fun getShoppingListsJson()
         = commands.callAttr("get_shoppinglists").toString()
 
-    override fun getShoppingListJsonById(id: Int)
+    override suspend fun getShoppingListJsonById(id: Int)
         = commands.callAttr("get_shoppinglist_by_id", id).toString()
 
-    override fun insertShoppingList(name: String)
+    override suspend fun insertShoppingList(name: String)
         = commands.callAttr("insert_shoppinglist", name).toString()
 
-    override fun insertShopItem(listId: Int, name: String, quantity: Int, checked: Boolean)
+    override suspend fun insertShopItem(listId: Int, name: String, quantity: Int, checked: Boolean)
         = commands.callAttr("insert_shopitem", listId, name, quantity, checked).toString()
 
-    override fun updateShoppingList(id: Int, name: String)
+    override suspend fun updateShoppingList(id: Int, name: String)
         = commands.callAttr("update_shoppinglist", id, name).toString()
 
-    override fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean)
+    override suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean)
         = commands.callAttr("update_shopitem", id, name, quantity, checked).toString()
 
-    override fun deleteShoppingList(id: Int) {
+    override suspend fun deleteShoppingList(id: Int) {
         commands.callAttr("delete_shoppinglist", id)
     }
 
-    override fun deleteShopItem(id: Int) {
+    override suspend fun deleteShopItem(id: Int) {
         commands.callAttr("delete_shopitem", id)
     }
 
-    override fun cleanup() {
+    override suspend fun cleanup() {
         commands.callAttr("cleanup")
     }
 }

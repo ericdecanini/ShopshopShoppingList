@@ -122,6 +122,9 @@ class Commands:
         self.cursor.execute(
             f"DELETE FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
         )
+        self.cursor.execute(
+            f"DELETE FROM {TABLE_SHOPITEMS} WHERE list_id = {list_id}"
+        )
         self.connection.commit()
 
     def delete_shopitem(self, item_id):

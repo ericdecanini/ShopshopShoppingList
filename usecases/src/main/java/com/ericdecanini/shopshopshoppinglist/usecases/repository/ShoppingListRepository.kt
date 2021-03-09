@@ -5,20 +5,20 @@ import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 
 interface ShoppingListRepository {
 
-    fun getShoppingLists(): List<ShoppingList>?
+    suspend fun getShoppingLists(): List<ShoppingList>?
 
-    fun getShoppingListById(id: Int): ShoppingList?
+    suspend fun getShoppingListById(id: Int): ShoppingList?
 
-    fun createNewShoppingList(name: String): ShoppingList
+    suspend fun createNewShoppingList(name: String): ShoppingList
 
-    fun createNewShopItem(listId: Int, name: String): ShopItem
+    suspend fun createNewShopItem(listId: Int, name: String): ShopItem
 
-    fun updateShoppingList(id: Int, name: String): ShoppingList?
+    suspend fun updateShoppingList(id: Int, name: String): ShoppingList?
 
-    fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItem?
+    suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItem?
 
-    fun deleteShoppingList(id: Int)
+    suspend fun deleteShoppingList(id: Int)
 
-    fun deleteShopItem(id: Int)
+    suspend fun deleteShopItem(id: Int)
 
 }

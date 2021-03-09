@@ -5,20 +5,20 @@ import com.ericdecanini.shopshopshoppinglist.entities.network.ShoppingListRespon
 
 interface ShoppingListDatabaseService {
 
-    fun getShoppingLists(): List<ShoppingListResponse>?
+    suspend fun getShoppingLists(): List<ShoppingListResponse>?
 
-    fun getShoppingListById(id: Int): ShoppingListResponse?
+    suspend fun getShoppingListById(id: Int): ShoppingListResponse?
 
-    fun createShoppingList(name: String): ShoppingListResponse
+    suspend fun createShoppingList(name: String): ShoppingListResponse
 
-    fun createShopItem(listId: Int, name: String): ShopItemResponse
+    suspend fun createShopItem(listId: Int, name: String): ShopItemResponse
 
-    fun updateShoppingList(id: Int, name: String): ShoppingListResponse?
+    suspend fun updateShoppingList(id: Int, name: String): ShoppingListResponse?
 
-    fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse?
+    suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse?
 
-    fun deleteShoppingList(id: Int)
+    suspend fun deleteShoppingList(id: Int)
 
-    fun deleteShopItem(id: Int)
+    suspend fun deleteShopItem(id: Int)
 
 }
