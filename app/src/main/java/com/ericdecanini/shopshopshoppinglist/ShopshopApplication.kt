@@ -20,9 +20,4 @@ class ShopshopApplication: DaggerApplication() {
         super.onCreate()
         pythonInitializer.initialize()
     }
-
-    override fun onTerminate() {
-        pythonDatabaseWrapper.cleanup()
-        super.onTerminate()
-    }
 }

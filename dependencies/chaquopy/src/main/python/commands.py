@@ -11,7 +11,7 @@ db_dir = os.path.join(package_dir, 'shopping_lists.db')
 
 class Commands:
 
-    connection = sqlite3.connect(db_dir)
+    connection = sqlite3.connect(db_dir, check_same_thread = False)
     connection.row_factory = sqlite3.Row
     cursor = connection.cursor()
 
