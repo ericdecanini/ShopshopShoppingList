@@ -10,10 +10,13 @@ import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class SQLiteShoppingListRepositoryTest {
 
   private val shoppingListDatabaseService: ShoppingListDatabaseService = mock()
@@ -32,7 +35,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsResponse_whenGetShoppingLists_thenReturnMappedShoppingLists() {
+  fun givenServiceReturnsResponse_whenGetShoppingLists_thenReturnMappedShoppingLists() = runBlockingTest {
     given(shoppingListDatabaseService.getShoppingLists()).willReturn(listOf(sampleShoppingListResponse))
 
     val shoppingLists = shoppingListRepository.getShoppingLists()
@@ -41,7 +44,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsNull_whenGetShoppingLists_thenReturnEmptyList() {
+  fun givenServiceReturnsNull_whenGetShoppingLists_thenReturnEmptyList() = runBlockingTest {
     given(shoppingListDatabaseService.getShoppingLists()).willReturn(null)
 
     val shoppingLists = shoppingListRepository.getShoppingLists()
@@ -51,7 +54,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsResponse_whenGetShoppingListById_thenReturnMappedShoppingList() {
+  fun givenServiceReturnsResponse_whenGetShoppingListById_thenReturnMappedShoppingList() = runBlockingTest {
     val id = 1
     given(shoppingListDatabaseService.getShoppingListById(id)).willReturn(sampleShoppingListResponse)
 
@@ -61,7 +64,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsNull_whenGetShoppingListById_thenReturnNull() {
+  fun givenServiceReturnsNull_whenGetShoppingListById_thenReturnNull() = runBlockingTest {
     val id = 1
     given(shoppingListDatabaseService.getShoppingListById(id)).willReturn(null)
 
@@ -71,7 +74,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsResponse_whenCreateNewShoppingList_thenReturnCreatedShoppingList() {
+  fun givenServiceReturnsResponse_whenCreateNewShoppingList_thenReturnCreatedShoppingList() = runBlockingTest {
     val name = "list_name"
     given(shoppingListDatabaseService.createShoppingList(name)).willReturn(sampleShoppingListResponse)
 
@@ -81,7 +84,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsResponse_whenCreateNewShopItem_thenReturnCreatedShopItem() {
+  fun givenServiceReturnsResponse_whenCreateNewShopItem_thenReturnCreatedShopItem() = runBlockingTest {
     val listId = 1
     val name = "item_name"
     given(shoppingListDatabaseService.createShopItem(listId, name)).willReturn(sampleShopItemResponse)
@@ -92,7 +95,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsResponse_whenUpdateShoppingList_thenReturnUpdatedShoppingList() {
+  fun givenServiceReturnsResponse_whenUpdateShoppingList_thenReturnUpdatedShoppingList() = runBlockingTest {
     val id = 1
     val name = "list_name"
     given(shoppingListDatabaseService.updateShoppingList(id, name)).willReturn(sampleShoppingListResponse)
@@ -103,7 +106,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsNull_whenUpdateShoppingList_thenReturnNull() {
+  fun givenServiceReturnsNull_whenUpdateShoppingList_thenReturnNull() = runBlockingTest {
     val id = 1
     val name = "list_name"
     given(shoppingListDatabaseService.updateShoppingList(id, name)).willReturn(null)
@@ -114,7 +117,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsResponse_whenUpdateShopItem_thenReturnUpdatedShopItem() {
+  fun givenServiceReturnsResponse_whenUpdateShopItem_thenReturnUpdatedShopItem() = runBlockingTest {
     val id = 1
     val name = "item_name"
     val quantity = 5
@@ -127,7 +130,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsNull_whenUpdateShopItem_thenReturnNull() {
+  fun givenServiceReturnsNull_whenUpdateShopItem_thenReturnNull() = runBlockingTest {
     val id = 1
     val name = "item_name"
     val quantity = 5
@@ -140,7 +143,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenId_whenDeleteShoppingList_thenDatabaseDeletesShoppingList() {
+  fun givenId_whenDeleteShoppingList_thenDatabaseDeletesShoppingList() = runBlockingTest {
     val id = 1
 
     shoppingListRepository.deleteShoppingList(id)
@@ -149,7 +152,7 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenId_whenDeleteShopItem_thenDatabaseDeletesShopItem() {
+  fun givenId_whenDeleteShopItem_thenDatabaseDeletesShopItem() = runBlockingTest {
     val id = 1
 
     shoppingListRepository.deleteShopItem(id)

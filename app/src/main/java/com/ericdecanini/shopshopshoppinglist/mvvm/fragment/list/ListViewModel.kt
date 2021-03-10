@@ -20,7 +20,7 @@ import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import kotlinx.coroutines.Dispatchers
+import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -29,7 +29,8 @@ class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
     private val mainNavigator: MainNavigator,
     private val dialogNavigator: DialogNavigator,
-    private val resourceProvider: ResourceProvider
+    private val resourceProvider: ResourceProvider,
+    private val coroutineContextProvider: CoroutineContextProvider
 ) : ViewModel(), ShopItemEventHandler {
 
     private val _shoppingListLiveData = MutableLiveData<ShoppingList>()
@@ -42,7 +43,7 @@ class ListViewModel @Inject constructor(
 
     fun createNewShoppingList(context: Context) = viewModelScope.launch {
         val newListName = context.getString(R.string.new_list)
-        val shoppingList = withContext(Dispatchers.IO) {
+        val shoppingList = withContext(coroutineContextProvider.IO) {
             shoppingListRepository.createNewShoppingList(newListName)
         }
         _shoppingListLiveData.postValue(shoppingList)
@@ -50,7 +51,7 @@ class ListViewModel @Inject constructor(
 
     fun loadShoppingList(id: Int) = viewModelScope.launch {
         listId = id
-        val shoppingList = withContext(Dispatchers.IO) {
+        val shoppingList = withContext(coroutineContextProvider.IO) {
             shoppingListRepository.getShoppingListById(id)
         }
 
@@ -64,7 +65,7 @@ class ListViewModel @Inject constructor(
 
     fun addItem(itemName: String) = viewModelScope.launch {
         addItemText.set("")
-        val newItem = withContext(Dispatchers.IO) {
+        val newItem = withContext(coroutineContextProvider.IO) {
             shoppingListRepository.createNewShopItem(listId, itemName)
         }
         shoppingListLiveData.value?.items?.add(newItem)
@@ -73,7 +74,7 @@ class ListViewModel @Inject constructor(
 
     private fun deleteList() = shoppingListLiveData.value?.let { shoppingList ->
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
+            withContext(coroutineContextProvider.IO) {
                 shoppingListRepository.deleteShoppingList(shoppingList.id)
             }
             mainNavigator.navigateUp()
@@ -92,7 +93,7 @@ class ListViewModel @Inject constructor(
         if (quantity > 1) {
             quantity -= 1
             quantityView.text = quantity.toString()
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(coroutineContextProvider.IO) {
                 shoppingListRepository.updateShopItem(id, name, quantity, checked)
             }
         }
@@ -102,7 +103,7 @@ class ListViewModel @Inject constructor(
         with(shopItem) {
             quantity += 1
             quantityView.text = quantity.toString()
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(coroutineContextProvider.IO) {
                 shoppingListRepository.updateShopItem(id, name, quantity, checked)
             }
         }
@@ -111,7 +112,7 @@ class ListViewModel @Inject constructor(
     override fun onDeleteClick(shopItem: ShopItem) {
         shoppingListLiveData.value?.items?.remove(shopItem)
         _shoppingListLiveData.notifyObservers()
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(coroutineContextProvider.IO) {
             shoppingListRepository.deleteShopItem(shopItem.id)
         }
     }
@@ -119,7 +120,7 @@ class ListViewModel @Inject constructor(
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
         with(shopItem) {
             checked = checkbox.isChecked
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(coroutineContextProvider.IO) {
                 shoppingListRepository.updateShopItem(id, name, quantity, checked)
             }
         }
@@ -129,7 +130,7 @@ class ListViewModel @Inject constructor(
         with(shopItem) {
             name = editText.text.toString()
             hideKeyboard(editText)
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch(coroutineContextProvider.IO) {
                 shoppingListRepository.updateShopItem(id, name, quantity, checked)
             }
         }
@@ -164,7 +165,7 @@ class ListViewModel @Inject constructor(
 
     private fun renameShoppingList(newName: String) {
         listName.set(newName)
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(coroutineContextProvider.IO) {
             shoppingListRepository.updateShoppingList(listId, newName)
         }
     }

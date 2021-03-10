@@ -9,6 +9,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.ericdecanini.dependencies.android.resources.ResourceProvider
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
@@ -16,19 +17,17 @@ import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.argumentCaptor
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.never
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.verifyZeroInteractions
+import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
+import com.ericdecanini.shopshopshoppinglist.util.TestCoroutineContextProvider
+import com.nhaarman.mockitokotlin2.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class ListViewModelTest {
 
     @get:Rule
@@ -37,6 +36,8 @@ class ListViewModelTest {
     private val shoppingListRepository: ShoppingListRepository = mock()
     private val mainNavigator: MainNavigator = mock()
     private val dialogNavigator: DialogNavigator = mock()
+    private val resourceProvider: ResourceProvider = mock()
+    private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
 
     private val context: Context = mock()
     private val view: View = mock()
@@ -50,13 +51,13 @@ class ListViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ListViewModel(shoppingListRepository, mainNavigator, dialogNavigator)
+        viewModel = ListViewModel(shoppingListRepository, mainNavigator, dialogNavigator, resourceProvider, coroutineContextProvider)
 
         givenShoppingList()
     }
 
     @Test
-    fun whenCreateNewShoppingList_shoppingListIsCreatedAndPosted() {
+    fun whenCreateNewShoppingList_shoppingListIsCreatedAndPosted() = runBlockingTest {
         val name = "list_name"
         given(context.getString(R.string.new_list)).willReturn(name)
         given(shoppingListRepository.createNewShoppingList(name)).willReturn(shoppingList)
@@ -67,7 +68,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenRepositoryLoads_whenLoadShoppingList_thenShoppingListLoadedFromRepository() {
+    fun givenRepositoryLoads_whenLoadShoppingList_thenShoppingListLoadedFromRepository() = runBlockingTest {
         val id = shoppingList.id
         given(shoppingListRepository.getShoppingListById(id)).willReturn(shoppingList)
 
@@ -78,7 +79,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenRepositoryFailsToLoad_whenLoadShoppingList_thenNavigateUp() {
+    fun givenRepositoryFailsToLoad_whenLoadShoppingList_thenNavigateUp() = runBlockingTest {
         val id = shoppingList.id
         given(shoppingListRepository.getShoppingListById(id)).willReturn(null)
 
@@ -88,7 +89,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() {
+    fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() = runBlockingTest {
         val itemName = "new_item"
         val newShopItem = aShopItem().withName(itemName).build()
         given(shoppingListRepository.createNewShopItem(shoppingList.id, itemName)).willReturn(newShopItem)
@@ -102,7 +103,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenShopItemWithQuantityGreaterThanOne_whenOnQuantityDown_thenQuantityDecreasedAndViewUpdated() {
+    fun givenShopItemWithQuantityGreaterThanOne_whenOnQuantityDown_thenQuantityDecreasedAndViewUpdated() = runBlockingTest {
         val quantity = 5
         val quantityView: TextView = mock()
         shopItem.quantity = quantity
@@ -115,7 +116,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenShopItemWithQuantityOne_whenOnQuantityDown_thenQuantityStaysTheSame() {
+    fun givenShopItemWithQuantityOne_whenOnQuantityDown_thenQuantityStaysTheSame() = runBlockingTest {
         val quantity = 1
         val quantityView: TextView = mock()
         shopItem.quantity = quantity
@@ -128,7 +129,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenShopItem_whenOnQuantityUp_thenQuantityIncreasedAndViewUpdated() {
+    fun givenShopItem_whenOnQuantityUp_thenQuantityIncreasedAndViewUpdated() = runBlockingTest {
         val quantity = 5
         val quantityView: TextView = mock()
         shopItem.quantity = quantity
@@ -141,7 +142,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenShopItem_whenOnDeleteClick_thenItemDeletedFromList() {
+    fun givenShopItem_whenOnDeleteClick_thenItemDeletedFromList() = runBlockingTest {
 
         viewModel.onDeleteClick(shopItem)
 
@@ -151,7 +152,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenCheckboxIsChecked_whenOnCheckboxChanged_themShopItemIsChecked() {
+    fun givenCheckboxIsChecked_whenOnCheckboxChanged_themShopItemIsChecked() = runBlockingTest {
         val checkBox: CheckBox = mock()
         given(checkBox.isChecked).willReturn(true)
 
@@ -162,7 +163,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenCheckboxIsNotChecked_whenOnCheckboxChanged_themShopItemIsNotChecked() {
+    fun givenCheckboxIsNotChecked_whenOnCheckboxChanged_themShopItemIsNotChecked() = runBlockingTest {
         val checkBox: CheckBox = mock()
         given(checkBox.isChecked).willReturn(false)
 
@@ -173,7 +174,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenEditText_whenOnNameChanged_thenNameChangedToEditTextValueAndKeyboardHidden() {
+    fun givenEditText_whenOnNameChanged_thenNameChangedToEditTextValueAndKeyboardHidden() = runBlockingTest {
         val editText: EditText = mock()
         val editable: Editable = mock()
         val name = "sample_name"
@@ -200,7 +201,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() {
+    fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() = runBlockingTest {
         val currentName = viewModel.shoppingListLiveData.value!!.name
         val newName = "new_name"
 
@@ -214,7 +215,7 @@ class ListViewModelTest {
         verify(shoppingListRepository).updateShoppingList(any(), eq(newName))
     }
 
-    private fun givenShoppingList() {
+    private fun givenShoppingList() = runBlockingTest {
         given(shoppingListRepository.getShoppingListById(shoppingList.id)).willReturn(shoppingList)
         viewModel.loadShoppingList(shoppingList.id)
     }

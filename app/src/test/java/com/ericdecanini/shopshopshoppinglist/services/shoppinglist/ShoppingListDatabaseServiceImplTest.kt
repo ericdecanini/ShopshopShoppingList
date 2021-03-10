@@ -3,22 +3,21 @@ package com.ericdecanini.shopshopshoppinglist.services.shoppinglist
 import com.ericdecanini.shopshopshoppinglist.entities.network.ShopItemResponse
 import com.ericdecanini.shopshopshoppinglist.entities.network.ShoppingListResponse
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.given
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 import org.junit.jupiter.api.assertThrows
 
+@ExperimentalCoroutinesApi
 class ShoppingListDatabaseServiceImplTest {
 
   private val pythonDatabaseWrapper: PythonDatabaseWrapper = mock()
   private val shoppingListDatabaseService = ShoppingListDatabaseServiceImpl(pythonDatabaseWrapper)
 
   @Test
-  fun givenDbHasShoppingLists_whenGetShoppingLists_thenReturnShoppingLists() {
+  fun givenDbHasShoppingLists_whenGetShoppingLists_thenReturnShoppingLists() = runBlockingTest {
     given(pythonDatabaseWrapper.getShoppingListsJson()).willReturn(SAMPLE_SHOPPING_LISTS_JSON)
 
     val shoppingLists = shoppingListDatabaseService.getShoppingLists()
@@ -27,7 +26,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbHasShoppingListWithId_whenGetShoppingListsById_thenReturnShoppingList() {
+  fun givenDbHasShoppingListWithId_whenGetShoppingListsById_thenReturnShoppingList() = runBlockingTest {
     val id = 1
     given(pythonDatabaseWrapper.getShoppingListJsonById(id)).willReturn(SAMPLE_SINGLE_SHOPPING_LIST_JSON)
 
@@ -37,7 +36,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbHasShoppingListWithNoItems_whenGetShoppingListsById_thenReturnShoppingList() {
+  fun givenDbHasShoppingListWithNoItems_whenGetShoppingListsById_thenReturnShoppingList() = runBlockingTest {
     val id = 1
     given(pythonDatabaseWrapper.getShoppingListJsonById(id)).willReturn(SAMPLE_SINGLE_SHOPPING_LIST_NO_ITEMS_JSON)
 
@@ -47,7 +46,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbInsertIsSuccessful_whenCreateShoppingList_thenShoppingListIsCreated() {
+  fun givenDbInsertIsSuccessful_whenCreateShoppingList_thenShoppingListIsCreated() = runBlockingTest {
     val name = "sample_name"
     given(pythonDatabaseWrapper.insertShoppingList(name)).willReturn(SAMPLE_SINGLE_SHOPPING_LIST_JSON)
 
@@ -57,7 +56,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbInsertIsNotSuccessful_whenCreateShoppingList_thenThrowIllegalStateException() {
+  fun givenDbInsertIsNotSuccessful_whenCreateShoppingList_thenThrowIllegalStateException() = runBlockingTest {
     val name = "sample_name"
     given(pythonDatabaseWrapper.insertShoppingList(name)).willReturn(EMPTY_OBJECT_RESPONSE)
 
@@ -65,7 +64,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbInsertIsSuccessful_whenCreateShopItem_thenShopItemIsCreated() {
+  fun givenDbInsertIsSuccessful_whenCreateShopItem_thenShopItemIsCreated() = runBlockingTest {
     given(pythonDatabaseWrapper.insertShopItem(any(), any(), eq(1), eq(false))).willReturn(SAMPLE_SHOPITEM_JSON)
 
     val shopItem = shoppingListDatabaseService.createShopItem(0, "name")
@@ -74,14 +73,14 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbInsertIsNotSuccessful_whenCreateShopItem_thenShopItemIsCreated() {
+  fun givenDbInsertIsNotSuccessful_whenCreateShopItem_thenShopItemIsCreated() = runBlockingTest {
     given(pythonDatabaseWrapper.insertShopItem(any(), any(), eq(1), eq(false))).willReturn(EMPTY_OBJECT_RESPONSE)
 
     assertThrows<IllegalStateException> { shoppingListDatabaseService.createShopItem(0, "name") }
   }
 
   @Test
-  fun givenDbHasShoppingList_whenUpdateShoppingList_thenReturnUpdatedShoppingList() {
+  fun givenDbHasShoppingList_whenUpdateShoppingList_thenReturnUpdatedShoppingList() = runBlockingTest {
     given(pythonDatabaseWrapper.updateShoppingList(any(), any())).willReturn(SAMPLE_SINGLE_SHOPPING_LIST_JSON)
 
     val shoppingList = shoppingListDatabaseService.updateShoppingList(1, "name")
@@ -90,7 +89,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbDoesNotHaveShoppingList_whenUpdateShoppingList_thenReturnNull() {
+  fun givenDbDoesNotHaveShoppingList_whenUpdateShoppingList_thenReturnNull() = runBlockingTest {
     given(pythonDatabaseWrapper.updateShoppingList(any(), any())).willReturn(EMPTY_OBJECT_RESPONSE)
 
     val shoppingList = shoppingListDatabaseService.updateShoppingList(1, "name")
@@ -99,7 +98,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbHasShopItem_whenUpdateShopItem_thenReturnUpdatedShopItem() {
+  fun givenDbHasShopItem_whenUpdateShopItem_thenReturnUpdatedShopItem() = runBlockingTest {
     given(pythonDatabaseWrapper.updateShopItem(any(), any(), any(), any())).willReturn(SAMPLE_SHOPITEM_JSON)
 
     val shopItem = shoppingListDatabaseService.updateShopItem(1, "name", 1, false)
@@ -108,7 +107,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbDoesNotHaveShopItem_whenUpdateShopItem_thenReturnNull() {
+  fun givenDbDoesNotHaveShopItem_whenUpdateShopItem_thenReturnNull() = runBlockingTest {
     given(pythonDatabaseWrapper.updateShopItem(any(), any(), any(), any())).willReturn(EMPTY_OBJECT_RESPONSE)
 
     val shopItem = shoppingListDatabaseService.updateShopItem(1, "name", 1, false)
@@ -117,7 +116,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun whenDeleteShoppingList_thenDatabaseDeletesShoppingList() {
+  fun whenDeleteShoppingList_thenDatabaseDeletesShoppingList() = runBlockingTest {
     val id = 1
 
     shoppingListDatabaseService.deleteShoppingList(id)
@@ -126,7 +125,7 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun whenDeleteShopItem_thenDatabaseDeletesShopItem() {
+  fun whenDeleteShopItem_thenDatabaseDeletesShopItem() = runBlockingTest {
     val id = 1
 
     shoppingListDatabaseService.deleteShopItem(id)
