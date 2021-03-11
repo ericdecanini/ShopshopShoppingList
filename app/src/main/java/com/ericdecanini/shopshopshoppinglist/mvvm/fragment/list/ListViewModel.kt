@@ -1,7 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import android.app.Activity
-import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
@@ -41,19 +40,29 @@ class ListViewModel @Inject constructor(
     val listName = ObservableField<String>()
     val addItemText = ObservableField<String>()
 
-    fun createNewShoppingList(context: Context) = viewModelScope.launch(coroutineContextProvider.IO) {
-        val newListName = context.getString(R.string.new_list)
+    fun createNewShoppingList() = viewModelScope.launch(coroutineContextProvider.IO) {
+        val newListName = resourceProvider.getString(R.string.new_list)
         val shoppingList = shoppingListRepository.createNewShoppingList(newListName)
         setShoppingList(shoppingList)
     }
 
-    fun loadShoppingList(id: Int) = viewModelScope.launch(coroutineContextProvider.IO) {
+    fun loadShoppingList(id: Int) = viewModelScope.launch {
         val shoppingList = shoppingListRepository.getShoppingListById(id)
 
         if (shoppingList != null)
-            setShoppingList(shoppingList)
+            withContext(coroutineContextProvider.IO) { setShoppingList(shoppingList) }
         else
             mainNavigator.navigateUp()
+    }
+
+    fun addItem(itemName: String) = viewModelScope.launch(coroutineContextProvider.IO) {
+        addItemText.set("")
+        _shoppingListLiveData.value?.items?.add(createTemporaryNewItem(itemName))
+        _shoppingListLiveData.notifyObservers()
+
+        shoppingListRepository.createNewShopItem(listId, itemName)
+        val updatedShoppingList = shoppingListRepository.getShoppingListById(listId)
+        _shoppingListLiveData.postValue(updatedShoppingList)
     }
 
     private fun setShoppingList(shoppingList: ShoppingList) {
@@ -62,12 +71,7 @@ class ListViewModel @Inject constructor(
         _shoppingListLiveData.postValue(shoppingList)
     }
 
-    fun addItem(itemName: String) = viewModelScope.launch(coroutineContextProvider.IO) {
-        addItemText.set("")
-        val newItem = shoppingListRepository.createNewShopItem(listId, itemName)
-        shoppingListLiveData.value?.items?.add(newItem)
-        _shoppingListLiveData.notifyObservers()
-    }
+    private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
 
     private fun deleteList() = shoppingListLiveData.value?.let { shoppingList ->
         viewModelScope.launch {
@@ -76,12 +80,6 @@ class ListViewModel @Inject constructor(
             }
             mainNavigator.navigateUp()
         }
-    } ?: run {
-        dialogNavigator.displayGenericDialog(
-            title = resourceProvider.getString(R.string.error),
-            message = resourceProvider.getString(R.string.something_went_wrong),
-            positiveText = resourceProvider.getString(R.string.ok)
-        )
     }
 
     //region: ui interaction events

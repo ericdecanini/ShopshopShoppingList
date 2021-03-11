@@ -81,7 +81,7 @@ class ListFragment : DaggerFragment() {
         if (id != -1)
             viewModel.loadShoppingList(id)
         else
-            viewModel.createNewShoppingList(requireContext())
+            viewModel.createNewShoppingList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

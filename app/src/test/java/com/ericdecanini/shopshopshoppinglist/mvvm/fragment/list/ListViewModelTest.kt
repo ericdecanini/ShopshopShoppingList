@@ -62,7 +62,7 @@ class ListViewModelTest {
         given(context.getString(R.string.new_list)).willReturn(name)
         given(shoppingListRepository.createNewShoppingList(name)).willReturn(shoppingList)
 
-        viewModel.createNewShoppingList(context)
+        viewModel.createNewShoppingList()
 
         assertThat(viewModel.shoppingListLiveData.value).isEqualTo(shoppingList)
         assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
@@ -92,15 +92,16 @@ class ListViewModelTest {
     @Test
     fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() = runBlockingTest {
         val itemName = "new_item"
-        val newShopItem = aShopItem().withName(itemName).build()
-        given(shoppingListRepository.createNewShopItem(shoppingList.id, itemName)).willReturn(newShopItem)
+        val newShopItems = mutableListOf(aShopItem().withName(itemName).build())
+        val newShoppingList = aShoppingList().withItems(newShopItems).build()
+        given(shoppingListRepository.getShoppingListById(shoppingList.id)).willReturn(newShoppingList)
 
         viewModel.addItem(itemName)
 
         assertThat(viewModel.addItemText.get()).isEqualTo("")
-        val itemsList = viewModel.shoppingListLiveData.value?.items
-        assertThat(itemsList?.last()).isEqualTo(newShopItem)
+        assertThat(viewModel.shoppingListLiveData.value).isEqualTo(newShoppingList)
         verify(shoppingListRepository).createNewShopItem(shoppingList.id, itemName)
+
     }
 
     @Test
