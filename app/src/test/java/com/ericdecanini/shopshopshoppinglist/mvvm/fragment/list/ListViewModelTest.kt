@@ -65,6 +65,7 @@ class ListViewModelTest {
         viewModel.createNewShoppingList(context)
 
         assertThat(viewModel.shoppingListLiveData.value).isEqualTo(shoppingList)
+        assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
     }
 
     @Test
