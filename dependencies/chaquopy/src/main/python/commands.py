@@ -101,7 +101,7 @@ class Commands:
         self.cursor.execute(
             f"UPDATE {TABLE_SHOPPINGLISTS} SET name = '{name}' WHERE id = {list_id}"
         )
-
+        self.connection.commit()
         return self.get_shoppinglist_by_id(list_id)
 
     def update_shopitem(self, item_id, name, quantity, checked):
