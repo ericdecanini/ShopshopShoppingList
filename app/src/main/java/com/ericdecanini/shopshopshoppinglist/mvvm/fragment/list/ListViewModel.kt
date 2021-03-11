@@ -41,33 +41,30 @@ class ListViewModel @Inject constructor(
     val listName = ObservableField<String>()
     val addItemText = ObservableField<String>()
 
-    fun createNewShoppingList(context: Context) = viewModelScope.launch {
+    fun createNewShoppingList(context: Context) = viewModelScope.launch(coroutineContextProvider.IO) {
         val newListName = context.getString(R.string.new_list)
-        val shoppingList = withContext(coroutineContextProvider.IO) {
-            shoppingListRepository.createNewShoppingList(newListName)
-        }
+        val shoppingList = shoppingListRepository.createNewShoppingList(newListName)
+        setShoppingList(shoppingList)
+    }
+
+    fun loadShoppingList(id: Int) = viewModelScope.launch(coroutineContextProvider.IO) {
+        val shoppingList = shoppingListRepository.getShoppingListById(id)
+
+        if (shoppingList != null)
+            setShoppingList(shoppingList)
+        else
+            mainNavigator.navigateUp()
+    }
+
+    private fun setShoppingList(shoppingList: ShoppingList) {
+        listId = shoppingList.id
+        listName.set(shoppingList.name)
         _shoppingListLiveData.postValue(shoppingList)
     }
 
-    fun loadShoppingList(id: Int) = viewModelScope.launch {
-        listId = id
-        val shoppingList = withContext(coroutineContextProvider.IO) {
-            shoppingListRepository.getShoppingListById(id)
-        }
-
-        if (shoppingList != null) {
-            listName.set(shoppingList.name)
-            _shoppingListLiveData.postValue(shoppingList)
-        } else {
-            mainNavigator.navigateUp()
-        }
-    }
-
-    fun addItem(itemName: String) = viewModelScope.launch {
+    fun addItem(itemName: String) = viewModelScope.launch(coroutineContextProvider.IO) {
         addItemText.set("")
-        val newItem = withContext(coroutineContextProvider.IO) {
-            shoppingListRepository.createNewShopItem(listId, itemName)
-        }
+        val newItem = shoppingListRepository.createNewShopItem(listId, itemName)
         shoppingListLiveData.value?.items?.add(newItem)
         _shoppingListLiveData.notifyObservers()
     }
