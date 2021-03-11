@@ -122,9 +122,12 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
+        hideKeyboard(editText)
+        if (shoppingListLiveData.value?.items?.contains(shopItem) == false)
+            return
+
         with(shopItem) {
             name = editText.text.toString()
-            hideKeyboard(editText)
             viewModelScope.launch(coroutineContextProvider.IO) {
                 shoppingListRepository.updateShopItem(id, name, quantity, checked)
             }

@@ -176,7 +176,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenEditText_whenOnNameChanged_thenNameChangedToEditTextValueAndKeyboardHidden() = runBlockingTest {
+    fun givenUpdatedItemIsInList_whenOnNameChanged_thenNameChangedToEditTextValueAndKeyboardHidden() = runBlockingTest {
         val editText: EditText = mock()
         val editable: Editable = mock()
         val name = "sample_name"
@@ -190,6 +190,23 @@ class ListViewModelTest {
         assertThat(shopItem.name).isEqualTo(name)
         verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
         verify(shoppingListRepository).updateShopItem(shopItem.id, name, shopItem.quantity, shopItem.checked)
+    }
+
+    @Test
+    fun givenUpdatedItemIsNotInList_whenOnNameChanged_thenRepositoryNotUpdated() = runBlockingTest {
+        val editText: EditText = mock()
+        val editable: Editable = mock()
+        val name = "sample_name"
+        given(editable.toString()).willReturn(name)
+        given(editText.text).willReturn(editable)
+        given(editText.context).willReturn(context)
+        given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
+
+        viewModel.shoppingListLiveData.value!!.items.remove(shopItem)
+        viewModel.onNameChanged(editText, shopItem)
+
+        verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
+        verify(shoppingListRepository, never()).updateShopItem(any(), any(), any(), any())
     }
 
     @Test
