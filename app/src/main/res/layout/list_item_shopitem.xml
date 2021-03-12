@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:checked="@{viewstate.checked}"
-                app:clearsFocusOnClick="@{true}"
+                app:clearsFocusOnCheck="@{true}"
                 app:onChecked="@{(view) -> handler.onCheckboxChecked(view, viewstate)}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
