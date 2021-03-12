@@ -49,16 +49,6 @@ class ListFragment : DaggerFragment() {
         return binding.root
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        adapter.saveStates(outState)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-        savedInstanceState?.let { adapter.restoreStates(it) }
-    }
-
     private fun initList() {
         binding.shopList.adapter = adapter
         binding.shopList.layoutManager = LinearLayoutManager(context)

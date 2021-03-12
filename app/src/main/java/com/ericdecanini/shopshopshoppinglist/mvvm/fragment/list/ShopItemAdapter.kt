@@ -1,6 +1,5 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -31,10 +30,6 @@ class ShopItemAdapter(
         holder.bind(item, shopItemEventHandler)
     }
 
-    fun saveStates(outState: Bundle) = viewBinderHelper.saveStates(outState)
-
-    fun restoreStates(inState: Bundle) = viewBinderHelper.restoreStates(inState)
-
     fun replaceItems(newItems: List<ShopItem>) {
         items.clear()
         items.addAll(newItems)
@@ -47,9 +42,21 @@ class ShopItemAdapter(
             binding.setVariable(BR.handler, shopItemEventHandler)
             binding.setVariable(BR.quantity, binding.quantity)
 
-            binding.quantity.setOnClickListener {
-                with(itemView.swipe_layout) {
-                    if (isClosed) { open(true) } else { close(true) }
+            with(itemView.swipe_layout) {
+                close(false)
+
+                binding.quantity.setOnClickListener {
+                    if (isClosed) {
+                        open(true)
+                        requestFocus()
+                    } else {
+                        close(true)
+                        clearFocus()
+                    }
+                }
+
+                setOnFocusChangeListener { _, hasFocus ->
+                    if (!hasFocus) { close(true) }
                 }
             }
         }
