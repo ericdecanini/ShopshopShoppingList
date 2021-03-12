@@ -8,7 +8,6 @@ import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.databinding.ListItemShopitemBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
-import kotlinx.android.synthetic.main.list_item_shopitem.view.*
 
 class ShopItemAdapter(
     val items: MutableList<ShopItem>,
@@ -42,7 +41,7 @@ class ShopItemAdapter(
             binding.setVariable(BR.handler, shopItemEventHandler)
             binding.setVariable(BR.quantity, binding.quantity)
 
-            with(itemView.swipe_layout) {
+            with(binding.swipeLayout) {
                 close(false)
 
                 binding.quantity.setOnClickListener {
