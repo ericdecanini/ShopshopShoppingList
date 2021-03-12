@@ -8,5 +8,6 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
-- Look at better scalability of Dagger setup
-- Add Coroutine support to db functions
+- Add error handling to coroutines
+- Add no item splashes
+- Create app icon
