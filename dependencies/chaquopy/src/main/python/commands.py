@@ -1,6 +1,7 @@
 import sqlite3
 import os.path
 import json
+import threading
 
 TABLE_SHOPPINGLISTS = "shoppinglists"
 TABLE_SHOPITEMS = "shopitems"
@@ -10,6 +11,8 @@ db_dir = os.path.join(package_dir, 'shopping_lists.db')
 
 
 class Commands:
+
+    lock = threading.Lock()
 
     connection = sqlite3.connect(db_dir, check_same_thread = False)
     connection.row_factory = sqlite3.Row
@@ -74,69 +77,101 @@ class Commands:
         return json.dumps(self.dict_from_row())
 
     def insert_shoppinglist(self, name):
-        self.cursor.execute(
-            f"INSERT INTO {TABLE_SHOPPINGLISTS} VALUES (NULL, '{name}')"
-        )
-        self.cursor.execute(
-            f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {self.cursor.lastrowid}"
-        )
-        self.connection.commit()
+        try:
+            self.lock.acquire(True)
+            self.cursor.execute(
+                f"INSERT INTO {TABLE_SHOPPINGLISTS} VALUES (NULL, '{name}')"
+            )
+            self.cursor.execute(
+                f"SELECT * FROM {TABLE_SHOPPINGLISTS} WHERE id = {self.cursor.lastrowid}"
+            )
+            self.connection.commit()
 
-        shopping_list = dict(self.cursor.fetchone())
-        shopping_list['items'] = []
+            shopping_list = dict(self.cursor.fetchone())
+            shopping_list['items'] = []
 
-        return json.dumps(shopping_list)
+            res = json.dumps(shopping_list)
+        finally:
+            self.lock.release()
+        return res
 
     def insert_shopitem(self, list_id, name, quantity, checked):
-        self.cursor.execute(
-            f"INSERT INTO {TABLE_SHOPITEMS} VALUES (NULL, {list_id}, '{name}', {quantity}, {checked})"
-        )
-        self.cursor.execute(
-            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE id = {self.cursor.lastrowid}"
-        )
-        self.connection.commit()
-        return json.dumps(dict(self.cursor.fetchone()))
+        try:
+            self.lock.acquire(True)
+            self.cursor.execute(
+                f"INSERT INTO {TABLE_SHOPITEMS} VALUES (NULL, {list_id}, '{name}', {quantity}, {checked})"
+            )
+            self.cursor.execute(
+                f"SELECT * FROM {TABLE_SHOPITEMS} WHERE id = {self.cursor.lastrowid}"
+            )
+            self.connection.commit()
+            res = json.dumps(dict(self.cursor.fetchone()))
+        finally:
+            self.lock.release()
+        return res
 
     def update_shoppinglist(self, list_id, name):
-        self.cursor.execute(
-            f"UPDATE {TABLE_SHOPPINGLISTS} SET name = '{name}' WHERE id = {list_id}"
-        )
-        self.connection.commit()
-        return self.get_shoppinglist_by_id(list_id)
+        try:
+            self.lock.acquire(True)
+            self.cursor.execute(
+                f"UPDATE {TABLE_SHOPPINGLISTS} SET name = '{name}' WHERE id = {list_id}"
+            )
+            self.connection.commit()
+            res = self.get_shoppinglist_by_id(list_id)
+        finally:
+            self.lock.release()
+        return res
 
     def update_shopitem(self, item_id, name, quantity, checked):
-        self.cursor.execute(
-            f"""
+        try:
+            self.lock.acquire(True)
+            self.cursor.execute(
+                f"""
             UPDATE {TABLE_SHOPITEMS}
             SET name = '{name}', quantity = {quantity}, checked = {checked}
             WHERE id = {item_id}
             """
-        )
-        self.cursor.execute(
-            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
-        )
-        self.connection.commit()
-        return json.dumps(dict(self.cursor.fetchone()))
+            )
+            self.cursor.execute(
+                f"SELECT * FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
+            )
+            self.connection.commit()
+            res = json.dumps(dict(self.cursor.fetchone()))
+        finally:
+            self.lock.release()
+        return res
 
     def delete_shoppinglist(self, list_id):
-        self.cursor.execute(
-            f"DELETE FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
-        )
-        self.cursor.execute(
-            f"DELETE FROM {TABLE_SHOPITEMS} WHERE list_id = {list_id}"
-        )
-        self.connection.commit()
+        try:
+            self.lock.acquire(True)
+            self.cursor.execute(
+                f"DELETE FROM {TABLE_SHOPPINGLISTS} WHERE id = {list_id}"
+            )
+            self.cursor.execute(
+                f"DELETE FROM {TABLE_SHOPITEMS} WHERE list_id = {list_id}"
+            )
+            self.connection.commit()
+        finally:
+            self.lock.release()
 
     def delete_shopitem(self, item_id):
-        self.cursor.execute(
-            f"DELETE FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
-        )
-        self.connection.commit()
+        try:
+            self.lock.acquire(True)
+            self.cursor.execute(
+                f"DELETE FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
+            )
+            self.connection.commit()
+        finally:
+            self.lock.release()
 
     def clear_all(self):
-        self.cursor.execute(f"DROP TABLE {TABLE_SHOPPINGLISTS}")
-        self.cursor.execute(f"DROP TABLE {TABLE_SHOPITEMS}")
-        self.connection.commit()
+        try:
+            self.lock.acquire(True)
+            self.cursor.execute(f"DROP TABLE {TABLE_SHOPPINGLISTS}")
+            self.cursor.execute(f"DROP TABLE {TABLE_SHOPITEMS}")
+            self.connection.commit()
+        finally:
+            self.lock.release()
 
     def cleanup(self):
         self.cursor.close()
