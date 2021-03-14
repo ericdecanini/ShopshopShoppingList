@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
+package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.databinding.ListItemShoppinglistBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.ShoppingListEventHandler
 import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 
 class ShoppingListAdapter(

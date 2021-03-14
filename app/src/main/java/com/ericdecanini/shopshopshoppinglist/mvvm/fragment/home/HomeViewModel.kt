@@ -1,5 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -20,8 +21,12 @@ class HomeViewModel @Inject constructor(
     private val _shoppingListsLiveData = MutableLiveData<List<ShoppingList>>()
     val shoppingListsLiveData: LiveData<List<ShoppingList>> get() = _shoppingListsLiveData
 
+    val progressBarVisible = ObservableField(false)
+
     fun refreshLists() = viewModelScope.launch(coroutineContextProvider.IO) {
+        progressBarVisible.set(true)
         _shoppingListsLiveData.postValue(shoppingListRepository.getShoppingLists() ?: emptyList())
+        progressBarVisible.set(false)
     }
 
     fun navigateToListFragment() = mainNavigator.goToList()

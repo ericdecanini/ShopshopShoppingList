@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
+package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

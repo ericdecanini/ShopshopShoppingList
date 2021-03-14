@@ -11,6 +11,7 @@ import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -25,9 +26,7 @@ class HomeFragment : DaggerFragment() {
     private lateinit var binding: FragmentHomeBinding
 
     private val shoppingLists = mutableListOf<ShoppingList>()
-    private val adapter by lazy {
-        ShoppingListAdapter(shoppingLists, viewModel)
-    }
+    private val adapter by lazy { ShoppingListAdapter(shoppingLists, viewModel) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
