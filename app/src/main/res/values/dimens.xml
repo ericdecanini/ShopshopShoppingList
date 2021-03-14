@@ -2,12 +2,13 @@
 <resources>
 
     <!-- Generics -->
-    <dimen name="toolbarTextSize">28sp</dimen>
+    <dimen name="toolbar_text_size">28sp</dimen>
     <dimen name="edittext_box_horizontal_padding">16dp</dimen>
     <dimen name="edittext_box_vertical_padding">8dp</dimen>
+    <dimen name="toolbar_back_button_size">32dp</dimen>
 
     <!-- Home Fragment -->
-    <dimen name="shoppingListTitleSize">18sp</dimen>
+    <dimen name="shopping_list_title_size">18sp</dimen>
     <dimen name="shopitem_height">60dp</dimen>
 
     <!-- List Fragment -->

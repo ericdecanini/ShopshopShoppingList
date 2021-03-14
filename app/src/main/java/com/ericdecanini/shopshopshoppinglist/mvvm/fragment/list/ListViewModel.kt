@@ -159,6 +159,10 @@ class ListViewModel @Inject constructor(
         )
     }
 
+    fun onBackButtonPressed() {
+        mainNavigator.navigateUp()
+    }
+
     //endregion
 
     private fun renameShoppingList(newName: String) {

@@ -234,6 +234,14 @@ class ListViewModelTest {
         verify(shoppingListRepository).updateShoppingList(any(), eq(newName))
     }
 
+    @Test
+    fun whenOnBackButtonPressed_thenNavigateUp() {
+
+        viewModel.onBackButtonPressed()
+
+        verify(mainNavigator).navigateUp()
+    }
+
     private fun givenShoppingList() = runBlockingTest {
         given(shoppingListRepository.getShoppingListById(shoppingList.id)).willReturn(shoppingList)
         viewModel.loadShoppingList(shoppingList.id)
