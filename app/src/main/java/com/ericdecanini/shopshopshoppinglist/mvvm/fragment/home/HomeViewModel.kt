@@ -24,7 +24,9 @@ class HomeViewModel @Inject constructor(
     val progressBarVisible = ObservableField(false)
 
     fun refreshLists() = viewModelScope.launch(coroutineContextProvider.IO) {
-        progressBarVisible.set(true)
+        if (shoppingListsLiveData.value?.isEmpty() != false)
+            progressBarVisible.set(true)
+
         _shoppingListsLiveData.postValue(shoppingListRepository.getShoppingLists() ?: emptyList())
         progressBarVisible.set(false)
     }
