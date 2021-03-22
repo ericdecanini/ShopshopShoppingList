@@ -9,6 +9,9 @@
     <string name="error">Error</string>
     <string name="something_went_wrong">Something went wrong. Please try again.</string>
 
+    <!-- Home Fragment -->
+    <string name="splash_home_no_items">You have no shopping lists. Click on the button to add one.</string>
+
     <!-- List Fragment -->
     <string name="new_list">New List</string>
     <string name="delete_list">Delete List</string>

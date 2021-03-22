@@ -5,6 +5,8 @@
 
     <data>
         <import type="android.view.View" />
+        <import type="androidx.lifecycle.LiveData" />
+        <import type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState" />
 
         <variable
             name="viewmodel"
@@ -46,12 +48,22 @@
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{viewmodel.progressBarVisible ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewmodel.stateLiveData instanceof HomeViewState.Loading ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:visibility="visible" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/splash_home_no_items"
+            android:visibility="@{(viewmodel.stateLiveData instanceof HomeViewState.Loaded ? (HomeViewState.Loaded) viewmodel.stateLiveData : null).items.isEmpty() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

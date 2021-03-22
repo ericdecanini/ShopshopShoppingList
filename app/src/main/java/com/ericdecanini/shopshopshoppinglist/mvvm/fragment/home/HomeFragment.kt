@@ -11,6 +11,8 @@ import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Error
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -35,9 +37,10 @@ class HomeFragment : DaggerFragment() {
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
+        binding.lifecycleOwner = this
 
         initShoppingLists()
-        observeShoppingLists()
+        observeState()
 
         return binding.root
     }
@@ -52,8 +55,14 @@ class HomeFragment : DaggerFragment() {
         binding.shoppingLists.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun observeShoppingLists() {
-        viewModel.shoppingListsLiveData.observe(viewLifecycleOwner) { updateShoppingLists(it) }
+    private fun observeState() {
+        viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
+            when(state) {
+                is Loaded -> updateShoppingLists(state.items)
+                is Error -> { /* TODO: Implement */ }
+                else -> { /* do nothing */ }
+            }
+        }
     }
 
     private fun updateShoppingLists(lists: List<ShoppingList>) {

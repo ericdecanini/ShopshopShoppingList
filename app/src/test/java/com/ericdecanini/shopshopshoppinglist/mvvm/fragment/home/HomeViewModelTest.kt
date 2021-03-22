@@ -1,7 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
@@ -30,22 +29,22 @@ class HomeViewModelTest {
     private val shoppingList = ShoppingListBuilder.aShoppingList().build()
 
     @Test
-    fun givenRepositoryReturnsShoppingLists_whenRefreshLists_thenSetShoppingListsToLiveData() = runBlockingTest {
+    fun givenRepositoryReturnsShoppingLists_whenRefreshLists_thenPostShoppingListsToLiveData() = runBlockingTest {
         val shoppingLists = listOf(shoppingList)
         given(shoppingListRepository.getShoppingLists()).willReturn(shoppingLists)
 
         viewModel.refreshLists()
 
-        assertThat(viewModel.shoppingListsLiveData.value).isEqualTo(shoppingLists)
+        assertThat(viewModel.stateLiveData.value).isEqualTo(HomeViewState.Loaded(shoppingLists))
     }
 
     @Test
-    fun givenRepositoryReturnsNoShoppingLists_whenRefreshLists_thenSetEmptyListToLiveData() = runBlockingTest {
+    fun givenRepositoryReturnsNoShoppingLists_whenRefreshLists_thenPostEmptyListToLiveData() = runBlockingTest {
         given(shoppingListRepository.getShoppingLists()).willReturn(null)
 
         viewModel.refreshLists()
 
-        assertThat(viewModel.shoppingListsLiveData.value).isEqualTo(emptyList<ShoppingList>())
+        assertThat(viewModel.stateLiveData.value).isEqualTo(HomeViewState.Loaded(emptyList()))
     }
 
     @Test
