@@ -18,8 +18,7 @@ import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
-import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Initial
-import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
@@ -45,12 +44,14 @@ class ListViewModel @Inject constructor(
     val addItemText = ObservableField<String>()
 
     fun createNewShoppingList() = viewModelScope.launch(coroutineContextProvider.IO) {
+        _stateLiveData.postValue(Loading)
         val newListName = resourceProvider.getString(R.string.new_list)
         val shoppingList = shoppingListRepository.createNewShoppingList(newListName)
         setShoppingList(shoppingList)
     }
 
     fun loadShoppingList(id: Int) = viewModelScope.launch {
+        _stateLiveData.postValue(Loading)
         val shoppingList = shoppingListRepository.getShoppingListById(id)
 
         if (shoppingList != null)

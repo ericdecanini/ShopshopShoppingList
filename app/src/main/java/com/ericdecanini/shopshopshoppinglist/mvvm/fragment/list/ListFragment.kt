@@ -43,6 +43,8 @@ class ListFragment : DaggerFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
         binding.setVariable(BR.newitem, binding.addItemEdit)
+        binding.lifecycleOwner = this
+
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
