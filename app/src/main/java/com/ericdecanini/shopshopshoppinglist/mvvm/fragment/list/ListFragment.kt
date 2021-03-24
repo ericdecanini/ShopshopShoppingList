@@ -13,6 +13,8 @@ import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 

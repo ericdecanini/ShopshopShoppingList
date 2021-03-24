@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.*
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
 import kotlinx.coroutines.launch

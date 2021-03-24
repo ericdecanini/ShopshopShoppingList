@@ -4,7 +4,7 @@
     <data>
         <variable
             name="handler"
-            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.ShoppingListEventHandler" />
+            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler" />
         <variable
             name="viewstate"
             type="com.ericdecanini.shopshopshoppinglist.entities.ShoppingList" />

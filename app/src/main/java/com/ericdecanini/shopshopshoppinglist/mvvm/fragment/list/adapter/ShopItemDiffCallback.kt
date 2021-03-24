@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
+package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter
 
 import androidx.recyclerview.widget.DiffUtil
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem

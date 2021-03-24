@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home
+package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter
 
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 
