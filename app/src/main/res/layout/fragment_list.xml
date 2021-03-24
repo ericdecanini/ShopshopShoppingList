@@ -122,5 +122,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:visibility="visible" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/splash_list_no_items"
+            android:visibility="@{(viewmodel.stateLiveData instanceof ListViewState.Loaded ? (ListViewState.Loaded) viewmodel.stateLiveData : null).shoppingList.items.isEmpty() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

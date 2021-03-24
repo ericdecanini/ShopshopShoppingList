@@ -17,6 +17,7 @@
     <string name="delete_list">Delete List</string>
     <string name="new_item">New item</string>
     <string name="UNKNOWN_LIST">UNKNOWN LIST</string>
+    <string name="splash_list_no_items">You have no items. Add one using the text box above.</string>
 
     <!-- Rename Dialog -->
     <string name="rename">Rename</string>
