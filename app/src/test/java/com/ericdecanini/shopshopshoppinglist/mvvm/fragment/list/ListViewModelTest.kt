@@ -14,6 +14,7 @@ import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
@@ -64,7 +65,7 @@ class ListViewModelTest {
 
         viewModel.createNewShoppingList()
 
-        assertThat(viewModel.shoppingListLiveData.value).isEqualTo(shoppingList)
+        assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(shoppingList))
         assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
     }
 
@@ -75,7 +76,7 @@ class ListViewModelTest {
 
         viewModel.loadShoppingList(id)
 
-        assertThat(viewModel.shoppingListLiveData.value).isEqualTo(shoppingList)
+        assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(shoppingList))
         assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
     }
 
@@ -99,7 +100,7 @@ class ListViewModelTest {
         viewModel.addItem(itemName)
 
         assertThat(viewModel.addItemText.get()).isEqualTo("")
-        assertThat(viewModel.shoppingListLiveData.value).isEqualTo(newShoppingList)
+        assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(newShoppingList))
         verify(shoppingListRepository).createNewShopItem(shoppingList.id, itemName)
 
     }
@@ -148,7 +149,9 @@ class ListViewModelTest {
 
         viewModel.onDeleteClick(shopItem)
 
-        val deletedItem = viewModel.shoppingListLiveData.value?.items?.find { it == shopItem }
+        val deletedItem = (viewModel.stateLiveData.value as Loaded).shoppingList.items.find {
+            it == shopItem
+        }
         assertThat(deletedItem).isNull()
         verify(shoppingListRepository).deleteShopItem(shopItem.id)
     }
@@ -202,7 +205,7 @@ class ListViewModelTest {
         given(editText.context).willReturn(context)
         given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
 
-        viewModel.shoppingListLiveData.value!!.items.remove(shopItem)
+        (viewModel.stateLiveData.value as Loaded).shoppingList.items.remove(shopItem)
         viewModel.onNameChanged(editText, shopItem)
 
         verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
@@ -221,7 +224,7 @@ class ListViewModelTest {
 
     @Test
     fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() = runBlockingTest {
-        val currentName = viewModel.shoppingListLiveData.value!!.name
+        val currentName = (viewModel.stateLiveData.value as Loaded).shoppingList.name
         val newName = "new_name"
 
         viewModel.showRenameDialog()

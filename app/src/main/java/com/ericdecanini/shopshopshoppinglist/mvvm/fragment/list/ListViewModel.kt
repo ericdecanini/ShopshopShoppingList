@@ -18,6 +18,8 @@ import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Initial
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
@@ -33,8 +35,9 @@ class ListViewModel @Inject constructor(
     private val coroutineContextProvider: CoroutineContextProvider
 ) : ViewModel(), ShopItemEventHandler {
 
-    private val _shoppingListLiveData = MutableLiveData<ShoppingList>()
-    val shoppingListLiveData: LiveData<ShoppingList> get() = _shoppingListLiveData
+    private val _stateLiveData = MutableLiveData<ListViewState>(Initial)
+    val stateLiveData: LiveData<ListViewState> get() = _stateLiveData
+    private val shoppingList get() = (stateLiveData.value as? Loaded)?.shoppingList
 
     private var listId: Int = -1
 
@@ -58,23 +61,27 @@ class ListViewModel @Inject constructor(
 
     fun addItem(itemName: String) = viewModelScope.launch(coroutineContextProvider.IO) {
         addItemText.set("")
-        _shoppingListLiveData.value?.items?.add(createTemporaryNewItem(itemName))
-        _shoppingListLiveData.notifyObservers()
+        shoppingList?.items?.add(createTemporaryNewItem(itemName))
+        _stateLiveData.notifyObservers()
 
         shoppingListRepository.createNewShopItem(listId, itemName)
         val updatedShoppingList = shoppingListRepository.getShoppingListById(listId)
-        _shoppingListLiveData.postValue(updatedShoppingList)
+
+        if (updatedShoppingList != null)
+            _stateLiveData.postValue(Loaded(updatedShoppingList))
+        else
+            mainNavigator.navigateUp()
     }
 
     private fun setShoppingList(shoppingList: ShoppingList) {
         listId = shoppingList.id
         listName.set(shoppingList.name)
-        _shoppingListLiveData.postValue(shoppingList)
+        _stateLiveData.postValue(Loaded(shoppingList))
     }
 
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
 
-    private fun deleteList() = shoppingListLiveData.value?.let { shoppingList ->
+    private fun deleteList() = shoppingList?.let { shoppingList ->
         viewModelScope.launch {
             withContext(coroutineContextProvider.IO) {
                 shoppingListRepository.deleteShoppingList(shoppingList.id)
@@ -106,8 +113,8 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onDeleteClick(shopItem: ShopItem) {
-        shoppingListLiveData.value?.items?.remove(shopItem)
-        _shoppingListLiveData.notifyObservers()
+        shoppingList?.items?.remove(shopItem)
+        _stateLiveData.notifyObservers()
         viewModelScope.launch(coroutineContextProvider.IO) {
             shoppingListRepository.deleteShopItem(shopItem.id)
         }
@@ -124,7 +131,7 @@ class ListViewModel @Inject constructor(
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         hideKeyboard(editText)
-        if (shoppingListLiveData.value?.items?.contains(shopItem) == false)
+        if (shoppingList?.items?.contains(shopItem) == false)
             return
 
         with(shopItem) {
@@ -140,14 +147,14 @@ class ListViewModel @Inject constructor(
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun showRenameDialog() = shoppingListLiveData.value?.let {
+    fun showRenameDialog() = shoppingList?.let {
         dialogNavigator.displayRenameDialog(
             it.name,
             { newName -> renameShoppingList(newName) }
         )
     }
 
-    fun showDeleteDialog() = shoppingListLiveData.value?.let {
+    fun showDeleteDialog() = stateLiveData.value?.let {
         val listName = listName.get() ?: resourceProvider.getString(R.string.UNKNOWN_LIST)
 
         dialogNavigator.displayGenericDialog(

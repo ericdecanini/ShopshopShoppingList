@@ -11,3 +11,4 @@ TODO:
 - Add error handling to coroutines
 - Add no item splashes
 - Create app icon
+- Add toast when list fragment returns null list
