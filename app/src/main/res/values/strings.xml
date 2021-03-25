@@ -7,7 +7,9 @@
     <string name="cancel">Cancel</string>
     <string name="ellipsis">…</string>
     <string name="error">Error</string>
+    <string name="retry">Retry</string>
     <string name="something_went_wrong">Something went wrong. Please try again.</string>
+    <string name="splash_generic_error">An unexpected error has occurred. Please try again.</string>
 
     <!-- Home Fragment -->
     <string name="splash_home_no_items">You have no shopping lists. Click on the button to add one.</string>

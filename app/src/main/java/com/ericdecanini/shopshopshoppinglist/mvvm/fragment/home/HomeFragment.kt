@@ -11,7 +11,6 @@ import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
-import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Error
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
 import dagger.android.support.DaggerFragment
@@ -59,7 +58,6 @@ class HomeFragment : DaggerFragment() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
             when(state) {
                 is Loaded -> updateShoppingLists(state.items)
-                is Error -> { /* TODO: Implement */ }
                 else -> { /* do nothing */ }
             }
         }

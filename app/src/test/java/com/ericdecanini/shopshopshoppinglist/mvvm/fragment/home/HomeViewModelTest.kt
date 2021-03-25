@@ -48,6 +48,16 @@ class HomeViewModelTest {
     }
 
     @Test
+    fun givenRepositoryThrows_whenRefreshLists_thenPostErrorToLiveData() = runBlockingTest {
+        val exception = RuntimeException()
+        given(shoppingListRepository.getShoppingLists()).willThrow(exception)
+
+        viewModel.refreshLists()
+
+        assertThat(viewModel.stateLiveData.value).isEqualTo(HomeViewState.Error(exception))
+    }
+
+    @Test
     fun givenShoppingList_whenOnShoppingListClick_thenMainNavigatorWithShoppingList() {
 
         viewModel.onShoppingListClick(shoppingList)

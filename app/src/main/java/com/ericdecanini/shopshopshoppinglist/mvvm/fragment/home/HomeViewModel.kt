@@ -10,6 +10,7 @@ import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.*
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +23,12 @@ class HomeViewModel @Inject constructor(
     private val _stateLiveData = MutableLiveData<HomeViewState>(Initial)
     val stateLiveData: LiveData<HomeViewState> get() = _stateLiveData
 
-    fun refreshLists() = viewModelScope.launch(coroutineContextProvider.IO) {
-        if (stateLiveData.value is Initial
+    private val errorHandler = CoroutineExceptionHandler { _, throwable ->
+        _stateLiveData.postValue(Error(throwable))
+    }
+
+    fun refreshLists() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
+        if (stateLiveData.value !is Loaded
             || (stateLiveData.value as? Loaded)?.items?.isEmpty() == true
         )
             _stateLiveData.postValue(Loading)
