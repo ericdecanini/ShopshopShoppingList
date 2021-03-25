@@ -22,6 +22,7 @@ import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -38,27 +39,38 @@ class ListViewModel @Inject constructor(
     val stateLiveData: LiveData<ListViewState> get() = _stateLiveData
     private val shoppingList get() = (stateLiveData.value as? Loaded)?.shoppingList
 
+    private val errorHandler = CoroutineExceptionHandler { _, throwable ->
+        _stateLiveData.postValue(Error(throwable))
+    }
+
     private var listId: Int = -1
 
     val listName = ObservableField<String>()
     val addItemText = ObservableField<String>()
 
-    fun createNewShoppingList() = viewModelScope.launch(coroutineContextProvider.IO) {
+    fun createNewShoppingList() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
         _stateLiveData.postValue(Loading)
         val newListName = resourceProvider.getString(R.string.new_list)
         val shoppingList = shoppingListRepository.createNewShoppingList(newListName)
         setShoppingList(shoppingList)
     }
 
-    fun loadShoppingList(id: Int) = viewModelScope.launch {
+    fun loadShoppingList(id: Int) = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
+        listId = id
         _stateLiveData.postValue(Loading)
         val shoppingList = shoppingListRepository.getShoppingListById(id)
 
         if (shoppingList != null)
-            withContext(coroutineContextProvider.IO) { setShoppingList(shoppingList) }
+            setShoppingList(shoppingList)
         else
             mainNavigator.navigateUp()
     }
+
+    fun retryLoadShoppingList() =
+        if (listId > -1)
+            loadShoppingList(listId)
+        else
+            createNewShoppingList()
 
     fun addItem(itemName: String) = viewModelScope.launch(coroutineContextProvider.IO) {
         addItemText.set("")
@@ -83,7 +95,7 @@ class ListViewModel @Inject constructor(
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
 
     private fun deleteList() = shoppingList?.let { shoppingList ->
-        viewModelScope.launch {
+        viewModelScope.launch(coroutineContextProvider.IO) {
             withContext(coroutineContextProvider.IO) {
                 shoppingListRepository.deleteShoppingList(shoppingList.id)
             }

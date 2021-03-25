@@ -14,6 +14,7 @@ import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Error
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
@@ -60,7 +61,7 @@ class ListViewModelTest {
     @Test
     fun whenCreateNewShoppingList_shoppingListIsCreatedAndPosted() = runBlockingTest {
         val name = "list_name"
-        given(context.getString(R.string.new_list)).willReturn(name)
+        given(resourceProvider.getString(R.string.new_list)).willReturn(name)
         given(shoppingListRepository.createNewShoppingList(name)).willReturn(shoppingList)
 
         viewModel.createNewShoppingList()
@@ -89,6 +90,20 @@ class ListViewModelTest {
 
         verify(mainNavigator).navigateUp()
     }
+
+    @Test
+    fun givenRepositoryThrows_whenLoadShoppingList_thenPostErrorToLiveData() = runBlockingTest {
+        val exception = RuntimeException()
+        given(shoppingListRepository.getShoppingListById(any())).willThrow(exception)
+
+        viewModel.loadShoppingList(1)
+
+        assertThat(viewModel.stateLiveData.value).isEqualTo(Error(exception))
+    }
+
+    /**
+     * TODO: Add tests for retry loading
+     */
 
     @Test
     fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() = runBlockingTest {
