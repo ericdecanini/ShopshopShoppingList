@@ -146,6 +146,22 @@ class ListViewModelTest {
         assertThat(viewModel.addItemText.get()).isEqualTo("")
         assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(newShoppingList))
         verify(shoppingListRepository).createNewShopItem(shoppingList.id, itemName)
+    }
+
+    @Test
+    fun givenRepositoryThrows_whenAddItem_thenItemsReverted() = runBlockingTest {
+        val name = "new_item"
+        givenShoppingList()
+        val currentState = viewModel.stateLiveData.value
+        given(shoppingListRepository.createNewShopItem(any(), any())).willThrow(RuntimeException())
+
+        viewModel.addItem(name)
+
+        val inOrder = inOrder(shoppingListRepository)
+        inOrder.verify(shoppingListRepository).getShoppingListById(shoppingList.id)
+        inOrder.verify(shoppingListRepository).createNewShopItem(shoppingList.id, name)
+        inOrder.verifyNoMoreInteractions()
+        assertThat(viewModel.stateLiveData.value).isEqualTo(currentState)
 
     }
 
@@ -160,6 +176,19 @@ class ListViewModelTest {
         assertThat(shopItem.quantity).isEqualTo(quantity - 1)
         verify(quantityView).text = shopItem.quantity.toString()
         verify(shoppingListRepository).updateShopItem(shopItem.id, shopItem.name, quantity - 1, shopItem.checked)
+    }
+
+    @Test
+    fun givenRepositoryThrows_whenOnQuantityDown_thenQuantityReverted() = runBlockingTest {
+        val quantity = 5
+        val quantityView: TextView = mock()
+        shopItem.quantity = quantity
+        given(shoppingListRepository.updateShopItem(any(), any(), any(), any())).willThrow(RuntimeException())
+
+        viewModel.onQuantityDown(quantityView, shopItem)
+
+        assertThat(shopItem.quantity).isEqualTo(quantity)
+        verify(quantityView).text = quantity.toString()
     }
 
     @Test
@@ -189,6 +218,19 @@ class ListViewModelTest {
     }
 
     @Test
+    fun givenRepositoryThrows_whenOnQuantityUp_thenQuantityReverted() = runBlockingTest {
+        val quantity = 5
+        val quantityView: TextView = mock()
+        shopItem.quantity = quantity
+        given(shoppingListRepository.updateShopItem(any(), any(), any(), any())).willThrow(RuntimeException())
+
+        viewModel.onQuantityUp(quantityView, shopItem)
+
+        assertThat(shopItem.quantity).isEqualTo(quantity)
+        verify(quantityView).text = quantity.toString()
+    }
+
+    @Test
     fun givenShopItem_whenOnDeleteClick_thenItemDeletedFromList() = runBlockingTest {
         givenShoppingList()
 
@@ -198,6 +240,20 @@ class ListViewModelTest {
             it == shopItem
         }
         assertThat(deletedItem).isNull()
+        verify(shoppingListRepository).deleteShopItem(shopItem.id)
+    }
+
+    @Test
+    fun givenRepositoryThrows_whenOnDeleteClick_thenItemNotDeletedFromList() = runBlockingTest {
+        givenShoppingList()
+        given(shoppingListRepository.deleteShopItem(shopItem.id)).willThrow(RuntimeException())
+
+        viewModel.onDeleteClick(shopItem)
+
+        val deletedItem = (viewModel.stateLiveData.value as Loaded).shoppingList.items.find {
+            it == shopItem
+        }
+        assertThat(deletedItem).isNotNull
         verify(shoppingListRepository).deleteShopItem(shopItem.id)
     }
 
@@ -221,6 +277,21 @@ class ListViewModelTest {
 
         assertThat(shopItem.checked).isFalse
         verify(shoppingListRepository).updateShopItem(shopItem.id, shopItem.name, shopItem.quantity, false)
+    }
+
+    @Test
+    fun givenRepositoryThrows_whenOnCheckboxChanged_themShopItemCheckDoesNotChange() = runBlockingTest {
+        givenShoppingList()
+        val checkBox: CheckBox = mock()
+        val item = (viewModel.stateLiveData.value as Loaded).shoppingList.items.first()
+        val checked = item.checked
+        given(checkBox.isChecked).willReturn(checked)
+        given(shoppingListRepository.updateShopItem(any(), any(), any(), any())).willThrow(RuntimeException())
+
+        viewModel.onCheckboxChecked(checkBox, item)
+
+        assertThat(item.checked).isEqualTo(checked)
+        verify(shoppingListRepository).updateShopItem(item.id, item.name, item.quantity, item.checked)
     }
 
     @Test
@@ -259,6 +330,27 @@ class ListViewModelTest {
     }
 
     @Test
+    fun givenRepositoryThrows_whenOnNameChanged_thenNameNotChanged() = runBlockingTest {
+        val editText: EditText = mock()
+        val editable: Editable = mock()
+        givenShoppingList()
+        val item = (viewModel.stateLiveData.value as Loaded).shoppingList.items.first()
+        val oldName = item.name
+        val changedName = "sample_name"
+        given(editable.toString()).willReturn(changedName)
+        given(editText.text).willReturn(editable)
+        given(editText.context).willReturn(context)
+        given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
+        given(shoppingListRepository.updateShopItem(any(), any(), any(), any())).willThrow(RuntimeException())
+
+        viewModel.onNameChanged(editText, item)
+
+        assertThat(item.name).isEqualTo(oldName)
+        verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
+        verify(shoppingListRepository).updateShopItem(item.id, changedName, item.quantity, item.checked)
+    }
+
+    @Test
     fun givenView_whenHideKeyboard_thenKeyboardHidden() {
         given(view.context).willReturn(context)
         given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
@@ -281,6 +373,23 @@ class ListViewModelTest {
         callbackCaptor.firstValue.invoke(newName)
 
         assertThat(viewModel.listName.get()).isEqualTo(newName)
+        verify(shoppingListRepository).updateShoppingList(any(), eq(newName))
+    }
+
+    @Test
+    fun givenRepositoryThrows_whenRenameDialogCallback_thenShoppingListNotRenamed() = runBlockingTest {
+        givenShoppingList()
+        val currentName = (viewModel.stateLiveData.value as Loaded).shoppingList.name
+        val newName = "new_name"
+        given(shoppingListRepository.updateShoppingList(any(), any())).willThrow(RuntimeException())
+
+        viewModel.showRenameDialog()
+
+        val callbackCaptor = argumentCaptor<(String) -> Unit>()
+        verify(dialogNavigator).displayRenameDialog(eq(currentName), callbackCaptor.capture(), eq(null), eq(true))
+        callbackCaptor.firstValue.invoke(newName)
+
+        assertThat(viewModel.listName.get()).isEqualTo(currentName)
         verify(shoppingListRepository).updateShoppingList(any(), eq(newName))
     }
 

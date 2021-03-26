@@ -24,7 +24,6 @@ import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRep
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
@@ -77,7 +76,15 @@ class ListViewModel @Inject constructor(
         shoppingList?.items?.add(createTemporaryNewItem(itemName))
         _stateLiveData.notifyObservers()
 
-        shoppingListRepository.createNewShopItem(listId, itemName)
+        try {
+            shoppingListRepository.createNewShopItem(listId, itemName)
+        } catch (e: Exception) {
+            shoppingList?.items?.removeLastOrNull()
+            _stateLiveData.notifyObservers()
+            // TODO: Toast to notify user something went wrong
+            return@launch
+        }
+
         val updatedShoppingList = shoppingListRepository.getShoppingListById(listId)
 
         if (updatedShoppingList != null)
@@ -94,33 +101,41 @@ class ListViewModel @Inject constructor(
 
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
 
-    private fun deleteList() = shoppingList?.let { shoppingList ->
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            withContext(coroutineContextProvider.IO) {
-                shoppingListRepository.deleteShoppingList(shoppingList.id)
-            }
-            mainNavigator.navigateUp()
-        }
+    private fun deleteList() = viewModelScope.launch(coroutineContextProvider.IO) {
+        shoppingList?.let { shoppingListRepository.deleteShoppingList(it.id) }
+        mainNavigator.navigateUp()
     }
 
     //region: ui interaction events
 
-    override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) = with(shopItem) {
-        if (quantity > 1) {
-            quantity -= 1
-            quantityView.text = quantity.toString()
-            viewModelScope.launch(coroutineContextProvider.IO) {
-                shoppingListRepository.updateShopItem(id, name, quantity, checked)
+    override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) {
+        if (shopItem.quantity <= 1) {
+            return
+        }
+
+        shopItem.quantity -= 1
+        quantityView.text = shopItem.quantity.toString()
+        viewModelScope.launch(coroutineContextProvider.IO) {
+            try {
+                with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
+            } catch (e: Exception) {
+                shopItem.quantity += 1
+                quantityView.text = shopItem.quantity.toString()
+                // TODO: Toast error
             }
         }
     }
 
     override fun onQuantityUp(quantityView: TextView, shopItem: ShopItem) {
-        with(shopItem) {
-            quantity += 1
-            quantityView.text = quantity.toString()
-            viewModelScope.launch(coroutineContextProvider.IO) {
-                shoppingListRepository.updateShopItem(id, name, quantity, checked)
+        shopItem.quantity += 1
+        quantityView.text = shopItem.quantity.toString()
+        viewModelScope.launch(coroutineContextProvider.IO) {
+            try {
+                with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
+            } catch (e: Exception) {
+                shopItem.quantity -= 1
+                quantityView.text = shopItem.quantity.toString()
+                // TODO: Toast Error
             }
         }
     }
@@ -129,15 +144,25 @@ class ListViewModel @Inject constructor(
         shoppingList?.items?.remove(shopItem)
         _stateLiveData.notifyObservers()
         viewModelScope.launch(coroutineContextProvider.IO) {
-            shoppingListRepository.deleteShopItem(shopItem.id)
+            try {
+                shoppingListRepository.deleteShopItem(shopItem.id)
+            } catch (e: Exception) {
+                shoppingList?.items?.add(shopItem)
+                _stateLiveData.notifyObservers()
+                // TODO: Toast Error
+            }
         }
     }
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        with(shopItem) {
-            checked = checkbox.isChecked
-            viewModelScope.launch(coroutineContextProvider.IO) {
-                shoppingListRepository.updateShopItem(id, name, quantity, checked)
+        shopItem.checked = checkbox.isChecked
+        viewModelScope.launch(coroutineContextProvider.IO) {
+            try {
+                with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
+            } catch (e: Exception) {
+                checkbox.isChecked = !checkbox.isChecked
+                shopItem.checked = checkbox.isChecked
+                // TODO: Toast error
             }
         }
     }
@@ -147,10 +172,14 @@ class ListViewModel @Inject constructor(
         if (shoppingList?.items?.contains(shopItem) == false)
             return
 
-        with(shopItem) {
-            name = editText.text.toString()
-            viewModelScope.launch(coroutineContextProvider.IO) {
-                shoppingListRepository.updateShopItem(id, name, quantity, checked)
+        val oldName = shopItem.name
+        shopItem.name = editText.text.toString()
+        viewModelScope.launch(coroutineContextProvider.IO) {
+            try {
+                with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
+            } catch (e: Exception) {
+                shopItem.name = oldName
+                // TODO: Toast Error
             }
         }
     }
@@ -187,9 +216,15 @@ class ListViewModel @Inject constructor(
     //endregion
 
     private fun renameShoppingList(newName: String) {
+        val oldName = listName.get()
         listName.set(newName)
         viewModelScope.launch(coroutineContextProvider.IO) {
-            shoppingListRepository.updateShoppingList(listId, newName)
+            try {
+                shoppingListRepository.updateShoppingList(listId, newName)
+            } catch (e: Exception) {
+                listName.set(oldName)
+                // TODO: Toast Error
+            }
         }
     }
 }
