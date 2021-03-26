@@ -54,12 +54,10 @@ class ListViewModelTest {
     @Before
     fun setUp() {
         viewModel = ListViewModel(shoppingListRepository, mainNavigator, dialogNavigator, resourceProvider, coroutineContextProvider)
-
-        givenShoppingList()
     }
 
     @Test
-    fun whenCreateNewShoppingList_shoppingListIsCreatedAndPosted() = runBlockingTest {
+    fun givenRepositoryLoads_whenCreateNewShoppingList_thenShoppingListIsCreatedAndPosted() = runBlockingTest {
         val name = "list_name"
         given(resourceProvider.getString(R.string.new_list)).willReturn(name)
         given(shoppingListRepository.createNewShoppingList(name)).willReturn(shoppingList)
@@ -68,6 +66,18 @@ class ListViewModelTest {
 
         assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(shoppingList))
         assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
+    }
+
+    @Test
+    fun givenRepositoryThrows_whenCreateNewShoppingList_thenPostErrorToLiveData() = runBlockingTest {
+        val exception = RuntimeException()
+        given(resourceProvider.getString(R.string.new_list)).willReturn("")
+        given(shoppingListRepository.createNewShoppingList(any())).willThrow(exception)
+
+        viewModel.createNewShoppingList()
+
+        assertThat(viewModel.stateLiveData.value).isEqualTo(Error(exception))
+        assertThat(viewModel.listName.get()).isNull()
     }
 
     @Test
@@ -101,15 +111,34 @@ class ListViewModelTest {
         assertThat(viewModel.stateLiveData.value).isEqualTo(Error(exception))
     }
 
-    /**
-     * TODO: Add tests for retry loading
-     */
+    @Test
+    fun givenListFailedToLoad_whenRetryLoadShoppingList_thenLoadShoppingListWithId() = runBlockingTest {
+        given(shoppingListRepository.getShoppingListById(shoppingList.id)).willThrow(RuntimeException())
+        viewModel.loadShoppingList(shoppingList.id)
+
+        viewModel.retryLoadShoppingList()
+
+        verify(shoppingListRepository, times(2)).getShoppingListById(shoppingList.id)
+    }
+
+    @Test
+    fun givenListFailedToCreate_whenRetryLoadShoppingList_thenRetryCreateShoppingList() = runBlockingTest {
+        val name = "new_list"
+        given(resourceProvider.getString(R.string.new_list)).willReturn(name)
+        given(shoppingListRepository.createNewShoppingList(name)).willThrow(RuntimeException())
+        viewModel.createNewShoppingList()
+
+        viewModel.retryLoadShoppingList()
+
+        verify(shoppingListRepository, times(2)).createNewShoppingList(name)
+    }
 
     @Test
     fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() = runBlockingTest {
         val itemName = "new_item"
         val newShopItems = mutableListOf(aShopItem().withName(itemName).build())
         val newShoppingList = aShoppingList().withItems(newShopItems).build()
+        givenShoppingList()
         given(shoppingListRepository.getShoppingListById(shoppingList.id)).willReturn(newShoppingList)
 
         viewModel.addItem(itemName)
@@ -161,6 +190,7 @@ class ListViewModelTest {
 
     @Test
     fun givenShopItem_whenOnDeleteClick_thenItemDeletedFromList() = runBlockingTest {
+        givenShoppingList()
 
         viewModel.onDeleteClick(shopItem)
 
@@ -215,6 +245,7 @@ class ListViewModelTest {
         val editText: EditText = mock()
         val editable: Editable = mock()
         val name = "sample_name"
+        givenShoppingList()
         given(editable.toString()).willReturn(name)
         given(editText.text).willReturn(editable)
         given(editText.context).willReturn(context)
@@ -239,6 +270,7 @@ class ListViewModelTest {
 
     @Test
     fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() = runBlockingTest {
+        givenShoppingList()
         val currentName = (viewModel.stateLiveData.value as Loaded).shoppingList.name
         val newName = "new_name"
 
