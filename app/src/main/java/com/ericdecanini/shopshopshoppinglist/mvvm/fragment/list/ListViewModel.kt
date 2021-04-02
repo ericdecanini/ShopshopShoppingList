@@ -13,13 +13,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericdecanini.dependencies.android.resources.ResourceProvider
 import com.ericdecanini.shopshopshoppinglist.R
-import com.ericdecanini.shopshopshoppinglist.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler
+import com.ericdecanini.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericdecanini.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -31,7 +32,8 @@ class ListViewModel @Inject constructor(
     private val mainNavigator: MainNavigator,
     private val dialogNavigator: DialogNavigator,
     private val resourceProvider: ResourceProvider,
-    private val coroutineContextProvider: CoroutineContextProvider
+    private val coroutineContextProvider: CoroutineContextProvider,
+    private val toastNavigator: ToastNavigator
 ) : ViewModel(), ShopItemEventHandler {
 
     private val _stateLiveData = MutableLiveData<ListViewState>(Initial)
@@ -57,12 +59,15 @@ class ListViewModel @Inject constructor(
     fun loadShoppingList(id: Int) = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
         listId = id
         _stateLiveData.postValue(Loading)
+
         val shoppingList = shoppingListRepository.getShoppingListById(id)
 
-        if (shoppingList != null)
+        if (shoppingList != null) {
             setShoppingList(shoppingList)
-        else
+        } else {
+            toastNavigator.show(R.string.list_not_found)
             mainNavigator.navigateUp()
+        }
     }
 
     fun retryLoadShoppingList() =
@@ -81,7 +86,7 @@ class ListViewModel @Inject constructor(
         } catch (e: Exception) {
             shoppingList?.items?.removeLastOrNull()
             _stateLiveData.notifyObservers()
-            // TODO: Toast to notify user something went wrong
+            toastNavigator.show(R.string.something_went_wrong)
             return@launch
         }
 
@@ -121,7 +126,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shopItem.quantity += 1
                 quantityView.text = shopItem.quantity.toString()
-                // TODO: Toast error
+                toastNavigator.show(R.string.something_went_wrong)
             }
         }
     }
@@ -135,7 +140,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shopItem.quantity -= 1
                 quantityView.text = shopItem.quantity.toString()
-                // TODO: Toast Error
+                toastNavigator.show(R.string.something_went_wrong)
             }
         }
     }
@@ -149,7 +154,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shoppingList?.items?.add(shopItem)
                 _stateLiveData.notifyObservers()
-                // TODO: Toast Error
+                toastNavigator.show(R.string.something_went_wrong)
             }
         }
     }
@@ -162,7 +167,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 checkbox.isChecked = !checkbox.isChecked
                 shopItem.checked = checkbox.isChecked
-                // TODO: Toast error
+                toastNavigator.show(R.string.something_went_wrong)
             }
         }
     }
@@ -179,7 +184,7 @@ class ListViewModel @Inject constructor(
                 with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
             } catch (e: Exception) {
                 shopItem.name = oldName
-                // TODO: Toast Error
+                toastNavigator.show(R.string.something_went_wrong)
             }
         }
     }
@@ -223,7 +228,7 @@ class ListViewModel @Inject constructor(
                 shoppingListRepository.updateShoppingList(listId, newName)
             } catch (e: Exception) {
                 listName.set(oldName)
-                // TODO: Toast Error
+                toastNavigator.show(R.string.something_went_wrong)
             }
         }
     }

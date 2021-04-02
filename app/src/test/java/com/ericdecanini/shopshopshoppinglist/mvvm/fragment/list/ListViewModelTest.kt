@@ -11,13 +11,14 @@ import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.dependencies.android.resources.ResourceProvider
 import com.ericdecanini.shopshopshoppinglist.R
-import com.ericdecanini.shopshopshoppinglist.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Error
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
+import com.ericdecanini.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericdecanini.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
 import com.ericdecanini.shopshopshoppinglist.util.TestCoroutineContextProvider
@@ -40,6 +41,7 @@ class ListViewModelTest {
     private val dialogNavigator: DialogNavigator = mock()
     private val resourceProvider: ResourceProvider = mock()
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
+    private val toastNavigator: ToastNavigator = mock()
 
     private val context: Context = mock()
     private val view: View = mock()
@@ -53,7 +55,14 @@ class ListViewModelTest {
 
     @Before
     fun setUp() {
-        viewModel = ListViewModel(shoppingListRepository, mainNavigator, dialogNavigator, resourceProvider, coroutineContextProvider)
+        viewModel = ListViewModel(
+            shoppingListRepository,
+            mainNavigator,
+            dialogNavigator,
+            resourceProvider,
+            coroutineContextProvider,
+            toastNavigator
+        )
     }
 
     @Test
@@ -99,6 +108,7 @@ class ListViewModelTest {
         viewModel.loadShoppingList(id)
 
         verify(mainNavigator).navigateUp()
+        verify(toastNavigator).show(R.string.list_not_found)
     }
 
     @Test
@@ -162,7 +172,7 @@ class ListViewModelTest {
         inOrder.verify(shoppingListRepository).createNewShopItem(shoppingList.id, name)
         inOrder.verifyNoMoreInteractions()
         assertThat(viewModel.stateLiveData.value).isEqualTo(currentState)
-
+        verify(toastNavigator).show(R.string.something_went_wrong)
     }
 
     @Test
@@ -189,6 +199,7 @@ class ListViewModelTest {
 
         assertThat(shopItem.quantity).isEqualTo(quantity)
         verify(quantityView).text = quantity.toString()
+        verify(toastNavigator).show(R.string.something_went_wrong)
     }
 
     @Test
@@ -228,6 +239,7 @@ class ListViewModelTest {
 
         assertThat(shopItem.quantity).isEqualTo(quantity)
         verify(quantityView).text = quantity.toString()
+        verify(toastNavigator).show(R.string.something_went_wrong)
     }
 
     @Test
@@ -255,6 +267,7 @@ class ListViewModelTest {
         }
         assertThat(deletedItem).isNotNull
         verify(shoppingListRepository).deleteShopItem(shopItem.id)
+        verify(toastNavigator).show(R.string.something_went_wrong)
     }
 
     @Test
@@ -292,6 +305,7 @@ class ListViewModelTest {
 
         assertThat(item.checked).isEqualTo(checked)
         verify(shoppingListRepository).updateShopItem(item.id, item.name, item.quantity, item.checked)
+        verify(toastNavigator).show(R.string.something_went_wrong)
     }
 
     @Test
@@ -348,6 +362,7 @@ class ListViewModelTest {
         assertThat(item.name).isEqualTo(oldName)
         verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
         verify(shoppingListRepository).updateShopItem(item.id, changedName, item.quantity, item.checked)
+        verify(toastNavigator).show(R.string.something_went_wrong)
     }
 
     @Test
@@ -391,6 +406,7 @@ class ListViewModelTest {
 
         assertThat(viewModel.listName.get()).isEqualTo(currentName)
         verify(shoppingListRepository).updateShoppingList(any(), eq(newName))
+        verify(toastNavigator).show(R.string.something_went_wrong)
     }
 
     @Test

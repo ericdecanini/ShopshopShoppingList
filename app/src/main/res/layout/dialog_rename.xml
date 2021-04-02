@@ -6,7 +6,7 @@
     <data>
         <variable
             name="controller"
-            type="com.ericdecanini.shopshopshoppinglist.dialogs.rename.RenameDialogController"
+            type="com.ericdecanini.shopshopshoppinglist.ui.dialogs.rename.RenameDialogController"
             />
     </data>
 

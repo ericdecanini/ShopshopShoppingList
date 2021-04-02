@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.dialogs.rename
+package com.ericdecanini.shopshopshoppinglist.ui.dialogs.rename
 
 import androidx.databinding.ObservableField
 import androidx.fragment.app.DialogFragment

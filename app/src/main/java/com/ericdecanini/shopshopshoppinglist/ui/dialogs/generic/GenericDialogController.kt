@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.dialogs.generic
+package com.ericdecanini.shopshopshoppinglist.ui.dialogs.generic
 
 import androidx.fragment.app.DialogFragment
 

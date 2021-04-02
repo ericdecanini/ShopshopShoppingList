@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.dialogs
+package com.ericdecanini.shopshopshoppinglist.ui.dialogs
 
 interface DialogNavigator {
 
