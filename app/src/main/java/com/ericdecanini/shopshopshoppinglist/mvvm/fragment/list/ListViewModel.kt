@@ -225,7 +225,8 @@ class ListViewModel @Inject constructor(
         listName.set(newName)
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
-                shoppingListRepository.updateShoppingList(listId, newName)
+                val shoppingList = shoppingListRepository.updateShoppingList(listId, newName)
+                setShoppingList(requireNotNull(shoppingList))
             } catch (e: Exception) {
                 listName.set(oldName)
                 toastNavigator.show(R.string.something_went_wrong)

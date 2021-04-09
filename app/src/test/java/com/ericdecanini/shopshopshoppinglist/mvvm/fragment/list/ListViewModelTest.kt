@@ -380,6 +380,8 @@ class ListViewModelTest {
         givenShoppingList()
         val currentName = (viewModel.stateLiveData.value as Loaded).shoppingList.name
         val newName = "new_name"
+        val shoppingListWithNewName = shoppingList.copy(name = newName)
+        given(shoppingListRepository.updateShoppingList(shoppingList.id, newName)).willReturn(shoppingListWithNewName)
 
         viewModel.showRenameDialog()
 
@@ -388,7 +390,24 @@ class ListViewModelTest {
         callbackCaptor.firstValue.invoke(newName)
 
         assertThat(viewModel.listName.get()).isEqualTo(newName)
-        verify(shoppingListRepository).updateShoppingList(any(), eq(newName))
+        assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(shoppingListWithNewName))
+    }
+
+    @Test
+    fun givenUpdateReturnsNull_whenRenameDialogCallback_thenShoppingListNotRenamed() = runBlockingTest {
+        givenShoppingList()
+        val currentName = (viewModel.stateLiveData.value as Loaded).shoppingList.name
+        val newName = "new_name"
+        given(shoppingListRepository.updateShoppingList(shoppingList.id, newName)).willReturn(null)
+
+        viewModel.showRenameDialog()
+
+        val callbackCaptor = argumentCaptor<(String) -> Unit>()
+        verify(dialogNavigator).displayRenameDialog(eq(currentName), callbackCaptor.capture(), eq(null), eq(true))
+        callbackCaptor.firstValue.invoke(newName)
+
+        assertThat(viewModel.listName.get()).isEqualTo(currentName)
+        verify(toastNavigator).show(R.string.something_went_wrong)
     }
 
     @Test
