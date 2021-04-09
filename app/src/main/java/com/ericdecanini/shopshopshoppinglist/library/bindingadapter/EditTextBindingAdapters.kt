@@ -22,3 +22,12 @@ fun EditText.onFocusLost(callback: UiEventListeners.OnFocusLostListener) {
         if (!hasFocus) { callback.onFocusLost(this) }
     }
 }
+
+@BindingAdapter("app:onFocusSelectEnd")
+fun EditText.onFocusSelectEnd(selectEnd: Boolean) {
+    if (selectEnd) {
+        setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) { setSelection(text.length) }
+        }
+    }
+}

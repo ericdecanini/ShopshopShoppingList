@@ -8,7 +8,6 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
-- Add error handling to coroutines
-- Create app icon
-- Add toast when list fragment returns null list
 - Fix remaining bugs
+- Add admob
+- Create app icon

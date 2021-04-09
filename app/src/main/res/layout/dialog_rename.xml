@@ -43,8 +43,10 @@
         android:layout_marginTop="24dp"
         android:layout_marginStart="@dimen/dialog_body_horizontal_padding"
         android:layout_marginEnd="@dimen/dialog_body_horizontal_padding"
+        app:onFocusSelectEnd="@{true}"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title" />
+
     <Button
         android:id="@+id/negative_button"
         style="@style/DialogButton"
