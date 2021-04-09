@@ -8,6 +8,6 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
-- Fix remaining bugs
-- Add admob
+- Add Crashlytics
+- Add Admob
 - Create app icon
