@@ -2,6 +2,12 @@
     <string name="app_name">Shopshop Shopping List</string>
     <string name="app_name_short">Shopshop</string>
 
+    <!-- Admob -->
+    <!-- TODO: Change to a non-test id -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <!-- TODO: Change to non-test id -->
+    <string name="app_open_ad_unit_id">ca-app-pub-3940256099942544/3419835294</string>
+
     <!-- Generics -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ericdecanini.shopshopshoppinglist">
 
     <application
@@ -9,7 +10,12 @@
         android:label=""
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ShopshopShoppingList">
+        android:theme="@style/Theme.ShopshopShoppingList"
+        tools:ignore="AllowBackup">
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_application_id" />
 
         <activity
             android:name="com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainActivity"

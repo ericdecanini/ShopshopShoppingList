@@ -3,6 +3,7 @@ package com.ericdecanini.shopshopshoppinglist
 import com.ericdecanini.shopshopshoppinglist.di.DaggerAppComponent
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonInitializer
+import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import javax.inject.Inject
@@ -18,6 +19,7 @@ class ShopshopApplication: DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        MobileAds.initialize(this)
         pythonInitializer.initialize()
     }
 }
