@@ -8,6 +8,7 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
-- Add Crashlytics
 - Add Admob
 - Create app icon
+- Add Firebase Messaging
+- Implement free and premium versions
