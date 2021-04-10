@@ -13,4 +13,3 @@ TODO:
 - Add Firebase Messaging
 - Add autocomplete on list fragment add item
 - Implement free and premium versions
-- Fix delete list bug

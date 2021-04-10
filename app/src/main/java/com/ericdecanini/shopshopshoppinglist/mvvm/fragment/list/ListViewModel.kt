@@ -25,6 +25,7 @@ import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRep
 import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
@@ -108,7 +109,7 @@ class ListViewModel @Inject constructor(
 
     private fun deleteList() = viewModelScope.launch(coroutineContextProvider.IO) {
         shoppingList?.let { shoppingListRepository.deleteShoppingList(it.id) }
-        mainNavigator.navigateUp()
+        withContext(coroutineContextProvider.Main) { mainNavigator.navigateUp() }
     }
 
     //region: ui interaction events
