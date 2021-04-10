@@ -22,14 +22,13 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        resValue("string", "admob_application_id", properties['admob.applicationId'])
+        resValue("string", "admob_banner_ad_id", properties['admob.bannerAdId'])
+        resValue("string", "admob_app_open_ad_id", properties['admob.appOpenAdId'])
     }
 
     buildTypes {
-        debug {
-            resValue("string", "admob_application_id", properties['admob.applicationId'])
-            resValue("string", "admob_banner_ad_id", properties['admob.bannerAdId'])
-            resValue("string", "admob_app_open_ad_id", properties['admob.appOpenAdId'])
-        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
