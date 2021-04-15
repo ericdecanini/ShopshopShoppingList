@@ -13,7 +13,6 @@ import com.ericdecanini.shopshopshoppinglist.BR
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
-import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Error
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
@@ -44,7 +43,6 @@ class ListFragment : DaggerFragment() {
         binding.setVariable(BR.viewmodel, viewModel)
         binding.setVariable(BR.newitem, binding.addItemEdit)
         binding.lifecycleOwner = this
-
         setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
@@ -65,7 +63,6 @@ class ListFragment : DaggerFragment() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
             when(state) {
                 is Loaded -> { renderShopItems(state.shoppingList.items) }
-                is Error -> { /* TODO: Implement */ }
                 else -> { /* do nothing */ }
             }
         }
