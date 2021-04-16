@@ -74,7 +74,7 @@ class AppOpenAdManager private constructor(
     }
 
     @OnLifecycleEvent(ON_START)
-    fun onCreate() {
+    fun onStart() {
         showAdIfAvailable()
     }
 
