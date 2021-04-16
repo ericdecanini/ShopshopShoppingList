@@ -8,13 +8,11 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
-- Optimise AppOpenAdsManager (get unit id from build config)
-- Check tablet UI
+- Create tablet UI
 - Create app icon
 - Add Firebase Messaging
 - Add autocomplete on list fragment add item
 - Add clear checked function
 - Capitalised inputType on EditText
-- Check app open ad
 - Optimise item delete
 - Implement free and premium versions
