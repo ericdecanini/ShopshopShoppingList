@@ -79,7 +79,7 @@
                 android:hint="@string/new_item"
                 android:background="@android:color/transparent"
                 android:autofillHints="@string/new_item"
-                android:inputType="text"
+                android:inputType="textCapSentences"
                 android:text="@={viewmodel.addItemText}"
                 app:onFocusLost="@{(view) -> viewmodel.hideKeyboard(view)}"
                 app:returnKeyClick="@{addItemButton}"

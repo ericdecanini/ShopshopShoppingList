@@ -12,7 +12,6 @@ TODO:
 - Create app icon
 - Add Firebase Messaging
 - Add autocomplete on list fragment add item
-- Add clear checked function
-- Capitalised inputType on EditText
+- Add clear all checked function
 - Optimise item delete
 - Implement free and premium versions
