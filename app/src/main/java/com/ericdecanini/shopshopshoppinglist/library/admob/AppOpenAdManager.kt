@@ -14,7 +14,7 @@ import com.google.android.gms.ads.appopen.AppOpenAd
 import com.google.android.gms.ads.appopen.AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
 
-class AppOpenAdsManager private constructor(
+class AppOpenAdManager private constructor(
     private val application: Application
 ) : LifecycleObserver, Application.ActivityLifecycleCallbacks {
 
@@ -41,7 +41,7 @@ class AppOpenAdsManager private constructor(
 
         loadCallback = object: AppOpenAdLoadCallback() {
             override fun onAdLoaded(ad: AppOpenAd) {
-                this@AppOpenAdsManager.appOpenAd = ad
+                this@AppOpenAdManager.appOpenAd = ad
             }
 
             override fun onAdFailedToLoad(error: LoadAdError) {
@@ -56,7 +56,7 @@ class AppOpenAdsManager private constructor(
         if (!isShowingAd && isAdAvailable) {
             val fullScreenContentCallback: FullScreenContentCallback = object: FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
-                    this@AppOpenAdsManager.appOpenAd = null
+                    this@AppOpenAdManager.appOpenAd = null
                     isShowingAd = false
                     fetchAd()
                 }
@@ -74,7 +74,7 @@ class AppOpenAdsManager private constructor(
     }
 
     @OnLifecycleEvent(ON_START)
-    fun onStart() {
+    fun onCreate() {
         showAdIfAvailable()
     }
 
@@ -107,10 +107,11 @@ class AppOpenAdsManager private constructor(
     }
 
     companion object {
+        // TODO: Replace with actual ad unit id
         private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/3419835294"
 
         fun initialize(application: Application) {
-            AppOpenAdsManager(application)
+            AppOpenAdManager(application)
         }
     }
 }

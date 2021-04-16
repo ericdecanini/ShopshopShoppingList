@@ -8,6 +8,7 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
+- Optimise AppOpenAdsManager (get unit id from build config)
 - Check tablet UI
 - Create app icon
 - Add Firebase Messaging

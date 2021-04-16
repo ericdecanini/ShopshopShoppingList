@@ -1,7 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist
 
 import com.ericdecanini.shopshopshoppinglist.di.DaggerAppComponent
-import com.ericdecanini.shopshopshoppinglist.library.admob.AppOpenAdsManager
+import com.ericdecanini.shopshopshoppinglist.library.admob.AppOpenAdManager
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonInitializer
 import com.google.android.gms.ads.MobileAds
@@ -21,7 +21,7 @@ class ShopshopApplication: DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
         MobileAds.initialize(this)
-        AppOpenAdsManager.initialize(this)
+        AppOpenAdManager.initialize(this)
         pythonInitializer.initialize()
     }
 }
