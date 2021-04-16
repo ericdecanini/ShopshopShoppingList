@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.ericdecanini.shopshopshoppinglist.util.AppSessionVariables
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
@@ -68,6 +69,7 @@ class AppOpenAdManager private constructor(
 
             appOpenAd?.fullScreenContentCallback = fullScreenContentCallback
             appOpenAd?.show(currentActivity!!)
+            AppSessionVariables.hasAppOpenAdDisplayed = true
         } else {
             fetchAd()
         }
@@ -75,7 +77,8 @@ class AppOpenAdManager private constructor(
 
     @OnLifecycleEvent(ON_START)
     fun onStart() {
-        showAdIfAvailable()
+        if (!AppSessionVariables.hasAppOpenAdDisplayed)
+            showAdIfAvailable()
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
