@@ -12,6 +12,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.dependencies.android.resources.ResourceProvider
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
+import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Error
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
@@ -274,9 +275,11 @@ class ListViewModelTest {
     fun givenCheckboxIsChecked_whenOnCheckboxChanged_themShopItemIsChecked() = runBlockingTest {
         val checkBox: CheckBox = mock()
         given(checkBox.isChecked).willReturn(true)
+        givenShoppingList()
 
         viewModel.onCheckboxChecked(checkBox, shopItem)
 
+        val shopItem = (viewModel.stateLiveData.value as Loaded).shoppingList.items.first { it.id == shopItem.id }
         assertThat(shopItem.checked).isTrue
         verify(shoppingListRepository).updateShopItem(shopItem.id, shopItem.name, shopItem.quantity, true)
     }
@@ -429,6 +432,37 @@ class ListViewModelTest {
     }
 
     @Test
+    fun givenShoppingListWithCheckedItems_whenClearChecked_thenCheckedItemsCleared() = runBlockingTest {
+        val uncheckedItem = shopItem.copy(checked = false)
+        val checkedItem = shopItem.copy(checked = true)
+        givenShoppingList(shoppingList.copy(items = mutableListOf(uncheckedItem, checkedItem)))
+
+        viewModel.clearChecked()
+
+        assertThat((viewModel.stateLiveData.value as Loaded).shoppingList.items).isEqualTo(listOf(uncheckedItem))
+    }
+
+    @Test
+    fun givenShoppingListWithNoCheckedItems_whenClearChecked_thenNoItemsCleared() = runBlockingTest {
+        val uncheckedItem = shopItem.copy(checked = false)
+        givenShoppingList(shoppingList.copy(items = mutableListOf(uncheckedItem, uncheckedItem)))
+
+        viewModel.clearChecked()
+
+        assertThat((viewModel.stateLiveData.value as Loaded).shoppingList.items).isEqualTo(listOf(uncheckedItem, uncheckedItem))
+    }
+
+    @Test
+    fun givenShoppingListWithAllCheckedItems_whenClearChecked_thenAllItemsCleared() = runBlockingTest {
+        val checkedItems = shopItem.copy(checked = true)
+        givenShoppingList(shoppingList.copy(items = mutableListOf(checkedItems, checkedItems)))
+
+        viewModel.clearChecked()
+
+        assertThat((viewModel.stateLiveData.value as Loaded).shoppingList.items).isEqualTo(emptyList<ShopItem>())
+    }
+
+    @Test
     fun whenOnBackButtonPressed_thenNavigateUp() {
 
         viewModel.onBackButtonPressed()
@@ -436,7 +470,8 @@ class ListViewModelTest {
         verify(mainNavigator).navigateUp()
     }
 
-    private fun givenShoppingList() = runBlockingTest {
+    private fun givenShoppingList(shoppingListOverride: ShoppingList? = null) = runBlockingTest {
+        val shoppingList = shoppingListOverride ?: shoppingList
         given(shoppingListRepository.getShoppingListById(shoppingList.id)).willReturn(shoppingList)
         viewModel.loadShoppingList(shoppingList.id)
     }

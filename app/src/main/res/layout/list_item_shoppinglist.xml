@@ -17,6 +17,9 @@
         android:layout_height="wrap_content"
         android:onClick="@{() -> handler.onShoppingListClick(viewstate)}"
         android:descendantFocusability="blocksDescendants"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="8dp"
         android:paddingBottom="8dp">
 
         <androidx.cardview.widget.CardView
@@ -24,7 +27,6 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             android:elevation="4dp"
-            android:layout_margin="8dp"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout

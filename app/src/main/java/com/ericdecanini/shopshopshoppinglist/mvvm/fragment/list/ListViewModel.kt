@@ -161,13 +161,17 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        shopItem.checked = checkbox.isChecked
+        if (shopItem.id == -1)
+            return
+
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
+                getShopItemWithId(shopItem.id)?.checked = checkbox.isChecked
                 with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
             } catch (e: Exception) {
-                checkbox.isChecked = !checkbox.isChecked
-                shopItem.checked = checkbox.isChecked
+                val checked = getShopItemWithId(shopItem.id)?.checked
+
+                withContext(coroutineContextProvider.Main) { checkbox.isChecked = checked ?: false }
                 toastNavigator.show(R.string.something_went_wrong)
             }
         }
@@ -215,6 +219,17 @@ class ListViewModel @Inject constructor(
         )
     }
 
+    fun clearChecked() = (stateLiveData.value as? Loaded)?.shoppingList?.let { shoppingList ->
+        viewModelScope.launch(coroutineContextProvider.IO) {
+            shoppingList.items.filter { it.checked }.forEach {
+                shoppingListRepository.deleteShopItem(it.id)
+                shoppingList.items.remove(it)
+            }
+
+            _stateLiveData.notifyObservers()
+        }
+    }
+
     fun onBackButtonPressed() {
         mainNavigator.navigateUp()
     }
@@ -234,4 +249,9 @@ class ListViewModel @Inject constructor(
             }
         }
     }
+
+    private fun getShopItemWithId(id: Int) = (stateLiveData.value as? Loaded)
+        ?.shoppingList
+        ?.items
+        ?.firstOrNull { it.id == id }
 }
