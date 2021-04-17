@@ -81,7 +81,6 @@
                 android:autofillHints="@string/new_item"
                 android:inputType="textCapSentences"
                 android:text="@={viewmodel.addItemText}"
-                app:onFocusLost="@{(view) -> viewmodel.hideKeyboard(view)}"
                 app:returnKeyClick="@{addItemButton}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/add_item_button"
