@@ -12,5 +12,4 @@ TODO:
 - Create app icon
 - Add Firebase Messaging
 - Add autocomplete on list fragment add item
-- Optimise item delete
 - Implement free and premium versions

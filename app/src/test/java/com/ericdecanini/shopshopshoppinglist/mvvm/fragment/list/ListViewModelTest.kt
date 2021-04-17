@@ -9,6 +9,7 @@ import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.ericdecanini.dependencies.android.resources.ResourceProvider
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
@@ -460,6 +461,15 @@ class ListViewModelTest {
         viewModel.clearChecked()
 
         assertThat((viewModel.stateLiveData.value as Loaded).shoppingList.items).isEqualTo(emptyList<ShopItem>())
+    }
+
+    @Test
+    fun givenSwipeRevealLayout_whenOnFocusLost_thenCloseSwipeRevealLayout() {
+        val swipeRevealLayout: SwipeRevealLayout = mock()
+
+        viewModel.onFocusLost(swipeRevealLayout)
+
+        verify(swipeRevealLayout).close(true)
     }
 
     @Test

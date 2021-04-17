@@ -104,8 +104,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/shop_list"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:layout_constraintVertical_bias="0"
             app:layout_constraintTop_toBottomOf="@id/add_item_layout"
             app:layout_constraintBottom_toTopOf="@id/clear_checked_button"
             tools:listitem="@layout/list_item_shopitem"

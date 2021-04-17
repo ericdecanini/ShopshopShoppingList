@@ -2,11 +2,16 @@ package com.ericdecanini.shopshopshoppinglist.util
 
 import android.widget.CheckBox
 import android.widget.EditText
+import com.chauthai.swipereveallayout.SwipeRevealLayout
 
 class UiEventListeners {
 
-  interface OnFocusLostListener {
-    fun onFocusLost(view: EditText)
+  interface OnEditTextEventListener {
+    fun onEvent(view: EditText)
+  }
+
+  interface OnSwipeRevealLayoutEvent {
+    fun onEvent(view: SwipeRevealLayout)
   }
 
   interface OnCheckChangedListener {

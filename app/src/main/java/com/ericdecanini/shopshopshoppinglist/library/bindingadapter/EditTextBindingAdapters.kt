@@ -17,9 +17,9 @@ fun EditText.returnKeyClickView(view: View) {
 }
 
 @BindingAdapter("app:onFocusLost")
-fun EditText.onFocusLost(callback: UiEventListeners.OnFocusLostListener) {
+fun EditText.onFocusLost(callback: UiEventListeners.OnEditTextEventListener) {
     setOnFocusChangeListener { _, hasFocus ->
-        if (!hasFocus) { callback.onFocusLost(this) }
+        if (!hasFocus) { callback.onEvent(this) }
     }
 }
 

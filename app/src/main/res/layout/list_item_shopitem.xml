@@ -24,6 +24,8 @@
         android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/shopitem_height"
+        app:onFocusLost="@{(view) -> handler.onFocusLost(view)}"
+        app:focusOnSlide="@{true}"
         app:mode="same_level"
         app:dragEdge="right">
 

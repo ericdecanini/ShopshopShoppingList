@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.ericdecanini.dependencies.android.resources.ResourceProvider
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShopItem
@@ -192,6 +193,10 @@ class ListViewModel @Inject constructor(
                 toastNavigator.show(R.string.something_went_wrong)
             }
         }
+    }
+
+    override fun onFocusLost(swipeRevealLayout: SwipeRevealLayout) {
+        swipeRevealLayout.close(true)
     }
 
     fun hideKeyboard(view: View) {
