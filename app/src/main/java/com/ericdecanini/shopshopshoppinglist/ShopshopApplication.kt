@@ -4,6 +4,7 @@ import com.ericdecanini.shopshopshoppinglist.di.DaggerAppComponent
 import com.ericdecanini.shopshopshoppinglist.library.admob.AppOpenAdManager
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonInitializer
+import com.ericdecanini.shopshopshoppinglist.util.TopActivityProvider
 import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
@@ -13,6 +14,7 @@ class ShopshopApplication: DaggerApplication() {
 
     @Inject lateinit var pythonInitializer: PythonInitializer
     @Inject lateinit var pythonDatabaseWrapper: PythonDatabaseWrapper
+    @Inject lateinit var topActivityProvider: TopActivityProvider
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerAppComponent.factory().create(this)
@@ -23,5 +25,6 @@ class ShopshopApplication: DaggerApplication() {
         MobileAds.initialize(this)
         AppOpenAdManager.initialize(this)
         pythonInitializer.initialize()
+        topActivityProvider.setupWith(this)
     }
 }

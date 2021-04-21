@@ -5,6 +5,7 @@ import com.ericdecanini.shopshopshoppinglist.di.module.dialog.UiModule
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainActivity
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigatorImpl
+import com.ericdecanini.shopshopshoppinglist.util.TopActivityProvider
 import dagger.Module
 import dagger.Provides
 
@@ -18,6 +19,7 @@ class MainModule {
     fun provideMainActivity(activity: MainActivity): AppCompatActivity = activity
 
     @Provides
-    fun provideMainNavigator(activity: AppCompatActivity): MainNavigator = MainNavigatorImpl(activity)
+    fun provideMainNavigator(topActivityProvider: TopActivityProvider): MainNavigator
+            = MainNavigatorImpl(topActivityProvider)
 
 }

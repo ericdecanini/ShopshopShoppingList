@@ -81,6 +81,7 @@
                 android:autofillHints="@string/new_item"
                 android:inputType="textCapSentences"
                 android:text="@={viewmodel.addItemText}"
+                android:nextFocusDown="@id/add_item_edit"
                 app:returnKeyClick="@{addItemButton}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/add_item_button"

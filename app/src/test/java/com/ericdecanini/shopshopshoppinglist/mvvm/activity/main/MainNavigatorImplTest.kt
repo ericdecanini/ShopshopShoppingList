@@ -2,14 +2,12 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeFragmentDirections
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.mockkStatic
-import io.mockk.slot
-import io.mockk.verify
+import com.ericdecanini.shopshopshoppinglist.util.TopActivityProvider
+import io.mockk.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -18,14 +16,18 @@ import org.junit.jupiter.api.assertThrows
 class MainNavigatorImplTest {
 
     private val activity: AppCompatActivity = mockk()
-    private val mainNavigator = MainNavigatorImpl(activity)
+    private val topActivityProvider: TopActivityProvider = mockk()
+    private val mainNavigator = MainNavigatorImpl(topActivityProvider)
 
-    private val navController: NavController = mockk(relaxed = true)
+    private val navController: NavController = mockk()
 
     @Before
     fun setUp() {
         mockkStatic(Navigation::class)
         every { Navigation.findNavController(any(), any()) } returns navController
+        every { navController.navigate(any<NavDirections>()) } returns Unit
+        every { navController.navigateUp() } returns true
+        every { topActivityProvider.getTopActivity() } returns activity
     }
 
     @Test

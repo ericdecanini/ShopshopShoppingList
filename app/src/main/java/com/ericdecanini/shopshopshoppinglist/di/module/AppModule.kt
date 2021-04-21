@@ -4,10 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.res.Resources
 import com.ericdecanini.shopshopshoppinglist.di.module.activity.ActivityBuildersModule
-import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
-import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProviderImpl
-import com.ericdecanini.shopshopshoppinglist.util.ViewStateProvider
-import com.ericdecanini.shopshopshoppinglist.util.ViewStateProviderImpl
+import com.ericdecanini.shopshopshoppinglist.util.*
 import dagger.Module
 import dagger.Provides
 import dagger.android.support.AndroidSupportInjectionModule
@@ -25,6 +22,10 @@ class AppModule {
     @Singleton
     @Provides
     fun provideViewStateProvider(): ViewStateProvider = ViewStateProviderImpl()
+
+    @Singleton
+    @Provides
+    fun provideTopActivityProvider(): TopActivityProvider = TopActivityProviderImpl()
 
     @Singleton
     @Provides
