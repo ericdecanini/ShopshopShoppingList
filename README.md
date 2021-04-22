@@ -10,7 +10,6 @@ https://www.ericdecanini.com/
 TODO:
 - Create tablet UI
 - Create a better splash screen for empty
-- Move done items to the bottom
 - Create app icon
 - Add Firebase Messaging
 - Add autocomplete on list fragment add item
