@@ -8,8 +8,9 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
-- Create a better splash screen for empty
 - Create app icon
-- Add Firebase Messaging
 - Add autocomplete on list fragment add item
 - Implement free and premium versions
+
+Optional:
+- Create a better splash screen for empty

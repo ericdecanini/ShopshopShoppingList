@@ -1,7 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist
 
 import com.ericdecanini.shopshopshoppinglist.di.DaggerAppComponent
-import com.ericdecanini.shopshopshoppinglist.library.admob.AppOpenAdManager
+import com.ericdecanini.shopshopshoppinglist.library.firebase.admob.AppOpenAdManager
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonInitializer
 import com.ericdecanini.shopshopshoppinglist.util.TopActivityProvider

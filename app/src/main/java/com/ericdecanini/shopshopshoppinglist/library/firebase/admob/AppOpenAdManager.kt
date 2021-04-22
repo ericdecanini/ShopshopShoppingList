@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.library.admob
+package com.ericdecanini.shopshopshoppinglist.library.firebase.admob
 
 import android.app.Activity
 import android.app.Application

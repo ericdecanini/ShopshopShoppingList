@@ -91,6 +91,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:18.0.2'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:17.4.1'
     implementation 'com.google.firebase:firebase-ads:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:21.1.0'
 
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
