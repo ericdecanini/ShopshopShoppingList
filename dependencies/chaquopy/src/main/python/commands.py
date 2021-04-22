@@ -49,7 +49,7 @@ class Commands:
         shopping_lists = self.dict_from_row()
         for shopping_list in shopping_lists:
             self.cursor.execute(
-                f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {shopping_list['id']}"
+                f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {shopping_list['id']} ORDER BY checked ASC"
             )
             shop_items = self.dict_from_row()
             shopping_list['items'] = shop_items
@@ -63,7 +63,7 @@ class Commands:
         shopping_list = dict(self.cursor.fetchone())
 
         self.cursor.execute(
-            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {shopping_list['id']}"
+            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {shopping_list['id']} ORDER BY checked ASC"
         )
         shop_items = self.dict_from_row()
         shopping_list['items'] = shop_items
@@ -72,7 +72,7 @@ class Commands:
 
     def get_shopitems(self, list_id):
         self.cursor.execute(
-            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {list_id}"
+            f"SELECT * FROM {TABLE_SHOPITEMS} WHERE list_id = {list_id} ORDER BY checked ASC"
         )
         return json.dumps(self.dict_from_row())
 

@@ -81,13 +81,13 @@ class ListViewModel @Inject constructor(
     fun addItem(itemName: String) = viewModelScope.launch(coroutineContextProvider.IO) {
         addItemText.set("")
         shoppingList?.items?.add(createTemporaryNewItem(itemName))
-        _stateLiveData.notifyObservers()
+        sortListAndPost()
 
         try {
             shoppingListRepository.createNewShopItem(listId, itemName)
         } catch (e: Exception) {
             shoppingList?.items?.removeLastOrNull()
-            _stateLiveData.notifyObservers()
+            sortListAndPost()
             toastNavigator.show(R.string.something_went_wrong)
             return@launch
         }
@@ -111,6 +111,11 @@ class ListViewModel @Inject constructor(
     private fun deleteList() = viewModelScope.launch(coroutineContextProvider.IO) {
         shoppingList?.let { shoppingListRepository.deleteShoppingList(it.id) }
         withContext(coroutineContextProvider.Main) { mainNavigator.navigateUp() }
+    }
+
+    private fun sortListAndPost() {
+        shoppingList?.items?.sortBy { it.checked }
+        _stateLiveData.notifyObservers()
     }
 
     //region: ui interaction events
@@ -149,13 +154,13 @@ class ListViewModel @Inject constructor(
 
     override fun onDeleteClick(shopItem: ShopItem) {
         shoppingList?.items?.remove(shopItem)
-        _stateLiveData.notifyObservers()
+        sortListAndPost()
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
                 shoppingListRepository.deleteShopItem(shopItem.id)
             } catch (e: Exception) {
                 shoppingList?.items?.add(shopItem)
-                _stateLiveData.notifyObservers()
+                sortListAndPost()
                 toastNavigator.show(R.string.something_went_wrong)
             }
         }
@@ -165,13 +170,14 @@ class ListViewModel @Inject constructor(
         if (shopItem.id == -1)
             return
 
+        getShopItemWithId(shopItem.id)?.checked = checkbox.isChecked
+        sortListAndPost()
+
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
-                getShopItemWithId(shopItem.id)?.checked = checkbox.isChecked
                 with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
             } catch (e: Exception) {
                 val checked = getShopItemWithId(shopItem.id)?.checked
-
                 withContext(coroutineContextProvider.Main) { checkbox.isChecked = checked ?: false }
                 toastNavigator.show(R.string.something_went_wrong)
             }
@@ -231,7 +237,7 @@ class ListViewModel @Inject constructor(
                 shoppingList.items.remove(it)
             }
 
-            _stateLiveData.notifyObservers()
+            sortListAndPost()
         }
     }
 

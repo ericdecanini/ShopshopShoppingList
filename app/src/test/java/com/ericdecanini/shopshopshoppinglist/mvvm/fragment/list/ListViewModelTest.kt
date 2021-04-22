@@ -297,6 +297,20 @@ class ListViewModelTest {
     }
 
     @Test
+    fun givenCheckboxIsChecked_whenOnCheckboxChanged_themCheckedItemIsMovedToBottom() = runBlockingTest {
+        val checkBox: CheckBox = mock()
+        given(checkBox.isChecked).willReturn(true)
+        val shopItemWithUniqueId = shopItem.copy(id = 5)
+        val shoppingList = aShoppingList().withItems(mutableListOf(shopItem, shopItemWithUniqueId, shopItem)).build()
+        givenShoppingList(shoppingList)
+
+        viewModel.onCheckboxChecked(checkBox, shopItemWithUniqueId)
+
+        val lastItem = (viewModel.stateLiveData.value as Loaded).shoppingList.items.last()
+        assertThat(lastItem).isEqualTo(shopItemWithUniqueId)
+    }
+
+    @Test
     fun givenRepositoryThrows_whenOnCheckboxChanged_themShopItemCheckDoesNotChange() = runBlockingTest {
         givenShoppingList()
         val checkBox: CheckBox = mock()
