@@ -170,15 +170,20 @@ class ListViewModel @Inject constructor(
         if (shopItem.id == -1)
             return
 
-        getShopItemWithId(shopItem.id)?.checked = checkbox.isChecked
-        sortListAndPost()
+        var item: ShopItem? = null
+
+        getShopItems()?.let { shopItems ->
+            val shopItemIndex = shopItems.indexOfFirst { it.id == shopItem.id }
+            item = shopItems.firstOrNull { it.id == shopItem.id }?.copy(checked = checkbox.isChecked)
+            item?.let { shopItems[shopItemIndex] = it }
+            sortListAndPost()
+        }
 
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
-                with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
+                item?.let { shoppingListRepository.updateShopItem(it.id, it.name, it.quantity, it.checked) }
             } catch (e: Exception) {
-                val checked = getShopItemWithId(shopItem.id)?.checked
-                withContext(coroutineContextProvider.Main) { checkbox.isChecked = checked ?: false }
+                withContext(coroutineContextProvider.Main) { checkbox.isChecked = item?.checked ?: false }
                 toastNavigator.show(R.string.something_went_wrong)
             }
         }
@@ -261,8 +266,7 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    private fun getShopItemWithId(id: Int) = (stateLiveData.value as? Loaded)
+    private fun getShopItems() = (stateLiveData.value as? Loaded)
         ?.shoppingList
         ?.items
-        ?.firstOrNull { it.id == id }
 }

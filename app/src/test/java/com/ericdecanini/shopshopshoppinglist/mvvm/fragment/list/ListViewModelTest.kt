@@ -289,6 +289,7 @@ class ListViewModelTest {
     fun givenCheckboxIsNotChecked_whenOnCheckboxChanged_themShopItemIsNotChecked() = runBlockingTest {
         val checkBox: CheckBox = mock()
         given(checkBox.isChecked).willReturn(false)
+        givenShoppingList()
 
         viewModel.onCheckboxChecked(checkBox, shopItem)
 
@@ -307,7 +308,7 @@ class ListViewModelTest {
         viewModel.onCheckboxChecked(checkBox, shopItemWithUniqueId)
 
         val lastItem = (viewModel.stateLiveData.value as Loaded).shoppingList.items.last()
-        assertThat(lastItem).isEqualTo(shopItemWithUniqueId)
+        assertThat(lastItem.id).isEqualTo(shopItemWithUniqueId.id)
     }
 
     @Test

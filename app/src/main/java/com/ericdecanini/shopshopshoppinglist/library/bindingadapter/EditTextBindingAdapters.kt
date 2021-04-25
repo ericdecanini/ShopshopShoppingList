@@ -1,8 +1,10 @@
 package com.ericdecanini.shopshopshoppinglist.library.bindingadapter
 
+import android.graphics.Paint
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.ericdecanini.shopshopshoppinglist.util.UiEventListeners
 
@@ -29,5 +31,14 @@ fun EditText.onFocusSelectEnd(selectEnd: Boolean) {
         setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) { setSelection(text.length) }
         }
+    }
+}
+
+@BindingAdapter("app:strikeThrough")
+fun strikeThrough(textView: TextView, strikeThrough: Boolean) {
+    if (strikeThrough) {
+        textView.paintFlags = textView.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+    } else {
+        textView.paintFlags = textView.paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
     }
 }
