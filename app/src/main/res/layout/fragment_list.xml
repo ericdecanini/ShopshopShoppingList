@@ -35,20 +35,26 @@
             app:layout_constraintTop_toTopOf="parent"
             >
 
-            <FrameLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/title"
-                    style="@style/ToolbarText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    style="@style/AutosizingToolbarText"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:gravity="center"
                     android:onClick="@{() -> viewmodel.showRenameDialog()}"
-                    android:text="@={viewmodel.listName}"/>
+                    android:text="@={viewmodel.listName}"
+                    app:layout_constraintStart_toEndOf="@id/back_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:text="Grocery List" />
 
                 <ImageButton
+                    android:id="@+id/back_button"
                     android:layout_width="@dimen/toolbar_back_button_size"
                     android:layout_height="@dimen/toolbar_back_button_size"
                     android:src="@drawable/ic_arrow_back"
@@ -56,9 +62,11 @@
                     android:padding="4dp"
                     android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
                     android:contentDescription="@string/talkback_back"
-                    android:layout_gravity="center_vertical" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
 
-            </FrameLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.appcompat.widget.Toolbar>
 

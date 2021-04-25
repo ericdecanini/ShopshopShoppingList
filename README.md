@@ -9,8 +9,8 @@ https://www.ericdecanini.com/
 
 TODO:
 - Create app icon
-- Add autocomplete on list fragment add item
 - Implement free and premium versions
+- Create onboarding flow
 
 Optional:
 - Create a better splash screen for empty
