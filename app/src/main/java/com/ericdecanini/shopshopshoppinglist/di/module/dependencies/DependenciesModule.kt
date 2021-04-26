@@ -1,11 +1,11 @@
 package com.ericdecanini.shopshopshoppinglist.di.module.dependencies
 
+import com.ericdecanini.shopshopshoppinglist.di.module.dependencies.android.AndroidModule
 import com.ericdecanini.shopshopshoppinglist.di.module.dependencies.chaquopy.ChaquopyModule
-import com.ericdecanini.shopshopshoppinglist.di.module.dependencies.resource.ResourceModule
 import dagger.Module
 
 @Module(includes = [
   ChaquopyModule::class,
-  ResourceModule::class
+  AndroidModule::class
 ])
 class DependenciesModule

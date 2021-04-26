@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.di.module.dependencies.resource
+package com.ericdecanini.shopshopshoppinglist.di.module.dependencies.android.resource
 
 import android.content.res.Resources
 import com.ericdecanini.dependencies.android.resources.ResourceProvider
