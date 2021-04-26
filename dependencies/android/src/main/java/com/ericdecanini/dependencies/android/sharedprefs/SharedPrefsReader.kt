@@ -8,6 +8,6 @@ class SharedPrefsReader(
     private val keys: SharedPrefsKeys
 ) : PersistentStorageReader {
 
-
-
+    override fun hasOnboardingShown() =
+        sharedPreferences.getBoolean(keys.KEY_ONBOARDING_SHOWN, false)
 }

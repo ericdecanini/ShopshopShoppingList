@@ -10,4 +10,12 @@ class SharedPrefsWriter(
 
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()
 
+    override fun setOnboardingShown(onboardingShown: Boolean) {
+        saveBoolean(keys.KEY_ONBOARDING_SHOWN, onboardingShown)
+    }
+
+    private fun saveBoolean(key: String, value: Boolean) {
+        editor.putBoolean(key, value)
+        editor.apply()
+    }
 }
