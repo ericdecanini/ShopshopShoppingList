@@ -13,6 +13,15 @@
     <string name="something_went_wrong">Something went wrong. Please try again.</string>
     <string name="splash_generic_error">An unexpected error has occurred. Please try again.</string>
 
+    <!-- Onboarding Activity -->
+    <string name="get_started">Get Started</string>
+    <string name="onboarding_title_one">Simple and straightforward</string>
+    <string name="onboarding_title_two">Easy to use</string>
+    <string name="onboarding_title_three">Multiple lists</string>
+    <string name="onboarding_description_one">No fuss, no complex shenanigans, just a simple shopping list to allow you to focus better on your shopping</string>
+    <string name="onboarding_description_two">Add items to your list and check them as you grab them from the shelves</string>
+    <string name="onboarding_description_three">You can also have more than one list for different shopping trips</string>
+
     <!-- Home Fragment -->
     <string name="splash_home_no_items">You have no shopping lists. Click on the button to add one.</string>
 

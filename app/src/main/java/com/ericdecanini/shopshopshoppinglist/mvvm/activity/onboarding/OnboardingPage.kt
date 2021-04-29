@@ -1,0 +1,13 @@
+package com.ericdecanini.shopshopshoppinglist.mvvm.activity.onboarding
+
+import com.ericdecanini.shopshopshoppinglist.R
+
+enum class OnboardingPage(
+    val titleRes: Int,
+    val descriptionRes: Int,
+    val imageRes: Int
+) {
+    FIRST(R.string.onboarding_title_one, R.string.onboarding_description_one, R.drawable.onboard1),
+    SECOND(R.string.onboarding_title_two, R.string.onboarding_description_two, R.drawable.onboard2),
+    THIRD(R.string.onboarding_title_three, R.string.onboarding_description_three, R.drawable.onboard3)
+}
