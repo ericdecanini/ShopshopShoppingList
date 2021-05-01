@@ -2,7 +2,6 @@ package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
 import com.ericdecanini.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericdecanini.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
-import com.ericdecanini.shopshopshoppinglist.util.navigator.Navigator
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -11,7 +10,7 @@ import org.junit.Test
 
 class MainViewModelTest {
 
-    private val navigator: Navigator = mock()
+    private val navigator: MainNavigator = mock()
     private val persistentStorageReader: PersistentStorageReader = mock()
     private val persistentStorageWriter: PersistentStorageWriter = mock()
 
@@ -39,5 +38,14 @@ class MainViewModelTest {
 
         verifyZeroInteractions(navigator)
         verifyZeroInteractions(persistentStorageWriter)
+    }
+
+    @Test
+    fun givenOpenNewListInstruction_whenHandleNestedInstruction_thenOpenList() {
+        val instruction = NestedNavigationInstruction.OpenNewList
+
+        viewModel.handleNestedInstruction(instruction)
+
+        verify(navigator).goToList()
     }
 }

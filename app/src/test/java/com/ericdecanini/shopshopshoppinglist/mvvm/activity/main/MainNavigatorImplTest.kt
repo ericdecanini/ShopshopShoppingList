@@ -1,14 +1,19 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.NavHostFragment
+import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeFragmentDirections
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericdecanini.shopshopshoppinglist.util.navigator.Navigator
 import com.ericdecanini.shopshopshoppinglist.util.providers.TopActivityProvider
-import io.mockk.*
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.slot
+import io.mockk.verify
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
 import org.junit.Test
@@ -20,13 +25,15 @@ class MainNavigatorImplTest {
     private val topActivityProvider: TopActivityProvider = mockk()
     private val navigator: Navigator = mockk()
     private val mainNavigator = MainNavigatorImpl(navigator, topActivityProvider)
-
+    private val supportFragmentManager: FragmentManager = mockk()
     private val navController: NavController = mockk()
+    private val navHostFragment: NavHostFragment = mockk()
 
     @Before
     fun setUp() {
-        mockkStatic(Navigation::class)
-        every { Navigation.findNavController(any(), any()) } returns navController
+        every { activity.supportFragmentManager } returns supportFragmentManager
+        every { supportFragmentManager.findFragmentById(R.id.fragment_container_view) } returns navHostFragment
+        every { navHostFragment.navController } returns navController
         every { navController.navigate(any<NavDirections>()) } returns Unit
         every { navController.navigateUp() } returns true
         every { topActivityProvider.getTopActivity() } returns activity

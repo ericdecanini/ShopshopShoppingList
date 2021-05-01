@@ -28,6 +28,16 @@ class MainActivity : DaggerAppCompatActivity() {
 
     loadAd()
     viewModel.launchOnboardingIfNecessary()
+    handleIntent()
+  }
+
+  private fun handleIntent() {
+    intent.extras?.let { extras ->
+      (extras.getSerializable(KEY_NESTED_NAVIGATION_INSTRUCTION) as? NestedNavigationInstruction)
+        ?.let {
+          viewModel.handleNestedInstruction(it)
+        }
+    }
   }
 
   private fun loadAd() {
@@ -37,7 +47,13 @@ class MainActivity : DaggerAppCompatActivity() {
 
   companion object {
 
+    private const val KEY_NESTED_NAVIGATION_INSTRUCTION = "KEY_NESTED_NAVIGATION_INSTRUCTION"
+
     fun getIntent(context: Context) = Intent(context, MainActivity::class.java)
       .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+    fun getIntent(context: Context, nestedNavigationInstruction: NestedNavigationInstruction) =
+      getIntent(context)
+        .putExtra(KEY_NESTED_NAVIGATION_INSTRUCTION, nestedNavigationInstruction)
   }
 }

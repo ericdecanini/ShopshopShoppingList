@@ -1,7 +1,7 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeFragmentDirections
@@ -14,7 +14,10 @@ class MainNavigatorImpl(
 ) : MainNavigator, Navigator by navigator {
 
     private val navController: NavController?
-        get() = topActivityProvider.getTopActivity()?.findNavController(R.id.fragment_container_view)
+        get() = (topActivityProvider.getTopActivity()
+            ?.supportFragmentManager
+            ?.findFragmentById(R.id.fragment_container_view) as? NavHostFragment)
+            ?.navController
 
     override fun goToList() {
         val action = HomeFragmentDirections.actionHomeFragmentToListFragment()

@@ -1,11 +1,11 @@
 package com.ericdecanini.shopshopshoppinglist.util.providers
 
-import android.app.Activity
 import android.app.Application
+import androidx.appcompat.app.AppCompatActivity
 
 interface TopActivityProvider {
 
-    fun getTopActivity(): Activity?
+    fun getTopActivity(): AppCompatActivity?
 
     fun setupWith(app: Application)
 

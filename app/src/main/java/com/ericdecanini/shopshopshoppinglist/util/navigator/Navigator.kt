@@ -4,6 +4,8 @@ interface Navigator {
 
     fun goToMain()
 
+    fun goToMainAndOpenList()
+
     fun goToOnboarding()
 
 }

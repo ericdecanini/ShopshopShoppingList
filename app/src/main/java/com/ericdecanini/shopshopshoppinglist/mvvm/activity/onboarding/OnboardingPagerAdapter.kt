@@ -53,7 +53,7 @@ class OnboardingPagerAdapter(
 
         if (position == OnboardingPage.values().lastIndex) {
             binding.cta.text = context.getString(R.string.get_started)
-            binding.cta.setOnClickListener { navigator.goToMain() }
+            binding.cta.setOnClickListener { navigator.goToMainAndOpenList() }
         } else {
             binding.cta.text = context.getString(R.string.next)
             binding.cta.setOnClickListener { pager.setCurrentItem(position + 1, true) }
