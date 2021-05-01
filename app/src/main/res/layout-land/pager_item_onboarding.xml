@@ -10,17 +10,21 @@
 
         <ImageView
             android:id="@+id/bg_image"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
             android:importantForAccessibility="no"
             android:alpha="0.15"
             android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/halfscreen_vertical_guideline"
             tools:src="@drawable/onboardbg1" />
 
         <View
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@drawable/white_vertical_fade" />
+            android:background="@drawable/white_vertical_fade"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/halfscreen_vertical_guideline" />
 
         <ImageView
             android:id="@+id/image"
@@ -29,33 +33,42 @@
             android:importantForAccessibility="no"
             app:layout_constraintVertical_bias="0.3"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/halfscreen_vertical_guideline"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:src="@drawable/onboard1" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/halfscreen_vertical_guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
+
         <TextView
             android:id="@+id/title"
             style="@style/ShoppingListTitleText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintTop_toBottomOf="@id/image"
-            app:layout_constraintStart_toStartOf="parent"
+            android:gravity="center_horizontal"
+            app:layout_constraintVertical_bias="0.15"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/halfscreen_vertical_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="Simple and straightforward" />
 
         <TextView
             android:id="@+id/body"
             style="@style/ShoppingListPreviewText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:paddingStart="24dp"
             android:paddingEnd="24dp"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/title"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/halfscreen_vertical_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="No fuss, no complex shenanigans, just a simple shopping list to allow you to focus better on your shopping" />
 
@@ -66,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             app:layout_constraintTop_toBottomOf="@id/body"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/halfscreen_vertical_guideline"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@string/get_started" />
 
