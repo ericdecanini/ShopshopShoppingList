@@ -16,4 +16,3 @@ Bugs:
 - Checking items resets quantity
 - Shopping list title doesn't accept special characters
 - Banner ad takes space when not loaded
-- Onboarding flow layout janked on landscape
