@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.util
+package com.ericdecanini.shopshopshoppinglist.util.listeners
 
 import android.widget.CheckBox
 import android.widget.EditText

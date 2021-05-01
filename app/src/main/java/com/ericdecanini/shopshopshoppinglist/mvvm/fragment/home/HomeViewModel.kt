@@ -9,7 +9,7 @@ import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.*
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
+import com.ericdecanini.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import javax.inject.Inject

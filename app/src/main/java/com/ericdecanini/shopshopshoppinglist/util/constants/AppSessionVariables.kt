@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.util
+package com.ericdecanini.shopshopshoppinglist.util.constants
 
 class AppSessionVariables {
 

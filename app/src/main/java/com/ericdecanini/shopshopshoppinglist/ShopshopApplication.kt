@@ -4,7 +4,7 @@ import com.ericdecanini.shopshopshoppinglist.di.DaggerAppComponent
 import com.ericdecanini.shopshopshoppinglist.library.firebase.admob.AppOpenAdManager
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
 import com.ericdecanini.shopshopshoppinglist.usecases.python.PythonInitializer
-import com.ericdecanini.shopshopshoppinglist.util.TopActivityProvider
+import com.ericdecanini.shopshopshoppinglist.util.providers.TopActivityProvider
 import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication

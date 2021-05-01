@@ -7,7 +7,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.ericdecanini.shopshopshoppinglist.util.AppSessionVariables
+import com.ericdecanini.shopshopshoppinglist.util.constants.AppSessionVariables
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError

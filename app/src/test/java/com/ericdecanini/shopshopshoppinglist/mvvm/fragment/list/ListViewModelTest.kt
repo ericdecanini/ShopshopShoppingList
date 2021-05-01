@@ -22,7 +22,7 @@ import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingL
 import com.ericdecanini.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
+import com.ericdecanini.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.ericdecanini.shopshopshoppinglist.util.TestCoroutineContextProvider
 import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

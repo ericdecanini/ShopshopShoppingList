@@ -1,5 +1,6 @@
 package com.ericdecanini.shopshopshoppinglist.util
 
+import com.ericdecanini.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 

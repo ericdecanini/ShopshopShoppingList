@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericdecanini.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
+import com.ericdecanini.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.ericdecanini.shopshopshoppinglist.util.TestCoroutineContextProvider
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock

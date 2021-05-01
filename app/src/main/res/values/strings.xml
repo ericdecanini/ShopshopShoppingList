@@ -10,6 +10,7 @@
     <string name="ellipsis">…</string>
     <string name="error">Error</string>
     <string name="retry">Retry</string>
+    <string name="next">Next</string>
     <string name="something_went_wrong">Something went wrong. Please try again.</string>
     <string name="splash_generic_error">An unexpected error has occurred. Please try again.</string>
 

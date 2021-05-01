@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.ericdecanini.shopshopshoppinglist.util.UiEventListeners
+import com.ericdecanini.shopshopshoppinglist.util.listeners.UiEventListeners
 
 @BindingAdapter("app:returnKeyClick")
 fun EditText.returnKeyClickView(view: View) {

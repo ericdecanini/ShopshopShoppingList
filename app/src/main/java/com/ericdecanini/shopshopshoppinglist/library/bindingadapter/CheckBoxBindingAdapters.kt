@@ -2,7 +2,7 @@ package com.ericdecanini.shopshopshoppinglist.library.bindingadapter
 
 import android.widget.CheckBox
 import androidx.databinding.BindingAdapter
-import com.ericdecanini.shopshopshoppinglist.util.UiEventListeners
+import com.ericdecanini.shopshopshoppinglist.util.listeners.UiEventListeners
 
 @BindingAdapter(value=["app:onChecked", "app:clearsFocusOnCheck"], requireAll = false)
 fun CheckBox.onChecked(

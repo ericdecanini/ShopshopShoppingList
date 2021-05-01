@@ -1,18 +1,23 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.activity.onboarding
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.PagerItemOnboardingBinding
+import com.ericdecanini.shopshopshoppinglist.util.navigator.Navigator
 
-class OnboardingPagerAdapter(private val context: Context) : PagerAdapter() {
+class OnboardingPagerAdapter(
+    private val pager: ViewPager,
+    private val navigator: Navigator
+) : PagerAdapter() {
+
+    private val context = pager.context
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-        val onboardingPage = OnboardingPage.values()[position]
         val inflater = LayoutInflater.from(context)
         val binding = DataBindingUtil.inflate<PagerItemOnboardingBinding>(
             inflater,
@@ -21,7 +26,7 @@ class OnboardingPagerAdapter(private val context: Context) : PagerAdapter() {
             false
         )
 
-        applyUiData(binding, onboardingPage)
+        applyUiData(binding, position)
         container.addView(binding.root)
         return binding.root
     }
@@ -39,10 +44,19 @@ class OnboardingPagerAdapter(private val context: Context) : PagerAdapter() {
         return context.getString(customPagerEnum.titleRes)
     }
 
-    private fun applyUiData(binding: PagerItemOnboardingBinding, onboardingPage: OnboardingPage) {
+    private fun applyUiData(binding: PagerItemOnboardingBinding, position: Int) {
+        val onboardingPage = OnboardingPage.values()[position]
         binding.title.text = context.getString(onboardingPage.titleRes)
         binding.body.text = context.getString(onboardingPage.descriptionRes)
         binding.image.setImageResource(onboardingPage.imageRes)
         binding.bgImage.setImageResource(onboardingPage.backgroundRes)
+
+        if (position == OnboardingPage.values().lastIndex) {
+            binding.cta.text = context.getString(R.string.get_started)
+            binding.cta.setOnClickListener { navigator.goToMain() }
+        } else {
+            binding.cta.text = context.getString(R.string.next)
+            binding.cta.setOnClickListener { pager.setCurrentItem(position + 1, true) }
+        }
     }
 }

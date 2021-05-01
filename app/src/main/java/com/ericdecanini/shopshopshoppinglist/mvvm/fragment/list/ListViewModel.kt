@@ -23,7 +23,7 @@ import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItem
 import com.ericdecanini.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.ericdecanini.shopshopshoppinglist.util.CoroutineContextProvider
+import com.ericdecanini.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

@@ -6,7 +6,8 @@ import androidx.navigation.NavDirections
 import androidx.navigation.Navigation
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeFragmentDirections
 import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
-import com.ericdecanini.shopshopshoppinglist.util.TopActivityProvider
+import com.ericdecanini.shopshopshoppinglist.util.navigator.Navigator
+import com.ericdecanini.shopshopshoppinglist.util.providers.TopActivityProvider
 import io.mockk.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Before
@@ -17,7 +18,8 @@ class MainNavigatorImplTest {
 
     private val activity: AppCompatActivity = mockk()
     private val topActivityProvider: TopActivityProvider = mockk()
-    private val mainNavigator = MainNavigatorImpl(topActivityProvider)
+    private val navigator: Navigator = mockk()
+    private val mainNavigator = MainNavigatorImpl(navigator, topActivityProvider)
 
     private val navController: NavController = mockk()
 

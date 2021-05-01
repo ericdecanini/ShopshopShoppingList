@@ -5,11 +5,13 @@ import androidx.navigation.findNavController
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.entities.ShoppingList
 import com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeFragmentDirections
-import com.ericdecanini.shopshopshoppinglist.util.TopActivityProvider
+import com.ericdecanini.shopshopshoppinglist.util.navigator.Navigator
+import com.ericdecanini.shopshopshoppinglist.util.providers.TopActivityProvider
 
 class MainNavigatorImpl(
+    navigator: Navigator,
     private val topActivityProvider: TopActivityProvider
-) : MainNavigator {
+) : MainNavigator, Navigator by navigator {
 
     private val navController: NavController?
         get() = topActivityProvider.getTopActivity()?.findNavController(R.id.fragment_container_view)

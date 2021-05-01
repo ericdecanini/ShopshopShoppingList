@@ -1,4 +1,4 @@
-package com.ericdecanini.shopshopshoppinglist.di.module.activity
+package com.ericdecanini.shopshopshoppinglist.di.module.activity.main
 
 import com.ericdecanini.shopshopshoppinglist.di.module.fragment.HomeModule
 import com.ericdecanini.shopshopshoppinglist.di.module.fragment.ListModule

@@ -1,15 +1,23 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.activity.main
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.ericdecanini.shopshopshoppinglist.R
 import com.ericdecanini.shopshopshoppinglist.databinding.ActivityMainBinding
-import com.ericdecanini.shopshopshoppinglist.mvvm.activity.onboarding.OnboardingActivity
 import com.google.android.gms.ads.AdRequest
 import dagger.android.support.DaggerAppCompatActivity
+import javax.inject.Inject
 
 class MainActivity : DaggerAppCompatActivity() {
+
+  @Inject
+  lateinit var viewModelFactory: ViewModelProvider.Factory
+  private val viewModel by lazy {
+    ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+  }
 
   private lateinit var binding: ActivityMainBinding
 
@@ -19,7 +27,7 @@ class MainActivity : DaggerAppCompatActivity() {
     binding.lifecycleOwner = this
 
     loadAd()
-    launchOnboardingFlow()
+    viewModel.launchOnboardingIfNecessary()
   }
 
   private fun loadAd() {
@@ -27,8 +35,9 @@ class MainActivity : DaggerAppCompatActivity() {
     binding.adView.loadAd(adRequest)
   }
 
-  private fun launchOnboardingFlow() {
-    val intent = Intent(this, OnboardingActivity::class.java)
-    startActivity(intent)
+  companion object {
+
+    fun getIntent(context: Context) = Intent(context, MainActivity::class.java)
+      .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
   }
 }

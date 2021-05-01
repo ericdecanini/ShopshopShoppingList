@@ -2,7 +2,7 @@ package com.ericdecanini.shopshopshoppinglist.library.bindingadapter
 
 import androidx.databinding.BindingAdapter
 import com.chauthai.swipereveallayout.SwipeRevealLayout
-import com.ericdecanini.shopshopshoppinglist.util.UiEventListeners
+import com.ericdecanini.shopshopshoppinglist.util.listeners.UiEventListeners
 
 @BindingAdapter("app:onFocusLost")
 fun SwipeRevealLayout.onFocusLost(callback: UiEventListeners.OnSwipeRevealLayoutEvent) {
