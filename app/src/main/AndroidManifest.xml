@@ -12,7 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShopshopShoppingList"
         tools:ignore="AllowBackup">
-        <activity android:name=".mvvm.activity.onboarding.OnboardingActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -26,7 +25,13 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Firebase Cloud Messaging -->
+        </activity>
+
+
+        <activity
+            android:name=".mvvm.activity.onboarding.OnboardingActivity" />
+
+        <!-- Firebase Cloud Messaging -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
             android:value="@string/firebase_notification_channel" />

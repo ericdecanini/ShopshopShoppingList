@@ -6,7 +6,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewpager"
@@ -23,6 +24,8 @@
             app:tabTextAppearance="@style/TinyText"
             app:tabTextColor="@android:color/transparent"
             app:tabBackground="@drawable/pager_dot_selector"
+            app:tabPaddingStart="15dp"
+            app:tabPaddingEnd="15dp"
             app:tabGravity="center"
             app:tabIndicatorHeight="0dp" />
 

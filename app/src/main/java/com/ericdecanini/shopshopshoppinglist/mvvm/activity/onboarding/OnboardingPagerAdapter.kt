@@ -43,5 +43,6 @@ class OnboardingPagerAdapter(private val context: Context) : PagerAdapter() {
         binding.title.text = context.getString(onboardingPage.titleRes)
         binding.body.text = context.getString(onboardingPage.descriptionRes)
         binding.image.setImageResource(onboardingPage.imageRes)
+        binding.bgImage.setImageResource(onboardingPage.backgroundRes)
     }
 }
