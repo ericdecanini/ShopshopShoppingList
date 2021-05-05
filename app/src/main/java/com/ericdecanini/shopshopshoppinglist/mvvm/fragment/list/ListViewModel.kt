@@ -127,6 +127,8 @@ class ListViewModel @Inject constructor(
 
         shopItem.quantity -= 1
         quantityView.text = shopItem.quantity.toString()
+        _stateLiveData.notifyObservers()
+
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
                 with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
@@ -141,6 +143,8 @@ class ListViewModel @Inject constructor(
     override fun onQuantityUp(quantityView: TextView, shopItem: ShopItem) {
         shopItem.quantity += 1
         quantityView.text = shopItem.quantity.toString()
+        _stateLiveData.notifyObservers()
+
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
                 with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
@@ -196,6 +200,8 @@ class ListViewModel @Inject constructor(
 
         val oldName = shopItem.name
         shopItem.name = editText.text.toString()
+        _stateLiveData.notifyObservers()
+
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
                 with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
