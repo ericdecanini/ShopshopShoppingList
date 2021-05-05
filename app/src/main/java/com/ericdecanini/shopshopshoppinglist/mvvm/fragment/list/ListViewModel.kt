@@ -266,6 +266,7 @@ class ListViewModel @Inject constructor(
                 val shoppingList = shoppingListRepository.updateShoppingList(listId, newName)
                 setShoppingList(requireNotNull(shoppingList))
             } catch (e: Exception) {
+                e.printStackTrace()
                 listName.set(oldName)
                 toastNavigator.show(R.string.something_went_wrong)
             }

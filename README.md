@@ -13,6 +13,4 @@ TODO:
 - Create a better splash screen for empty
 
 Bugs:
-- Checking items resets quantity
-- Shopping list title doesn't accept special characters
 - Banner ad takes space when not loaded

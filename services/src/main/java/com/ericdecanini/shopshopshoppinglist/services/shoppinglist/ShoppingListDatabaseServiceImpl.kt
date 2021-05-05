@@ -31,25 +31,25 @@ class ShoppingListDatabaseServiceImpl(
     }
 
     override suspend fun createShoppingList(name: String): ShoppingListResponse {
-        val json = pythonDatabaseWrapper.insertShoppingList(name)
+        val json = pythonDatabaseWrapper.insertShoppingList(name.escapeSpecialCharacters())
         val adapter: JsonAdapter<ShoppingListResponse> = moshi.adapter(ShoppingListResponse::class.java)
         return adapter.getOrNull(json) ?: throw IllegalStateException("Shopping List failed to add")
     }
 
     override suspend fun createShopItem(listId: Int, name: String): ShopItemResponse {
-        val json = pythonDatabaseWrapper.insertShopItem(listId, name, 1, false)
+        val json = pythonDatabaseWrapper.insertShopItem(listId, name.escapeSpecialCharacters(), 1, false)
         val adapter: JsonAdapter<ShopItemResponse> = moshi.adapter(ShopItemResponse::class.java)
         return adapter.getOrNull(json) ?: throw IllegalStateException("ShopItem failed to add")
     }
 
     override suspend fun updateShoppingList(id: Int, name: String): ShoppingListResponse? {
-        val json = pythonDatabaseWrapper.updateShoppingList(id, name)
+        val json = pythonDatabaseWrapper.updateShoppingList(id, name.escapeSpecialCharacters())
         val adapter: JsonAdapter<ShoppingListResponse> = moshi.adapter(ShoppingListResponse::class.java)
         return adapter.getOrNull(json)
     }
 
     override suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse? {
-        val json = pythonDatabaseWrapper.updateShopItem(id, name, quantity, checked)
+        val json = pythonDatabaseWrapper.updateShopItem(id, name.escapeSpecialCharacters(), quantity, checked)
         val adapter: JsonAdapter<ShopItemResponse> = moshi.adapter(ShopItemResponse::class.java)
         return adapter.getOrNull(json)
     }
@@ -65,4 +65,6 @@ class ShoppingListDatabaseServiceImpl(
     private fun<T: Any> JsonAdapter<T>.getOrNull(json: String): T? = runCatching {
         fromJson(json)
     }.getOrNull()
+
+    private fun String.escapeSpecialCharacters() = replace("'", "''")
 }
