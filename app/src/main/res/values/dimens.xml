@@ -6,6 +6,7 @@
     <dimen name="edittext_box_horizontal_padding">16dp</dimen>
     <dimen name="edittext_box_vertical_padding">8dp</dimen>
     <dimen name="toolbar_back_button_size">32dp</dimen>
+    <dimen name="splash_text_horizontal_padding">24dp</dimen>
 
     <!-- Home Fragment -->
     <dimen name="shopping_list_title_size">18sp</dimen>

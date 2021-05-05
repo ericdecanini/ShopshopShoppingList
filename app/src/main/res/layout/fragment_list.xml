@@ -128,47 +128,79 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/clear_checked"
+            android:elevation="0dp"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
             android:onClick="@{() -> viewmodel.clearChecked()}"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="@{viewmodel.stateLiveData instanceof ListViewState.Loading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:visibility="gone" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/splash_list_no_items"
             android:visibility="@{(viewmodel.stateLiveData instanceof ListViewState.Loaded ? (ListViewState.Loaded) viewmodel.stateLiveData : null).shoppingList.items.isEmpty() ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="gone" />
+            tools:visibility="gone">
+
+            <ImageView
+                android:id="@+id/splash_no_items_image"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/empty_shopping_bag"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/SplashText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/splash_list_no_items"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="24dp"
+                android:paddingStart="@dimen/splash_text_horizontal_padding"
+                android:paddingEnd="@dimen/splash_text_horizontal_padding"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:alpha="0.8"
+            android:visibility="@{viewmodel.stateLiveData instanceof ListViewState.Loaded ? View.GONE : View.VISIBLE}"
+            android:background="@color/white"
+            android:translationZ="3dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="@{viewmodel.stateLiveData instanceof ListViewState.Error ? View.VISIBLE : View.GONE}"
+            android:translationZ="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <TextView
+                style="@style/SplashText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingStart="@dimen/splash_text_horizontal_padding"
+                android:paddingEnd="@dimen/splash_text_horizontal_padding"
                 android:text="@string/splash_generic_error"
                 android:layout_gravity="center_horizontal" />
 
@@ -182,6 +214,18 @@
                 android:text="@string/retry" />
 
         </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:translationZ="10dp"
+            android:visibility="@{viewmodel.stateLiveData instanceof ListViewState.Loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

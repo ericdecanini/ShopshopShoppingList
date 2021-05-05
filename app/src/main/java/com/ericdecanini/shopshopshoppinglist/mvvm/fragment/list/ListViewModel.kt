@@ -229,7 +229,7 @@ class ListViewModel @Inject constructor(
     }
 
     fun showDeleteDialog() = stateLiveData.value?.let {
-        val listName = listName.get() ?: resourceProvider.getString(R.string.UNKNOWN_LIST)
+        val listName = listName.get() ?: return@let
 
         dialogNavigator.displayGenericDialog(
             title = resourceProvider.getString(R.string.delete),

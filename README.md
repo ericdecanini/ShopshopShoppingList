@@ -10,7 +10,6 @@ https://www.ericdecanini.com/
 TODO:
 - Create app icon
 - Implement free and premium versions
-- Create a better splash screen for empty
 
 Bugs:
-- Banner ad takes space when not loaded
+- Banner ad takes space when not loaded (intermittent)
