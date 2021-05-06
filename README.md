@@ -12,4 +12,5 @@ TODO:
 - Implement free and premium versions
 
 Bugs:
+- Empty list name can be entered
 - Banner ad takes space when not loaded (intermittent)

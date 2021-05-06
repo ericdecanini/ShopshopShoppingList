@@ -71,9 +71,12 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun renderShopItems(items: List<ShopItem>) {
+        val savedInstanceState = binding.shopList.layoutManager?.onSaveInstanceState()
         val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, items))
         adapter.replaceItems(items)
         diffResult.dispatchUpdatesTo(adapter)
+
+        binding.shopList.layoutManager?.onRestoreInstanceState(savedInstanceState)
 
         if (isNewList) {
             isNewList = false
