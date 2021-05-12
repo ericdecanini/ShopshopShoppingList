@@ -16,7 +16,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="@{() -> handler.onShoppingListClick(viewstate)}"
-        android:descendantFocusability="blocksDescendants"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="8dp"
@@ -32,7 +31,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
+                android:padding="14dp">
 
                 <TextView
                     android:id="@+id/title"
@@ -57,11 +56,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     app:layout_constraintTop_toBottomOf="@id/divider"
                     tools:itemCount="3"
                     tools:listitem="@layout/list_item_previewitem" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:onClick="@{() -> handler.onShoppingListClick(viewstate)}"
+                    app:layout_constraintTop_toTopOf="@id/preview_items"
+                    app:layout_constraintBottom_toBottomOf="@id/preview_items"
+                    app:layout_constraintStart_toStartOf="@id/preview_items"
+                    app:layout_constraintEnd_toEndOf="@id/preview_items" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

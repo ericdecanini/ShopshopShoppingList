@@ -13,24 +13,22 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <CheckBox
+        <TextView
             android:id="@+id/item"
             style="@style/ShoppingListPreviewText"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
-            android:paddingStart="4dp"
-            android:paddingEnd="4dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
             android:text="@{viewstate.name}"
-            android:checked="@{viewstate.checked}"
             android:visibility="@{viewstate != null ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            bind:drawableStart="@{viewstate.checked ? @drawable/checkbox_unchecked : @drawable/checkbox_checked}"
             tools:text="Oringe" />
 
         <TextView
