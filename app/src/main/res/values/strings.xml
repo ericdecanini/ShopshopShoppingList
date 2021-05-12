@@ -34,6 +34,7 @@
     <string name="splash_list_no_items">You have no items. Add one using the text box above.</string>
     <string name="list_not_found">List couldn\'t be found. Going back</string>
     <string name="clear_checked">Clear checked</string>
+    <string name="toast_rename_validation_failed">Please enter a valid list title</string>
 
     <!-- Rename Dialog -->
     <string name="rename">Rename</string>

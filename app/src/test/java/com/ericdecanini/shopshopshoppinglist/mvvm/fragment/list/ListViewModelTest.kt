@@ -22,8 +22,8 @@ import com.ericdecanini.shopshopshoppinglist.testdata.testdatabuilders.ShoppingL
 import com.ericdecanini.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericdecanini.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericdecanini.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.ericdecanini.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.ericdecanini.shopshopshoppinglist.util.TestCoroutineContextProvider
+import com.ericdecanini.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.nhaarman.mockitokotlin2.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
@@ -413,6 +413,27 @@ class ListViewModelTest {
     }
 
     @Test
+    fun givenNewNameIsEmpty_whenRenameDialogCallback_thenShoppingListNotRenamed() = runBlockingTest {
+        givenShoppingList()
+        val currentName = (viewModel.stateLiveData.value as Loaded).shoppingList.name
+        val newName = ""
+        val shoppingListWithNewName = shoppingList.copy(name = newName)
+        given(shoppingListRepository.updateShoppingList(shoppingList.id, newName)).willReturn(shoppingListWithNewName)
+
+        viewModel.showRenameDialog()
+
+        val inOrder = inOrder(dialogNavigator)
+        val callbackCaptor = argumentCaptor<(String) -> Unit>()
+        inOrder.verify(dialogNavigator).displayRenameDialog(eq(currentName), callbackCaptor.capture(), eq(null), eq(true))
+        callbackCaptor.firstValue.invoke(newName)
+
+        assertThat(viewModel.listName.get()).isEqualTo(currentName)
+        assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(shoppingList))
+        verify(toastNavigator).show(R.string.toast_rename_validation_failed)
+        inOrder.verify(dialogNavigator).displayRenameDialog(eq(newName), any(), eq(null), eq(true))
+    }
+
+    @Test
     fun givenUpdateReturnsNull_whenRenameDialogCallback_thenShoppingListNotRenamed() = runBlockingTest {
         givenShoppingList()
         val currentName = (viewModel.stateLiveData.value as Loaded).shoppingList.name
@@ -421,12 +442,14 @@ class ListViewModelTest {
 
         viewModel.showRenameDialog()
 
+        val inOrder = inOrder(dialogNavigator)
         val callbackCaptor = argumentCaptor<(String) -> Unit>()
-        verify(dialogNavigator).displayRenameDialog(eq(currentName), callbackCaptor.capture(), eq(null), eq(true))
+        inOrder.verify(dialogNavigator).displayRenameDialog(eq(currentName), callbackCaptor.capture(), eq(null), eq(true))
         callbackCaptor.firstValue.invoke(newName)
 
         assertThat(viewModel.listName.get()).isEqualTo(currentName)
         verify(toastNavigator).show(R.string.something_went_wrong)
+        inOrder.verify(dialogNavigator).displayRenameDialog(eq(newName), any(), eq(null), eq(true))
     }
 
     @Test

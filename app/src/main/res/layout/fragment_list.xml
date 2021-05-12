@@ -45,7 +45,7 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:gravity="center"
-                    android:onClick="@{() -> viewmodel.showRenameDialog()}"
+                    android:onClick="@{() -> viewmodel.showRenameDialog((String) null)}"
                     android:text="@={viewmodel.listName}"
                     app:layout_constraintStart_toEndOf="@id/back_button"
                     app:layout_constraintEnd_toEndOf="parent"

@@ -221,9 +221,9 @@ class ListViewModel @Inject constructor(
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun showRenameDialog() = shoppingList?.let {
+    fun showRenameDialog(overrideName: String? = null) = shoppingList?.let {
         dialogNavigator.displayRenameDialog(
-            it.name,
+            overrideName ?: it.name,
             { newName -> renameShoppingList(newName) }
         )
     }
@@ -260,6 +260,12 @@ class ListViewModel @Inject constructor(
 
     private fun renameShoppingList(newName: String) {
         val oldName = listName.get()
+        if (!validateRename(newName)) {
+            toastNavigator.show(R.string.toast_rename_validation_failed)
+            showRenameDialog(newName)
+            return
+        }
+
         listName.set(newName)
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
@@ -269,8 +275,14 @@ class ListViewModel @Inject constructor(
                 listName.set(oldName)
                 shoppingList?.let { setShoppingList(it) }
                 toastNavigator.show(R.string.something_went_wrong)
+                showRenameDialog(newName)
             }
         }
+    }
+
+    private fun validateRename(newName: String): Boolean = when {
+        newName.isEmpty() -> false
+        else -> true
     }
 
     private fun getShopItems() = (stateLiveData.value as? Loaded)
