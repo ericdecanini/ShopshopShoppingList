@@ -8,9 +8,7 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
-- Create app icon
 - Implement free and premium versions
 
 Bugs:
-- Empty list name can be entered
 - Banner ad takes space when not loaded (intermittent)
