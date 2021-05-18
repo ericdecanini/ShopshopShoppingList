@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/green_500</color>
-    <color name="colorPrimaryDark">@color/green_700</color>
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryDark">@color/black</color>
     <color name="colorSecondary">@color/indigo_secondary</color>
     <color name="colorSecondaryDark">@color/indigo_secondary_dark</color>
-    <color name="backgroundColor">@color/gray_50</color>
+    <color name="backgroundColor">#212121</color>
 
-    <color name="defaultTextColor">#1A1A1A</color>
+    <color name="defaultTextColor">#FFFFFF</color>
 
     <color name="ShoppingListTitleColor">#272727</color>
 

@@ -1,7 +1,10 @@
 package com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list
 
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -92,9 +95,9 @@ class ListFragment : DaggerFragment() {
             viewModel.createNewShoppingList()
         }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_shopping_list, menu)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.menu_shopping_list, menu)
+//    }
 
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
         R.id.ic_delete -> {

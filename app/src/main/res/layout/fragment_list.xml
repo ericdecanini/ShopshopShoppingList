@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusable="true"
+        android:background="@color/backgroundColor"
         android:focusableInTouchMode="true"
         android:clickable="true"
         >
@@ -57,6 +58,7 @@
                     android:id="@+id/back_button"
                     android:layout_width="@dimen/toolbar_back_button_size"
                     android:layout_height="@dimen/toolbar_back_button_size"
+                    android:visibility="gone"
                     android:src="@drawable/ic_arrow_back"
                     android:background="@drawable/bg_ripple_green_bg_round"
                     android:padding="4dp"
@@ -77,6 +79,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
+            android:visibility="gone"
             style="@style/EditTextPrimary"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
@@ -127,6 +130,7 @@
             style="@style/ClearCheckedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:text="@string/clear_checked"
             android:elevation="0dp"
             android:paddingTop="8dp"
@@ -176,6 +180,7 @@
             android:visibility="@{viewmodel.stateLiveData instanceof ListViewState.Loaded ? View.GONE : View.VISIBLE}"
             android:background="@color/white"
             android:translationZ="3dp"
+            tools:visibility="gone"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"

@@ -18,14 +18,15 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
-        android:clickable="true"
+        android:focusableInTouchMode="false"
+        android:focusable="false"
+        android:clickable="false"
         android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/shopitem_height"
         app:onFocusLost="@{(view) -> handler.onFocusLost(view)}"
         app:focusOnSlide="@{true}"
+
         app:mode="same_level"
         app:dragEdge="right">
 
@@ -75,13 +76,14 @@
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white">
+            android:background="@color/backgroundColor">
 
             <CheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
+                android:visibility="gone"
                 android:checked="@{viewstate.checked}"
                 app:clearsFocusOnCheck="@{true}"
                 app:onChecked="@{(view) -> handler.onCheckboxChecked(view, viewstate)}"
@@ -101,6 +103,10 @@
                 android:inputType="textCapSentences"
                 android:selectAllOnFocus="true"
                 android:background="@drawable/bg_ripple_primary"
+                android:clickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center"
                 android:text="@={viewstate.name}"
                 android:textColor="@{viewstate.checked ? @color/gray_700 : @color/defaultTextColor}"
                 app:strikeThrough="@{viewstate.checked}"
@@ -118,6 +124,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:gravity="center_vertical"
+                android:visibility="gone"
                 android:paddingStart="@dimen/quantity_padding"
                 android:paddingEnd="@dimen/quantity_padding"
                 android:background="@drawable/bg_ripple_gray"

@@ -42,6 +42,7 @@ class ShopItemAdapter(
             binding.setVariable(BR.quantity, binding.quantity)
 
             with(binding.swipeLayout) {
+                setLockDrag(true)
                 close(false)
 
                 binding.quantity.setOnClickListener {
