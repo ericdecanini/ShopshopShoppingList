@@ -5,11 +5,11 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewState" />
+        <import type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState" />
 
         <variable
             name="viewmodel"
-            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel" />
+            type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

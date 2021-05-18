@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.HomeFragment"
+        android:name="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeFragment"
         android:label="HomeFragment" >
 
         <action
@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListFragment"
+        android:name="com.ericthecoder.shopshopshoppinglist.ListFragment"
         android:label="ListFragment" >
 
         <argument

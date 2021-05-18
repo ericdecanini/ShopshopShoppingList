@@ -16,7 +16,7 @@ android {
     buildToolsVersion "$buildToolsVersion"
 
     defaultConfig {
-        applicationId "com.ericdecanini.shopshopshoppinglist"
+        applicationId "com.ericthecoder.shopshopshoppinglist"
         minSdkVersion 26
         targetSdkVersion 30
         versionCode 1

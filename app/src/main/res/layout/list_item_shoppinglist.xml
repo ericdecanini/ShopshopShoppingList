@@ -4,10 +4,10 @@
     <data>
         <variable
             name="handler"
-            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler" />
+            type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler" />
         <variable
             name="viewstate"
-            type="com.ericdecanini.shopshopshoppinglist.entities.ShoppingList" />
+            type="com.ericthecoder.shopshopshoppinglist.entities.ShoppingList" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"

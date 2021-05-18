@@ -4,10 +4,10 @@
     <data>
         <variable
             name="handler"
-            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler" />
+            type="com.ericthecoder.shopshopshoppinglist.adapter.ShopItemEventHandler" />
         <variable
             name="viewstate"
-            type="com.ericdecanini.shopshopshoppinglist.entities.ShopItem" />
+            type="com.ericthecoder.shopshopshoppinglist.entities.ShopItem" />
         <variable
             name="quantity"
             type="android.widget.TextView" />

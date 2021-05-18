@@ -5,11 +5,11 @@
 
     <data>
         <import type="android.view.View" />
-        <import type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewState" />
+        <import type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState" />
 
         <variable
             name="viewmodel"
-            type="com.ericdecanini.shopshopshoppinglist.mvvm.fragment.list.ListViewModel" />
+            type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel" />
         <variable
             name="newitem"
             type="android.widget.EditText" />

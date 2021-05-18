@@ -6,7 +6,7 @@
 
         <variable
             name="viewstate"
-            type="com.ericdecanini.shopshopshoppinglist.entities.ShopItem" />
+            type="com.ericthecoder.shopshopshoppinglist.entities.ShopItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
