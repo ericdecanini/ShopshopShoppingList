@@ -9,14 +9,13 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.ericthecoder.shopshopshoppinglist.ListFragmentArgs
+import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemAdapter
 import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
-import com.ericthecoder.shopshopshoppinglist.BR
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 

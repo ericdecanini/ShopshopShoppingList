@@ -18,7 +18,7 @@
 
     <fragment
         android:id="@+id/listFragment"
-        android:name="com.ericthecoder.shopshopshoppinglist.ListFragment"
+        android:name="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListFragment"
         android:label="ListFragment" >
 
         <argument
