@@ -28,7 +28,7 @@
             android:visibility="@{viewstate != null ? View.VISIBLE : View.GONE}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            bind:drawableStart="@{viewstate.checked ? @drawable/checkbox_unchecked : @drawable/checkbox_checked}"
+            bind:drawableStart="@{viewstate.checked ? @drawable/checkbox_checked : @drawable/checkbox_unchecked}"
             tools:text="Oringe" />
 
         <TextView
