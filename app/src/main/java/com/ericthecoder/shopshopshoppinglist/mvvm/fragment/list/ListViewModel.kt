@@ -195,7 +195,7 @@ class ListViewModel @Inject constructor(
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         hideKeyboard(editText)
-        if (shoppingList?.items?.contains(shopItem) == false)
+        if (shoppingList?.items?.firstOrNull { it.id == shopItem.id } == null)
             return
 
         val oldName = shopItem.name
