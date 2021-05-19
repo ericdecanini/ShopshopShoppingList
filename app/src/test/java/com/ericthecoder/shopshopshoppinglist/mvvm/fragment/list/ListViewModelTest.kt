@@ -15,8 +15,8 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
-import com.ericthecoder.shopshopshoppinglist.ListViewState.Error
-import com.ericthecoder.shopshopshoppinglist.ListViewState.Loaded
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Error
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
@@ -329,6 +329,7 @@ class ListViewModelTest {
 
     @Test
     fun givenUpdatedItemIsInList_whenOnNameChanged_thenNameChangedToEditTextValueAndKeyboardHidden() = runBlockingTest {
+        givenShoppingList()
         val editText: EditText = mock()
         val editable: Editable = mock()
         val name = "sample_name"
