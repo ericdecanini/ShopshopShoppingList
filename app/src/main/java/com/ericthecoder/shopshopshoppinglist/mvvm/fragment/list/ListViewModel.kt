@@ -157,7 +157,7 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onDeleteClick(shopItem: ShopItem) {
-        shoppingList?.items?.remove(shopItem)
+        shoppingList?.items?.removeIf { it.id == shopItem.id }
         sortListAndPost()
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
