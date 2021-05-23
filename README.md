@@ -12,6 +12,7 @@ TODO:
 - Add positions to db
 - Add peaking quantity bar
 - Type number in
+- Do for dark mode
 
 Bugs:
 - Banner ad takes space when not loaded (intermittent)
