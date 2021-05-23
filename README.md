@@ -11,6 +11,7 @@ TODO:
 - Implement free and premium versions
 - Add positions to db
 - Add peaking quantity bar
+- Type number in
 
 Bugs:
 - Banner ad takes space when not loaded (intermittent)
