@@ -30,6 +30,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="gone"
             ads:adSize="BANNER"
             ads:adUnitId="@string/admob_banner_ad_id" />
 
