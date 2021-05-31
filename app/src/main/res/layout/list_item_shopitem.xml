@@ -122,7 +122,6 @@
                 android:paddingEnd="@dimen/quantity_padding"
                 android:background="@drawable/bg_ripple_gray"
                 android:text="@{Integer.toString(viewstate.quantity), default=0}"
-                app:clearsFocusOnClick="@{true}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -194,7 +194,6 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
-        hideKeyboard(editText)
         if (shoppingList?.items?.firstOrNull { it.id == shopItem.id } == null)
             return
 

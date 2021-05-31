@@ -335,13 +335,10 @@ class ListViewModelTest {
         val name = "sample_name"
         given(editable.toString()).willReturn(name)
         given(editText.text).willReturn(editable)
-        given(editText.context).willReturn(context)
-        given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
 
         viewModel.onNameChanged(editText, shopItem)
 
         assertThat(shopItem.name).isEqualTo(name)
-        verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
         verify(shoppingListRepository).updateShopItem(shopItem.id, name, shopItem.quantity, shopItem.checked)
     }
 
@@ -353,13 +350,10 @@ class ListViewModelTest {
         givenShoppingList()
         given(editable.toString()).willReturn(name)
         given(editText.text).willReturn(editable)
-        given(editText.context).willReturn(context)
-        given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
 
         (viewModel.stateLiveData.value as Loaded).shoppingList.items.remove(shopItem)
         viewModel.onNameChanged(editText, shopItem)
 
-        verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
         verify(shoppingListRepository, never()).updateShopItem(any(), any(), any(), any())
     }
 
@@ -373,14 +367,11 @@ class ListViewModelTest {
         val changedName = "sample_name"
         given(editable.toString()).willReturn(changedName)
         given(editText.text).willReturn(editable)
-        given(editText.context).willReturn(context)
-        given(context.getSystemService(Activity.INPUT_METHOD_SERVICE)).willReturn(imm)
         given(shoppingListRepository.updateShopItem(any(), any(), any(), any())).willThrow(RuntimeException())
 
         viewModel.onNameChanged(editText, item)
 
         assertThat(item.name).isEqualTo(oldName)
-        verify(imm).hideSoftInputFromWindow(eq(editText.windowToken), any())
         verify(shoppingListRepository).updateShopItem(item.id, changedName, item.quantity, item.checked)
         verify(toastNavigator).show(R.string.something_went_wrong)
     }
