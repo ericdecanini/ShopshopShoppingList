@@ -1,12 +1,12 @@
 package com.ericthecoder.shopshopshoppinglist.di.module.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.NavigatorImpl
+import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
 import dagger.Module
 import dagger.Provides
 
@@ -14,14 +14,14 @@ import dagger.Provides
 class ActivityModule {
 
     @Provides
-    fun provideActivityNavigator(originActivity: AppCompatActivity): Navigator =
-        NavigatorImpl(originActivity)
+    fun provideActivityNavigator(topActivityProvider: TopActivityProvider): Navigator =
+        NavigatorImpl(topActivityProvider)
 
     @Provides
-    fun provideDialogNavigator(activity: AppCompatActivity): DialogNavigator
-            = DialogNavigatorImpl(activity)
+    fun provideDialogNavigator(topActivityProvider: TopActivityProvider): DialogNavigator =
+        DialogNavigatorImpl(topActivityProvider)
 
     @Provides
-    fun provideToastNavigator(activity: AppCompatActivity): ToastNavigator
-            = ToastNavigatorImpl(activity)
+    fun provideToastNavigator(topActivityProvider: TopActivityProvider): ToastNavigator =
+        ToastNavigatorImpl(topActivityProvider)
 }

@@ -1,11 +1,14 @@
 package com.ericthecoder.shopshopshoppinglist.ui.toast
 
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
 
 class ToastNavigatorImpl(
-    private val activity: AppCompatActivity
+    private val topActivityProvider: TopActivityProvider
 ) : ToastNavigator {
+
+    private val activity get() = topActivityProvider.getTopActivity()
+        ?: throw NullPointerException()
 
     override fun show(message: String, length: Int) {
         activity.runOnUiThread { Toast.makeText(activity, message, length).show() }

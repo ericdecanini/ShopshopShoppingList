@@ -1,18 +1,32 @@
 package com.ericthecoder.shopshopshoppinglist.util.navigator
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.onboarding.OnboardingActivity
+import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
 
-class NavigatorImpl(private val originActivity: AppCompatActivity) : Navigator {
+class NavigatorImpl(private val topActivityProvider: TopActivityProvider) : Navigator {
 
-    override fun goToMain() = MainActivity.getIntent(originActivity).start()
+    private val originActivity get() = topActivityProvider.getTopActivity()
 
-    override fun goToMainAndOpenList() = MainActivity.getIntent(originActivity, OpenNewList).start()
+    override fun goToMain() {
+        originActivity?.let {
+            MainActivity.getIntent(it).start()
+        }
+    }
 
-    override fun goToOnboarding() = OnboardingActivity.getIntent(originActivity).start()
+    override fun goToMainAndOpenList() {
+        originActivity?.let {
+            MainActivity.getIntent(it, OpenNewList).start()
+        }
+    }
 
-    private fun Intent.start() = originActivity.startActivity(this)
+    override fun goToOnboarding() {
+        originActivity?.let {
+            OnboardingActivity.getIntent(it).start()
+        }
+    }
+
+    private fun Intent.start() = originActivity?.startActivity(this)
 }
