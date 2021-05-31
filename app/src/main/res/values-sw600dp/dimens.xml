@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="home_fragment_horizontal_padding">32dp</dimen>
+    <dimen name="home_fragment_vertical_padding">16dp</dimen>
+
+</resources>
