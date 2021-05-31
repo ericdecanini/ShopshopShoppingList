@@ -4,11 +4,21 @@
     <color name="colorPrimaryDark">@color/green_700</color>
     <color name="colorSecondary">@color/indigo_secondary</color>
     <color name="colorSecondaryDark">@color/indigo_secondary_dark</color>
-    <color name="backgroundColor">@color/gray_50</color>
+    <color name="backgroundColor">@color/gray_200</color>
+    <color name="colorOnSecondary">@color/white</color>
 
     <color name="defaultTextColor">#1A1A1A</color>
-
-    <color name="ShoppingListTitleColor">#272727</color>
+    <color name="shoppingListTitleColor">#272727</color>
+    <color name="shoppingListBackgroundColor">@color/white</color>
+    <color name="dialogBackgroundColor">@color/white</color>
+    <color name="dialogButtonTextColor">@color/black</color>
+    <color name="dialogButtonBackgroundColor">@color/gray_200</color>
+    <color name="newItemFieldBackgroundColor">@color/white</color>
+    <color name="newItemFieldStrokeColor">@color/gray_400</color>
+    <color name="newItemClearButtonColor">@color/gray_700</color>
+    <color name="shopItemBackgroundColor">@color/white</color>
+    <color name="shoppingListDividerColor">@color/gray_300</color>
+    <color name="previewItemDrawableTint">@color/gray_900</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
@@ -18,7 +28,11 @@
     <color name="gray_300">#E0E0E0</color>
     <color name="gray_400">#BDBDBD</color>
     <color name="gray_500">#9E9E9E</color>
+    <color name="gray_600">#757575</color>
     <color name="gray_700">#616161</color>
+    <color name="gray_800">#424242</color>
+    <color name="gray_850">#303030</color>
+    <color name="gray_900">#212121</color>
 
     <color name="green_100">#C8E6C9</color>
     <color name="green_200">#A5D6A7</color>
@@ -33,4 +47,7 @@
 
     <color name="indigo_secondary">#4f4caf</color>
     <color name="indigo_secondary_dark">#3f3797</color>
+
+    <color name="lightblue_secondary">#B3E5FC</color>
+    <color name="lightblue_secondary_dark">#4FC3F7</color>
 </resources>

@@ -9,8 +9,7 @@ https://www.ericdecanini.com/
 
 TODO:
 - Implement free and premium versions
-- Add peaking quantity bar
-- Do for dark mode
+- Fix bug of configuration change in list
 
 Bugs:
 - Banner ad takes space when not loaded (intermittent)

@@ -15,7 +15,7 @@
     </style>
 
     <style name="ShoppingListTitleText" parent="Bold">
-        <item name="android:textColor">@color/ShoppingListTitleColor</item>
+        <item name="android:textColor">@color/shoppingListTitleColor</item>
         <item name="android:textSize">20sp</item>
     </style>
 
@@ -57,12 +57,12 @@
 
     <style name="DialogButton" parent="Medium">
         <item name="android:textSize">18sp</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/dialogButtonTextColor</item>
+        <item name="android:background">@color/dialogButtonBackgroundColor</item>
     </style>
 
     <style name="ButtonPrimary">
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/colorOnSecondary</item>
         <item name="android:backgroundTint">@color/colorSecondary</item>
     </style>
 

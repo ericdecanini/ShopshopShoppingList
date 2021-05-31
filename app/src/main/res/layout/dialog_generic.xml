@@ -14,7 +14,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:background="@color/dialogBackgroundColor">
 
     <TextView
         android:id="@+id/title"
@@ -41,7 +41,7 @@
         app:layout_constraintTop_toBottomOf="@id/title"
         tools:text="Lorem ipsum dolor sit amet consectetur adipiscing elit lorem ipsum dolor sit amet consectetur adipiscing elit" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/negative_button"
         style="@style/DialogButton"
         android:layout_width="0dp"
@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toStartOf="@id/positive_button"
         tools:text="Cancel" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/positive_button"
         style="@style/DialogButton"
         android:layout_width="0dp"

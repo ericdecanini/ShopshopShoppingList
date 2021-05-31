@@ -5,7 +5,7 @@
 
     <!-- the normal bg color -->
     <item>
-        <color android:color="@color/white" />
+        <color android:color="@color/shopItemBackgroundColor" />
     </item>
 
     <!-- make sure the ripple doesn't exceed the bounds -->
