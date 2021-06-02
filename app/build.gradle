@@ -19,8 +19,8 @@ android {
         applicationId "com.ericthecoder.shopshopshoppinglist"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 1
-        versionName "0.1.0-SNAPSHOT"
+        versionCode 2
+        versionName "0.2.0-SNAPSHOT"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         resValue("string", "admob_application_id", properties['admob.applicationId'])
