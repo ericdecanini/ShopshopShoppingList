@@ -5,6 +5,7 @@
     <color name="colorSecondary">@color/indigo_secondary</color>
     <color name="colorSecondaryDark">@color/indigo_secondary_dark</color>
     <color name="backgroundColor">@color/gray_200</color>
+    <color name="backgroundColorUpsell">@color/white</color>
     <color name="colorOnSecondary">@color/white</color>
 
     <color name="defaultTextColor">#1A1A1A</color>
@@ -38,9 +39,12 @@
     <color name="green_200">#A5D6A7</color>
     <color name="green_500">#4CAF50</color>
     <color name="green_700">#388E3C</color>
+    <color name="green_900">#1B5E20</color>
 
     <color name="red_500">#F44336</color>
     <color name="red_700">#D32F2F</color>
+    
+    <color name="amber_A700">#FFAB00</color>
 
     <color name="deeporange_500">#FF5722</color>
     <color name="deeporange_700">#E64A19</color>

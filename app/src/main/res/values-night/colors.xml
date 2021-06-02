@@ -6,6 +6,7 @@
     <color name="colorOnSecondary">@color/backgroundColor</color>
 
     <color name="backgroundColor">@color/gray_900</color>
+    <color name="backgroundColorUpsell">@color/backgroundColor</color>
     <color name="defaultTextColor">#FFFFFF</color>
     <color name="shoppingListBackgroundColor">@color/gray_800</color>
     <color name="shoppingListTitleColor">#FFFFFF</color>

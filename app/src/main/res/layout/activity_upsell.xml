@@ -5,13 +5,191 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".mvvm.activity.upsell.UpsellActivity">
 
-  <androidx.constraintlayout.widget.ConstraintLayout
+  <ScrollView
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="wrap_content">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundColor">
 
+      <TextView
+          android:id="@+id/upsell_title"
+          style="@style/UpsellTitleText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center_horizontal"
+          android:text="@string/upsell_title"
+          android:layout_marginTop="48dp"
+          app:layout_constraintTop_toTopOf="parent"
+          />
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+      <TextView
+          android:id="@+id/upsell_description"
+          style="@style/UpsellBodyText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/upsell_description"
+          android:gravity="center_horizontal"
+          android:layout_marginTop="16dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          app:layout_constraintTop_toBottomOf="@id/upsell_title"
+          />
+
+      <Button
+          android:id="@+id/upsell_button_upper"
+          style="@style/UpsellButton"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="16dp"
+          android:text="@string/upsell_cta"
+          app:layout_constraintTop_toBottomOf="@id/upsell_description"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          />
+
+      <ImageView
+          android:id="@+id/image_box_one"
+          android:layout_width="match_parent"
+          android:layout_height="250dp"
+          android:importantForAccessibility="no"
+          android:src="@drawable/onboardbg3"
+          android:alpha="0.5"
+          android:scaleType="centerCrop"
+          android:layout_marginTop="32dp"
+          app:layout_constraintTop_toBottomOf="@id/upsell_button_upper"
+          />
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:background="@drawable/dark_green_vertical_fade"
+          app:layout_constraintTop_toTopOf="@id/image_box_one"
+          app:layout_constraintBottom_toBottomOf="@id/image_box_one"
+          />
+
+      <View
+          android:id="@+id/image_box_one_textbox"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:background="@color/green_900"
+          app:layout_constraintTop_toTopOf="@id/image_box_one_title"
+          app:layout_constraintBottom_toBottomOf="@id/image_box_one_description"
+          />
+
+      <TextView
+          android:id="@+id/image_box_one_title"
+          style="@style/UpsellImageBoxTitleText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/upsell_image_box_one_title"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          android:paddingTop="16dp"
+          app:layout_constraintTop_toBottomOf="@id/image_box_one"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          />
+
+      <TextView
+          android:id="@+id/image_box_one_description"
+          style="@style/UpsellImageBoxDescriptionText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/upsell_image_box_one_description"
+          android:gravity="center_horizontal"
+          android:layout_marginTop="16dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          android:paddingBottom="16dp"
+          app:layout_constraintTop_toBottomOf="@id/image_box_one_title"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          />
+
+      <ImageView
+          android:id="@+id/image_box_two"
+          android:layout_width="match_parent"
+          android:layout_height="250dp"
+          android:importantForAccessibility="no"
+          android:src="@drawable/onboardbg1"
+          android:alpha="0.5"
+          android:scaleType="centerCrop"
+          app:layout_constraintTop_toBottomOf="@id/image_box_one_textbox"
+          />
+
+      <View
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:background="@drawable/dark_green_vertical_fade"
+          app:layout_constraintTop_toTopOf="@id/image_box_two"
+          app:layout_constraintBottom_toBottomOf="@id/image_box_two"
+          />
+
+      <View
+          android:id="@+id/image_box_two_textbox"
+          android:layout_width="match_parent"
+          android:layout_height="0dp"
+          android:background="@color/green_900"
+          app:layout_constraintTop_toTopOf="@id/image_box_two_title"
+          app:layout_constraintBottom_toBottomOf="@id/image_box_two_bottom_space"
+          />
+
+      <TextView
+          android:id="@+id/image_box_two_title"
+          style="@style/UpsellImageBoxTitleText"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/upsell_image_box_two_title"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          android:paddingTop="16dp"
+          app:layout_constraintTop_toBottomOf="@id/image_box_two"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          />
+
+      <TextView
+          android:id="@+id/image_box_two_description"
+          style="@style/UpsellImageBoxDescriptionText"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/upsell_image_box_two_description"
+          android:gravity="center_horizontal"
+          android:layout_marginTop="16dp"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          android:paddingBottom="16dp"
+          app:layout_constraintTop_toBottomOf="@id/image_box_two_title"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          />
+
+      <Button
+          android:id="@+id/upsell_button_lower"
+          style="@style/UpsellButtonSecondary"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="32dp"
+          android:layout_marginBottom="32dp"
+          android:text="@string/upsell_cta"
+          app:layout_constraintTop_toBottomOf="@id/image_box_two_description"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          />
+
+      <Space
+          android:id="@+id/image_box_two_bottom_space"
+          android:layout_width="match_parent"
+          android:layout_height="64dp"
+          app:layout_constraintTop_toBottomOf="@id/upsell_button_lower"
+          />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+  </ScrollView>
 
 </layout>
 

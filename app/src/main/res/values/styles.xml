@@ -80,6 +80,37 @@
         <item name="android:textSize">16sp</item>
         <item name="textAllCaps">true</item>
     </style>
+    
+    <style name="UpsellTitleText" parent="BoldStylish">
+        <item name="android:textColor">@color/amber_A700</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="UpsellBodyText" parent="Medium">
+        <item name="android:textColor">@color/defaultTextColor</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="UpsellButton" parent="ButtonPrimary">
+        <item name="android:textColor">@color/colorOnSecondary</item>
+        <item name="android:backgroundTint">@color/colorSecondaryDark</item>
+    </style>
+
+    <style name="UpsellButtonSecondary" parent="ButtonPrimary">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="UpsellImageBoxTitleText" parent="BoldStylish">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="UpsellImageBoxDescriptionText" parent="Medium">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert" />
 

@@ -25,7 +25,7 @@
 
     <!-- Home Fragment -->
     <string name="splash_home_no_items">You have no shopping lists. Click on the button to add one.</string>
-    <string name="remove_ads">Remove Ads</string>
+    <string name="upgrade_to_ad_free">Upgrade to ad-free</string>
 
     <!-- List Fragment -->
     <string name="new_list">New List</string>
@@ -36,6 +36,15 @@
     <string name="list_not_found">List couldn\'t be found. Going back</string>
     <string name="clear_checked">Clear checked</string>
     <string name="toast_rename_validation_failed">Please enter a valid list title</string>
+
+    <!-- Upsell Activity -->
+    <string name="upsell_title">Shopshop Premium</string>
+    <string name="upsell_description">Get the most premium Shopshop experience</string>
+    <string name="upsell_cta">Go Premium</string>
+    <string name="upsell_image_box_one_title">Completely Ad-Free</string>
+    <string name="upsell_image_box_one_description">Get rid of ads for a completely seamless shopping experience</string>
+    <string name="upsell_image_box_two_title">Only £0.99</string>
+    <string name="upsell_image_box_two_description">Premium costs you no more than a single pound!</string>
 
     <!-- Rename Dialog -->
     <string name="rename">Rename</string>
