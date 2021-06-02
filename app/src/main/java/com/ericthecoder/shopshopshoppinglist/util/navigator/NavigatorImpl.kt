@@ -4,6 +4,7 @@ import android.content.Intent
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.onboarding.OnboardingActivity
+import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellActivity
 import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
 
 class NavigatorImpl(private val topActivityProvider: TopActivityProvider) : Navigator {
@@ -25,6 +26,12 @@ class NavigatorImpl(private val topActivityProvider: TopActivityProvider) : Navi
     override fun goToOnboarding() {
         originActivity?.let {
             OnboardingActivity.getIntent(it).start()
+        }
+    }
+
+    override fun goToUpsell() {
+        originActivity?.let {
+            UpsellActivity.getIntent(it).start()
         }
     }
 

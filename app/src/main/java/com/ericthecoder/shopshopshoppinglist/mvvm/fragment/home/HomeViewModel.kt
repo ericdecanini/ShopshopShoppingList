@@ -40,7 +40,13 @@ class HomeViewModel @Inject constructor(
 
     fun navigateToListFragment() = mainNavigator.goToList()
 
+    fun navigateToUpsell() = mainNavigator.goToUpsell()
+
+    //region: ui interaction events
+
     override fun onShoppingListClick(shoppingList: ShoppingList) {
         mainNavigator.goToList(shoppingList)
     }
+
+    //endregion
 }

@@ -8,4 +8,6 @@ interface Navigator {
 
     fun goToOnboarding()
 
+    fun goToUpsell()
+
 }

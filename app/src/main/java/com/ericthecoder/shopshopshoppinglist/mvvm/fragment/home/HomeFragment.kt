@@ -1,9 +1,7 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -67,5 +65,17 @@ class HomeFragment : DaggerFragment() {
         this.shoppingLists.clear()
         this.shoppingLists.addAll(lists)
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_shopping_list, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
+        R.id.ic_remove_ads -> {
+            viewModel.navigateToUpsell()
+            true
+        }
+        else -> false
     }
 }

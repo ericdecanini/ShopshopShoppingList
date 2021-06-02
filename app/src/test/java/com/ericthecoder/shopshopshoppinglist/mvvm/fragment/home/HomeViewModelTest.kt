@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
-import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.ericthecoder.shopshopshoppinglist.util.TestCoroutineContextProvider
+import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.verify
@@ -71,5 +71,13 @@ class HomeViewModelTest {
         viewModel.navigateToListFragment()
 
         verify(mainNavigator).goToList()
+    }
+
+    @Test
+    fun whenNavigateToUpsell_thenMainNavigatorGoToUpsell() {
+
+        viewModel.navigateToUpsell()
+
+        verify(mainNavigator).goToUpsell()
     }
 }

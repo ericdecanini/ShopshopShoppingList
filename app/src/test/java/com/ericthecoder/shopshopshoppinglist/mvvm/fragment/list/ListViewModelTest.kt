@@ -1,3 +1,4 @@
+
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
 import android.app.Activity
