@@ -5,6 +5,6 @@ import com.ericthecoder.shopshopshoppinglist.usecases.initializer.BillingClientI
 class BillingClientInitializerImpl : BillingClientInitializer {
 
     override fun initialize() {
-        TODO("Not yet implemented")
+        // TODO("Not yet implemented")
     }
 }
