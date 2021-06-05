@@ -48,6 +48,10 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$daggerVersion"
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
+    // Billing
+    implementation "com.android.billingclient:billing:$billingVersion"
+    implementation "com.android.billingclient:billing-ktx:$billingVersion"
+
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"

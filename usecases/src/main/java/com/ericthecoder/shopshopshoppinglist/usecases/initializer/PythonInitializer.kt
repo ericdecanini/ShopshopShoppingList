@@ -1,6 +1,5 @@
 package com.ericthecoder.shopshopshoppinglist.usecases.initializer
 
-interface BillingClientInitializer {
-
+interface PythonInitializer {
     fun initialize()
 }

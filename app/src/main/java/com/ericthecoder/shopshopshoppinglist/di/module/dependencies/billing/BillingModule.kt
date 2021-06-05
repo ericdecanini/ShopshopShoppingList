@@ -1,7 +1,8 @@
 package com.ericthecoder.shopshopshoppinglist.di.module.dependencies.billing
 
-import com.ericdecanini.shopshopshoppinglist.billing.BillingClientInitializerImpl
-import com.ericthecoder.shopshopshoppinglist.usecases.initializer.BillingClientInitializer
+import android.content.Context
+import com.ericdecanini.shopshopshoppinglist.billing.BillingRepositoryImpl
+import com.ericthecoder.shopshopshoppinglist.usecases.repository.BillingRepository
 import dagger.Module
 import dagger.Provides
 
@@ -9,5 +10,7 @@ import dagger.Provides
 class BillingModule {
 
     @Provides
-    fun provideBillingClientInitializer(): BillingClientInitializer = BillingClientInitializerImpl()
+    fun provideBillingRepository(
+        context: Context
+    ): BillingRepository = BillingRepositoryImpl(context)
 }
