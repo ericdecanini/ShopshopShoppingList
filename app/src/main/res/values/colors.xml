@@ -2,6 +2,7 @@
 <resources>
     <color name="colorPrimary">@color/green_500</color>
     <color name="colorPrimaryDark">@color/green_700</color>
+    <color name="colorPrimaryDarker">@color/green_900</color>
     <color name="colorSecondary">@color/indigo_secondary</color>
     <color name="colorSecondaryDark">@color/indigo_secondary_dark</color>
     <color name="backgroundColor">@color/gray_200</color>

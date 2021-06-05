@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/green_700">
+    android:color="@color/colorSecondary">
 
     <!-- the normal bg color -->
     <item>
-        <color android:color="@color/green_500" />
+        <color android:color="@android:color/transparent" />
     </item>
 
     <!-- make sure the ripple doesn't exceed the bounds -->

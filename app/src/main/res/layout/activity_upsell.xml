@@ -5,6 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".mvvm.activity.upsell.UpsellActivity">
 
+  <data>
+    <variable
+        name="viewmodel"
+        type="com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel" />
+  </data>
+
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
@@ -12,7 +18,30 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/backgroundColor">
+        android:background="@color/backgroundColorUpsell">
+
+      <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:background="@color/colorPrimary"
+          android:gravity="center_horizontal"
+          app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="@dimen/toolbar_back_button_size"
+            android:layout_height="@dimen/toolbar_back_button_size"
+            android:src="@drawable/ic_arrow_back"
+            android:background="@drawable/bg_ripple_primary_bg_round"
+            android:padding="4dp"
+            android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
+            android:contentDescription="@string/talkback_back"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+      </androidx.appcompat.widget.Toolbar>
 
       <TextView
           android:id="@+id/upsell_title"
@@ -22,7 +51,7 @@
           android:gravity="center_horizontal"
           android:text="@string/upsell_title"
           android:layout_marginTop="48dp"
-          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintTop_toBottomOf="@id/toolbar"
           />
 
       <TextView
