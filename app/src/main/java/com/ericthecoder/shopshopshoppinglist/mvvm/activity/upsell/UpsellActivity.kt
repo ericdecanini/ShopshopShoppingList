@@ -10,8 +10,10 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityUpsellBinding
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ViewEvent.NavigateUp
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class UpsellActivity : DaggerAppCompatActivity() {
 
     @Inject
@@ -30,12 +32,17 @@ class UpsellActivity : DaggerAppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
         observeViewEvents()
+        observePurchaseResult()
     }
 
     private fun observeViewEvents() = viewModel.viewEventLiveData.observe(this) { event ->
         when(event) {
             NavigateUp -> onBackPressed()
         }
+    }
+
+    private fun observePurchaseResult() = viewModel.getPurchaseResultLiveData().observe(this) {
+        viewModel.handlePurchaseResult(it)
     }
 
     companion object {

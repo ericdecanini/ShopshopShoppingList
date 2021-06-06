@@ -1,6 +1,8 @@
 package com.ericthecoder.shopshopshoppinglist.library.billing
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.ericthecoder.dependencies.android.activity.TopActivityProvider
@@ -16,13 +18,20 @@ class BillingInteractor(
 
     private var premiumSkuDetails: SkuDetails? = null
 
+    private val purchaseResultEmitter = MutableLiveData<PurchaseResult>()
+    val purchaseResultLiveData: LiveData<PurchaseResult> get() = purchaseResultEmitter
+
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
         when {
             billingResult.responseCode == BillingResponseCode.OK && purchases?.any() == true -> {
-                handlePurchase(purchases.first())
+               purchaseResultEmitter.postValue(PurchaseResult.Success(purchases.first()))
             }
-            billingResult.responseCode == BillingResponseCode.USER_CANCELED -> {}
-            else -> {}
+            billingResult.responseCode == BillingResponseCode.USER_CANCELED -> {
+                /* do nothing */
+            }
+            else -> {
+                purchaseResultEmitter.postValue(PurchaseResult.Error)
+            }
         }
     }
 
@@ -55,14 +64,14 @@ class BillingInteractor(
             .skuDetailsList
             ?.firstOrNull()
 
-    suspend fun launchBillingFlow(): Int {
+    suspend fun launchBillingFlow() {
         val activity = topActivityProvider.getTopActivity()
         val billingFlowParams = getBillingFlowParams()
 
-        return when {
-            activity == null -> BillingResponseCode.ERROR
-            billingFlowParams == null -> BillingResponseCode.ITEM_UNAVAILABLE
-            else -> billingClient.launchBillingFlow(activity, billingFlowParams).responseCode
+        when {
+            activity == null -> purchaseResultEmitter.postValue(PurchaseResult.Error)
+            billingFlowParams == null -> purchaseResultEmitter.postValue(PurchaseResult.Unavailable)
+            else -> billingClient.launchBillingFlow(activity, billingFlowParams)
         }
     }
 
@@ -73,10 +82,6 @@ class BillingInteractor(
             .newBuilder()
             .setSkuDetails(skuDetails)
             .build()
-    }
-
-    private fun handlePurchase(purchase: Purchase) {
-
     }
 
     private suspend fun BillingClient.connect(): Boolean =
@@ -101,6 +106,12 @@ class BillingInteractor(
                 }
             })
         }
+
+    sealed class PurchaseResult {
+        data class Success(val purchase: Purchase) : PurchaseResult()
+        object Unavailable : PurchaseResult()
+        object Error : PurchaseResult()
+    }
 
     companion object {
 

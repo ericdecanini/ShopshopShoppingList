@@ -46,6 +46,14 @@
     <string name="upsell_image_box_two_title">Only %s</string>
     <string name="upsell_image_box_two_description">Pay once and enjoy a premium shopping list forever!</string>
 
+    <!-- Purchase Result Dialogs -->
+    <string name="purchase_dialog_connection_failed_title">Error connecting to Google Play</string>
+    <string name="purchase_dialog_connection_failed_message">Please check that your device is logged into the Google Play Store</string>
+    <string name="purchase_dialog_unavailable_title">Premium Unavailable</string>
+    <string name="purchase_dialog_unavailable_message">Shopshop Premium seems to be unavailable. Try updating to the latest version or contacting the developer</string>
+    <string name="purchase_dialog_unknown_title">Error While Purchasing Premium</string>
+    <string name="purchase_dialog_unknown_message">Please check your network connection and try again</string>
+
     <!-- Rename Dialog -->
     <string name="rename">Rename</string>
     <string name="hint_list_title">List title</string>
