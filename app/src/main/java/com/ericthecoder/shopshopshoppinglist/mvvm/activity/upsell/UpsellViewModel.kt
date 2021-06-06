@@ -26,11 +26,10 @@ class UpsellViewModel @Inject constructor(
 
     init {
         connectToBilling()
-        fetchPrice()
     }
 
-    fun onCtaButtonPressed() {
-        // TODO: Implement
+    fun onCtaButtonPressed() = viewModelScope.launch {
+        val responseCode = billingInteractor.launchBillingFlow()
     }
 
     fun onBackButtonPressed() {
@@ -52,6 +51,11 @@ class UpsellViewModel @Inject constructor(
 
     private fun handleConnectionFailure() {
 
+    }
+
+    override fun onCleared() {
+        billingInteractor.disconnectBillingClient()
+        super.onCleared()
     }
 
     sealed class ViewEvent {

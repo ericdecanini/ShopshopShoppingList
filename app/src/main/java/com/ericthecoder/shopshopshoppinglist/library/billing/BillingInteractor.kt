@@ -2,6 +2,7 @@ package com.ericthecoder.shopshopshoppinglist.library.billing
 
 import android.content.Context
 import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -13,8 +14,16 @@ class BillingInteractor(
     private val topActivityProvider: TopActivityProvider
 ) {
 
+    private var premiumSkuDetails: SkuDetails? = null
+
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
-        // TODO: Implement
+        when {
+            billingResult.responseCode == BillingResponseCode.OK && purchases?.any() == true -> {
+                handlePurchase(purchases.first())
+            }
+            billingResult.responseCode == BillingResponseCode.USER_CANCELED -> {}
+            else -> {}
+        }
     }
 
     private val billingClient = BillingClient
@@ -22,7 +31,6 @@ class BillingInteractor(
         .setListener(purchasesUpdatedListener)
         .enablePendingPurchases()
         .build()
-
 
     suspend fun connectIfNeeded(): Boolean {
         var result = billingClient.isReady || billingClient.connect()
@@ -37,23 +45,25 @@ class BillingInteractor(
         return result
     }
 
-    suspend fun getPremiumSkuDetails() = SkuDetailsParams
-        .newBuilder()
-        .setSkusList(listOf(PREMIUM_PRODUCT_ID))
-        .setType(BillingClient.SkuType.INAPP)
-        .build()
-        .let { params -> billingClient.querySkuDetails(params) }
-        .skuDetailsList
-        ?.firstOrNull()
+    suspend fun getPremiumSkuDetails() = premiumSkuDetails
+        ?:  SkuDetailsParams
+            .newBuilder()
+            .setSkusList(listOf(PREMIUM_PRODUCT_ID))
+            .setType(BillingClient.SkuType.INAPP)
+            .build()
+            .let { params -> billingClient.querySkuDetails(params) }
+            .skuDetailsList
+            ?.firstOrNull()
 
     suspend fun launchBillingFlow(): Int {
         val activity = topActivityProvider.getTopActivity()
         val billingFlowParams = getBillingFlowParams()
 
-        return if (activity != null && billingFlowParams != null) {
-            billingClient.launchBillingFlow(activity, billingFlowParams).responseCode
-        } else
-            -1
+        return when {
+            activity == null -> BillingResponseCode.ERROR
+            billingFlowParams == null -> BillingResponseCode.ITEM_UNAVAILABLE
+            else -> billingClient.launchBillingFlow(activity, billingFlowParams).responseCode
+        }
     }
 
     fun disconnectBillingClient() = billingClient.endConnection()
@@ -65,11 +75,15 @@ class BillingInteractor(
             .build()
     }
 
+    private fun handlePurchase(purchase: Purchase) {
+
+    }
+
     private suspend fun BillingClient.connect(): Boolean =
         suspendCancellableCoroutine { continuation ->
             startConnection(object : BillingClientStateListener {
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
-                    if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    if (billingResult.responseCode == BillingResponseCode.OK) {
                         continuation.resume(true) {
                             continuation.resumeWithException(it)
                         }
