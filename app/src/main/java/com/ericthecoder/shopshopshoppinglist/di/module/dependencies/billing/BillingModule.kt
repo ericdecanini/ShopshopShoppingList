@@ -1,16 +1,19 @@
 package com.ericthecoder.shopshopshoppinglist.di.module.dependencies.billing
 
 import android.content.Context
-import com.ericdecanini.shopshopshoppinglist.billing.BillingRepositoryImpl
-import com.ericthecoder.shopshopshoppinglist.usecases.repository.BillingRepository
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
+import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @Module
 class BillingModule {
 
+    @ExperimentalCoroutinesApi
     @Provides
-    fun provideBillingRepository(
-        context: Context
-    ): BillingRepository = BillingRepositoryImpl(context)
+    fun provideBillingInteractor(
+        context: Context,
+        topActivityProvider: TopActivityProvider
+    ): BillingInteractor = BillingInteractor(context, topActivityProvider)
 }

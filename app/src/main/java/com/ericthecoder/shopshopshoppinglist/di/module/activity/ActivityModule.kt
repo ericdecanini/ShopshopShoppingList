@@ -6,7 +6,7 @@ import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.NavigatorImpl
-import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import dagger.Module
 import dagger.Provides
 

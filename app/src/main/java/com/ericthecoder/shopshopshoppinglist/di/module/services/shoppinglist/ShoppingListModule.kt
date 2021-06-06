@@ -1,8 +1,8 @@
 package com.ericthecoder.shopshopshoppinglist.di.module.services.shoppinglist
 
-import com.ericthecoder.shopshopshoppinglist.dataaccess.repository.SQLiteShoppingListMapper
+import com.ericthecoder.shopshopshoppinglist.dataaccess.mapper.SQLiteShoppingListMapper
+import com.ericthecoder.shopshopshoppinglist.dataaccess.mapper.ShoppingListMapper
 import com.ericthecoder.shopshopshoppinglist.dataaccess.repository.SQLiteShoppingListRepository
-import com.ericthecoder.shopshopshoppinglist.dataaccess.repository.ShoppingListMapper
 import com.ericthecoder.shopshopshoppinglist.services.shoppinglist.ShoppingListDatabaseServiceImpl
 import com.ericthecoder.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository

@@ -43,8 +43,8 @@
     <string name="upsell_cta">Go Premium</string>
     <string name="upsell_image_box_one_title">Completely Ad-Free</string>
     <string name="upsell_image_box_one_description">Get rid of ads for a completely seamless shopping experience</string>
-    <string name="upsell_image_box_two_title">Only £0.99</string>
-    <string name="upsell_image_box_two_description">Premium costs you no more than a single pound!</string>
+    <string name="upsell_image_box_two_title">Only %s</string>
+    <string name="upsell_image_box_two_description">Pay once and enjoy a premium shopping list forever!</string>
 
     <!-- Rename Dialog -->
     <string name="rename">Rename</string>

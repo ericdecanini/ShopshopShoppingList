@@ -1,4 +1,4 @@
-package com.ericthecoder.shopshopshoppinglist.dataaccess.repository
+package com.ericthecoder.shopshopshoppinglist.dataaccess.mapper
 
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList

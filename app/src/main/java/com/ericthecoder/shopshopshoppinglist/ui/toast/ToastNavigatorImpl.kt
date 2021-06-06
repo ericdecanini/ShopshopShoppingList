@@ -1,7 +1,7 @@
 package com.ericthecoder.shopshopshoppinglist.ui.toast
 
 import android.widget.Toast
-import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 
 class ToastNavigatorImpl(
     private val topActivityProvider: TopActivityProvider

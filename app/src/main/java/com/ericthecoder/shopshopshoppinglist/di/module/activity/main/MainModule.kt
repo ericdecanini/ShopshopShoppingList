@@ -9,7 +9,7 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
-import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import dagger.Binds
 import dagger.Module
 import dagger.Provides

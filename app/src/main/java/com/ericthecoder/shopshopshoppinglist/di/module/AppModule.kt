@@ -1,5 +1,7 @@
 package com.ericthecoder.shopshopshoppinglist.di.module
 
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
+import com.ericthecoder.dependencies.android.activity.TopActivityProviderImpl
 import com.ericthecoder.shopshopshoppinglist.di.module.activity.ActivityBuildersModule
 import com.ericthecoder.shopshopshoppinglist.util.providers.*
 import dagger.Module

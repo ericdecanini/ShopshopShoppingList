@@ -1,4 +1,4 @@
-package com.ericthecoder.shopshopshoppinglist.util.providers
+package com.ericthecoder.dependencies.android.activity
 
 import android.app.Application
 import androidx.appcompat.app.AppCompatActivity

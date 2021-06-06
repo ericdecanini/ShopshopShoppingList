@@ -6,7 +6,7 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeFragmentDirections
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
-import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 
 class MainNavigatorImpl(
     navigator: Navigator,

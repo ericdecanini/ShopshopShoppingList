@@ -4,7 +4,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.rename.RenameDialogFragment
-import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 
 class DialogNavigatorImpl(private val topActivityProvider: TopActivityProvider) : DialogNavigator {
 

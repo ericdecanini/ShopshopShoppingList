@@ -1,5 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.dataaccess.repository
 
+import com.ericthecoder.shopshopshoppinglist.dataaccess.mapper.SQLiteShoppingListMapper
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.network.ShopItemResponse

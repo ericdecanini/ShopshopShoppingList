@@ -1,5 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.dataaccess.repository
 
+import com.ericthecoder.shopshopshoppinglist.dataaccess.mapper.ShoppingListMapper
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.usecases.service.ShoppingListDatabaseService
 

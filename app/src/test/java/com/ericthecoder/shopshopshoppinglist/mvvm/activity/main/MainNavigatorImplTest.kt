@@ -9,7 +9,7 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeFragmentDirections
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
-import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot

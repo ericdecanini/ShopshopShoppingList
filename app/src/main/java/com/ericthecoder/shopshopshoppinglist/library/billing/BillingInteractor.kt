@@ -1,47 +1,30 @@
-package com.ericdecanini.shopshopshoppinglist.billing
+package com.ericthecoder.shopshopshoppinglist.library.billing
 
 import android.content.Context
-import android.util.Log
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.PurchasesUpdatedListener
-import com.ericthecoder.shopshopshoppinglist.usecases.repository.BillingRepository
+import com.android.billingclient.api.*
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resumeWithException
 
 @ExperimentalCoroutinesApi
-class BillingRepositoryImpl(context: Context) : BillingRepository {
+class BillingInteractor(
+    applicationContext: Context,
+    private val topActivityProvider: TopActivityProvider
+) {
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
         // TODO: Implement
     }
 
     private val billingClient = BillingClient
-        .newBuilder(context)
+        .newBuilder(applicationContext)
         .setListener(purchasesUpdatedListener)
         .enablePendingPurchases()
         .build()
 
-    override suspend fun isSubscriptionSupported(): Boolean {
-        if (!connectIfNeeded()) return false
 
-        val billingResult = billingClient.isFeatureSupported(BillingClient.FeatureType.SUBSCRIPTIONS)
-
-        var succeeded = false
-
-        when (billingResult.responseCode) {
-            BillingClient.BillingResponseCode.SERVICE_DISCONNECTED -> connectIfNeeded()
-            BillingClient.BillingResponseCode.OK -> succeeded = true
-            else -> Log.w("BillingClientProvider", "isSubscriptionSupported() error: ${billingResult.debugMessage}")
-        }
-        return succeeded
-    }
-
-    override fun disconnectBillingClient() = billingClient.endConnection()
-
-    private suspend fun connectIfNeeded(): Boolean {
+    suspend fun connectIfNeeded(): Boolean {
         var result = billingClient.isReady || billingClient.connect()
 
         if (!result) {
@@ -52,6 +35,34 @@ class BillingRepositoryImpl(context: Context) : BillingRepository {
             }
         }
         return result
+    }
+
+    suspend fun getPremiumSkuDetails() = SkuDetailsParams
+        .newBuilder()
+        .setSkusList(listOf(PREMIUM_PRODUCT_ID))
+        .setType(BillingClient.SkuType.INAPP)
+        .build()
+        .let { params -> billingClient.querySkuDetails(params) }
+        .skuDetailsList
+        ?.firstOrNull()
+
+    suspend fun launchBillingFlow(): Int {
+        val activity = topActivityProvider.getTopActivity()
+        val billingFlowParams = getBillingFlowParams()
+
+        return if (activity != null && billingFlowParams != null) {
+            billingClient.launchBillingFlow(activity, billingFlowParams).responseCode
+        } else
+            -1
+    }
+
+    fun disconnectBillingClient() = billingClient.endConnection()
+
+    private suspend fun getBillingFlowParams() = getPremiumSkuDetails()?.let { skuDetails ->
+        BillingFlowParams
+            .newBuilder()
+            .setSkuDetails(skuDetails)
+            .build()
     }
 
     private suspend fun BillingClient.connect(): Boolean =
@@ -80,5 +91,6 @@ class BillingRepositoryImpl(context: Context) : BillingRepository {
     companion object {
 
         private const val RETRY_POLICY_REPEAT = 5
+        private const val PREMIUM_PRODUCT_ID = "shopshop_premium"
     }
 }

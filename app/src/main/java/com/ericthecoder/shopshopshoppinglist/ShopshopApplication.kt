@@ -3,7 +3,7 @@ package com.ericthecoder.shopshopshoppinglist
 import com.ericthecoder.shopshopshoppinglist.di.DaggerAppComponent
 import com.ericthecoder.shopshopshoppinglist.library.firebase.admob.AppOpenAdManager
 import com.ericthecoder.shopshopshoppinglist.usecases.initializer.AppInitializer
-import com.ericthecoder.shopshopshoppinglist.util.providers.TopActivityProvider
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication

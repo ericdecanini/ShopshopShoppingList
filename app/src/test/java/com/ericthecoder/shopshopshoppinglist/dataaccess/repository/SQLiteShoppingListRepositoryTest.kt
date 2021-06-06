@@ -1,5 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.dataaccess.repository
 
+import com.ericthecoder.shopshopshoppinglist.dataaccess.mapper.ShoppingListMapper
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShopItemResponseBuilder.Companion.aShopItemResponse
