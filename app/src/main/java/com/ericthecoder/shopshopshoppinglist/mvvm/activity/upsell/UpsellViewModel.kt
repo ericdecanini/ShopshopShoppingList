@@ -51,7 +51,7 @@ class UpsellViewModel @Inject constructor(
     fun handlePurchaseResult(purchaseResult: PurchaseResult) = when (purchaseResult) {
         is Success -> handlePurchase(purchaseResult.purchase)
         Unavailable -> handleError(UNAVAILABLE)
-        Error -> handleError(UNKNOWN)
+        Error -> { /* do nothing */ }
     }
 
     private fun connectToBilling() = viewModelScope.launch {

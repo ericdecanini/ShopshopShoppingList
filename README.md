@@ -9,7 +9,7 @@ https://www.ericdecanini.com/
 
 TODO:
 - Implement free and premium versions
-    - Visibility of menu
+    - Dialog titles and messages
     - Pending state
 
 - Replace all test ad units

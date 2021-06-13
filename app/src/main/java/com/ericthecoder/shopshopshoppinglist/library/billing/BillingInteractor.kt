@@ -22,17 +22,8 @@ class BillingInteractor(
     val purchaseResultLiveData: LiveData<PurchaseResult> get() = purchaseResultEmitter
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
-        when {
-            billingResult.responseCode == BillingResponseCode.OK && purchases?.any() == true -> {
-               purchaseResultEmitter.postValue(PurchaseResult.Success(purchases.first()))
-            }
-            billingResult.responseCode == BillingResponseCode.USER_CANCELED -> {
-                /* do nothing */
-            }
-            else -> {
-                purchaseResultEmitter.postValue(PurchaseResult.Error)
-            }
-        }
+        if (billingResult.responseCode == BillingResponseCode.OK && purchases?.any() == true)
+            purchaseResultEmitter.postValue(PurchaseResult.Success(purchases.first()))
     }
 
     private val billingClient = BillingClient
