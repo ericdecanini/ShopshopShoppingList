@@ -9,8 +9,10 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityMainBinding
 import com.google.android.gms.ads.AdRequest
 import dagger.android.support.DaggerAppCompatActivity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class MainActivity : DaggerAppCompatActivity() {
 
   @Inject
@@ -29,6 +31,11 @@ class MainActivity : DaggerAppCompatActivity() {
     loadAd()
     viewModel.launchOnboardingIfNecessary()
     handleIntent()
+  }
+
+  override fun onResume() {
+    super.onResume()
+    viewModel.fetchPremiumState()
   }
 
   private fun handleIntent() {

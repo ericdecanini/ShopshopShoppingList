@@ -77,7 +77,7 @@ class AppOpenAdManager private constructor(
 
     @OnLifecycleEvent(ON_START)
     fun onStart() {
-        if (!AppSessionVariables.hasAppOpenAdDisplayed)
+        if (!AppSessionVariables.hasAppOpenAdDisplayed && !AppSessionVariables.isPremiumVersion)
             showAdIfAvailable()
     }
 

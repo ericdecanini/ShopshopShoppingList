@@ -83,6 +83,18 @@ class BillingInteractor(
         return billingClient.acknowledgePurchase(acknowledgePurchaseParams)
     }
 
+    suspend fun getPremiumState() = billingClient.queryPurchasesAsync(PREMIUM_PRODUCT_ID)
+        .purchasesList
+        .firstOrNull { it.purchaseState == Purchase.PurchaseState.PURCHASED }
+        ?.let { purchase ->
+            if (!purchase.isAcknowledged) {
+                acknowledgePurchase(purchase)
+                PremiumState.FRESHLY_ACKNOWLEDGED
+            } else {
+                PremiumState.PREMIUM
+            }
+        } ?: PremiumState.FREE
+
     fun disconnectBillingClient() = billingClient.endConnection()
 
     private suspend fun getBillingFlowParams() = getPremiumSkuDetails()?.let { skuDetails ->
