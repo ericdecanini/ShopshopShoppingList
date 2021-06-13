@@ -83,9 +83,9 @@ class BillingInteractor(
         return billingClient.acknowledgePurchase(acknowledgePurchaseParams)
     }
 
-    suspend fun getPremiumState() = billingClient.queryPurchasesAsync(PREMIUM_PRODUCT_ID)
+    suspend fun getPremiumState() = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
         .purchasesList
-        .firstOrNull { it.purchaseState == Purchase.PurchaseState.PURCHASED }
+        .firstOrNull { it.isPremium() }
         ?.let { purchase ->
             if (!purchase.isAcknowledged) {
                 acknowledgePurchase(purchase)
@@ -126,6 +126,9 @@ class BillingInteractor(
                 }
             })
         }
+
+    private fun Purchase.isPremium() = purchaseState == Purchase.PurchaseState.PURCHASED
+            && skus.any { it == PREMIUM_PRODUCT_ID }
 
     sealed class PurchaseResult {
         data class Success(val purchase: Purchase) : PurchaseResult()

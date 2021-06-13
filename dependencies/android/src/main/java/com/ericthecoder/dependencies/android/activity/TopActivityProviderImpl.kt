@@ -17,7 +17,8 @@ class TopActivityProviderImpl : TopActivityProvider {
 
     private val callbacks: Application.ActivityLifecycleCallbacks = object : Application.ActivityLifecycleCallbacks {
         override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
-            topActivity = activity
+            if (activity is AppCompatActivity)
+                topActivity = activity
         }
 
         override fun onActivityStarted(activity: Activity) {
@@ -25,11 +26,12 @@ class TopActivityProviderImpl : TopActivityProvider {
         }
 
         override fun onActivityResumed(activity: Activity) {
-            topActivity = activity
+            if (activity is AppCompatActivity)
+                topActivity = activity
         }
 
         override fun onActivityPaused(activity: Activity) {
-            topActivity = null
+            /* do nothing */
         }
 
         override fun onActivityStopped(activity: Activity) {

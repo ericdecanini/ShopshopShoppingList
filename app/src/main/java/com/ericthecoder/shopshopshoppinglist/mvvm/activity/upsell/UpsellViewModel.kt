@@ -16,6 +16,7 @@ import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor.P
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ErrorReason.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ViewEvent.NavigateUp
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.util.constants.AppSessionVariables
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -76,6 +77,7 @@ class UpsellViewModel @Inject constructor(
             viewModelScope.launch {
                 billingInteractor.acknowledgePurchase(purchase)
             }
+        AppSessionVariables.isPremiumVersion = true
 
         dialogNavigator.displayGenericDialog(
             title = resourceProvider.getString(R.string.purchase_dialog_purchased_title),

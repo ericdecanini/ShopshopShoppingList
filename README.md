@@ -9,3 +9,8 @@ https://www.ericdecanini.com/
 
 TODO:
 - Implement free and premium versions
+    - Visibility of menu
+    - Pending state
+
+- Replace all test ad units
+- Ensure no TODOs

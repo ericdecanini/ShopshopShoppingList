@@ -13,6 +13,7 @@ import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
+import com.ericthecoder.shopshopshoppinglist.util.constants.AppSessionVariables
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -37,7 +38,6 @@ class HomeFragment : DaggerFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
         binding.lifecycleOwner = this
-        setHasOptionsMenu(true)
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar as Toolbar)
 
         initShoppingLists()
@@ -48,6 +48,7 @@ class HomeFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
+        setHasOptionsMenu(!AppSessionVariables.isPremiumVersion)
         viewModel.refreshLists()
     }
 
