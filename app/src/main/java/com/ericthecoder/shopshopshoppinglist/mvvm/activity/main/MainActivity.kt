@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityMainBinding
 import com.google.android.gms.ads.AdRequest
@@ -27,6 +28,7 @@ class MainActivity : DaggerAppCompatActivity() {
     super.onCreate(savedInstanceState)
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
     binding.lifecycleOwner = this
+    binding.setVariable(BR.viewmodel, viewModel)
 
     loadAd()
     viewModel.launchOnboardingIfNecessary()

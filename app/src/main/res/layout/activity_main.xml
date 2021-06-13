@@ -7,9 +7,10 @@
 
     <data>
         <import type="com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState" />
+        <import type="android.view.View" />
 
         <variable
-            name="viewModel"
+            name="viewmodel"
             type="com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel" />
     </data>
 
@@ -35,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:visibility="@{viewModel.premiumStateLiveData == PremiumState.FREE}"
+            android:visibility="@{viewmodel.premiumStateLiveData == PremiumState.FREE ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
