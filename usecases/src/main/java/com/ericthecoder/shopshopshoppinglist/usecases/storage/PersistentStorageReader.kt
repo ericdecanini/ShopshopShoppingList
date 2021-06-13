@@ -4,4 +4,6 @@ interface PersistentStorageReader {
 
     fun hasOnboardingShown(): Boolean
 
+    fun isPremium(): Boolean
+
 }

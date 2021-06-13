@@ -14,6 +14,10 @@ class SharedPrefsWriter(
         saveBoolean(keys.KEY_ONBOARDING_SHOWN, onboardingShown)
     }
 
+    override fun setIsPremium(isPremium: Boolean) {
+        saveBoolean(keys.KEY_IS_PREMIUM, isPremium)
+    }
+
     private fun saveBoolean(key: String, value: Boolean) {
         editor.putBoolean(key, value)
         editor.apply()

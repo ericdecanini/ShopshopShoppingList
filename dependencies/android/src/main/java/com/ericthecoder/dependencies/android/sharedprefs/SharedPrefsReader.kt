@@ -10,4 +10,7 @@ class SharedPrefsReader(
 
     override fun hasOnboardingShown() =
         sharedPreferences.getBoolean(keys.KEY_ONBOARDING_SHOWN, false)
+
+    override fun isPremium() =
+        sharedPreferences.getBoolean(keys.KEY_IS_PREMIUM, false)
 }

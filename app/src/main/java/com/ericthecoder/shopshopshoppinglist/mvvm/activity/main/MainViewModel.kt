@@ -12,7 +12,6 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigation
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
-import com.ericthecoder.shopshopshoppinglist.util.constants.AppSessionVariables
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -50,13 +49,13 @@ class MainViewModel @Inject constructor(
             when (premiumState) {
                 PremiumState.FRESHLY_ACKNOWLEDGED -> {
                     showPremiumPurchasedDialog()
-                    AppSessionVariables.isPremiumVersion = true
+                    persistentStorageWriter.setIsPremium(true)
                 }
                 PremiumState.PREMIUM -> {
-                    AppSessionVariables.isPremiumVersion = true
+                    persistentStorageWriter.setIsPremium(true)
                 }
                 PremiumState.FREE -> {
-                    AppSessionVariables.isPremiumVersion = false
+                    persistentStorageWriter.setIsPremium(false)
                 }
             }
         }

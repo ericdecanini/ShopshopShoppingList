@@ -5,6 +5,5 @@ class AppSessionVariables {
     companion object {
 
         var hasAppOpenAdDisplayed = false
-        var isPremiumVersion = false
     }
 }

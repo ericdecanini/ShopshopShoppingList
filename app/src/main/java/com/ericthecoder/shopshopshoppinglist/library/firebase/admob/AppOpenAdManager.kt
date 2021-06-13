@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.util.constants.AppSessionVariables
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.FullScreenContentCallback
@@ -16,7 +17,8 @@ import com.google.android.gms.ads.appopen.AppOpenAd.APP_OPEN_AD_ORIENTATION_PORT
 import com.google.android.gms.ads.appopen.AppOpenAd.AppOpenAdLoadCallback
 
 class AppOpenAdManager private constructor(
-    private val application: Application
+    private val application: Application,
+    private val persistentStorageReader: PersistentStorageReader,
 ) : LifecycleObserver, Application.ActivityLifecycleCallbacks {
 
     private var isShowingAd = false
@@ -77,7 +79,7 @@ class AppOpenAdManager private constructor(
 
     @OnLifecycleEvent(ON_START)
     fun onStart() {
-        if (!AppSessionVariables.hasAppOpenAdDisplayed && !AppSessionVariables.isPremiumVersion)
+        if (!AppSessionVariables.hasAppOpenAdDisplayed && !persistentStorageReader.isPremium())
             showAdIfAvailable()
     }
 
@@ -113,8 +115,8 @@ class AppOpenAdManager private constructor(
         // TODO: Replace with actual ad unit id
         private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/3419835294"
 
-        fun initialize(application: Application) {
-            AppOpenAdManager(application)
+        fun initialize(application: Application, persistentStorageReader: PersistentStorageReader) {
+            AppOpenAdManager(application, persistentStorageReader)
         }
     }
 }

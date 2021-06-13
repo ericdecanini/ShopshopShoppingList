@@ -16,7 +16,7 @@ import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor.P
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ErrorReason.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ViewEvent.NavigateUp
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
-import com.ericthecoder.shopshopshoppinglist.util.constants.AppSessionVariables
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -25,7 +25,8 @@ import javax.inject.Inject
 class UpsellViewModel @Inject constructor(
     private val billingInteractor: BillingInteractor,
     private val resourceProvider: ResourceProvider,
-    private val dialogNavigator: DialogNavigator
+    private val dialogNavigator: DialogNavigator,
+    private val persistentStorageWriter: PersistentStorageWriter,
 ): ViewModel() {
 
     private val viewEventEmitter = MutableLiveData<ViewEvent>()
@@ -77,7 +78,7 @@ class UpsellViewModel @Inject constructor(
             viewModelScope.launch {
                 billingInteractor.acknowledgePurchase(purchase)
             }
-        AppSessionVariables.isPremiumVersion = true
+        persistentStorageWriter.setIsPremium(true)
 
         dialogNavigator.displayGenericDialog(
             title = resourceProvider.getString(R.string.purchase_dialog_purchased_title),

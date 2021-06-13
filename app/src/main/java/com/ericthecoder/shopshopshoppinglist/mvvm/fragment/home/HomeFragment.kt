@@ -11,9 +11,9 @@ import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.SetHasOptionsMenu
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
-import com.ericthecoder.shopshopshoppinglist.util.constants.AppSessionVariables
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -42,14 +42,15 @@ class HomeFragment : DaggerFragment() {
 
         initShoppingLists()
         observeState()
+        observeViewEvents()
 
         return binding.root
     }
 
     override fun onResume() {
         super.onResume()
-        setHasOptionsMenu(!AppSessionVariables.isPremiumVersion)
         viewModel.refreshLists()
+        viewModel.refreshPremiumState()
     }
 
     private fun initShoppingLists() {
@@ -59,9 +60,17 @@ class HomeFragment : DaggerFragment() {
 
     private fun observeState() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
-            when(state) {
+            when (state) {
                 is Loaded -> updateShoppingLists(state.items)
                 else -> { /* do nothing */ }
+            }
+        }
+    }
+
+    private fun observeViewEvents() {
+        viewModel.viewEventLiveData.observe(viewLifecycleOwner) { event ->
+            when (event) {
+                is SetHasOptionsMenu -> setHasOptionsMenu(event.enabled)
             }
         }
     }
