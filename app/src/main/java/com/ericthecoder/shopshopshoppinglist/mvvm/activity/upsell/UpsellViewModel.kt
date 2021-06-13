@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.Purchase.PurchaseState
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
@@ -44,8 +46,8 @@ class UpsellViewModel @Inject constructor(
 
     fun getPurchaseResultLiveData() = billingInteractor.purchaseResultLiveData
 
-    fun handlePurchaseResult(purchaseResult: PurchaseResult) = when(purchaseResult) {
-        is Success -> { /* TODO: Implement */ }
+    fun handlePurchaseResult(purchaseResult: PurchaseResult) = when (purchaseResult) {
+        is Success -> handlePurchase(purchaseResult.purchase)
         Unavailable -> handleError(UNAVAILABLE)
         Error -> handleError(UNKNOWN)
     }
@@ -62,6 +64,35 @@ class UpsellViewModel @Inject constructor(
             premiumPrice.set(it.price)
         }
     }
+
+    private fun handlePurchase(purchase: Purchase) = when (purchase.purchaseState) {
+        PurchaseState.PURCHASED -> handlePurchasedState(purchase)
+        PurchaseState.PENDING -> handlePendingState()
+        else -> handleError(UNKNOWN)
+    }
+
+    private fun handlePurchasedState(purchase: Purchase) {
+        if (!purchase.isAcknowledged)
+            viewModelScope.launch {
+                billingInteractor.acknowledgePurchase(purchase)
+            }
+
+        dialogNavigator.displayGenericDialog(
+            title = resourceProvider.getString(R.string.purchase_dialog_purchased_title),
+            message = resourceProvider.getString(R.string.purchase_dialog_purchased_message),
+            cancellable = false,
+            positiveText = resourceProvider.getString(R.string.ok),
+            positiveOnClick = { viewEventEmitter.value = NavigateUp }
+        )
+    }
+
+    private fun handlePendingState() = dialogNavigator.displayGenericDialog(
+        title = resourceProvider.getString(R.string.purchase_dialog_pending_title),
+        message = resourceProvider.getString(R.string.purchase_dialog_pending_message),
+        cancellable = false,
+        positiveText = resourceProvider.getString(R.string.ok),
+        positiveOnClick = { viewEventEmitter.value = NavigateUp }
+    )
 
     private fun handleError(reason: ErrorReason) = dialogNavigator.displayGenericDialog(
         title = resourceProvider.getString(reason.titleRes),

@@ -75,6 +75,14 @@ class BillingInteractor(
         }
     }
 
+    suspend fun acknowledgePurchase(purchase: Purchase): BillingResult {
+        val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+            .setPurchaseToken(purchase.purchaseToken)
+            .build()
+
+        return billingClient.acknowledgePurchase(acknowledgePurchaseParams)
+    }
+
     fun disconnectBillingClient() = billingClient.endConnection()
 
     private suspend fun getBillingFlowParams() = getPremiumSkuDetails()?.let { skuDetails ->
