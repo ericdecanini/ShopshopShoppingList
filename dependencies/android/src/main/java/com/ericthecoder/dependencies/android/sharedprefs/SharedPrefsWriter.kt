@@ -1,6 +1,7 @@
 package com.ericthecoder.dependencies.android.sharedprefs
 
 import android.content.SharedPreferences
+import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 
 class SharedPrefsWriter(
@@ -14,12 +15,17 @@ class SharedPrefsWriter(
         saveBoolean(keys.KEY_ONBOARDING_SHOWN, onboardingShown)
     }
 
-    override fun setIsPremium(isPremium: Boolean) {
-        saveBoolean(keys.KEY_IS_PREMIUM, isPremium)
+    override fun setPremiumStatus(premiumStatus: PremiumStatus) {
+        saveInt(keys.KEY_IS_PREMIUM, premiumStatus.code)
     }
 
     private fun saveBoolean(key: String, value: Boolean) {
         editor.putBoolean(key, value)
+        editor.apply()
+    }
+
+    private fun saveInt(key: String, value: Int) {
+        editor.putInt(key, value)
         editor.apply()
     }
 }

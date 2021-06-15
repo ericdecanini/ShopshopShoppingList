@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
+import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler
@@ -44,7 +45,9 @@ class HomeViewModel @Inject constructor(
     }
 
     fun refreshPremiumState() {
-        viewEventEmitter.value = ViewEvent.SetHasOptionsMenu(!persistentStorageReader.isPremium())
+        viewEventEmitter.value = ViewEvent.SetHasOptionsMenu(
+            persistentStorageReader.getPremiumStatus() != PremiumStatus.PREMIUM
+        )
     }
 
     fun navigateToListFragment() = mainNavigator.goToList()

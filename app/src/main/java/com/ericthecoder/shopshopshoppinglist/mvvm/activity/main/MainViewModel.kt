@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
+import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
@@ -26,8 +27,8 @@ class MainViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
 ) : ViewModel() {
 
-    private val premiumStateEmitter = MutableLiveData<PremiumState>()
-    val premiumStateLiveData: LiveData<PremiumState> get() = premiumStateEmitter
+    private val premiumStatusEmitter = MutableLiveData<PremiumStatus>()
+    val premiumStatusLiveData: LiveData<PremiumStatus> get() = premiumStatusEmitter
 
     fun handleNestedInstruction(nestedNavigationInstruction: NestedNavigationInstruction) =
         when(nestedNavigationInstruction) {
@@ -43,19 +44,23 @@ class MainViewModel @Inject constructor(
 
     fun fetchPremiumState() = viewModelScope.launch {
         if (billingInteractor.connectIfNeeded()) {
-            val premiumState = billingInteractor.getPremiumState()
-            premiumStateEmitter.postValue(premiumState)
-
-            when (premiumState) {
+            when (billingInteractor.getPremiumState()) {
                 PremiumState.FRESHLY_ACKNOWLEDGED -> {
                     showPremiumPurchasedDialog()
-                    persistentStorageWriter.setIsPremium(true)
+                    persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM)
+                    premiumStatusEmitter.value = PremiumStatus.PREMIUM
                 }
                 PremiumState.PREMIUM -> {
-                    persistentStorageWriter.setIsPremium(true)
+                    persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM)
+                    premiumStatusEmitter.value = PremiumStatus.PREMIUM
+                }
+                PremiumState.PENDING -> {
+                    persistentStorageWriter.setPremiumStatus(PremiumStatus.PENDING)
+                    premiumStatusEmitter.value = PremiumStatus.PENDING
                 }
                 PremiumState.FREE -> {
-                    persistentStorageWriter.setIsPremium(false)
+                    persistentStorageWriter.setPremiumStatus(PremiumStatus.FREE)
+                    premiumStatusEmitter.value = PremiumStatus.FREE
                 }
             }
         }

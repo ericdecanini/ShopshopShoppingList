@@ -8,9 +8,5 @@ Check out my blog:
 https://www.ericdecanini.com/
 
 TODO:
-- Implement free and premium versions
-    - Dialog titles and messages
-    - Pending state
-
 - Replace all test ad units
 - Ensure no TODOs

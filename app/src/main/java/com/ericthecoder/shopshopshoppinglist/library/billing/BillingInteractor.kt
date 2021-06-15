@@ -74,17 +74,24 @@ class BillingInteractor(
         return billingClient.acknowledgePurchase(acknowledgePurchaseParams)
     }
 
-    suspend fun getPremiumState() = billingClient.queryPurchasesAsync(BillingClient.SkuType.INAPP)
-        .purchasesList
-        .firstOrNull { it.isPremium() }
-        ?.let { purchase ->
-            if (!purchase.isAcknowledged) {
-                acknowledgePurchase(purchase)
+    suspend fun getPremiumState(): PremiumState {
+        val purchases = billingClient
+            .queryPurchasesAsync(BillingClient.SkuType.INAPP)
+            .purchasesList
+
+        purchases.firstOrNull { it.isPremium() }?.let {
+            return if (!it.isAcknowledged) {
+                acknowledgePurchase(it)
                 PremiumState.FRESHLY_ACKNOWLEDGED
             } else {
                 PremiumState.PREMIUM
             }
+        }
+
+        return purchases.firstOrNull { it.isPending() }?.let {
+            PremiumState.PENDING
         } ?: PremiumState.FREE
+    }
 
     fun disconnectBillingClient() = billingClient.endConnection()
 
@@ -119,6 +126,9 @@ class BillingInteractor(
         }
 
     private fun Purchase.isPremium() = purchaseState == Purchase.PurchaseState.PURCHASED
+            && skus.any { it == PREMIUM_PRODUCT_ID }
+
+    private fun Purchase.isPending() = purchaseState == Purchase.PurchaseState.PENDING
             && skus.any { it == PREMIUM_PRODUCT_ID }
 
     sealed class PurchaseResult {

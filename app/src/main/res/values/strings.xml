@@ -41,6 +41,7 @@
     <string name="upsell_title">Shopshop Premium</string>
     <string name="upsell_description">Get the most premium Shopshop experience</string>
     <string name="upsell_cta">Go Premium</string>
+    <string name="upsell_cta_pending">Purchase Pending</string>
     <string name="upsell_image_box_one_title">Completely Ad-Free</string>
     <string name="upsell_image_box_one_description">Get rid of ads for a completely seamless shopping experience</string>
     <string name="upsell_image_box_two_title">Only %s</string>
@@ -53,10 +54,10 @@
     <string name="purchase_dialog_unavailable_message">Shopshop Premium seems to be unavailable. Try updating to the latest version or contacting the developer</string>
     <string name="purchase_dialog_unknown_title">Error While Purchasing Premium</string>
     <string name="purchase_dialog_unknown_message">Please check your network connection and try again</string>
-    <string name="purchase_dialog_purchased_title">Thank you for purchasing premium</string>
+    <string name="purchase_dialog_purchased_title">Premium Unlocked</string>
     <string name="purchase_dialog_purchased_message">You can now enjoy an ad-free experience</string>
-    <string name="purchase_dialog_pending_title">Purchase still pending</string>
-    <string name="purchase_dialog_pending_message">Your purchase is still being confirmed by Google Play. As soon as it is, you will start enjoying an ad-free experience</string>
+    <string name="purchase_dialog_pending_title">Purchase Pending</string>
+    <string name="purchase_dialog_pending_message">Your purchase is still being confirmed by Google Play. As soon as it\'s confirmed, you will start enjoying an ad-free experience</string>
 
     <!-- Rename Dialog -->
     <string name="rename">Rename</string>

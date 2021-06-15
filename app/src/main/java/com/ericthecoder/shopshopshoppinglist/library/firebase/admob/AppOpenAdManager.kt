@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.util.constants.AppSessionVariables
 import com.google.android.gms.ads.AdRequest
@@ -77,10 +78,12 @@ class AppOpenAdManager private constructor(
         }
     }
 
+    private fun shouldShowAd() = !AppSessionVariables.hasAppOpenAdDisplayed
+            && persistentStorageReader.getPremiumStatus() != PremiumStatus.PREMIUM
+
     @OnLifecycleEvent(ON_START)
     fun onStart() {
-        if (!AppSessionVariables.hasAppOpenAdDisplayed && !persistentStorageReader.isPremium())
-            showAdIfAvailable()
+        if (shouldShowAd()) { showAdIfAvailable() }
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {

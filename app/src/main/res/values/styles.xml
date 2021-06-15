@@ -98,7 +98,6 @@
 
     <style name="UpsellButton" parent="ButtonPrimary">
         <item name="android:textColor">@color/colorOnSecondary</item>
-        <item name="android:backgroundTint">@color/colorSecondaryDark</item>
     </style>
 
     <style name="UpsellButtonSecondary" parent="ButtonPrimary">

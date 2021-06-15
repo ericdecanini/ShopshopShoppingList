@@ -10,12 +10,14 @@ import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.Purchase.PurchaseState
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
+import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor.PurchaseResult
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor.PurchaseResult.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ErrorReason.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ViewEvent.NavigateUp
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
@@ -27,12 +29,14 @@ class UpsellViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
     private val dialogNavigator: DialogNavigator,
     private val persistentStorageWriter: PersistentStorageWriter,
+    persistentStorageReader: PersistentStorageReader,
 ): ViewModel() {
 
     private val viewEventEmitter = MutableLiveData<ViewEvent>()
     val viewEventLiveData: LiveData<ViewEvent> get() = viewEventEmitter
 
     val premiumPrice = ObservableField(resourceProvider.getString(R.string.ellipsis))
+    val premiumStatus = ObservableField(persistentStorageReader.getPremiumStatus())
 
     init {
         connectToBilling()
@@ -78,7 +82,8 @@ class UpsellViewModel @Inject constructor(
             viewModelScope.launch {
                 billingInteractor.acknowledgePurchase(purchase)
             }
-        persistentStorageWriter.setIsPremium(true)
+        persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM)
+        premiumStatus.set(PremiumStatus.PREMIUM)
 
         dialogNavigator.displayGenericDialog(
             title = resourceProvider.getString(R.string.purchase_dialog_purchased_title),
@@ -89,13 +94,18 @@ class UpsellViewModel @Inject constructor(
         )
     }
 
-    private fun handlePendingState() = dialogNavigator.displayGenericDialog(
-        title = resourceProvider.getString(R.string.purchase_dialog_pending_title),
-        message = resourceProvider.getString(R.string.purchase_dialog_pending_message),
-        cancellable = false,
-        positiveText = resourceProvider.getString(R.string.ok),
-        positiveOnClick = { viewEventEmitter.value = NavigateUp }
-    )
+    private fun handlePendingState() {
+        persistentStorageWriter.setPremiumStatus(PremiumStatus.PENDING)
+        premiumStatus.set(PremiumStatus.PENDING)
+
+        dialogNavigator.displayGenericDialog(
+            title = resourceProvider.getString(R.string.purchase_dialog_pending_title),
+            message = resourceProvider.getString(R.string.purchase_dialog_pending_message),
+            cancellable = false,
+            positiveText = resourceProvider.getString(R.string.ok),
+            positiveOnClick = { viewEventEmitter.value = NavigateUp }
+        )
+    }
 
     private fun handleError(reason: ErrorReason) = dialogNavigator.displayGenericDialog(
         title = resourceProvider.getString(reason.titleRes),

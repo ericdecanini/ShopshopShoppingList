@@ -6,6 +6,9 @@
     tools:context=".mvvm.activity.upsell.UpsellActivity">
 
   <data>
+    <import type="com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus" />
+    <import type="android.view.View" />
+
     <variable
         name="viewmodel"
         type="com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel" />
@@ -84,11 +87,13 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
-          android:text="@string/upsell_cta"
+          android:backgroundTint="@{viewmodel.premiumStatus != PremiumStatus.PENDING ? @color/colorSecondaryDark : @color/gray_500}"
+          android:text="@{viewmodel.premiumStatus == PremiumStatus.PENDING ? @string/upsell_cta_pending : @string/upsell_cta}"
           android:onClick="@{() -> viewmodel.onCtaButtonPressed()}"
           app:layout_constraintTop_toBottomOf="@id/upsell_description"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
+          tools:text="@string/upsell_cta"
           />
 
       <ImageView
@@ -215,11 +220,12 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="32dp"
           android:layout_marginBottom="32dp"
-          android:text="@string/upsell_cta"
+          android:text="@{viewmodel.premiumStatus == PremiumStatus.PENDING ? @string/upsell_cta_pending : @string/upsell_cta}"
           android:onClick="@{() -> viewmodel.onCtaButtonPressed()}"
           app:layout_constraintTop_toBottomOf="@id/image_box_two_description"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
+          tools:text="@string/upsell_cta"
           />
 
       <Space
