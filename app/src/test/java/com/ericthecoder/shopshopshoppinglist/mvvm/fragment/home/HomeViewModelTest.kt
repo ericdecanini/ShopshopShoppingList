@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.util.TestCoroutineContextProvider
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.nhaarman.mockitokotlin2.given
@@ -24,7 +25,14 @@ class HomeViewModelTest {
     private val mainNavigator: MainNavigator = mock()
     private val shoppingListRepository: ShoppingListRepository = mock()
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
-    private val viewModel = HomeViewModel(mainNavigator, shoppingListRepository, coroutineContextProvider)
+    private val persistentStorageReader: PersistentStorageReader = mock()
+
+    private val viewModel = HomeViewModel(
+        mainNavigator,
+        shoppingListRepository,
+        coroutineContextProvider,
+        persistentStorageReader,
+    )
 
     private val shoppingList = ShoppingListBuilder.aShoppingList().build()
 
