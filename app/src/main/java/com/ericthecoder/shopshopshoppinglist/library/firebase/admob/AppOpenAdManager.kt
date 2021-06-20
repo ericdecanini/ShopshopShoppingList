@@ -7,6 +7,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.lifecycle.ProcessLifecycleOwner
+import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.util.constants.AppSessionVariables
@@ -53,7 +54,13 @@ class AppOpenAdManager private constructor(
             }
         }
 
-        AppOpenAd.load(application, AD_UNIT_ID, adRequest, APP_OPEN_AD_ORIENTATION_PORTRAIT, loadCallback!!)
+        AppOpenAd.load(
+            application,
+            application.applicationContext.getString(R.string.admob_app_open_ad_id),
+            adRequest,
+            APP_OPEN_AD_ORIENTATION_PORTRAIT,
+            loadCallback!!
+        )
     }
 
     private fun showAdIfAvailable() {
@@ -115,8 +122,6 @@ class AppOpenAdManager private constructor(
     }
 
     companion object {
-        // TODO: Replace with actual ad unit id
-        private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/3419835294"
 
         fun initialize(application: Application, persistentStorageReader: PersistentStorageReader) {
             AppOpenAdManager(application, persistentStorageReader)
