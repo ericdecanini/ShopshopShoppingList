@@ -34,8 +34,6 @@ class ListFragment : DaggerFragment() {
         ShopItemAdapter(mutableListOf(), viewModel)
     }
 
-    private var isNewList = false
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -77,20 +75,9 @@ class ListFragment : DaggerFragment() {
         diffResult.dispatchUpdatesTo(adapter)
 
         binding.shopList.layoutManager?.onRestoreInstanceState(savedInstanceState)
-
-        if (isNewList) {
-            isNewList = false
-            viewModel.showRenameDialog()
-        }
     }
 
-    private fun inflateList(id: Int) =
-        if (id != -1) {
-            viewModel.loadShoppingList(id)
-        } else {
-            isNewList = true
-            viewModel.createNewShoppingList()
-        }
+    private fun inflateList(id: Int) = viewModel.handleArgs(id)
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_shopping_list, menu)

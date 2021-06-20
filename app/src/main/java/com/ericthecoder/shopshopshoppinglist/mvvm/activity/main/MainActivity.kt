@@ -47,6 +47,8 @@ class MainActivity : DaggerAppCompatActivity() {
           viewModel.handleNestedInstruction(it)
         }
     }
+
+    intent.removeExtra(KEY_NESTED_NAVIGATION_INSTRUCTION)
   }
 
   private fun loadAd() {

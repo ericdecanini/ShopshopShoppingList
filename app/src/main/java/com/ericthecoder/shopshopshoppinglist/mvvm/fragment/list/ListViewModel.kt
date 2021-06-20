@@ -43,6 +43,7 @@ class ListViewModel @Inject constructor(
     private val shoppingList get() = (stateLiveData.value as? Loaded)?.shoppingList
 
     private val errorHandler = CoroutineExceptionHandler { _, throwable ->
+        throwable.printStackTrace()
         _stateLiveData.postValue(Error(throwable))
     }
 
@@ -100,11 +101,26 @@ class ListViewModel @Inject constructor(
             mainNavigator.navigateUp()
     }
 
-    private fun setShoppingList(shoppingList: ShoppingList) {
-        listId = shoppingList.id
-        listName.set(shoppingList.name)
-        _stateLiveData.postValue(Loaded(shoppingList))
+    fun handleArgs(listId: Int) {
+        if (this.listId != -1)
+            return // ignore: args have been handled
+
+        this.listId = listId
+        if (listId != -1)
+            loadShoppingList(listId)
+        else
+            createNewShoppingList()
     }
+
+    private suspend fun setShoppingList(shoppingList: ShoppingList) =
+        withContext(coroutineContextProvider.Main) {
+            val isNewList = listId == -1
+            listId = shoppingList.id
+            listName.set(shoppingList.name)
+            _stateLiveData.value = Loaded(shoppingList)
+
+            if (isNewList) { showRenameDialog() }
+        }
 
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
 
