@@ -54,8 +54,9 @@ class UpsellViewModel @Inject constructor(
 
     fun handlePurchaseResult(purchaseResult: PurchaseResult) = when (purchaseResult) {
         is Success -> handlePurchase(purchaseResult.purchase)
+        AlreadyOwned -> handleError(ALREADY_OWNED)
         Unavailable -> handleError(UNAVAILABLE)
-        Error -> { /* do nothing */ }
+        Error -> { handleError(UNKNOWN) }
     }
 
     private fun connectToBilling() = viewModelScope.launch {
@@ -105,13 +106,18 @@ class UpsellViewModel @Inject constructor(
         )
     }
 
-    private fun handleError(reason: ErrorReason) = dialogNavigator.displayGenericDialog(
-        title = resourceProvider.getString(reason.titleRes),
-        message = resourceProvider.getString(reason.messageRes),
-        cancellable = reason != CONNECTION_FAILURE,
-        positiveButton = resourceProvider.getString(R.string.ok) to
-                if (reason == CONNECTION_FAILURE) ({ viewEventEmitter.value = NavigateUp }) else null,
-    )
+    private fun handleError(reason: ErrorReason) =
+        if (reason == UNKNOWN && premiumStatus.get() == PremiumStatus.PENDING)
+            Unit
+        else
+            dialogNavigator.displayGenericDialog(
+                title = resourceProvider.getString(reason.titleRes),
+                message = resourceProvider.getString(reason.messageRes),
+                cancellable = reason != CONNECTION_FAILURE && reason != ALREADY_OWNED,
+                positiveButton = resourceProvider.getString(R.string.ok) to
+                        if (reason == CONNECTION_FAILURE || reason == ALREADY_OWNED)
+                            ({ viewEventEmitter.value = NavigateUp }) else null,
+            )
 
     override fun onCleared() {
         billingInteractor.disconnectBillingClient()
@@ -127,6 +133,7 @@ class UpsellViewModel @Inject constructor(
         @StringRes val messageRes: Int
     ) {
         CONNECTION_FAILURE(R.string.purchase_dialog_connection_failed_title, R.string.purchase_dialog_connection_failed_message),
+        ALREADY_OWNED(R.string.purchase_dialog_already_owned_title, R.string.purchase_dialog_already_owned_message),
         UNAVAILABLE(R.string.purchase_dialog_unavailable_title, R.string.purchase_dialog_unavailable_message),
         UNKNOWN(R.string.purchase_dialog_unknown_title, R.string.purchase_dialog_unknown_message)
     }

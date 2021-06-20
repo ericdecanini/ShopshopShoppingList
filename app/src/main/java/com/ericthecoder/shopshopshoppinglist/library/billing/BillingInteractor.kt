@@ -22,8 +22,14 @@ class BillingInteractor(
     val purchaseResultLiveData: LiveData<PurchaseResult> get() = purchaseResultEmitter
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
-        if (billingResult.responseCode == BillingResponseCode.OK && purchases?.any() == true)
-            purchaseResultEmitter.postValue(PurchaseResult.Success(purchases.first()))
+        when(billingResult.responseCode) {
+            BillingResponseCode.OK -> if(purchases?.any() == true)
+                purchaseResultEmitter.postValue(PurchaseResult.Success(purchases.first()))
+            BillingResponseCode.ITEM_ALREADY_OWNED ->
+                purchaseResultEmitter.postValue(PurchaseResult.AlreadyOwned)
+            else ->
+                purchaseResultEmitter.postValue(PurchaseResult.Error)
+        }
     }
 
     private val billingClient = BillingClient
@@ -133,6 +139,7 @@ class BillingInteractor(
 
     sealed class PurchaseResult {
         data class Success(val purchase: Purchase) : PurchaseResult()
+        object AlreadyOwned : PurchaseResult()
         object Unavailable : PurchaseResult()
         object Error : PurchaseResult()
     }
