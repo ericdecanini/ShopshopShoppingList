@@ -2,9 +2,9 @@ package com.ericthecoder.shopshopshoppinglist.ui.dialogs
 
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.rename.RenameDialogFragment
-import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 
 class DialogNavigatorImpl(private val topActivityProvider: TopActivityProvider) : DialogNavigator {
 
@@ -14,18 +14,16 @@ class DialogNavigatorImpl(private val topActivityProvider: TopActivityProvider) 
     override fun displayGenericDialog(
         title: String?,
         message: String?,
-        positiveText: String?,
-        positiveOnClick: (() -> Unit)?,
-        negativeText: String?,
-        negativeOnClick: (() -> Unit)?,
+        positiveButton: Pair<String, (() -> Unit)?>?,
+        negativeButton: Pair<String, (() -> Unit)?>?,
         cancellable: Boolean
     ) {
         val builder = GenericDialogFragment.Builder(activity)
             .setCancellable(cancellable)
-        title?.let { builder.setTitle(it) }
-        message?.let { builder.setMessage(it) }
-        positiveText?.let { builder.setPositiveButton(it, positiveOnClick) }
-        negativeText?.let { builder.setNegativeButton(it, negativeOnClick) }
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton(positiveButton?.first, positiveButton?.second)
+        builder.setNegativeButton(negativeButton?.first, negativeButton?.second)
 
         val fragment = builder.create()
         fragment.showAllowingStateLoss(DIALOG_TAG)
@@ -37,13 +35,13 @@ class DialogNavigatorImpl(private val topActivityProvider: TopActivityProvider) 
         negativeOnClick: (() -> Unit)?,
         cancellable: Boolean
     ) {
-        val builder = RenameDialogFragment.Builder(activity)
+        val builder = RenameDialogFragment.Builder()
             .setListTitle(listTitle)
             .setPositiveOnClick(positiveOnClick)
+            .setNegativeOnClick(negativeOnClick)
             .setCancellable(cancellable)
-        negativeOnClick?.let { builder.setNegativeOnClick(it) }
 
-        val fragment = builder.create()
+        val fragment = builder.build()
         fragment.showAllowingStateLoss(DIALOG_TAG)
     }
 

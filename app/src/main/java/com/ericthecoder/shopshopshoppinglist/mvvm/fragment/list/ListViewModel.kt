@@ -249,10 +249,8 @@ class ListViewModel @Inject constructor(
         dialogNavigator.displayGenericDialog(
             title = resourceProvider.getString(R.string.delete),
             message = resourceProvider.getString(R.string.delete_dialog_message, listName),
-            positiveText = resourceProvider.getString(R.string.ok),
-            positiveOnClick = { deleteList() },
-            negativeText = resourceProvider.getString(R.string.cancel),
-            negativeOnClick = { /* do nothing */ }
+            positiveButton = resourceProvider.getString(R.string.ok) to { deleteList() },
+            negativeButton = resourceProvider.getString(R.string.cancel) to { },
         )
     }
 

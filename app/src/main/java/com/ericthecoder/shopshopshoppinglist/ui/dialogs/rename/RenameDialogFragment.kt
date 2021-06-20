@@ -1,6 +1,5 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialogs.rename
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +9,9 @@ import androidx.fragment.app.DialogFragment
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogRenameBinding
+import java.io.Serializable
 
-class RenameDialogFragment private constructor(
-    private val controllerData: RenameDialogControllerData
-) : DialogFragment() {
+class RenameDialogFragment : DialogFragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -27,33 +25,49 @@ class RenameDialogFragment private constructor(
       savedInstanceState: Bundle?
   ): View {
     val binding: DialogRenameBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_rename, null, false)
-    binding.setVariable(BR.controller, RenameDialogController(this, controllerData))
+    binding.setVariable(BR.controller, RenameDialogController(this, arguments))
     return binding.root
   }
 
-  class Builder(context: Context) {
+  class Builder {
 
-    private val controllerData = RenameDialogControllerData(context)
+    private var listTitleText = ""
+    private var positiveOnClick: ((String) -> Unit)? = null
+    private var negativeOnClick: (() -> Unit)? = null
+    private var cancellable = true
 
     fun setListTitle(listTitle: String) = apply {
-      controllerData.listTitleText = listTitle
+      this.listTitleText = listTitle
     }
 
     fun setPositiveOnClick(onClick: ((String) -> Unit)?) = apply {
-      controllerData.positiveOnClick = onClick
+      this.positiveOnClick = onClick
     }
 
     fun setNegativeOnClick(onClick: (() -> Unit)?) = apply {
-      controllerData.negativeOnClick = onClick
+      this.negativeOnClick = onClick
     }
 
     fun setCancellable(cancellable: Boolean) = apply {
-      controllerData.cancellable = cancellable
+      this.cancellable = cancellable
     }
 
-    fun create(): RenameDialogFragment = RenameDialogFragment(controllerData).apply {
-      isCancelable = controllerData.cancellable
+    fun build() = RenameDialogFragment().apply {
+      val args = Bundle().apply {
+        putString(EXTRA_TITLE, listTitleText)
+        putSerializable(EXTRA_POSITIVE_CLICK, positiveOnClick as Serializable?)
+        putSerializable(EXTRA_NEGATIVE_CLICK, negativeOnClick as Serializable?)
+      }
+
+      arguments = args
+      isCancelable = cancellable
     }
+  }
+
+  companion object {
+    internal const val EXTRA_TITLE = "EXTRA_TITLE"
+    internal const val EXTRA_POSITIVE_CLICK = "EXTRA_POSITIVE_CLICK"
+    internal const val EXTRA_NEGATIVE_CLICK = "EXTRA_NEGATIVE_CLICK"
   }
 
 }

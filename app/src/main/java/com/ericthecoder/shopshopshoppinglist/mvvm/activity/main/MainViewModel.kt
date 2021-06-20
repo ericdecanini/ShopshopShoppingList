@@ -69,6 +69,6 @@ class MainViewModel @Inject constructor(
     private fun showPremiumPurchasedDialog() =  dialogNavigator.displayGenericDialog(
         title = resourceProvider.getString(R.string.purchase_dialog_purchased_title),
         message = resourceProvider.getString(R.string.purchase_dialog_purchased_message),
-        positiveText = resourceProvider.getString(R.string.ok),
+        positiveButton = resourceProvider.getString(R.string.ok) to {},
     )
 }

@@ -89,8 +89,7 @@ class UpsellViewModel @Inject constructor(
             title = resourceProvider.getString(R.string.purchase_dialog_purchased_title),
             message = resourceProvider.getString(R.string.purchase_dialog_purchased_message),
             cancellable = false,
-            positiveText = resourceProvider.getString(R.string.ok),
-            positiveOnClick = { viewEventEmitter.value = NavigateUp }
+            positiveButton = resourceProvider.getString(R.string.ok) to { viewEventEmitter.value = NavigateUp }
         )
     }
 
@@ -102,8 +101,7 @@ class UpsellViewModel @Inject constructor(
             title = resourceProvider.getString(R.string.purchase_dialog_pending_title),
             message = resourceProvider.getString(R.string.purchase_dialog_pending_message),
             cancellable = false,
-            positiveText = resourceProvider.getString(R.string.ok),
-            positiveOnClick = { viewEventEmitter.value = NavigateUp }
+            positiveButton = resourceProvider.getString(R.string.ok) to { viewEventEmitter.value = NavigateUp },
         )
     }
 
@@ -111,8 +109,8 @@ class UpsellViewModel @Inject constructor(
         title = resourceProvider.getString(reason.titleRes),
         message = resourceProvider.getString(reason.messageRes),
         cancellable = reason != CONNECTION_FAILURE,
-        positiveText = if (reason == CONNECTION_FAILURE) resourceProvider.getString(R.string.ok) else null,
-        positiveOnClick = if (reason == CONNECTION_FAILURE) ({ viewEventEmitter.value = NavigateUp }) else null
+        positiveButton = resourceProvider.getString(R.string.ok) to
+                if (reason == CONNECTION_FAILURE) ({ viewEventEmitter.value = NavigateUp }) else null,
     )
 
     override fun onCleared() {
