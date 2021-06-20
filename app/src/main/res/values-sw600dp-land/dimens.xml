@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- List Fragment -->
+    <dimen name="splash_no_items_image_size">150dp</dimen>
+
+</resources>

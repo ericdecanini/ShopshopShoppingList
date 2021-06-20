@@ -137,25 +137,28 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:visibility="@{(viewmodel.stateLiveData instanceof ListViewState.Loaded ? (ListViewState.Loaded) viewmodel.stateLiveData : null).shoppingList.items.isEmpty() ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="gone">
+            app:layout_constraintTop_toBottomOf="@id/add_item_layout"
+            app:layout_constraintBottom_toTopOf="@id/clear_checked_button"
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/splash_no_items_image"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="@dimen/splash_no_items_image_size"
+                android:layout_height="@dimen/splash_no_items_image_size"
                 android:importantForAccessibility="no"
                 android:src="@drawable/empty_shopping_bag"
+                app:layout_constraintVertical_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/splash_no_items_text"/>
 
             <TextView
+                android:id="@+id/splash_no_items_text"
                 style="@style/SplashText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -166,7 +169,8 @@
                 android:paddingEnd="@dimen/splash_text_horizontal_padding"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
+                app:layout_constraintTop_toBottomOf="@id/splash_no_items_image"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
