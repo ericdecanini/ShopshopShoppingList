@@ -8,4 +8,5 @@ Check out my blog:
 https://www.ericthecoder.com/
 
 TODO:
- - Add error dialog for payment declined
+ - Replace dialogs in payment flow with snackbar
+ - Update gradle libraries

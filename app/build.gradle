@@ -26,6 +26,7 @@ android {
         resValue("string", "admob_application_id", properties['admob.applicationId'])
         resValue("string", "admob_banner_ad_id", properties['admob.bannerAdId'])
         resValue("string", "admob_app_open_ad_id", properties['admob.appOpenAdId'])
+        resValue("string", "billing_premium_sku", properties['billing.premiumSku'])
     }
 
     buildTypes {

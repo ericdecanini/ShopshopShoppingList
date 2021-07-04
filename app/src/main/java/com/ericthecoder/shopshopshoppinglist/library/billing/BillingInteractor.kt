@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.ericthecoder.dependencies.android.activity.TopActivityProvider
+import com.ericthecoder.dependencies.android.resources.ResourceProvider
+import com.ericthecoder.shopshopshoppinglist.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resumeWithException
@@ -13,13 +15,18 @@ import kotlin.coroutines.resumeWithException
 @ExperimentalCoroutinesApi
 class BillingInteractor(
     applicationContext: Context,
-    private val topActivityProvider: TopActivityProvider
+    private val topActivityProvider: TopActivityProvider,
+    private val resourceProvider: ResourceProvider,
 ) {
 
     private var premiumSkuDetails: SkuDetails? = null
 
     private val purchaseResultEmitter = MutableLiveData<PurchaseResult>()
     val purchaseResultLiveData: LiveData<PurchaseResult> get() = purchaseResultEmitter
+
+    private val premiumSku: String by lazy {
+        resourceProvider.getString(R.string.billing_premium_sku)
+    }
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
         when(billingResult.responseCode) {
@@ -54,7 +61,7 @@ class BillingInteractor(
     suspend fun getPremiumSkuDetails() = premiumSkuDetails
         ?:  SkuDetailsParams
             .newBuilder()
-            .setSkusList(listOf(PREMIUM_PRODUCT_ID))
+            .setSkusList(listOf(premiumSku))
             .setType(BillingClient.SkuType.INAPP)
             .build()
             .let { params -> billingClient.querySkuDetails(params) }
@@ -132,10 +139,10 @@ class BillingInteractor(
         }
 
     private fun Purchase.isPremium() = purchaseState == Purchase.PurchaseState.PURCHASED
-            && skus.any { it == PREMIUM_PRODUCT_ID }
+            && skus.any { it == premiumSku }
 
     private fun Purchase.isPending() = purchaseState == Purchase.PurchaseState.PENDING
-            && skus.any { it == PREMIUM_PRODUCT_ID }
+            && skus.any { it == premiumSku }
 
     sealed class PurchaseResult {
         data class Success(val purchase: Purchase) : PurchaseResult()
@@ -147,6 +154,5 @@ class BillingInteractor(
     companion object {
 
         private const val RETRY_POLICY_REPEAT = 5
-        private const val PREMIUM_PRODUCT_ID = "shopshop_premium"
     }
 }

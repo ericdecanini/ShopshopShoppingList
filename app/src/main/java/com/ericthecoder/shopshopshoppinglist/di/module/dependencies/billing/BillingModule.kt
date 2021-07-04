@@ -2,6 +2,7 @@ package com.ericthecoder.shopshopshoppinglist.di.module.dependencies.billing
 
 import android.content.Context
 import com.ericthecoder.dependencies.android.activity.TopActivityProvider
+import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import dagger.Module
 import dagger.Provides
@@ -14,6 +15,7 @@ class BillingModule {
     @Provides
     fun provideBillingInteractor(
         context: Context,
-        topActivityProvider: TopActivityProvider
-    ): BillingInteractor = BillingInteractor(context, topActivityProvider)
+        topActivityProvider: TopActivityProvider,
+        resourceProvider: ResourceProvider,
+    ): BillingInteractor = BillingInteractor(context, topActivityProvider, resourceProvider)
 }
