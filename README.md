@@ -9,4 +9,3 @@ https://www.ericthecoder.com/
 
 TODO:
  - Replace dialogs in payment flow with snackbar
- - Update gradle libraries
