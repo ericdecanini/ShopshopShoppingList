@@ -17,6 +17,7 @@ import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor.P
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ErrorReason.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ViewEvent.NavigateUp
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -30,6 +31,7 @@ class UpsellViewModel @Inject constructor(
     private val dialogNavigator: DialogNavigator,
     private val persistentStorageWriter: PersistentStorageWriter,
     persistentStorageReader: PersistentStorageReader,
+    private val snackbarNavigator: SnackbarNavigator,
 ): ViewModel() {
 
     private val viewEventEmitter = MutableLiveData<ViewEvent>()
@@ -107,17 +109,18 @@ class UpsellViewModel @Inject constructor(
     }
 
     private fun handleError(reason: ErrorReason) =
-        if (reason == UNKNOWN && premiumStatus.get() == PremiumStatus.PENDING)
-            Unit
-        else
-            dialogNavigator.displayGenericDialog(
-                title = resourceProvider.getString(reason.titleRes),
-                message = resourceProvider.getString(reason.messageRes),
-                cancellable = reason != CONNECTION_FAILURE && reason != ALREADY_OWNED,
-                positiveButton = resourceProvider.getString(R.string.ok) to
-                        if (reason == CONNECTION_FAILURE || reason == ALREADY_OWNED)
-                            ({ viewEventEmitter.value = NavigateUp }) else null,
-            )
+        when {
+            reason == UNKNOWN && premiumStatus.get() == PremiumStatus.PENDING -> Unit
+            reason == CONNECTION_FAILURE -> showConnectionFailedDialog()
+            else -> snackbarNavigator.displaySnackbar(reason.messageRes)
+        }
+
+    private fun showConnectionFailedDialog() = dialogNavigator.displayGenericDialog(
+        title = resourceProvider.getString(R.string.purchase_dialog_connection_failed_title),
+        message = resourceProvider.getString(R.string.purchase_dialog_connection_failed_message),
+        cancellable = false,
+        positiveButton = resourceProvider.getString(R.string.ok) to { viewEventEmitter.value = NavigateUp }
+    )
 
     override fun onCleared() {
         billingInteractor.disconnectBillingClient()
@@ -129,12 +132,11 @@ class UpsellViewModel @Inject constructor(
     }
 
     private enum class ErrorReason(
-        @StringRes val titleRes: Int,
         @StringRes val messageRes: Int
     ) {
-        CONNECTION_FAILURE(R.string.purchase_dialog_connection_failed_title, R.string.purchase_dialog_connection_failed_message),
-        ALREADY_OWNED(R.string.purchase_dialog_already_owned_title, R.string.purchase_dialog_already_owned_message),
-        UNAVAILABLE(R.string.purchase_dialog_unavailable_title, R.string.purchase_dialog_unavailable_message),
-        UNKNOWN(R.string.purchase_dialog_unknown_title, R.string.purchase_dialog_unknown_message)
+        CONNECTION_FAILURE(R.string.purchase_dialog_connection_failed_message),
+        ALREADY_OWNED(R.string.purchase_dialog_already_owned_message),
+        UNAVAILABLE(R.string.purchase_dialog_unavailable_message),
+        UNKNOWN(R.string.purchase_dialog_unknown_message)
     }
 }

@@ -48,7 +48,7 @@
     <string name="upsell_image_box_two_description">Pay once and enjoy a premium shopping list forever!</string>
 
     <!-- Purchase Result Dialogs -->
-    <string name="purchase_dialog_connection_failed_title">Error connecting to Google Play</string>
+    <string name="purchase_dialog_connection_failed_title">Error</string>
     <string name="purchase_dialog_connection_failed_message">Please check that your device is logged into the Google Play Store</string>
     <string name="purchase_dialog_already_owned_title">Already Owned</string>
     <string name="purchase_dialog_already_owned_message">You already own premium</string>

@@ -8,4 +8,4 @@ Check out my blog:
 https://www.ericthecoder.com/
 
 TODO:
- - Replace dialogs in payment flow with snackbar
+ - Add tests for UpsellViewModel and SnackbarNavigator
