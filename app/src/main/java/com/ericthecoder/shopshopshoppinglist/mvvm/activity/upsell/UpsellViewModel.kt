@@ -137,6 +137,6 @@ class UpsellViewModel @Inject constructor(
         CONNECTION_FAILURE(R.string.purchase_dialog_connection_failed_message),
         ALREADY_OWNED(R.string.purchase_dialog_already_owned_message),
         UNAVAILABLE(R.string.purchase_dialog_unavailable_message),
-        UNKNOWN(R.string.purchase_dialog_unknown_message)
+            UNKNOWN(R.string.purchase_dialog_unknown_message)
     }
 }

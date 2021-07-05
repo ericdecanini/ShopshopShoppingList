@@ -50,11 +50,8 @@
     <!-- Purchase Result Dialogs -->
     <string name="purchase_dialog_connection_failed_title">Error</string>
     <string name="purchase_dialog_connection_failed_message">Please check that your device is logged into the Google Play Store</string>
-    <string name="purchase_dialog_already_owned_title">Already Owned</string>
     <string name="purchase_dialog_already_owned_message">You already own premium</string>
-    <string name="purchase_dialog_unavailable_title">Premium Unavailable</string>
     <string name="purchase_dialog_unavailable_message">Shopshop Premium seems to be unavailable. Try updating to the latest version or contacting the developer</string>
-    <string name="purchase_dialog_unknown_title">Purchase Failed</string>
     <string name="purchase_dialog_unknown_message">An error occurred while purchasing premium. Please try again</string>
     <string name="purchase_dialog_purchased_title">Premium Unlocked</string>
     <string name="purchase_dialog_purchased_message">You can now enjoy an ad-free experience</string>
