@@ -1,0 +1,13 @@
+def getAppVersionName() {
+    def baseAppVersionName = [majorVersionNumber, minorVersionNumber, patchVersionNumber].join('.')
+    return baseAppVersionName + versionSuffix
+}
+
+ext {
+    majorVersionNumber = '0'
+    minorVersionNumber = '5'
+    patchVersionNumber = '0'
+    versionSuffix = '-SNAPSHOT'
+    appVersionName = getAppVersionName()
+    appVersionCode = 500
+}

@@ -1,4 +1,8 @@
 ext {
+    minSdkVersionSet = '26'
+    targetSdkVersionSet = '30'
+    compileSdkVersionSet = 30
+
     buildToolsVersion = '30.0.3'
     kotlinVersion = '1.5.20'
     daggerVersion = '2.35.1'

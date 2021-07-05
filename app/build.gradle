@@ -12,15 +12,15 @@ Properties properties = new Properties()
 properties.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "$buildToolsVersion"
+    compileSdkVersion compileSdkVersionSet
+    buildToolsVersion buildToolsVersion
 
     defaultConfig {
         applicationId "com.ericthecoder.shopshopshoppinglist"
-        minSdkVersion 26
-        targetSdkVersion 30
-        versionCode 500
-        versionName "0.5.0-SNAPSHOT"
+        minSdkVersion minSdkVersionSet
+        targetSdkVersion targetSdkVersionSet
+        versionCode appVersionCode
+        versionName appVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         resValue("string", "admob_application_id", properties['admob.applicationId'])
