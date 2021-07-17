@@ -272,29 +272,21 @@ class ListViewModel @Inject constructor(
 
     private fun renameShoppingList(newName: String) {
         val oldName = listName.get()
-        if (!validateRename(newName)) {
-            toastNavigator.show(R.string.toast_rename_validation_failed)
-            showRenameDialog(newName)
-            return
-        }
+        val nameToSet = newName.let { if (it.isBlank()) UNNAMED_LIST else it }
 
-        listName.set(newName)
+        listName.set(nameToSet)
+
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
-                val shoppingList = shoppingListRepository.updateShoppingList(listId, newName)
+                val shoppingList = shoppingListRepository.updateShoppingList(listId, nameToSet)
                 setShoppingList(requireNotNull(shoppingList))
             } catch (e: Exception) {
                 listName.set(oldName)
                 shoppingList?.let { setShoppingList(it) }
                 toastNavigator.show(R.string.something_went_wrong)
-                showRenameDialog(newName)
+                showRenameDialog(nameToSet)
             }
         }
-    }
-
-    private fun validateRename(newName: String): Boolean = when {
-        newName.isEmpty() -> false
-        else -> true
     }
 
     private fun getShopItems() = (stateLiveData.value as? Loaded)
@@ -304,5 +296,6 @@ class ListViewModel @Inject constructor(
     companion object {
 
         internal const val NEW_LIST_NAME = ""
+        internal const val UNNAMED_LIST = "Unnamed List"
     }
 }

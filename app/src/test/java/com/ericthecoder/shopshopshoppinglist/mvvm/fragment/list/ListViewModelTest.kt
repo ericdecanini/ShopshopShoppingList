@@ -404,24 +404,21 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenNewNameIsEmpty_whenRenameDialogCallback_thenShoppingListNotRenamed() = runBlockingTest {
+    fun givenNewNameIsEmpty_whenRenameDialogCallback_thenShoppingListRenamedToUnnamed() = runBlockingTest {
         givenShoppingList()
         val currentName = (viewModel.stateLiveData.value as Loaded).shoppingList.name
         val newName = ""
-        val shoppingListWithNewName = shoppingList.copy(name = newName)
-        given(shoppingListRepository.updateShoppingList(shoppingList.id, newName)).willReturn(shoppingListWithNewName)
+        val shoppingListUnnamed = shoppingList.copy(name = ListViewModel.UNNAMED_LIST)
+        given(shoppingListRepository.updateShoppingList(shoppingList.id, ListViewModel.UNNAMED_LIST)).willReturn(shoppingListUnnamed)
 
         viewModel.showRenameDialog()
 
-        val inOrder = inOrder(dialogNavigator)
         val callbackCaptor = argumentCaptor<(String) -> Unit>()
-        inOrder.verify(dialogNavigator).displayRenameDialog(eq(currentName), callbackCaptor.capture(), eq(null), eq(true))
+        verify(dialogNavigator).displayRenameDialog(eq(currentName), callbackCaptor.capture(), eq(null), eq(true))
         callbackCaptor.firstValue.invoke(newName)
 
-        assertThat(viewModel.listName.get()).isEqualTo(currentName)
-        assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(shoppingList))
-        verify(toastNavigator).show(R.string.toast_rename_validation_failed)
-        inOrder.verify(dialogNavigator).displayRenameDialog(eq(newName), any(), eq(null), eq(true))
+        assertThat(viewModel.listName.get()).isEqualTo(ListViewModel.UNNAMED_LIST)
+        assertThat(viewModel.stateLiveData.value).isEqualTo(Loaded(shoppingListUnnamed))
     }
 
     @Test
