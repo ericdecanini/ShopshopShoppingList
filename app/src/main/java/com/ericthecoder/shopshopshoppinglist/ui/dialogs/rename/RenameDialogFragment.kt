@@ -11,7 +11,7 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogRenameBinding
 import java.io.Serializable
 
-class RenameDialogFragment : DialogFragment() {
+class RenameDialogFragment private constructor() : DialogFragment() {
 
   private lateinit var binding: DialogRenameBinding
 
@@ -29,11 +29,6 @@ class RenameDialogFragment : DialogFragment() {
     binding = DataBindingUtil.inflate(inflater, R.layout.dialog_rename, null, false)
     binding.setVariable(BR.controller, RenameDialogController(this, arguments))
     return binding.root
-  }
-
-  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-    super.onViewCreated(view, savedInstanceState)
-    binding.newName.requestFocus()
   }
 
   class Builder {

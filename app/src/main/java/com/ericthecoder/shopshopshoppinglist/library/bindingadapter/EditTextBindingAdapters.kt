@@ -25,15 +25,6 @@ fun EditText.onFocusLost(callback: UiEventListeners.OnEditTextEventListener) {
     }
 }
 
-@BindingAdapter("app:onFocusSelectEnd")
-fun EditText.onFocusSelectEnd(selectEnd: Boolean) {
-    if (selectEnd) {
-        setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) { setSelection(text.length) }
-        }
-    }
-}
-
 @BindingAdapter("app:strikeThrough")
 fun strikeThrough(textView: TextView, strikeThrough: Boolean) {
     if (strikeThrough) {
