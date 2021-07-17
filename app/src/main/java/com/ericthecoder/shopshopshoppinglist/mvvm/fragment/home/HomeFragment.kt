@@ -11,6 +11,7 @@ import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
+import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.SetHasOptionsMenu
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
@@ -62,7 +63,7 @@ class HomeFragment : DaggerFragment() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is Loaded -> updateShoppingLists(state.items)
-                else -> { /* do nothing */ }
+                else -> doNothing()
             }
         }
     }

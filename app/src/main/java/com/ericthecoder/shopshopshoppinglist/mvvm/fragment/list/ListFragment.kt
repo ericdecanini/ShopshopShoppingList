@@ -15,7 +15,7 @@ import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemAdapter
 import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
-import com.ericthecoder.shopshopshoppinglist.library.extension.doNothing
+import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject

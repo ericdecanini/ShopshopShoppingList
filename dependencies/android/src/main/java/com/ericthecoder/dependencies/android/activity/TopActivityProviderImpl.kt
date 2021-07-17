@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 
 class TopActivityProviderImpl : TopActivityProvider {
 
@@ -21,29 +22,15 @@ class TopActivityProviderImpl : TopActivityProvider {
                 topActivity = activity
         }
 
-        override fun onActivityStarted(activity: Activity) {
-            /* do nothing */
-        }
-
         override fun onActivityResumed(activity: Activity) {
             if (activity is AppCompatActivity)
                 topActivity = activity
         }
 
-        override fun onActivityPaused(activity: Activity) {
-            /* do nothing */
-        }
-
-        override fun onActivityStopped(activity: Activity) {
-            /* do nothing */
-        }
-
-        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
-            /* do nothing */
-        }
-
-        override fun onActivityDestroyed(activity: Activity) {
-            /* do nothing */
-        }
+        override fun onActivityStarted(activity: Activity) = doNothing()
+        override fun onActivityPaused(activity: Activity) = doNothing()
+        override fun onActivityStopped(activity: Activity) = doNothing()
+        override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) = doNothing()
+        override fun onActivityDestroyed(activity: Activity) = doNothing()
     }
 }
