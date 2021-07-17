@@ -13,6 +13,8 @@ import java.io.Serializable
 
 class RenameDialogFragment : DialogFragment() {
 
+  private lateinit var binding: DialogRenameBinding
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
@@ -24,9 +26,14 @@ class RenameDialogFragment : DialogFragment() {
       container: ViewGroup?,
       savedInstanceState: Bundle?
   ): View {
-    val binding: DialogRenameBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_rename, null, false)
+    binding = DataBindingUtil.inflate(inflater, R.layout.dialog_rename, null, false)
     binding.setVariable(BR.controller, RenameDialogController(this, arguments))
     return binding.root
+  }
+
+  override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    super.onViewCreated(view, savedInstanceState)
+    binding.newName.requestFocus()
   }
 
   class Builder {
