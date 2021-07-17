@@ -253,6 +253,13 @@ class ListViewModel @Inject constructor(
         )
     }
 
+    fun onSaveButtonPressed() {
+        toastNavigator.show(String.format(
+            resourceProvider.getString(R.string.toast_list_saved), listName.get()
+        ))
+        mainNavigator.navigateUp()
+    }
+
     fun clearChecked() = (stateLiveData.value as? Loaded)?.shoppingList?.let { shoppingList ->
         viewModelScope.launch(coroutineContextProvider.IO) {
             shoppingList.items.filter { it.checked }.forEach {

@@ -9,6 +9,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
@@ -503,6 +504,16 @@ class ListViewModelTest {
 
         viewModel.onBackButtonPressed()
 
+        verify(mainNavigator).navigateUp()
+    }
+
+    @Test
+    fun whenOnSavedButtonPressed_thenShowToastAndNavigateUp() {
+        given(resourceProvider.getString(R.string.toast_list_saved)).willReturn("")
+
+        viewModel.onSaveButtonPressed()
+
+        verify(toastNavigator).show(any<String>(), eq(Toast.LENGTH_SHORT))
         verify(mainNavigator).navigateUp()
     }
 

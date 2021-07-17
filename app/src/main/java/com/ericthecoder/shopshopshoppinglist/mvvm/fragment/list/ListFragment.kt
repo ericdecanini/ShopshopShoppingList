@@ -61,7 +61,7 @@ class ListFragment : DaggerFragment() {
 
     private fun observeState() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
-            when(state) {
+            when (state) {
                 is Loaded -> { renderShopItems(state.shoppingList.items) }
                 else -> { /* do nothing */ }
             }
@@ -86,6 +86,10 @@ class ListFragment : DaggerFragment() {
     override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
         R.id.ic_delete -> {
             viewModel.showDeleteDialog()
+            true
+        }
+        R.id.ic_save -> {
+            viewModel.onSaveButtonPressed()
             true
         }
         else -> false
