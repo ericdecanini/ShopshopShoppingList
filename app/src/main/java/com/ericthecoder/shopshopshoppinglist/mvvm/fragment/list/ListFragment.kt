@@ -15,6 +15,7 @@ import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemAdapter
 import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
+import com.ericthecoder.shopshopshoppinglist.library.extension.doNothing
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -62,8 +63,8 @@ class ListFragment : DaggerFragment() {
     private fun observeState() {
         viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is Loaded -> { renderShopItems(state.shoppingList.items) }
-                else -> { /* do nothing */ }
+                is Loaded -> renderShopItems(state.shoppingList.items)
+                else -> doNothing()
             }
         }
     }
