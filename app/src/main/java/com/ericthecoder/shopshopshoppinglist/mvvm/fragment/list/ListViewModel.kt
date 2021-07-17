@@ -54,8 +54,7 @@ class ListViewModel @Inject constructor(
 
     fun createNewShoppingList() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
         _stateLiveData.postValue(Loading)
-        val newListName = resourceProvider.getString(R.string.new_list)
-        val shoppingList = shoppingListRepository.createNewShoppingList(newListName)
+        val shoppingList = shoppingListRepository.createNewShoppingList(NEW_LIST_NAME)
         setShoppingList(shoppingList)
     }
 
@@ -301,4 +300,9 @@ class ListViewModel @Inject constructor(
     private fun getShopItems() = (stateLiveData.value as? Loaded)
         ?.shoppingList
         ?.items
+
+    companion object {
+
+        internal const val NEW_LIST_NAME = ""
+    }
 }

@@ -70,9 +70,8 @@ class ListViewModelTest {
 
     @Test
     fun givenRepositoryLoads_whenCreateNewShoppingList_thenShoppingListIsCreatedAndPosted() = runBlockingTest {
-        val name = "list_name"
-        given(resourceProvider.getString(R.string.new_list)).willReturn(name)
-        given(shoppingListRepository.createNewShoppingList(name)).willReturn(shoppingList)
+        given(resourceProvider.getString(R.string.new_list)).willReturn(ListViewModel.NEW_LIST_NAME)
+        given(shoppingListRepository.createNewShoppingList(ListViewModel.NEW_LIST_NAME)).willReturn(shoppingList)
 
         viewModel.createNewShoppingList()
 
@@ -136,14 +135,13 @@ class ListViewModelTest {
 
     @Test
     fun givenListFailedToCreate_whenRetryLoadShoppingList_thenRetryCreateShoppingList() = runBlockingTest {
-        val name = "new_list"
-        given(resourceProvider.getString(R.string.new_list)).willReturn(name)
-        given(shoppingListRepository.createNewShoppingList(name)).willThrow(RuntimeException())
+        given(resourceProvider.getString(R.string.new_list)).willReturn(ListViewModel.NEW_LIST_NAME)
+        given(shoppingListRepository.createNewShoppingList(ListViewModel.NEW_LIST_NAME)).willThrow(RuntimeException())
         viewModel.createNewShoppingList()
 
         viewModel.retryLoadShoppingList()
 
-        verify(shoppingListRepository, times(2)).createNewShoppingList(name)
+        verify(shoppingListRepository, times(2)).createNewShoppingList(ListViewModel.NEW_LIST_NAME)
     }
 
     @Test
