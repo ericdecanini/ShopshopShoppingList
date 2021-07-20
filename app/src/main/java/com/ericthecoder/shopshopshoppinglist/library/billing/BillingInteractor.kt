@@ -8,6 +8,7 @@ import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
+import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resumeWithException
@@ -131,8 +132,12 @@ class BillingInteractor(
                 }
 
                 override fun onBillingServiceDisconnected() {
-                    continuation.resume(false) {
-                        continuation.resumeWithException(it)
+                    try {
+                        continuation.resume(false) {
+                            continuation.resumeWithException(it)
+                        }
+                    } catch (exception: IllegalStateException) {
+                        doNothing()
                     }
                 }
             })
