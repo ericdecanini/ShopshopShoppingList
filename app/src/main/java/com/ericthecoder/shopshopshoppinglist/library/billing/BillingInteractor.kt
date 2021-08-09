@@ -124,10 +124,12 @@ class BillingInteractor(
                         continuation.resume(true) {
                             continuation.resumeWithException(it)
                         }
-                    } else {
+                    } else try {
                         continuation.resume(false) {
                             continuation.resumeWithException(it)
                         }
+                    } catch (exception: IllegalStateException) {
+                        doNothing()
                     }
                 }
 

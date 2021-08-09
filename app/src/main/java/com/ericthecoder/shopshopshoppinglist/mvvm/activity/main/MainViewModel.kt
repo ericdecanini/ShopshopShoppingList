@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
     val premiumStatusLiveData: LiveData<PremiumStatus> get() = premiumStatusEmitter
 
     fun handleNestedInstruction(nestedNavigationInstruction: NestedNavigationInstruction) =
-        when(nestedNavigationInstruction) {
+        when (nestedNavigationInstruction) {
             is OpenNewList -> navigator.goToList()
         }
 
