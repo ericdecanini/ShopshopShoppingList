@@ -11,7 +11,7 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogRenameBinding
 import java.io.Serializable
 
-class RenameDialogFragment private constructor() : DialogFragment() {
+class RenameDialogFragment : DialogFragment() {
 
   private lateinit var binding: DialogRenameBinding
 
