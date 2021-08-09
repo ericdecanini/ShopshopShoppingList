@@ -4,13 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ericthecoder.dependencies.android.resources.ResourceProvider
-import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -19,25 +16,25 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 class MainViewModel @Inject constructor(
-    private val navigator: MainNavigator,
     private val persistentStorageReader: PersistentStorageReader,
     private val persistentStorageWriter: PersistentStorageWriter,
     private val billingInteractor: BillingInteractor,
-    private val dialogNavigator: DialogNavigator,
-    private val resourceProvider: ResourceProvider,
 ) : ViewModel() {
 
     private val premiumStatusEmitter = MutableLiveData<PremiumStatus>()
     val premiumStatusLiveData: LiveData<PremiumStatus> get() = premiumStatusEmitter
 
+    private val viewEventEmitter = MutableLiveData<ViewEvent>()
+    val viewEvent: LiveData<ViewEvent> get() = viewEventEmitter
+
     fun handleNestedInstruction(nestedNavigationInstruction: NestedNavigationInstruction) =
         when (nestedNavigationInstruction) {
-            is OpenNewList -> navigator.goToList()
+            is OpenNewList -> viewEventEmitter.value = ViewEvent.GoToList
         }
 
     fun launchOnboardingIfNecessary() {
         if (!persistentStorageReader.hasOnboardingShown()) {
-            navigator.goToOnboarding()
+            viewEventEmitter.value = ViewEvent.GoToOnboarding
             persistentStorageWriter.setOnboardingShown(true)
         }
     }
@@ -46,7 +43,7 @@ class MainViewModel @Inject constructor(
         if (billingInteractor.connectIfNeeded()) {
             when (billingInteractor.getPremiumState()) {
                 PremiumState.FRESHLY_ACKNOWLEDGED -> {
-                    showPremiumPurchasedDialog()
+                    viewEventEmitter.value = ViewEvent.ShowPremiumPurchasedDialog
                     persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM)
                     premiumStatusEmitter.value = PremiumStatus.PREMIUM
                 }
@@ -66,9 +63,9 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    private fun showPremiumPurchasedDialog() =  dialogNavigator.displayGenericDialog(
-        title = resourceProvider.getString(R.string.purchase_dialog_purchased_title),
-        message = resourceProvider.getString(R.string.purchase_dialog_purchased_message),
-        positiveButton = resourceProvider.getString(R.string.ok) to {},
-    )
+    sealed class ViewEvent {
+        object GoToList : ViewEvent()
+        object GoToOnboarding : ViewEvent()
+        object ShowPremiumPurchasedDialog : ViewEvent()
+    }
 }

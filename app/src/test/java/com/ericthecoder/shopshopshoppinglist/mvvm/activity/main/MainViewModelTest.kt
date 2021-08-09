@@ -1,11 +1,10 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.activity.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import io.mockk.*
@@ -20,24 +19,16 @@ class MainViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val navigator: MainNavigator = mockk(relaxUnitFun = true)
     private val persistentStorageReader: PersistentStorageReader = mockk()
     private val persistentStorageWriter: PersistentStorageWriter = mockk(relaxUnitFun = true)
     private val billingInteractor: BillingInteractor = mockk(relaxUnitFun = true) {
         coEvery { connectIfNeeded() } returns true
     }
-    private val dialogNavigator: DialogNavigator = mockk(relaxUnitFun = true)
-    private val resourceProvider: ResourceProvider = mockk {
-        every { getString(any()) } returns ""
-    }
 
     private val viewModel = MainViewModel(
-        navigator,
         persistentStorageReader,
         persistentStorageWriter,
         billingInteractor,
-        dialogNavigator,
-        resourceProvider,
     )
 
     @Test
@@ -46,7 +37,7 @@ class MainViewModelTest {
 
         viewModel.launchOnboardingIfNecessary()
 
-        verify { navigator.goToOnboarding() }
+        assertThat(viewModel.viewEvent.value).isEqualTo(GoToOnboarding)
         verify { persistentStorageWriter.setOnboardingShown(true) }
     }
 
@@ -56,7 +47,7 @@ class MainViewModelTest {
 
         viewModel.launchOnboardingIfNecessary()
 
-        verify(inverse = true) { navigator.goToOnboarding() }
+        assertThat(viewModel.viewEvent.value).isNotEqualTo(GoToOnboarding)
         verify(inverse = true) { persistentStorageWriter.setOnboardingShown(true) }
     }
 
@@ -66,7 +57,7 @@ class MainViewModelTest {
 
         viewModel.handleNestedInstruction(instruction)
 
-        verify { navigator.goToList() }
+        assertThat(viewModel.viewEvent.value).isEqualTo(GoToList)
     }
 
     @Test
@@ -75,7 +66,7 @@ class MainViewModelTest {
 
         viewModel.fetchPremiumState()
 
-        verify { dialogNavigator.displayGenericDialog(title = "", message = "", positiveButton = any()) }
+        assertThat(viewModel.viewEvent.value).isEqualTo(ShowPremiumPurchasedDialog)
         verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM) }
         assertThat(viewModel.premiumStatusLiveData.value).isEqualTo(PremiumStatus.PREMIUM)
     }

@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityMainBinding
+import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel.ViewEvent.*
+import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.google.android.gms.ads.AdRequest
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,6 +24,9 @@ class MainActivity : DaggerAppCompatActivity() {
     ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
   }
 
+  @Inject lateinit var navigator: MainNavigator
+  @Inject lateinit var dialogNavigator: DialogNavigator
+
   private lateinit var binding: ActivityMainBinding
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,11 +38,20 @@ class MainActivity : DaggerAppCompatActivity() {
     loadAd()
     viewModel.launchOnboardingIfNecessary()
     handleIntent()
+    observeViewEvents()
   }
 
   override fun onResume() {
     super.onResume()
     viewModel.fetchPremiumState()
+  }
+
+  private fun observeViewEvents() = viewModel.viewEvent.observe(this) { event ->
+    when (event) {
+      GoToList -> navigator.goToList()
+      GoToOnboarding -> navigator.goToOnboarding()
+      ShowPremiumPurchasedDialog -> showPremiumPurchasedDialog()
+    }
   }
 
   private fun handleIntent() {
@@ -55,6 +69,12 @@ class MainActivity : DaggerAppCompatActivity() {
     val adRequest = AdRequest.Builder().build()
     binding.adView.loadAd(adRequest)
   }
+
+  private fun showPremiumPurchasedDialog() = dialogNavigator.displayGenericDialog(
+    title = getString(R.string.purchase_dialog_purchased_title),
+    message = getString(R.string.purchase_dialog_purchased_message),
+    positiveButton = getString(R.string.ok) to {},
+  )
 
   companion object {
 
