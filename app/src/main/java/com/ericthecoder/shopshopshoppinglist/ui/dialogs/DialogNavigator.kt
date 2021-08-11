@@ -16,5 +16,4 @@ interface DialogNavigator {
       negativeOnClick: (() -> Unit)? = null,
       cancellable: Boolean = true
   )
-
 }
