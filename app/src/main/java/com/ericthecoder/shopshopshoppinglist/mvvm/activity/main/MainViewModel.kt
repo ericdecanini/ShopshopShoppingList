@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState
+import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
@@ -24,7 +25,7 @@ class MainViewModel @Inject constructor(
     private val premiumStatusEmitter = MutableLiveData<PremiumStatus>()
     val premiumStatusLiveData: LiveData<PremiumStatus> get() = premiumStatusEmitter
 
-    private val viewEventEmitter = MutableLiveData<ViewEvent>()
+    private val viewEventEmitter = MutableSingleLiveEvent<ViewEvent>()
     val viewEvent: LiveData<ViewEvent> get() = viewEventEmitter
 
     fun handleNestedInstruction(nestedNavigationInstruction: NestedNavigationInstruction) =

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
-import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
@@ -17,29 +17,28 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
-    private val mainNavigator: MainNavigator,
     private val shoppingListRepository: ShoppingListRepository,
     private val coroutineContextProvider: CoroutineContextProvider,
     private val persistentStorageReader: PersistentStorageReader,
 ) : ViewModel(), ShoppingListEventHandler {
 
-    private val _stateLiveData = MutableLiveData<HomeViewState>(Initial)
-    val stateLiveData: LiveData<HomeViewState> get() = _stateLiveData
+    private val viewStateEmitter = MutableLiveData<HomeViewState>(Initial)
+    val viewState: LiveData<HomeViewState> get() = viewStateEmitter
 
-    private val viewEventEmitter = MutableLiveData<ViewEvent>()
-    val viewEventLiveData: LiveData<ViewEvent> get() = viewEventEmitter
+    private val viewEventEmitter = MutableSingleLiveEvent<ViewEvent>()
+    val viewEvent: LiveData<ViewEvent> get() = viewEventEmitter
 
     private val errorHandler = CoroutineExceptionHandler { _, throwable ->
-        _stateLiveData.postValue(Error(throwable))
+        viewStateEmitter.postValue(Error(throwable))
     }
 
     fun refreshLists() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
-        if (stateLiveData.value !is Loaded
-            || (stateLiveData.value as? Loaded)?.items?.isEmpty() == true
+        if (viewState.value !is Loaded
+            || (viewState.value as? Loaded)?.items?.isEmpty() == true
         )
-            _stateLiveData.postValue(Loading)
+            viewStateEmitter.postValue(Loading)
 
-        _stateLiveData.postValue(
+        viewStateEmitter.postValue(
             Loaded(shoppingListRepository.getShoppingLists() ?: emptyList())
         )
     }
@@ -50,19 +49,26 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun navigateToListFragment() = mainNavigator.goToList()
+    fun navigateToListFragment() {
+        viewEventEmitter.value = ViewEvent.OpenNewList
+    }
 
-    fun navigateToUpsell() = mainNavigator.goToUpsell()
+    fun navigateToUpsell() {
+        viewEventEmitter.value = ViewEvent.OpenUpsell
+    }
 
     //region: ui interaction events
 
     override fun onShoppingListClick(shoppingList: ShoppingList) {
-        mainNavigator.goToList(shoppingList)
+        viewEventEmitter.value = ViewEvent.OpenList(shoppingList)
     }
 
     //endregion
 
     sealed class ViewEvent {
         data class SetHasOptionsMenu(val enabled: Boolean) : ViewEvent()
+        object OpenNewList : ViewEvent()
+        data class OpenList(val shoppingList: ShoppingList) : ViewEvent()
+        object OpenUpsell : ViewEvent()
     }
 }

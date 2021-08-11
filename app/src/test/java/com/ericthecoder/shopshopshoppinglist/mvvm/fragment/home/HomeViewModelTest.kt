@@ -1,7 +1,7 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
@@ -9,7 +9,6 @@ import com.ericthecoder.shopshopshoppinglist.util.TestCoroutineContextProvider
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.nhaarman.mockitokotlin2.given
 import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
@@ -22,13 +21,11 @@ class HomeViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val mainNavigator: MainNavigator = mock()
     private val shoppingListRepository: ShoppingListRepository = mock()
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
     private val persistentStorageReader: PersistentStorageReader = mock()
 
     private val viewModel = HomeViewModel(
-        mainNavigator,
         shoppingListRepository,
         coroutineContextProvider,
         persistentStorageReader,
@@ -43,7 +40,7 @@ class HomeViewModelTest {
 
         viewModel.refreshLists()
 
-        assertThat(viewModel.stateLiveData.value).isEqualTo(HomeViewState.Loaded(shoppingLists))
+        assertThat(viewModel.viewState.value).isEqualTo(HomeViewState.Loaded(shoppingLists))
     }
 
     @Test
@@ -52,7 +49,7 @@ class HomeViewModelTest {
 
         viewModel.refreshLists()
 
-        assertThat(viewModel.stateLiveData.value).isEqualTo(HomeViewState.Loaded(emptyList()))
+        assertThat(viewModel.viewState.value).isEqualTo(HomeViewState.Loaded(emptyList()))
     }
 
     @Test
@@ -62,30 +59,30 @@ class HomeViewModelTest {
 
         viewModel.refreshLists()
 
-        assertThat(viewModel.stateLiveData.value).isEqualTo(HomeViewState.Error(exception))
+        assertThat(viewModel.viewState.value).isEqualTo(HomeViewState.Error(exception))
     }
 
     @Test
-    fun givenShoppingList_whenOnShoppingListClick_thenMainNavigatorWithShoppingList() {
+    fun givenShoppingList_whenOnShoppingListClick_thenEmitOpenListEvent() {
 
         viewModel.onShoppingListClick(shoppingList)
 
-        verify(mainNavigator).goToList(shoppingList)
+        assertThat(viewModel.viewEvent.value).isEqualTo(OpenList(shoppingList))
     }
 
     @Test
-    fun whenNavigateToListFragment_thenMainNavigatorGoToList() {
+    fun whenNavigateToListFragment_thenEmitOpenNewListEvent() {
 
         viewModel.navigateToListFragment()
 
-        verify(mainNavigator).goToList()
+        assertThat(viewModel.viewEvent.value).isEqualTo(OpenNewList)
     }
 
     @Test
-    fun whenNavigateToUpsell_thenMainNavigatorGoToUpsell() {
+    fun whenNavigateToUpsell_thenEmitOpenUpsellEvent() {
 
         viewModel.navigateToUpsell()
 
-        verify(mainNavigator).goToUpsell()
+        assertThat(viewModel.viewEvent.value).isEqualTo(OpenUpsell)
     }
 }
