@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            android:visibility="@{viewmodel.premiumStatusLiveData == PremiumStatus.PREMIUM ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewmodel.premiumStatus == PremiumStatus.PREMIUM ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

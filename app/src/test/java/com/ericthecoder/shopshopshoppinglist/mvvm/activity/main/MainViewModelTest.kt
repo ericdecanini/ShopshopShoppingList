@@ -68,7 +68,7 @@ class MainViewModelTest {
 
         assertThat(viewModel.viewEvent.value).isEqualTo(ShowPremiumPurchasedDialog)
         verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM) }
-        assertThat(viewModel.premiumStatusLiveData.value).isEqualTo(PremiumStatus.PREMIUM)
+        assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PREMIUM)
     }
 
     @Test
@@ -78,7 +78,7 @@ class MainViewModelTest {
         viewModel.fetchPremiumState()
 
         verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM) }
-        assertThat(viewModel.premiumStatusLiveData.value).isEqualTo(PremiumStatus.PREMIUM)
+        assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PREMIUM)
     }
 
     @Test
@@ -88,7 +88,7 @@ class MainViewModelTest {
         viewModel.fetchPremiumState()
 
         verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PENDING) }
-        assertThat(viewModel.premiumStatusLiveData.value).isEqualTo(PremiumStatus.PENDING)
+        assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PENDING)
     }
 
     @Test
@@ -98,7 +98,7 @@ class MainViewModelTest {
         viewModel.fetchPremiumState()
 
         verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.FREE) }
-        assertThat(viewModel.premiumStatusLiveData.value).isEqualTo(PremiumStatus.FREE)
+        assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.FREE)
     }
 
     @Test

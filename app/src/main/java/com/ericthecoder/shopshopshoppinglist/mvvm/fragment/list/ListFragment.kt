@@ -16,7 +16,11 @@ import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
+import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
+import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -28,9 +32,12 @@ class ListFragment : DaggerFragment() {
         ViewModelProvider(this, viewModelFactory).get(ListViewModel::class.java)
     }
 
+    @Inject lateinit var mainNavigator: MainNavigator
+    @Inject lateinit var dialogNavigator: DialogNavigator
+    @Inject lateinit var toastNavigator: ToastNavigator
+
     private lateinit var binding: FragmentListBinding
     private val args: ListFragmentArgs by navArgs()
-
     private val adapter by lazy {
         ShopItemAdapter(mutableListOf(), viewModel)
     }
@@ -49,6 +56,7 @@ class ListFragment : DaggerFragment() {
 
         initList()
         observeState()
+        observeEvents()
         inflateList(args.shoppingListId)
 
         return binding.root
@@ -61,12 +69,34 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun observeState() {
-        viewModel.stateLiveData.observe(viewLifecycleOwner) { state ->
+        viewModel.viewState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is Loaded -> renderShopItems(state.shoppingList.items)
                 else -> doNothing()
             }
         }
+    }
+
+    private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
+        when (event) {
+            NavigateUp -> mainNavigator.navigateUp()
+            is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
+            is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
+            is ShowToast -> toastNavigator.show(event.message)
+        }
+    }
+
+    private fun displayRenameDialog(listTitle: String, callback: (String) -> Unit) {
+        dialogNavigator.displayRenameDialog(listTitle, callback)
+    }
+
+    private fun displayDeleteDialog(listTitle: String, callback: () -> Unit) {
+        dialogNavigator.displayGenericDialog(
+            title = getString(R.string.delete),
+            message = getString(R.string.delete_dialog_message, listTitle),
+            positiveButton = getString(R.string.ok) to { callback() },
+            negativeButton = getString(R.string.cancel) to { },
+        )
     }
 
     private fun renderShopItems(items: List<ShopItem>) {

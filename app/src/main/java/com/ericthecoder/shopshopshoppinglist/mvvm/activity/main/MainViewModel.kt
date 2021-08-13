@@ -23,7 +23,7 @@ class MainViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val premiumStatusEmitter = MutableLiveData<PremiumStatus>()
-    val premiumStatusLiveData: LiveData<PremiumStatus> get() = premiumStatusEmitter
+    val premiumStatus: LiveData<PremiumStatus> get() = premiumStatusEmitter
 
     private val viewEventEmitter = MutableSingleLiveEvent<ViewEvent>()
     val viewEvent: LiveData<ViewEvent> get() = viewEventEmitter

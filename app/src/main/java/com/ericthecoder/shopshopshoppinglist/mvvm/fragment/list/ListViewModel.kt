@@ -18,10 +18,10 @@ import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemEventHandler
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.library.extension.notifyObservers
-import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
+import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.NavigateUp
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.ShowToast
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
-import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -31,20 +31,20 @@ import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
-    private val mainNavigator: MainNavigator,
-    private val dialogNavigator: DialogNavigator,
     private val resourceProvider: ResourceProvider,
     private val coroutineContextProvider: CoroutineContextProvider,
-    private val toastNavigator: ToastNavigator
 ) : ViewModel(), ShopItemEventHandler {
 
-    private val _stateLiveData = MutableLiveData<ListViewState>(Initial)
-    val stateLiveData: LiveData<ListViewState> get() = _stateLiveData
-    private val shoppingList get() = (stateLiveData.value as? Loaded)?.shoppingList
+    private val viewStateEmitter = MutableLiveData<ListViewState>(Initial)
+    val viewState: LiveData<ListViewState> get() = viewStateEmitter
+    private val shoppingList get() = (viewState.value as? Loaded)?.shoppingList
+
+    private val viewEventEmitter = MutableSingleLiveEvent<ViewEvent>()
+    val viewEvent: LiveData<ViewEvent> get() = viewEventEmitter
 
     private val errorHandler = CoroutineExceptionHandler { _, throwable ->
         throwable.printStackTrace()
-        _stateLiveData.postValue(Error(throwable))
+        viewStateEmitter.postValue(Error(throwable))
     }
 
     private var listId: Int = -1
@@ -53,22 +53,22 @@ class ListViewModel @Inject constructor(
     val addItemText = ObservableField<String>()
 
     fun createNewShoppingList() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
-        _stateLiveData.postValue(Loading)
+        viewStateEmitter.postValue(Loading)
         val shoppingList = shoppingListRepository.createNewShoppingList(NEW_LIST_NAME)
         setShoppingList(shoppingList)
     }
 
     fun loadShoppingList(id: Int) = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
         listId = id
-        _stateLiveData.postValue(Loading)
+        viewStateEmitter.postValue(Loading)
 
         val shoppingList = shoppingListRepository.getShoppingListById(id)
 
         if (shoppingList != null) {
             setShoppingList(shoppingList)
         } else {
-            toastNavigator.show(R.string.list_not_found)
-            mainNavigator.navigateUp()
+            viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.list_not_found))
+            viewEventEmitter.value = NavigateUp
         }
     }
 
@@ -88,16 +88,16 @@ class ListViewModel @Inject constructor(
         } catch (e: Exception) {
             shoppingList?.items?.removeLastOrNull()
             sortListAndPost()
-            toastNavigator.show(R.string.something_went_wrong)
+            viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
             return@launch
         }
 
         val updatedShoppingList = shoppingListRepository.getShoppingListById(listId)
 
         if (updatedShoppingList != null)
-            _stateLiveData.postValue(Loaded(updatedShoppingList))
+            viewStateEmitter.postValue(Loaded(updatedShoppingList))
         else
-            mainNavigator.navigateUp()
+            viewEventEmitter.value = NavigateUp
     }
 
     fun handleArgs(listId: Int) {
@@ -116,7 +116,7 @@ class ListViewModel @Inject constructor(
             val isNewList = listId == -1
             listId = shoppingList.id
             listName.set(shoppingList.name)
-            _stateLiveData.value = Loaded(shoppingList)
+            viewStateEmitter.value = Loaded(shoppingList)
 
             if (isNewList) { showRenameDialog() }
         }
@@ -125,12 +125,12 @@ class ListViewModel @Inject constructor(
 
     private fun deleteList() = viewModelScope.launch(coroutineContextProvider.IO) {
         shoppingList?.let { shoppingListRepository.deleteShoppingList(it.id) }
-        withContext(coroutineContextProvider.Main) { mainNavigator.navigateUp() }
+        withContext(coroutineContextProvider.Main) { viewEventEmitter.value = NavigateUp }
     }
 
     private fun sortListAndPost() {
         shoppingList?.items?.sortBy { it.checked }
-        _stateLiveData.notifyObservers()
+        viewStateEmitter.notifyObservers()
     }
 
     //region: ui interaction events
@@ -142,7 +142,7 @@ class ListViewModel @Inject constructor(
 
         shopItem.quantity -= 1
         quantityView.text = shopItem.quantity.toString()
-        _stateLiveData.notifyObservers()
+        viewStateEmitter.notifyObservers()
 
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
@@ -150,7 +150,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shopItem.quantity += 1
                 quantityView.text = shopItem.quantity.toString()
-                toastNavigator.show(R.string.something_went_wrong)
+                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
             }
         }
     }
@@ -158,7 +158,7 @@ class ListViewModel @Inject constructor(
     override fun onQuantityUp(quantityView: TextView, shopItem: ShopItem) {
         shopItem.quantity += 1
         quantityView.text = shopItem.quantity.toString()
-        _stateLiveData.notifyObservers()
+        viewStateEmitter.notifyObservers()
 
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
@@ -166,7 +166,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shopItem.quantity -= 1
                 quantityView.text = shopItem.quantity.toString()
-                toastNavigator.show(R.string.something_went_wrong)
+                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
             }
         }
     }
@@ -180,7 +180,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shoppingList?.items?.add(shopItem)
                 sortListAndPost()
-                toastNavigator.show(R.string.something_went_wrong)
+                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
             }
         }
     }
@@ -203,7 +203,7 @@ class ListViewModel @Inject constructor(
                 item?.let { shoppingListRepository.updateShopItem(it.id, it.name, it.quantity, it.checked) }
             } catch (e: Exception) {
                 withContext(coroutineContextProvider.Main) { checkbox.isChecked = item?.checked ?: false }
-                toastNavigator.show(R.string.something_went_wrong)
+                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
             }
         }
     }
@@ -214,14 +214,14 @@ class ListViewModel @Inject constructor(
 
         val oldName = shopItem.name
         shopItem.name = editText.text.toString()
-        _stateLiveData.notifyObservers()
+        viewStateEmitter.notifyObservers()
 
         viewModelScope.launch(coroutineContextProvider.IO) {
             try {
                 with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
             } catch (e: Exception) {
                 shopItem.name = oldName
-                toastNavigator.show(R.string.something_went_wrong)
+                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
             }
         }
     }
@@ -236,31 +236,25 @@ class ListViewModel @Inject constructor(
     }
 
     fun showRenameDialog(overrideName: String? = null) = shoppingList?.let {
-        dialogNavigator.displayRenameDialog(
-            overrideName ?: it.name,
-            { newName -> renameShoppingList(newName) }
-        )
+        val listName = overrideName ?: it.name
+        viewEventEmitter.value = ViewEvent.DisplayRenameDialog(listName) { newName ->
+            renameShoppingList(newName)
+        }
     }
 
-    fun showDeleteDialog() = stateLiveData.value?.let {
+    fun showDeleteDialog() = viewState.value?.let {
         val listName = listName.get() ?: return@let
-
-        dialogNavigator.displayGenericDialog(
-            title = resourceProvider.getString(R.string.delete),
-            message = resourceProvider.getString(R.string.delete_dialog_message, listName),
-            positiveButton = resourceProvider.getString(R.string.ok) to { deleteList() },
-            negativeButton = resourceProvider.getString(R.string.cancel) to { },
-        )
+        viewEventEmitter.value = ViewEvent.DisplayDeleteDialog(listName) { deleteList() }
     }
 
     fun onSaveButtonPressed() {
-        toastNavigator.show(String.format(
+        viewEventEmitter.value = ShowToast(String.format(
             resourceProvider.getString(R.string.toast_list_saved), listName.get()
         ))
-        mainNavigator.navigateUp()
+        viewEventEmitter.value = NavigateUp
     }
 
-    fun clearChecked() = (stateLiveData.value as? Loaded)?.shoppingList?.let { shoppingList ->
+    fun clearChecked() = (viewState.value as? Loaded)?.shoppingList?.let { shoppingList ->
         viewModelScope.launch(coroutineContextProvider.IO) {
             shoppingList.items.filter { it.checked }.forEach {
                 shoppingListRepository.deleteShopItem(it.id)
@@ -272,7 +266,7 @@ class ListViewModel @Inject constructor(
     }
 
     fun onBackButtonPressed() {
-        mainNavigator.navigateUp()
+        viewEventEmitter.value = NavigateUp
     }
 
     //endregion
@@ -290,15 +284,22 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 listName.set(oldName)
                 shoppingList?.let { setShoppingList(it) }
-                toastNavigator.show(R.string.something_went_wrong)
+                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
                 showRenameDialog(nameToSet)
             }
         }
     }
 
-    private fun getShopItems() = (stateLiveData.value as? Loaded)
+    private fun getShopItems() = (viewState.value as? Loaded)
         ?.shoppingList
         ?.items
+
+    sealed class ViewEvent {
+        object NavigateUp : ViewEvent()
+        class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
+        class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
+        class ShowToast(val message: String) : ViewEvent()
+    }
 
     companion object {
 
