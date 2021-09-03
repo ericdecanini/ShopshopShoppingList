@@ -119,31 +119,20 @@
             app:onFocusGained="@{(view) -> viewmodel.hideKeyboard(view)}"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintTop_toBottomOf="@id/add_item_layout"
-            app:layout_constraintBottom_toTopOf="@id/clear_checked_button"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/list_item_shopitem"
             tools:itemCount="4" />
 
-        <Button
-            android:id="@+id/clear_checked_button"
-            style="@style/ClearCheckedButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/clear_checked"
-            android:elevation="0dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:onClick="@{() -> viewmodel.clearChecked()}"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:visibility="@{(viewmodel.viewState instanceof ListViewState.Loaded ? (ListViewState.Loaded) viewmodel.viewState : null).shoppingList.items.isEmpty() ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_item_layout"
-            app:layout_constraintBottom_toTopOf="@id/clear_checked_button"
-            tools:visibility="visible">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.3"
+            tools:visibility="gone">
 
             <ImageView
                 android:id="@+id/splash_no_items_image"

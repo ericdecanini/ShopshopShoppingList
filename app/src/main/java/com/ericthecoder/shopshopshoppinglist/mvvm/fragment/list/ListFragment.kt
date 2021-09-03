@@ -114,15 +114,13 @@ class ListFragment : DaggerFragment() {
         inflater.inflate(R.menu.menu_shopping_list, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
-        R.id.ic_delete -> {
-            viewModel.showDeleteDialog()
-            true
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.ic_delete -> viewModel.showDeleteDialog()
+            R.id.ic_save -> viewModel.onSaveButtonPressed()
+            R.id.ic_clear_checked -> viewModel.clearChecked()
+            else -> return false
         }
-        R.id.ic_save -> {
-            viewModel.onSaveButtonPressed()
-            true
-        }
-        else -> false
+        return true
     }
 }
