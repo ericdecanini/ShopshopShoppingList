@@ -37,15 +37,15 @@ class ListViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val shoppingListRepository: ShoppingListRepository = mockk(relaxed = true)
-    private val resourceProvider: ResourceProvider = mockk(relaxed = true) {
+    private val shoppingListRepository: ShoppingListRepository = mockk()
+    private val resourceProvider: ResourceProvider = mockk() {
         every { getString(any()) } returns ""
     }
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
 
-    private val context: Context = mockk(relaxed = true)
-    private val view: View = mockk(relaxed = true)
-    private val imm: InputMethodManager = mockk(relaxed = true)
+    private val context: Context = mockk()
+    private val view: View = mockk()
+    private val imm: InputMethodManager = mockk()
 
     private val shopItem = aShopItem().withQuantity(5).build()
     private val itemsList: MutableList<ShopItem> = mutableListOf(shopItem)
@@ -148,6 +148,7 @@ class ListViewModelTest {
         val newShoppingList = aShoppingList().withItems(newShopItems).build()
         givenShoppingList()
         coEvery { shoppingListRepository.getShoppingListById(shoppingList.id) } returns (newShoppingList)
+        coEvery { shoppingListRepository.createNewShopItem(shoppingList.id, itemName) } returns mockk()
 
         viewModel.addItem(itemName)
 
@@ -252,6 +253,7 @@ class ListViewModelTest {
     @Test
     fun givenShopItem_whenOnDeleteClick_thenItemDeletedFromList() {
         givenShoppingList()
+        coEvery { shoppingListRepository.deleteShopItem(any()) } returns mockk()
 
         viewModel.onDeleteClick(shopItem)
 
@@ -395,17 +397,18 @@ class ListViewModelTest {
     fun givenView_whenHideKeyboard_thenKeyboardHidden() {
         every { view.context } returns (context)
         every { context.getSystemService(Activity.INPUT_METHOD_SERVICE) } returns (imm)
+        every { view.windowToken } returns mockk()
+        every { imm.hideSoftInputFromWindow(any(), any()) } returns true
 
         viewModel.hideKeyboard(view)
 
-        verify { imm.hideSoftInputFromWindow(view.windowToken, any()) }
+        verify { imm.hideSoftInputFromWindow(any(), any()) }
     }
 
     @Test
     fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()
-        val currentName = (viewModel.viewState.value as Loaded).shoppingList.name
         val newName = "new_name"
         val shoppingListWithNewName = shoppingList.copy(name = newName)
         coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, newName) } returns (shoppingListWithNewName)
@@ -481,6 +484,7 @@ class ListViewModelTest {
         val uncheckedItem = shopItem.copy(checked = false)
         val checkedItem = shopItem.copy(checked = true)
         givenShoppingList(shoppingList.copy(items = mutableListOf(uncheckedItem, checkedItem)))
+        coEvery { shoppingListRepository.deleteShopItem(any()) } returns mockk()
 
         viewModel.clearChecked()
 
@@ -501,6 +505,7 @@ class ListViewModelTest {
     fun givenShoppingListWithAllCheckedItems_whenClearChecked_thenAllItemsCleared() {
         val checkedItems = shopItem.copy(checked = true)
         givenShoppingList(shoppingList.copy(items = mutableListOf(checkedItems, checkedItems)))
+        coEvery { shoppingListRepository.deleteShopItem(any()) } returns mockk()
 
         viewModel.clearChecked()
 

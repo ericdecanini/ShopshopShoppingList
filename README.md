@@ -6,6 +6,3 @@ This app is being created to showcase plenty of standard Android best practices 
 
 Check out my blog:
 https://www.ericthecoder.com/
-
-TODO:
-- Finish fixing ListViewModelTest after refactor to Mockk
