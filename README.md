@@ -6,3 +6,6 @@ This app is being created to showcase plenty of standard Android best practices 
 
 Check out my blog:
 https://www.ericthecoder.com/
+
+TODO:
+- Look at different theme colours
