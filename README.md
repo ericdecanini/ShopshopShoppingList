@@ -9,3 +9,4 @@ https://www.ericthecoder.com/
 
 TODO:
 - Look at different theme colours
+- Add better toast appearances for going back from list
