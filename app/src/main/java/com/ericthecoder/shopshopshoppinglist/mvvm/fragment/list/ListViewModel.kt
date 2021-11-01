@@ -67,8 +67,8 @@ class ListViewModel @Inject constructor(
         if (shoppingList != null) {
             setShoppingList(shoppingList)
         } else {
-            viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.list_not_found))
-            viewEventEmitter.value = NavigateUp
+            viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.list_not_found)))
+            viewEventEmitter.postValue(NavigateUp)
         }
     }
 
@@ -88,7 +88,7 @@ class ListViewModel @Inject constructor(
         } catch (e: Exception) {
             shoppingList?.items?.removeLastOrNull()
             sortListAndPost()
-            viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
+            viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
             return@launch
         }
 
@@ -97,7 +97,7 @@ class ListViewModel @Inject constructor(
         if (updatedShoppingList != null)
             viewStateEmitter.postValue(Loaded(updatedShoppingList))
         else
-            viewEventEmitter.value = NavigateUp
+            viewEventEmitter.postValue(NavigateUp)
     }
 
     fun handleArgs(listId: Int) {
@@ -116,7 +116,7 @@ class ListViewModel @Inject constructor(
             val isNewList = listId == -1
             listId = shoppingList.id
             listName.set(shoppingList.name)
-            viewStateEmitter.value = Loaded(shoppingList)
+            viewStateEmitter.postValue(Loaded(shoppingList))
 
             if (isNewList) { showRenameDialog() }
         }
@@ -125,7 +125,7 @@ class ListViewModel @Inject constructor(
 
     private fun deleteList() = viewModelScope.launch(coroutineContextProvider.IO) {
         shoppingList?.let { shoppingListRepository.deleteShoppingList(it.id) }
-        withContext(coroutineContextProvider.Main) { viewEventEmitter.value = NavigateUp }
+        withContext(coroutineContextProvider.Main) { viewEventEmitter.postValue(NavigateUp) }
     }
 
     private fun sortListAndPost() {
@@ -150,7 +150,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shopItem.quantity += 1
                 quantityView.text = shopItem.quantity.toString()
-                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
+                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
             }
         }
     }
@@ -166,7 +166,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shopItem.quantity -= 1
                 quantityView.text = shopItem.quantity.toString()
-                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
+                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
             }
         }
     }
@@ -180,7 +180,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 shoppingList?.items?.add(shopItem)
                 sortListAndPost()
-                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
+                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
             }
         }
     }
@@ -203,7 +203,7 @@ class ListViewModel @Inject constructor(
                 item?.let { shoppingListRepository.updateShopItem(it.id, it.name, it.quantity, it.checked) }
             } catch (e: Exception) {
                 withContext(coroutineContextProvider.Main) { checkbox.isChecked = item?.checked ?: false }
-                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
+                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
             }
         }
     }
@@ -221,7 +221,7 @@ class ListViewModel @Inject constructor(
                 with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
             } catch (e: Exception) {
                 shopItem.name = oldName
-                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
+                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
             }
         }
     }
@@ -237,21 +237,21 @@ class ListViewModel @Inject constructor(
 
     fun showRenameDialog(overrideName: String? = null) = shoppingList?.let {
         val listName = overrideName ?: it.name
-        viewEventEmitter.value = ViewEvent.DisplayRenameDialog(listName) { newName ->
+        viewEventEmitter.postValue(ViewEvent.DisplayRenameDialog(listName) { newName ->
             renameShoppingList(newName)
-        }
+        })
     }
 
     fun showDeleteDialog() = viewState.value?.let {
         val listName = listName.get() ?: return@let
-        viewEventEmitter.value = ViewEvent.DisplayDeleteDialog(listName) { deleteList() }
+        viewEventEmitter.postValue(ViewEvent.DisplayDeleteDialog(listName) { deleteList() })
     }
 
     fun onSaveButtonPressed() {
-        viewEventEmitter.value = ShowToast(String.format(
+        viewEventEmitter.postValue(ShowToast(String.format(
             resourceProvider.getString(R.string.toast_list_saved), listName.get()
-        ))
-        viewEventEmitter.value = NavigateUp
+        )))
+        viewEventEmitter.postValue(NavigateUp)
     }
 
     fun clearChecked() = (viewState.value as? Loaded)?.shoppingList?.let { shoppingList ->
@@ -266,7 +266,7 @@ class ListViewModel @Inject constructor(
     }
 
     fun onBackButtonPressed() {
-        viewEventEmitter.value = NavigateUp
+        viewEventEmitter.postValue(NavigateUp)
     }
 
     //endregion
@@ -284,7 +284,7 @@ class ListViewModel @Inject constructor(
             } catch (e: Exception) {
                 listName.set(oldName)
                 shoppingList?.let { setShoppingList(it) }
-                viewEventEmitter.value = ShowToast(resourceProvider.getString(R.string.something_went_wrong))
+                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
                 showRenameDialog(nameToSet)
             }
         }

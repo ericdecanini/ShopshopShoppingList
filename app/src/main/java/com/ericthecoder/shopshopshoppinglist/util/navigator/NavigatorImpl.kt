@@ -1,12 +1,14 @@
 package com.ericthecoder.shopshopshoppinglist.util.navigator
 
 import android.content.Intent
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.onboarding.OnboardingActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellActivity
-import com.ericthecoder.dependencies.android.activity.TopActivityProvider
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 class NavigatorImpl(private val topActivityProvider: TopActivityProvider) : Navigator {
 
     private val originActivity get() = topActivityProvider.getTopActivity()
