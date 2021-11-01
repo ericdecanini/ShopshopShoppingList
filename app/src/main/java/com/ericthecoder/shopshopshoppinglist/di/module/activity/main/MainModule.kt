@@ -2,6 +2,7 @@ package com.ericthecoder.shopshopshoppinglist.di.module.activity.main
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
+import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import com.ericthecoder.shopshopshoppinglist.di.ViewModelKey
 import com.ericthecoder.shopshopshoppinglist.di.module.activity.ActivityModule
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainActivity
@@ -9,7 +10,6 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
-import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
@@ -36,6 +36,6 @@ class MainModule {
         @Binds
         @IntoMap
         @ViewModelKey(MainViewModel::class)
-        internal abstract fun bindMainViewModule(viewModel: MainViewModel): ViewModel
+        internal abstract fun bindMainViewModel(viewModel: MainViewModel): ViewModel
     }
 }

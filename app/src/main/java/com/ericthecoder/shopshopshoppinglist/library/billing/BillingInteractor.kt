@@ -8,7 +8,6 @@ import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
-import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resumeWithException
@@ -30,8 +29,8 @@ class BillingInteractor(
     }
 
     private val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
-        when(billingResult.responseCode) {
-            BillingResponseCode.OK -> if(purchases?.any() == true)
+        when (billingResult.responseCode) {
+            BillingResponseCode.OK -> if (purchases?.any() == true)
                 purchaseResultEmitter.postValue(PurchaseResult.Success(purchases.first()))
             BillingResponseCode.ITEM_ALREADY_OWNED ->
                 purchaseResultEmitter.postValue(PurchaseResult.AlreadyOwned)
@@ -60,7 +59,7 @@ class BillingInteractor(
     }
 
     suspend fun getPremiumSkuDetails() = premiumSkuDetails
-        ?:  SkuDetailsParams
+        ?: SkuDetailsParams
             .newBuilder()
             .setSkusList(listOf(premiumSku))
             .setType(BillingClient.SkuType.INAPP)
@@ -121,25 +120,24 @@ class BillingInteractor(
             startConnection(object : BillingClientStateListener {
                 override fun onBillingSetupFinished(billingResult: BillingResult) {
                     if (billingResult.responseCode == BillingResponseCode.OK) {
-                        continuation.resume(true) {
-                            continuation.resumeWithException(it)
+                        if (continuation.isActive) {
+                            continuation.resume(true) {
+                                continuation.resumeWithException(it)
+                            }
                         }
-                    } else try {
-                        continuation.resume(false) {
-                            continuation.resumeWithException(it)
+                    } else
+                        if (continuation.isActive) {
+                            continuation.resume(false) {
+                                continuation.resumeWithException(it)
+                            }
                         }
-                    } catch (exception: IllegalStateException) {
-                        doNothing()
-                    }
                 }
 
                 override fun onBillingServiceDisconnected() {
-                    try {
+                    if (continuation.isActive) {
                         continuation.resume(false) {
                             continuation.resumeWithException(it)
                         }
-                    } catch (exception: IllegalStateException) {
-                        doNothing()
                     }
                 }
             })
