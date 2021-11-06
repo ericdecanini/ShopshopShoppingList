@@ -30,7 +30,7 @@ class MainViewModel @Inject constructor(
 
     fun handleNestedInstruction(nestedNavigationInstruction: NestedNavigationInstruction) =
         when (nestedNavigationInstruction) {
-            is OpenNewList -> viewEventEmitter.value = ViewEvent.GoToList
+            is OpenNewList -> viewEventEmitter.postValue(ViewEvent.GoToList)
         }
 
     fun launchOnboardingIfNecessary() {

@@ -1,15 +1,12 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialogs
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.rename.RenameDialogFragment
 
-class DialogNavigatorImpl(private val topActivityProvider: TopActivityProvider) : DialogNavigator {
-
-    private val activity get() = topActivityProvider.getTopActivity()
-        ?: throw NullPointerException()
+class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavigator {
 
     override fun displayGenericDialog(
         title: String?,

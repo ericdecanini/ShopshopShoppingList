@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.ericthecoder.shopshopshoppinglist.BR
+import com.ericthecoder.shopshopshoppinglist.NavGraphDirections
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityMainBinding
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.gms.ads.AdRequest
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -24,7 +27,7 @@ class MainActivity : DaggerAppCompatActivity() {
     ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
   }
 
-  @Inject lateinit var navigator: MainNavigator
+  @Inject lateinit var navigator: Navigator
   @Inject lateinit var dialogNavigator: DialogNavigator
 
   private lateinit var binding: ActivityMainBinding
@@ -48,10 +51,15 @@ class MainActivity : DaggerAppCompatActivity() {
 
   private fun observeViewEvents() = viewModel.viewEvent.observe(this) { event ->
     when (event) {
-      GoToList -> navigator.goToList()
+      GoToList -> goToList()
       GoToOnboarding -> navigator.goToOnboarding()
       ShowPremiumPurchasedDialog -> showPremiumPurchasedDialog()
     }
+  }
+
+  private fun goToList() {
+    val action = NavGraphDirections.actionOpenListFragment()
+    findNavController(R.id.fragment_container_view).navigate(action)
   }
 
   private fun handleIntent() {

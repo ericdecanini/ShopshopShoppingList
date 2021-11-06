@@ -1,6 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.di.module.activity
 
-import com.ericthecoder.dependencies.android.activity.TopActivityProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigatorImpl
@@ -12,25 +12,27 @@ import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.NavigatorImpl
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Module
 class ActivityModule {
 
     @Provides
-    fun provideActivityNavigator(topActivityProvider: TopActivityProvider): Navigator =
-        NavigatorImpl(topActivityProvider)
+    fun provideActivityNavigator(originActivity: AppCompatActivity): Navigator =
+        NavigatorImpl(originActivity)
 
     @Provides
-    fun provideDialogNavigator(topActivityProvider: TopActivityProvider): DialogNavigator =
-        DialogNavigatorImpl(topActivityProvider)
+    fun provideDialogNavigator(activity: AppCompatActivity): DialogNavigator =
+        DialogNavigatorImpl(activity)
 
     @Provides
-    fun provideToastNavigator(topActivityProvider: TopActivityProvider): ToastNavigator =
-        ToastNavigatorImpl(topActivityProvider)
+    fun provideToastNavigator(activity: AppCompatActivity): ToastNavigator =
+        ToastNavigatorImpl(activity)
 
     @Provides
     fun provideSnackbarNavigator(
-        topActivityProvider: TopActivityProvider,
+        activity: AppCompatActivity,
         resourceProvider: ResourceProvider,
-    ): SnackbarNavigator = SnackbarNavigatorImpl(topActivityProvider, resourceProvider)
+    ): SnackbarNavigator = SnackbarNavigatorImpl(activity, resourceProvider)
 }

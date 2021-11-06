@@ -50,7 +50,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun navigateToListFragment() {
-        viewEventEmitter.value = ViewEvent.OpenNewList
+        viewEventEmitter.value = ViewEvent.OpenList(null)
     }
 
     fun navigateToUpsell() {
@@ -67,8 +67,7 @@ class HomeViewModel @Inject constructor(
 
     sealed class ViewEvent {
         data class SetHasOptionsMenu(val enabled: Boolean) : ViewEvent()
-        object OpenNewList : ViewEvent()
-        data class OpenList(val shoppingList: ShoppingList) : ViewEvent()
+        data class OpenList(val shoppingList: ShoppingList?) : ViewEvent()
         object OpenUpsell : ViewEvent()
     }
 }

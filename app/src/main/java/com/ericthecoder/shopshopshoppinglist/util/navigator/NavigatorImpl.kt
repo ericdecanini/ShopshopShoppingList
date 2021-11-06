@@ -1,7 +1,7 @@
 package com.ericthecoder.shopshopshoppinglist.util.navigator
 
 import android.content.Intent
-import com.ericthecoder.dependencies.android.activity.TopActivityProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.onboarding.OnboardingActivity
@@ -9,33 +9,23 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @ExperimentalCoroutinesApi
-class NavigatorImpl(private val topActivityProvider: TopActivityProvider) : Navigator {
-
-    private val originActivity get() = topActivityProvider.getTopActivity()
+class NavigatorImpl(private val originActivity: AppCompatActivity) : Navigator {
 
     override fun goToMain() {
-        originActivity?.let {
-            MainActivity.getIntent(it).start()
-        }
+        MainActivity.getIntent(originActivity).start()
     }
 
     override fun goToMainAndOpenList() {
-        originActivity?.let {
-            MainActivity.getIntent(it, OpenNewList).start()
-        }
+        MainActivity.getIntent(originActivity, OpenNewList).start()
     }
 
     override fun goToOnboarding() {
-        originActivity?.let {
-            OnboardingActivity.getIntent(it).start()
-        }
+        OnboardingActivity.getIntent(originActivity).start()
     }
 
     override fun goToUpsell() {
-        originActivity?.let {
-            UpsellActivity.getIntent(it).start()
-        }
+        UpsellActivity.getIntent(originActivity).start()
     }
 
-    private fun Intent.start() = originActivity?.startActivity(this)
+    private fun Intent.start() = originActivity.startActivity(this)
 }

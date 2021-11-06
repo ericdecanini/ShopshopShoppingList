@@ -1,11 +1,11 @@
 package com.ericthecoder.shopshopshoppinglist.library.billing
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.android.billingclient.api.*
 import com.android.billingclient.api.BillingClient.BillingResponseCode
-import com.ericthecoder.dependencies.android.activity.TopActivityProvider
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,7 +15,7 @@ import kotlin.coroutines.resumeWithException
 @ExperimentalCoroutinesApi
 class BillingInteractor(
     applicationContext: Context,
-    private val topActivityProvider: TopActivityProvider,
+    private val activity: AppCompatActivity,
     private val resourceProvider: ResourceProvider,
 ) {
 
@@ -69,14 +69,9 @@ class BillingInteractor(
             ?.firstOrNull()
 
     suspend fun launchBillingFlow() {
-        val activity = topActivityProvider.getTopActivity()
-        val billingFlowParams = getBillingFlowParams()
-
-        when {
-            activity == null -> purchaseResultEmitter.postValue(PurchaseResult.Error)
-            billingFlowParams == null -> purchaseResultEmitter.postValue(PurchaseResult.Unavailable)
-            else -> billingClient.launchBillingFlow(activity, billingFlowParams)
-        }
+        getBillingFlowParams()?.let {
+            billingClient.launchBillingFlow(activity, it)
+        } ?: purchaseResultEmitter.postValue(PurchaseResult.Unavailable)
     }
 
     suspend fun acknowledgePurchase(purchase: Purchase): BillingResult {

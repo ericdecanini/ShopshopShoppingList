@@ -28,4 +28,8 @@
 
     </fragment>
 
+    <action
+        android:id="@+id/actionOpenListFragment"
+        app:destination="@id/listFragment" />
+
 </navigation>

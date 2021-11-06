@@ -5,6 +5,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -16,11 +17,11 @@ import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
-import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
+import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -32,7 +33,7 @@ class ListFragment : DaggerFragment() {
         ViewModelProvider(this, viewModelFactory).get(ListViewModel::class.java)
     }
 
-    @Inject lateinit var mainNavigator: MainNavigator
+    @Inject lateinit var navigator: Navigator
     @Inject lateinit var dialogNavigator: DialogNavigator
     @Inject lateinit var toastNavigator: ToastNavigator
 
@@ -79,7 +80,7 @@ class ListFragment : DaggerFragment() {
 
     private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
         when (event) {
-            NavigateUp -> mainNavigator.navigateUp()
+            NavigateUp -> findNavController().navigateUp()
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)

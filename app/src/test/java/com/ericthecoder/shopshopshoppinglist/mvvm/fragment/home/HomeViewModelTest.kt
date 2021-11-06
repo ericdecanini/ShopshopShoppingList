@@ -1,7 +1,8 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.OpenList
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.OpenUpsell
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
@@ -75,7 +76,7 @@ class HomeViewModelTest {
 
         viewModel.navigateToListFragment()
 
-        assertThat(viewModel.viewEvent.value).isEqualTo(OpenNewList)
+        assertThat(viewModel.viewEvent.value).isEqualTo(OpenList(null))
     }
 
     @Test

@@ -1,17 +1,14 @@
 package com.ericthecoder.shopshopshoppinglist.ui.snackbar
 
-import com.ericthecoder.dependencies.android.activity.TopActivityProvider
+import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.library.extension.getRootView
 import com.google.android.material.snackbar.Snackbar
 
 class SnackbarNavigatorImpl(
-    private val topActivityProvider: TopActivityProvider,
+    private val activity: AppCompatActivity,
     private val resourceProvider: ResourceProvider,
 ) : SnackbarNavigator {
-
-    private val activity get() = topActivityProvider.getTopActivity()
-        ?: throw NullPointerException()
 
     override fun displaySnackbar(message: String, length: Int) {
         activity.runOnUiThread {

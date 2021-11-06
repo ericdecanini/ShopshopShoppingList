@@ -3,7 +3,6 @@ package com.ericthecoder.shopshopshoppinglist.di
 import android.app.Application
 import com.ericthecoder.shopshopshoppinglist.ShopshopApplication
 import com.ericthecoder.shopshopshoppinglist.di.module.AppModule
-import com.ericthecoder.shopshopshoppinglist.di.module.dependencies.DependenciesModule
 import com.ericthecoder.shopshopshoppinglist.di.module.services.ServicesModule
 import com.ericthecoder.shopshopshoppinglist.di.module.usecases.UseCasesModule
 import dagger.BindsInstance
@@ -16,7 +15,6 @@ import javax.inject.Singleton
     modules = [
         AppModule::class,
         ServicesModule::class,
-        DependenciesModule::class,
         UseCasesModule::class
     ]
 )

@@ -5,7 +5,9 @@ import com.ericthecoder.shopshopshoppinglist.di.module.activity.ActivityModule
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.onboarding.OnboardingActivity
 import dagger.Module
 import dagger.Provides
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
+@ExperimentalCoroutinesApi
 @Module(includes = [ActivityModule::class])
 class OnboardingModule {
 

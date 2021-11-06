@@ -3,18 +3,18 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
-import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainNavigator
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
+import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -26,7 +26,8 @@ class HomeFragment : DaggerFragment() {
         ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
     }
 
-    @Inject lateinit var navigator: MainNavigator
+    @Inject
+    lateinit var navigator: Navigator
 
     private lateinit var binding: FragmentHomeBinding
 
@@ -41,7 +42,7 @@ class HomeFragment : DaggerFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
         binding.lifecycleOwner = this
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar as Toolbar)
+        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         initShoppingLists()
         observeState()
@@ -73,10 +74,15 @@ class HomeFragment : DaggerFragment() {
     private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
         when (event) {
             is HomeViewModel.ViewEvent.SetHasOptionsMenu -> setHasOptionsMenu(event.enabled)
-            HomeViewModel.ViewEvent.OpenNewList -> navigator.goToList()
-            is HomeViewModel.ViewEvent.OpenList -> navigator.goToList(event.shoppingList)
+            is HomeViewModel.ViewEvent.OpenList -> goToList(event.shoppingList)
             HomeViewModel.ViewEvent.OpenUpsell -> navigator.goToUpsell()
         }
+    }
+
+    private fun goToList(shoppingList: ShoppingList? = null) {
+        val action = HomeFragmentDirections.actionHomeFragmentToListFragment()
+        shoppingList?.let { action.shoppingListId = it.id }
+        findNavController().navigate(action)
     }
 
     private fun updateShoppingLists(lists: List<ShoppingList>) {
