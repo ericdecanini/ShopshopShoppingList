@@ -38,7 +38,7 @@ class ListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val shoppingListRepository: ShoppingListRepository = mockk()
-    private val resourceProvider: ResourceProvider = mockk() {
+    private val resourceProvider: ResourceProvider = mockk {
         every { getString(any()) } returns ""
     }
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
@@ -64,8 +64,7 @@ class ListViewModelTest {
 
     @Test
     fun givenRepositoryLoads_whenCreateNewShoppingList_thenShoppingListIsCreatedAndPosted() {
-        every { resourceProvider.getString(R.string.new_list) } returns (ListViewModel.NEW_LIST_NAME)
-        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.NEW_LIST_NAME) } returns (shoppingList)
+        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST) } returns (shoppingList)
 
         viewModel.createNewShoppingList()
 
@@ -132,13 +131,12 @@ class ListViewModelTest {
 
     @Test
     fun givenListFailedToCreate_whenRetryLoadShoppingList_thenRetryCreateShoppingList() {
-        every { resourceProvider.getString(R.string.new_list) } returns (ListViewModel.NEW_LIST_NAME)
-        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.NEW_LIST_NAME) } throws RuntimeException()
+        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST) } throws RuntimeException()
         viewModel.createNewShoppingList()
 
         viewModel.retryLoadShoppingList()
 
-        coVerify { shoppingListRepository.createNewShoppingList(ListViewModel.NEW_LIST_NAME) }
+        coVerify { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST) }
     }
 
     @Test

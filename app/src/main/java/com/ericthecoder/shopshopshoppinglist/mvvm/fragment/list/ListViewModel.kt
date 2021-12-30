@@ -54,7 +54,7 @@ class ListViewModel @Inject constructor(
 
     fun createNewShoppingList() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
         viewStateEmitter.postValue(Loading)
-        val shoppingList = shoppingListRepository.createNewShoppingList(NEW_LIST_NAME)
+        val shoppingList = shoppingListRepository.createNewShoppingList(UNNAMED_LIST)
         setShoppingList(shoppingList)
     }
 
@@ -116,9 +116,9 @@ class ListViewModel @Inject constructor(
             val isNewList = listId == -1
             listId = shoppingList.id
             listName.set(shoppingList.name)
-            viewStateEmitter.postValue(Loaded(shoppingList))
+            viewStateEmitter.value = Loaded(shoppingList)
 
-            if (isNewList) { showRenameDialog() }
+            if (isNewList) { showRenameDialog(NEW_LIST_NAME) }
         }
 
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
