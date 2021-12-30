@@ -404,6 +404,16 @@ class ListViewModelTest {
     }
 
     @Test
+    fun whenShowRenameDialog_thenFocusCleared() {
+        val observer = viewModel.viewEvent.observeWithMock()
+        givenShoppingList()
+
+        viewModel.showRenameDialog()
+
+        verify { observer.onChanged(ClearFocus) }
+    }
+
+    @Test
     fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()

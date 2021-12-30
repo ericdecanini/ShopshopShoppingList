@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState" />
 
         <variable
             name="viewmodel"
             type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel" />
+
         <variable
             name="newitem"
             type="android.widget.EditText" />
@@ -17,11 +20,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:clickable="true"
-        >
+        android:layout_height="match_parent">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -29,11 +28,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             android:gravity="center_horizontal"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:clickable="true"
-            app:layout_constraintTop_toTopOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -47,24 +42,24 @@
                     android:gravity="center"
                     android:onClick="@{() -> viewmodel.showRenameDialog((String) null)}"
                     android:text="@={viewmodel.listName}"
-                    app:layout_constraintStart_toEndOf="@id/back_button"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/back_button"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Grocery List" />
 
                 <ImageButton
                     android:id="@+id/back_button"
                     android:layout_width="@dimen/toolbar_back_button_size"
                     android:layout_height="@dimen/toolbar_back_button_size"
-                    android:src="@drawable/ic_arrow_back"
                     android:background="@drawable/bg_ripple_primary_bg_round"
-                    android:padding="4dp"
-                    android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
                     android:contentDescription="@string/talkback_back"
+                    android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_arrow_back"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -72,41 +67,41 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/add_item_layout"
+            style="@style/EditTextPrimary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginTop="16dp"
-            style="@style/EditTextPrimary"
+            android:layout_marginEnd="16dp"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <EditText
                 android:id="@+id/add_item_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/new_item"
-                android:background="@android:color/transparent"
                 android:autofillHints="@string/new_item"
+                android:background="@android:color/transparent"
+                android:hint="@string/new_item"
                 android:inputType="textCapSentences"
-                android:text="@={viewmodel.addItemText}"
                 android:nextFocusDown="@id/add_item_edit"
-                app:returnKeyClick="@{addItemButton}"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="@={viewmodel.addItemText}"
                 app:layout_constraintEnd_toStartOf="@id/add_item_button"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:returnKeyClick="@{addItemButton}" />
 
             <ImageButton
                 android:id="@+id/add_item_button"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_return_24dp"
-                android:tint="@color/newItemClearButtonColor"
                 android:background="@drawable/bg_ripple_gray"
                 android:contentDescription="@string/talkback_add_new_item"
                 android:onClick="@{() -> viewmodel.addItem(newitem.text.toString())}"
-                app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/ic_return_24dp"
+                app:tint="@color/newItemClearButtonColor"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -116,21 +111,21 @@
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
             app:emptyAreaFocusable="@{true}"
-            app:onFocusGained="@{(view) -> viewmodel.hideKeyboard(view)}"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintTop_toBottomOf="@id/add_item_layout"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/list_item_shopitem"
-            tools:itemCount="4" />
+            app:layout_constraintTop_toBottomOf="@id/add_item_layout"
+            app:layout_constraintVertical_bias="0"
+            app:onFocusGained="@{(view) -> viewmodel.hideKeyboard(view)}"
+            tools:itemCount="4"
+            tools:listitem="@layout/list_item_shopitem" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{(viewmodel.viewState instanceof ListViewState.Loaded ? (ListViewState.Loaded) viewmodel.viewState : null).shoppingList.items.isEmpty() ? View.VISIBLE : View.GONE}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_item_layout"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/add_item_layout"
             app:layout_constraintVertical_bias="0.3"
             tools:visibility="gone">
 
@@ -140,26 +135,26 @@
                 android:layout_height="@dimen/splash_no_items_image_size"
                 android:importantForAccessibility="no"
                 android:src="@drawable/empty_shopping_bag"
-                app:layout_constraintVertical_chainStyle="packed"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/splash_no_items_text"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/splash_no_items_text"/>
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/splash_no_items_text"
                 style="@style/SplashText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/splash_list_no_items"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="24dp"
+                android:gravity="center_horizontal"
                 android:paddingStart="@dimen/splash_text_horizontal_padding"
                 android:paddingEnd="@dimen/splash_text_horizontal_padding"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/splash_list_no_items"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/splash_no_items_image"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -167,45 +162,45 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:alpha="0.8"
-            android:visibility="@{viewmodel.viewState instanceof ListViewState.Loaded ? View.GONE : View.VISIBLE}"
             android:background="@color/white"
-            android:translationZ="3dp"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:translationZ="3dp"
+            android:visibility="@{viewmodel.viewState instanceof ListViewState.Loaded ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:visibility="gone" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:visibility="@{viewmodel.viewState instanceof ListViewState.Error ? View.VISIBLE : View.GONE}"
             android:translationZ="5dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:visibility="@{viewmodel.viewState instanceof ListViewState.Error ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:visibility="gone">
 
             <TextView
                 style="@style/SplashText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:paddingStart="@dimen/splash_text_horizontal_padding"
                 android:paddingEnd="@dimen/splash_text_horizontal_padding"
-                android:text="@string/splash_generic_error"
-                android:layout_gravity="center_horizontal" />
+                android:text="@string/splash_generic_error" />
 
             <Button
                 style="@style/ButtonPrimary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:onClick="@{() -> viewmodel.retryLoadShoppingList()}"
                 android:layout_marginTop="32dp"
+                android:onClick="@{() -> viewmodel.retryLoadShoppingList()}"
                 android:text="@string/retry" />
 
         </LinearLayout>
@@ -216,10 +211,10 @@
             android:layout_height="wrap_content"
             android:translationZ="10dp"
             android:visibility="@{viewmodel.viewState instanceof ListViewState.Loading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:visibility="gone" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

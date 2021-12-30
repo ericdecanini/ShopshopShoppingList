@@ -81,6 +81,7 @@ class ListFragment : DaggerFragment() {
     private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
         when (event) {
             NavigateUp -> findNavController().navigateUp()
+            ClearFocus -> binding.root.clearFocus()
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)

@@ -236,6 +236,7 @@ class ListViewModel @Inject constructor(
     }
 
     fun showRenameDialog(overrideName: String? = null) = shoppingList?.let {
+        viewEventEmitter.value = ViewEvent.ClearFocus
         val listName = overrideName ?: it.name
         viewEventEmitter.postValue(ViewEvent.DisplayRenameDialog(listName) { newName ->
             renameShoppingList(newName)
@@ -296,6 +297,7 @@ class ListViewModel @Inject constructor(
 
     sealed class ViewEvent {
         object NavigateUp : ViewEvent()
+        object ClearFocus : ViewEvent()
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
