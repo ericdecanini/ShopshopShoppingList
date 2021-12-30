@@ -25,12 +25,13 @@
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:text="@{viewstate.name}"
+            android:textColor="@{viewstate.id != -1 ? @color/defaultTextColor : @color/noItemsTextColor}"
             android:visibility="@{viewstate != null ? View.VISIBLE : View.GONE}"
             app:drawableTint="@color/previewItemDrawableTint"
             app:strikeThrough="@{viewstate.checked}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            bind:drawableStart="@{viewstate.checked ? @drawable/checkbox_checked : @drawable/checkbox_unchecked}"
+            bind:drawableStart="@{viewstate.id == -1 ? null : (viewstate.checked ? @drawable/checkbox_checked : @drawable/checkbox_unchecked)}"
             tools:text="Oringe" />
 
         <TextView

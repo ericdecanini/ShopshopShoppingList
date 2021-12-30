@@ -5,6 +5,6 @@ import android.widget.TextView
 import androidx.databinding.BindingAdapter
 
 @BindingAdapter("bind:drawableStart")
-fun TextView.drawableStart(drawable: Drawable) {
+fun TextView.drawableStart(drawable: Drawable?) {
     setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null)
 }

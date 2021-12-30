@@ -7,9 +7,10 @@
 
     <color name="backgroundColor">@color/gray_900</color>
     <color name="backgroundColorUpsell">@color/backgroundColor</color>
-    <color name="defaultTextColor">#FFFFFF</color>
+    <color name="defaultTextColor">@color/white</color>
+    <color name="noItemsTextColor">@color/gray_500</color>
     <color name="shoppingListBackgroundColor">@color/gray_800</color>
-    <color name="shoppingListTitleColor">#FFFFFF</color>
+    <color name="shoppingListTitleColor">@color/white</color>
     <color name="dialogBackgroundColor">@color/backgroundColor</color>
     <color name="dialogButtonTextColor">@color/white</color>
     <color name="dialogButtonBackgroundColor">@color/gray_700</color>

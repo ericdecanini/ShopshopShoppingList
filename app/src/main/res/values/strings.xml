@@ -27,6 +27,7 @@
     <!-- Home Fragment -->
     <string name="splash_home_no_items">You have no shopping lists. Click on the button to add one.</string>
     <string name="upgrade_to_ad_free">Upgrade to ad-free</string>
+    <string name="no_items">No items</string>
 
     <!-- List Fragment -->
     <string name="new_list">New List</string>

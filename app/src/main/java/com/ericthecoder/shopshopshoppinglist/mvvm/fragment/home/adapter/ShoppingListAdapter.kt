@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.databinding.ListItemShoppinglistBinding
+import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 
@@ -35,6 +36,9 @@ class ShoppingListAdapter(
 
         fun bind(shoppingList: ShoppingList) {
             (itemView.preview_items.adapter as? PreviewItemsAdapter)?.apply {
+                if (shoppingList.items.isEmpty()) {
+                    shoppingList.items.add(ShopItem(-1, "No items", 0, false))
+                }
                 replaceItems(shoppingList.items)
                 notifyDataSetChanged()
             }
