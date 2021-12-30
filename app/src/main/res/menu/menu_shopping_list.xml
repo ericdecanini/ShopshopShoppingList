@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/ic_save"
-        android:title="@string/save"
-        android:orderInCategory="100"
-        android:icon="@drawable/ic_save"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/ic_clear_checked"
         android:title="@string/clear_checked"
         android:orderInCategory="200"

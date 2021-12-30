@@ -8,6 +8,6 @@ Check out my blog:
 https://www.ericthecoder.com/
 
 TODO:
-- Remove save button
 - Add better toast appearances for going back from list
 - Add no items view on shopping list item view
+- Replace jUnit with Jupiter

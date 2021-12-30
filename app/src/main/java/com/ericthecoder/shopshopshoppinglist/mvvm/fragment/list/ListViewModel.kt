@@ -248,13 +248,6 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(ViewEvent.DisplayDeleteDialog(listName) { deleteList() })
     }
 
-    fun onSaveButtonPressed() {
-        viewEventEmitter.postValue(ShowToast(String.format(
-            resourceProvider.getString(R.string.toast_list_saved), listName.get()
-        )))
-        viewEventEmitter.postValue(NavigateUp)
-    }
-
     fun clearChecked() = (viewState.value as? Loaded)?.shoppingList?.let { shoppingList ->
         viewModelScope.launch(coroutineContextProvider.IO) {
             shoppingList.items.filter { it.checked }.forEach {

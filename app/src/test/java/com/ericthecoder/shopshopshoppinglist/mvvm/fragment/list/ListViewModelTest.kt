@@ -537,17 +537,6 @@ class ListViewModelTest {
         assertThat(viewModel.viewEvent.value).isEqualTo(NavigateUp)
     }
 
-    @Test
-    fun whenOnSavedButtonPressed_thenShowToastAndNavigateUp() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        every { resourceProvider.getString(R.string.toast_list_saved) } returns ("")
-
-        viewModel.onSaveButtonPressed()
-
-        verify { observer.onChanged(any<ShowToast>()) }
-        assertThat(viewModel.viewEvent.value).isEqualTo(NavigateUp)
-    }
-
     private fun givenShoppingList(shoppingListOverride: ShoppingList? = null) {
         val shoppingList = shoppingListOverride ?: shoppingList
         coEvery { shoppingListRepository.getShoppingListById(shoppingList.id) } returns shoppingList
