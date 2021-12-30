@@ -423,9 +423,9 @@ class ListViewModelTest {
 
         viewModel.showRenameDialog()
 
-        val slot = slot<DisplayRenameDialog>()
-        verify { observer.onChanged(capture(slot)) }
-        slot.captured.callback.invoke(newName)
+        val slots = mutableListOf<DisplayRenameDialog>()
+        verify { observer.onChanged(capture(slots)) }
+        slots.last().callback.invoke(newName)
 
         assertThat(viewModel.listName.get()).isEqualTo(newName)
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingListWithNewName))
@@ -441,9 +441,9 @@ class ListViewModelTest {
 
         viewModel.showRenameDialog()
 
-        val slot = slot<DisplayRenameDialog>()
-        verify { observer.onChanged(capture(slot)) }
-        slot.captured.callback.invoke(newName)
+        val slots = mutableListOf<DisplayRenameDialog>()
+        verify { observer.onChanged(capture(slots)) }
+        slots.last().callback.invoke(newName)
 
         assertThat(viewModel.listName.get()).isEqualTo(ListViewModel.UNNAMED_LIST)
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingListUnnamed))
@@ -462,11 +462,11 @@ class ListViewModelTest {
         val slots = mutableListOf<DisplayRenameDialog>()
         verify { observer.onChanged(capture(slots)) }
         verify { observer.onChanged(any<ShowToast>()) }
-        slots[0].callback.invoke(newName)
+        slots.last().callback.invoke(newName)
         assertThat(viewModel.listName.get()).isEqualTo(currentName)
         slots.clear()
         verify { observer.onChanged(capture(slots)) }
-        assertThat(slots[2].listTitle).isEqualTo(newName)
+        assertThat(slots.last().listTitle).isEqualTo(newName)
     }
 
     @Test
@@ -479,9 +479,9 @@ class ListViewModelTest {
 
         viewModel.showRenameDialog()
 
-        val slot = slot<DisplayRenameDialog>()
-        verify { observer.onChanged(capture(slot)) }
-        slot.captured.callback.invoke(newName)
+        val slots = mutableListOf<DisplayRenameDialog>()
+        verify { observer.onChanged(capture(slots)) }
+        slots.last().callback.invoke(newName)
         assertThat(viewModel.listName.get()).isEqualTo(currentName)
         coVerify { shoppingListRepository.updateShoppingList(any(), newName) }
         verify { observer.onChanged(any<ShowToast>()) }
