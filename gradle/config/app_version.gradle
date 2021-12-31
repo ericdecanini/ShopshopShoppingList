@@ -7,7 +7,7 @@ ext {
     majorVersionNumber = '0'
     minorVersionNumber = '7'
     patchVersionNumber = '0'
-    versionSuffix = '-SNAPSHOT'
+    versionSuffix = ''
     appVersionName = getAppVersionName()
     appVersionCode = 700
 }
