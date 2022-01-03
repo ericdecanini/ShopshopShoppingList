@@ -27,11 +27,11 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:importantForAccessibility="no"
-            app:layout_constraintVertical_bias="0.3"
+            app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/title"
             tools:src="@drawable/onboard1" />
 
         <TextView
@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/image"
+            app:layout_constraintBottom_toTopOf="@id/body"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="Simple and straightforward" />
@@ -55,6 +56,7 @@
             android:paddingEnd="24dp"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@id/title"
+            app:layout_constraintBottom_toTopOf="@id/cta"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="No fuss, no complex shenanigans, just a simple shopping list to allow you to focus better on your shopping" />
@@ -65,7 +67,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
+            app:layout_constraintVertical_bias="0"
             app:layout_constraintTop_toBottomOf="@id/body"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@string/get_started" />

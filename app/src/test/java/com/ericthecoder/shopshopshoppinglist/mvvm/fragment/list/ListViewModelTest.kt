@@ -414,6 +414,20 @@ class ListViewModelTest {
     }
 
     @Test
+    fun givenOverrideName_whenShowRenameDialog_thenFocusCleared() {
+        val observer = viewModel.viewEvent.observeWithMock()
+        givenShoppingList()
+        val overrideName = "override"
+
+        viewModel.showRenameDialog(overrideName)
+
+        val slots = mutableListOf<DisplayRenameDialog>()
+        verify { observer.onChanged(capture(slots)) }
+        val viewEvent = slots.last()
+        assertThat(viewEvent.listTitle).isEqualTo(overrideName)
+    }
+
+    @Test
     fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()

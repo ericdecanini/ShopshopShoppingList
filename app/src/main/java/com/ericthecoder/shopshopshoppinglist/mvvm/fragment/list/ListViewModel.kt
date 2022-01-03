@@ -235,7 +235,11 @@ class ListViewModel @Inject constructor(
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun showRenameDialog(overrideName: String? = null) = shoppingList?.let {
+    fun showRenameDialog() {
+        showRenameDialog(null)
+    }
+
+    fun showRenameDialog(overrideName: String?) = shoppingList?.let {
         viewEventEmitter.value = ViewEvent.ClearFocus
         val listName = overrideName ?: it.name
         viewEventEmitter.postValue(ViewEvent.DisplayRenameDialog(listName) { newName ->
