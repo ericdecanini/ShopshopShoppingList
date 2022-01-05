@@ -10,9 +10,10 @@
     <color name="colorOnSecondary">@color/white</color>
 
     <color name="defaultTextColor">#1A1A1A</color>
-    <color name="noItemsTextColor">@color/gray_700</color>
+    <color name="noItemsTextColor">@color/gray_500</color>
     <color name="shoppingListTitleColor">#272727</color>
     <color name="shoppingListBackgroundColor">@color/white</color>
+    <color name="dialogTextColorHint">@color/gray_700</color>
     <color name="dialogBackgroundColor">@color/white</color>
     <color name="dialogButtonTextColor">@color/black</color>
     <color name="dialogButtonBackgroundColor">@color/gray_200</color>

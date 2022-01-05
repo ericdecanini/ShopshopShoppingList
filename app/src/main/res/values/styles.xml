@@ -53,6 +53,7 @@
     <style name="DialogBodyText" parent="Medium">
         <item name="android:textSize">18sp</item>
         <item name="android:textColor">@color/defaultTextColor</item>
+        <item name="android:textColorHint">@color/dialogTextColorHint</item>
     </style>
 
     <style name="DialogButton" parent="Medium">
