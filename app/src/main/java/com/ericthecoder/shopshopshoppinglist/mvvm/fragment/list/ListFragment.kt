@@ -82,14 +82,27 @@ class ListFragment : DaggerFragment() {
         when (event) {
             NavigateUp -> findNavController().navigateUp()
             ClearFocus -> binding.root.clearFocus()
+            is DisplayNewListDialog -> displayNewListDialog(event.callback)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)
         }
     }
 
+    private fun displayNewListDialog(callback: (String) -> Unit) {
+        dialogNavigator.displayRenameDialog(
+            getString(R.string.header_new_list),
+            "",
+            callback
+        )
+    }
+
     private fun displayRenameDialog(listTitle: String, callback: (String) -> Unit) {
-        dialogNavigator.displayRenameDialog(listTitle, callback)
+        dialogNavigator.displayRenameDialog(
+            getString(R.string.header_rename),
+            listTitle,
+            callback
+        )
     }
 
     private fun displayDeleteDialog(listTitle: String, callback: () -> Unit) {

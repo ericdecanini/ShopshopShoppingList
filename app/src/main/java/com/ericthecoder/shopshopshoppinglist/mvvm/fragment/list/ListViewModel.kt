@@ -118,7 +118,7 @@ class ListViewModel @Inject constructor(
             listName.set(shoppingList.name)
             viewStateEmitter.value = Loaded(shoppingList)
 
-            if (isNewList) { showRenameDialog(NEW_LIST_NAME) }
+            if (isNewList) { showNewListDialog() }
         }
 
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
@@ -235,6 +235,13 @@ class ListViewModel @Inject constructor(
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
+    private fun showNewListDialog() = shoppingList?.let {
+        viewEventEmitter.value = ViewEvent.ClearFocus
+        viewEventEmitter.postValue(ViewEvent.DisplayNewListDialog { newName ->
+            renameShoppingList(newName)
+        })
+    }
+
     fun showRenameDialog() {
         showRenameDialog(null)
     }
@@ -295,6 +302,7 @@ class ListViewModel @Inject constructor(
     sealed class ViewEvent {
         object NavigateUp : ViewEvent()
         object ClearFocus : ViewEvent()
+        class DisplayNewListDialog(val callback: (String) -> Unit) : ViewEvent()
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
@@ -302,7 +310,6 @@ class ListViewModel @Inject constructor(
 
     companion object {
 
-        internal const val NEW_LIST_NAME = ""
         internal const val UNNAMED_LIST = "Unnamed List"
     }
 }

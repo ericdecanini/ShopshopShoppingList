@@ -27,13 +27,15 @@ class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavig
     }
 
     override fun displayRenameDialog(
-        listTitle: String,
+        header: String,
+        autofillText: String,
         positiveOnClick: (String) -> Unit,
         negativeOnClick: (() -> Unit)?,
         cancellable: Boolean
     ) {
         val builder = RenameDialogFragment.Builder()
-            .setListTitle(listTitle)
+            .setHeader(header)
+            .setAutofillText(autofillText)
             .setPositiveOnClick(positiveOnClick)
             .setNegativeOnClick(negativeOnClick)
             .setCancellable(cancellable)

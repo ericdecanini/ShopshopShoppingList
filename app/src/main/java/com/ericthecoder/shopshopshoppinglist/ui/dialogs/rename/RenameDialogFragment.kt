@@ -45,13 +45,18 @@ class RenameDialogFragment : DialogFragment() {
 
     class Builder {
 
-        private var listTitleText = ""
+        private var header = ""
+        private var autofillText = ""
         private var positiveOnClick: ((String) -> Unit)? = null
         private var negativeOnClick: (() -> Unit)? = null
         private var cancellable = true
 
-        fun setListTitle(listTitle: String) = apply {
-            this.listTitleText = listTitle
+        fun setHeader(header: String) = apply {
+            this.header = header
+        }
+
+        fun setAutofillText(autofillText: String) = apply {
+            this.autofillText = autofillText
         }
 
         fun setPositiveOnClick(onClick: ((String) -> Unit)?) = apply {
@@ -68,7 +73,8 @@ class RenameDialogFragment : DialogFragment() {
 
         fun build() = RenameDialogFragment().apply {
             val args = Bundle().apply {
-                putString(EXTRA_TITLE, listTitleText)
+                putString(EXTRA_HEADER, header)
+                putString(EXTRA_AUTOFILL_TEXT, autofillText)
                 putSerializable(EXTRA_POSITIVE_CLICK, positiveOnClick as Serializable?)
                 putSerializable(EXTRA_NEGATIVE_CLICK, negativeOnClick as Serializable?)
             }
@@ -79,7 +85,8 @@ class RenameDialogFragment : DialogFragment() {
     }
 
     companion object {
-        internal const val EXTRA_TITLE = "EXTRA_TITLE"
+        internal const val EXTRA_HEADER = "EXTRA_HEADER"
+        internal const val EXTRA_AUTOFILL_TEXT = "EXTRA_AUTOFILL_TEXT"
         internal const val EXTRA_POSITIVE_CLICK = "EXTRA_POSITIVE_CLICK"
         internal const val EXTRA_NEGATIVE_CLICK = "EXTRA_NEGATIVE_CLICK"
     }

@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:gravity="center_horizontal"
-        android:text="@string/rename"
+        android:text="@{controller.header}"
         android:padding="@dimen/dialog_title_padding"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -35,7 +35,7 @@
         android:hint="@string/hint_list_title"
         android:inputType="text"
         android:importantForAutofill="no"
-        android:text="@={controller.listTitleText}"
+        android:text="@={controller.autofillText}"
         android:paddingTop="@dimen/edittext_box_vertical_padding"
         android:paddingBottom="@dimen/edittext_box_vertical_padding"
         android:paddingStart="@dimen/edittext_box_horizontal_padding"
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dialog_body_vertical_padding_bottom"
         android:text="@string/ok"
-        android:onClick="@{() -> controller.positiveOnClick.invoke(controller.listTitleText)}"
+        android:onClick="@{() -> controller.positiveOnClick.invoke(controller.autofillText)}"
         app:layout_constraintTop_toBottomOf="@id/new_name"
         app:layout_constraintStart_toEndOf="@id/negative_button"
         app:layout_constraintEnd_toEndOf="parent"
