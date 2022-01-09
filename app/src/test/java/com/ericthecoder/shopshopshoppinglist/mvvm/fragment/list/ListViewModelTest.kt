@@ -150,28 +150,23 @@ class ListViewModelTest {
 
     @Test
     fun givenShopItemWithQuantityGreaterThanOne_whenOnQuantityDown_thenQuantityDecreasedAndViewUpdated() {
+        givenShoppingList()
         val quantity = 5
-        val quantityView: TextView = mockk(relaxUnitFun = true)
         shopItem.quantity = quantity
 
-        viewModel.onQuantityDown(quantityView, shopItem)
+        viewModel.onQuantityDown(shopItem)
 
-        coVerify {
-            quantityView.text = (quantity - 1).toString()
-        }
+        assertThat((viewModel.viewState.value as Loaded).shoppingList.items.first { it == shopItem }.quantity).isEqualTo(quantity - 1)
     }
 
     @Test
     fun givenShopItemWithQuantityOne_whenOnQuantityDown_thenQuantityStaysTheSame() {
         val quantity = 1
-        val quantityView: TextView = mockk()
         shopItem.quantity = quantity
 
-        viewModel.onQuantityDown(quantityView, shopItem)
+        viewModel.onQuantityDown(shopItem)
 
         assertThat(shopItem.quantity).isEqualTo(quantity)
-        verify { quantityView wasNot called }
-        coVerify(exactly = 0) { shoppingListRepository.updateShopItem(any(), any(), any(), any()) }
     }
 
     @Test

@@ -66,9 +66,6 @@ dependencies {
     implementation "com.google.android.material:material:$materialVersion"
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
-    // Swipe Layout
-    implementation 'com.chauthai.swipereveallayout:swipe-reveal-layout:1.4.1'
-
     // Fragment
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
 

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
             name="handler"
-            type="com.ericthecoder.shopshopshoppinglist.adapter.ShopItemEventHandler" />
+            type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler" />
         <variable
             name="viewstate"
             type="com.ericthecoder.shopshopshoppinglist.entities.ShopItem" />
@@ -13,132 +15,70 @@
             type="android.widget.TextView" />
     </data>
 
-    <com.chauthai.swipereveallayout.SwipeRevealLayout
-        android:id="@+id/swipe_layout"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
-        android:clickable="true"
-        android:animateLayoutChanges="true"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/shopitem_height"
-        app:onFocusLost="@{(view) -> handler.onFocusLost(view)}"
-        app:focusOnSlide="@{true}"
-        app:mode="same_level"
-        app:dragEdge="right">
+        android:background="@color/shopItemBackgroundColor">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <CheckBox
+            android:id="@+id/checkbox"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:checked="@{viewstate.checked}"
+            app:clearsFocusOnCheck="@{true}"
+            app:onChecked="@{(view) -> handler.onCheckboxChecked(view, viewstate)}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text=" " />
 
-            <ImageButton
-                android:id="@+id/quantity_down"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_red_bg"
-                android:src="@drawable/ic_minus_white"
-                android:paddingStart="@dimen/quantity_buttons_padding"
-                android:paddingEnd="@dimen/quantity_buttons_padding"
-                android:contentDescription="@string/talkback_quantity_down"
-                android:onClick="@{() -> handler.onQuantityDown(quantity, viewstate)}"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <ImageButton
-                android:id="@+id/quantity_up"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_primary_bg"
-                android:src="@drawable/ic_add_white"
-                android:paddingStart="@dimen/quantity_buttons_padding"
-                android:paddingEnd="@dimen/quantity_buttons_padding"
-                android:contentDescription="@string/talkback_quantity_down"
-                android:onClick="@{() -> handler.onQuantityUp(quantity, viewstate)}"
-                app:layout_constraintStart_toEndOf="@id/quantity_down" />
-
-            <ImageButton
-                android:id="@+id/delete"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/bg_ripple_deeporange_bg"
-                android:src="@drawable/ic_delete_white"
-                android:paddingStart="@dimen/quantity_buttons_padding"
-                android:paddingEnd="@dimen/quantity_buttons_padding"
-                android:contentDescription="@string/talkback_quantity_down"
-                android:onClick="@{() -> handler.onDeleteClick(viewstate)}"
-                app:layout_constraintStart_toEndOf="@id/quantity_up" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/main_layout"
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/name"
+            style="@style/ListFragmentItemText"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:background="@color/shopItemBackgroundColor">
+            android:padding="12dp"
+            android:hint="@string/talkback_item_name"
+            android:autofillHints="@string/talkback_item_name"
+            android:inputType="textCapSentences"
+            android:selectAllOnFocus="true"
+            android:background="@drawable/bg_ripple_primary"
+            android:text="@={viewstate.name}"
+            android:textColor="@{viewstate.checked ? @color/gray_700 : @color/defaultTextColor}"
+            app:strikeThrough="@{viewstate.checked}"
+            app:onFocusLost="@{(view) -> handler.onNameChanged(view, viewstate)}"
+            app:layout_constraintStart_toEndOf="@id/checkbox"
+            app:layout_constraintEnd_toStartOf="@id/quantity"
+            app:layout_constraintTop_toTopOf="@id/checkbox"
+            app:layout_constraintBottom_toBottomOf="@id/checkbox"
+            tools:text="Oringe" />
 
-            <CheckBox
-                android:id="@+id/checkbox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:checked="@{viewstate.checked}"
-                app:clearsFocusOnCheck="@{true}"
-                app:onChecked="@{(view) -> handler.onCheckboxChecked(view, viewstate)}"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                tools:text=" " />
+        <TextView
+            android:id="@+id/quantity"
+            style="@style/ListFragmentQuantityText"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/quantity_padding"
+            android:paddingEnd="@dimen/quantity_padding"
+            android:background="@drawable/bg_ripple_gray"
+            android:text="@{Integer.toString(viewstate.quantity), default=0}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="2" />
 
-            <EditText
-                android:id="@+id/name"
-                style="@style/ListFragmentItemText"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:padding="12dp"
-                android:hint="@string/talkback_item_name"
-                android:autofillHints="@string/talkback_item_name"
-                android:inputType="textCapSentences"
-                android:selectAllOnFocus="true"
-                android:background="@drawable/bg_ripple_primary"
-                android:text="@={viewstate.name}"
-                android:textColor="@{viewstate.checked ? @color/gray_700 : @color/defaultTextColor}"
-                app:strikeThrough="@{viewstate.checked}"
-                app:onFocusLost="@{(view) -> handler.onNameChanged(view, viewstate)}"
-                app:returnKeyClick="@{swipeLayout}"
-                app:layout_constraintStart_toEndOf="@id/checkbox"
-                app:layout_constraintEnd_toStartOf="@id/quantity"
-                app:layout_constraintTop_toTopOf="@id/checkbox"
-                app:layout_constraintBottom_toBottomOf="@id/checkbox"
-                tools:text="Oringe" />
+        <View
+            android:id="@+id/divider"
+            android:layout_width="1dp"
+            android:layout_height="0dp"
+            android:background="@color/gray_400"
+            app:layout_constraintTop_toTopOf="@id/checkbox"
+            app:layout_constraintBottom_toBottomOf="@id/checkbox"
+            app:layout_constraintStart_toEndOf="@id/name" />
 
-            <TextView
-                android:id="@+id/quantity"
-                style="@style/ListFragmentQuantityText"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/quantity_padding"
-                android:paddingEnd="@dimen/quantity_padding"
-                android:background="@drawable/bg_ripple_gray"
-                android:text="@{Integer.toString(viewstate.quantity), default=0}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:text="2" />
-
-            <View
-                android:id="@+id/divider"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:background="@color/gray_400"
-                app:layout_constraintTop_toTopOf="@id/checkbox"
-                app:layout_constraintBottom_toBottomOf="@id/checkbox"
-                app:layout_constraintStart_toEndOf="@id/name" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </com.chauthai.swipereveallayout.SwipeRevealLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

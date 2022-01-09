@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
-import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemAdapter
-import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemDiffCallback
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
@@ -122,12 +122,9 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun renderShopItems(items: List<ShopItem>) {
-        val savedInstanceState = binding.shopList.layoutManager?.onSaveInstanceState()
         val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, items))
         adapter.replaceItems(items)
         diffResult.dispatchUpdatesTo(adapter)
-
-        binding.shopList.layoutManager?.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun inflateList(id: Int) = viewModel.loadShoppingList(id)

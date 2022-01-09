@@ -5,13 +5,10 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.TextView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chauthai.swipereveallayout.SwipeRevealLayout
-import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemEventHandler
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.database.DbQueryFailedException
@@ -19,6 +16,7 @@ import com.ericthecoder.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineScope
@@ -99,8 +97,9 @@ class ListViewModel @Inject constructor(
     }
 
     private fun displayShoppingList(shoppingList: ShoppingList) {
+        this.listId = shoppingList.id
         this.shoppingList = shoppingList
-        viewStateEmitter.postValue(Loaded(shoppingList))
+        emitShoppingList()
     }
 
     private fun displayNewListDialog() {
@@ -129,7 +128,6 @@ class ListViewModel @Inject constructor(
         resetItemTextField()
         addTemporaryItem(itemName)
         sortListAndDisplay()
-        reloadShoppingList()
     }
 
     private fun resetItemTextField() {
@@ -149,42 +147,12 @@ class ListViewModel @Inject constructor(
 
     private fun sortListAndDisplay() {
         shoppingList.items.sortBy { it.checked }
-        viewStateEmitter.notifyObservers()
+        emitShoppingList()
     }
 
     //region: ui interaction events
 
-    override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) {
-        if (shopItem.quantity > 1) {
-            decrementQuantity(quantityView, shopItem)
-        }
-    }
-
-    private fun decrementQuantity(quantityView: TextView, shopItem: ShopItem) {
-        decrementQuantityOnView(quantityView, shopItem)
-    }
-
-    private fun decrementQuantityOnView(quantityView: TextView, shopItem: ShopItem) {
-        shopItem.quantity -= 1
-        quantityView.text = shopItem.quantity.toString()
-        viewStateEmitter.notifyObservers()
-    }
-
-    override fun onQuantityUp(quantityView: TextView, shopItem: ShopItem) {
-        incrementQuantityOnView(quantityView, shopItem)
-    }
-
-    private fun incrementQuantityOnView(quantityView: TextView, shopItem: ShopItem) {
-        shopItem.quantity += 1
-        quantityView.text = shopItem.quantity.toString()
-        viewStateEmitter.notifyObservers()
-    }
-
     override fun onDeleteClick(shopItem: ShopItem) {
-        deleteShopItemOnUi(shopItem)
-    }
-
-    private fun deleteShopItemOnUi(shopItem: ShopItem) {
         deleteItemFromShoppingList(shopItem)
         sortListAndDisplay()
     }
@@ -200,10 +168,6 @@ class ListViewModel @Inject constructor(
     }
 
     private fun markItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        markItemCheckedInUi(checkbox, shopItem)
-    }
-
-    private fun markItemCheckedInUi(checkbox: CheckBox, shopItem: ShopItem) {
         getShopItems()?.let { shopItems ->
             val shopItemIndex = shopItems.indexOfFirst { it.id == shopItem.id }
             shopItems[shopItemIndex] = shopItem.copy(checked = checkbox.isChecked)
@@ -222,16 +186,8 @@ class ListViewModel @Inject constructor(
         .firstOrNull { it.id == shopItem.id } != null
 
     private fun changeItemName(editText: EditText, shopItem: ShopItem) {
-        changeItemNameOnUi(editText, shopItem)
-    }
-
-    private fun changeItemNameOnUi(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
         viewStateEmitter.notifyObservers()
-    }
-
-    override fun onFocusLost(swipeRevealLayout: SwipeRevealLayout) {
-        swipeRevealLayout.close(true)
     }
 
     fun hideKeyboard(view: View) {
