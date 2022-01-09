@@ -21,7 +21,6 @@ import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRep
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
@@ -58,7 +57,7 @@ class ListViewModel @Inject constructor(
         try {
             loadNewShoppingList()
         } catch (exception: DbQueryFailedException) {
-            handleListError(exception)
+            handleLoadError(exception)
         }
     }
 
@@ -83,7 +82,7 @@ class ListViewModel @Inject constructor(
         try {
             loadExistingShoppingList(id)
         } catch (exception: DbQueryFailedException) {
-            handleListError(exception)
+            handleLoadError(exception)
         }
     }
 
@@ -108,7 +107,7 @@ class ListViewModel @Inject constructor(
         ))
     }
 
-    private fun handleListError(exception: Throwable) {
+    private fun handleLoadError(exception: Throwable) {
         exception.printStackTrace()
         displayErrorState()
     }
@@ -124,7 +123,15 @@ class ListViewModel @Inject constructor(
             startLoadingExistingShoppingList(listId)
     }
 
-    fun addItem(itemName: String) {
+    fun tryAddItem(itemName: String) {
+        try {
+            addItem(itemName)
+        } catch (exception: DbQueryFailedException) {
+            handleSaveError(exception)
+        }
+    }
+
+    private fun addItem(itemName: String) {
         resetItemTextField()
         addTemporaryItem(itemName)
         sortListAndDisplay()
@@ -140,9 +147,23 @@ class ListViewModel @Inject constructor(
 
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
 
-    private fun deleteList() = viewModelScope.launch(coroutineContextProvider.IO) {
-        shoppingList.let { shoppingListRepository.deleteShoppingList(it.id) }
-        withContext(coroutineContextProvider.Main) { viewEventEmitter.postValue(NavigateUp) }
+    private fun handleSaveError(exception: Throwable) {
+        exception.printStackTrace()
+        viewEventEmitter.postValue(ShowToast("Something went wrong"))
+        reloadShoppingList()
+    }
+
+    private fun tryDeleteList() = launchOnIo {
+        try {
+            deleteList()
+        } catch (exception: DbQueryFailedException) {
+            handleSaveError(exception)
+        }
+    }
+
+    private suspend fun deleteList() {
+        shoppingListRepository.deleteShoppingList(shoppingList.id)
+        viewEventEmitter.postValue(NavigateUp)
     }
 
     private fun sortListAndDisplay() {
@@ -212,7 +233,7 @@ class ListViewModel @Inject constructor(
 
     fun showDeleteDialog() {
         val listName = shoppingList.name
-        viewEventEmitter.postValue(DisplayDeleteDialog(listName) { deleteList() })
+        viewEventEmitter.postValue(DisplayDeleteDialog(listName) { tryDeleteList() })
     }
 
     fun clearChecked() {

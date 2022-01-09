@@ -19,48 +19,80 @@ class ShoppingListDatabaseServiceImpl(
         .build()
 
     override suspend fun getShoppingLists(): List<ShoppingListResponse> {
-        val json = pythonDatabaseWrapper.getShoppingListsJson()
-        val listType = Types.newParameterizedType(List::class.java, ShoppingListResponse::class.java)
-        val adapter: JsonAdapter<List<ShoppingListResponse>> = moshi.adapter(listType)
-        return adapter.getOrNull(json) ?: emptyList()
+        return try {
+            val json = pythonDatabaseWrapper.getShoppingListsJson()
+            val listType = Types.newParameterizedType(List::class.java, ShoppingListResponse::class.java)
+            val adapter: JsonAdapter<List<ShoppingListResponse>> = moshi.adapter(listType)
+            adapter.getOrNull(json) ?: emptyList()
+        } catch (exception: Exception) {
+            throw DbQueryFailedException(exception)
+        }
     }
 
     override suspend fun getShoppingListById(id: Int): ShoppingListResponse {
-        val json = pythonDatabaseWrapper.getShoppingListJsonById(id)
-        val adapter: JsonAdapter<ShoppingListResponse> = moshi.adapter(ShoppingListResponse::class.java)
-        return adapter.getOrNull(json) ?: throw DbQueryFailedException("Shop item with id $id not found")
+        return try {
+            val json = pythonDatabaseWrapper.getShoppingListJsonById(id)
+            val adapter: JsonAdapter<ShoppingListResponse> = moshi.adapter(ShoppingListResponse::class.java)
+            requireNotNull(adapter.getOrNull(json)) { "Shopping list with id $id not found" }
+        } catch (exception: Exception) {
+            throw DbQueryFailedException(exception)
+        }
     }
 
     override suspend fun createShoppingList(name: String): ShoppingListResponse {
-        val json = pythonDatabaseWrapper.insertShoppingList(name.escapeSpecialCharacters())
-        val adapter: JsonAdapter<ShoppingListResponse> = moshi.adapter(ShoppingListResponse::class.java)
-        return adapter.getOrNull(json) ?: throw DbQueryFailedException("Shopping list failed to add")
+        return try {
+            val json = pythonDatabaseWrapper.insertShoppingList(name.escapeSpecialCharacters())
+            val adapter: JsonAdapter<ShoppingListResponse> = moshi.adapter(ShoppingListResponse::class.java)
+            requireNotNull(adapter.getOrNull(json)) { "Shopping list failed to add" }
+        } catch (exception: Exception) {
+            throw DbQueryFailedException(exception)
+        }
     }
 
     override suspend fun createShopItem(listId: Int, name: String): ShopItemResponse {
-        val json = pythonDatabaseWrapper.insertShopItem(listId, name.escapeSpecialCharacters(), 1, false)
-        val adapter: JsonAdapter<ShopItemResponse> = moshi.adapter(ShopItemResponse::class.java)
-        return adapter.getOrNull(json) ?: throw DbQueryFailedException("Shop item failed to add")
+        return try {
+            val json = pythonDatabaseWrapper.insertShopItem(listId, name.escapeSpecialCharacters(), 1, false)
+            val adapter: JsonAdapter<ShopItemResponse> = moshi.adapter(ShopItemResponse::class.java)
+            requireNotNull(adapter.getOrNull(json)) { "Shop item failed to add" }
+        } catch (exception: Exception) {
+            throw DbQueryFailedException(exception)
+        }
     }
 
     override suspend fun updateShoppingList(id: Int, name: String): ShoppingListResponse {
-        val json = pythonDatabaseWrapper.updateShoppingList(id, name.escapeSpecialCharacters())
-        val adapter: JsonAdapter<ShoppingListResponse> = moshi.adapter(ShoppingListResponse::class.java)
-        return adapter.getOrNull(json) ?: throw DbQueryFailedException("Shopping list failed to update")
+        return try {
+            val json = pythonDatabaseWrapper.updateShoppingList(id, name.escapeSpecialCharacters())
+            val adapter: JsonAdapter<ShoppingListResponse> = moshi.adapter(ShoppingListResponse::class.java)
+            requireNotNull(adapter.getOrNull(json)) { "Shopping list failed to update" }
+        } catch (exception: Exception) {
+            throw DbQueryFailedException(exception)
+        }
     }
 
     override suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse {
-        val json = pythonDatabaseWrapper.updateShopItem(id, name.escapeSpecialCharacters(), quantity, checked)
-        val adapter: JsonAdapter<ShopItemResponse> = moshi.adapter(ShopItemResponse::class.java)
-        return adapter.getOrNull(json) ?: throw DbQueryFailedException("Shop item failed to update")
+        return try {
+            val json = pythonDatabaseWrapper.updateShopItem(id, name.escapeSpecialCharacters(), quantity, checked)
+            val adapter: JsonAdapter<ShopItemResponse> = moshi.adapter(ShopItemResponse::class.java)
+            requireNotNull(adapter.getOrNull(json)) { "Shop item failed to update" }
+        } catch (exception: Exception) {
+            throw DbQueryFailedException(exception)
+        }
     }
 
     override suspend fun deleteShoppingList(id: Int) {
-        pythonDatabaseWrapper.deleteShoppingList(id)
+        try {
+            pythonDatabaseWrapper.deleteShoppingList(id)
+        } catch (exception: Exception) {
+            throw DbQueryFailedException(exception)
+        }
     }
 
     override suspend fun deleteShopItem(id: Int) {
-        pythonDatabaseWrapper.deleteShopItem(id)
+        try {
+            pythonDatabaseWrapper.deleteShopItem(id)
+        } catch (exception: Exception) {
+            throw DbQueryFailedException(exception)
+        }
     }
 
     private fun<T: Any> JsonAdapter<T>.getOrNull(json: String): T? = runCatching {

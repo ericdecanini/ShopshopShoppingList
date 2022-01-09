@@ -94,7 +94,7 @@
                 android:layout_height="24dp"
                 android:background="@drawable/bg_ripple_gray"
                 android:contentDescription="@string/talkback_add_new_item"
-                android:onClick="@{() -> viewmodel.addItem(newitem.text.toString())}"
+                android:onClick="@{() -> viewmodel.tryAddItem(newitem.text.toString())}"
                 android:src="@drawable/ic_return_24dp"
                 app:tint="@color/newItemClearButtonColor"
                 app:layout_constraintBottom_toBottomOf="parent"
