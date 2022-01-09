@@ -59,7 +59,6 @@ class ListViewModelTest {
     fun setUp() {
         viewModel = ListViewModel(
             shoppingListRepository,
-            resourceProvider,
             coroutineContextProvider,
         )
     }
@@ -71,7 +70,6 @@ class ListViewModelTest {
         viewModel.loadShoppingList(id = UNSET)
 
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingList))
-        assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
     }
 
     @Test
@@ -83,7 +81,6 @@ class ListViewModelTest {
         viewModel.loadShoppingList(id = UNSET)
 
         assertThat(viewModel.viewState.value).isEqualTo(Error)
-        assertThat(viewModel.listName.get()).isNull()
     }
 
     @Test
@@ -94,7 +91,6 @@ class ListViewModelTest {
         viewModel.loadShoppingList(id)
 
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingList))
-        assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
     }
 
     @Test
@@ -145,31 +141,11 @@ class ListViewModelTest {
         val newShoppingList = aShoppingList().withItems(newShopItems).build()
         givenShoppingList()
         coEvery { shoppingListRepository.getShoppingListById(shoppingList.id) } returns (newShoppingList)
-        coEvery { shoppingListRepository.createNewShopItem(shoppingList.id, itemName) } returns mockk()
 
         viewModel.addItem(itemName)
 
-        assertThat(viewModel.addItemText.get()).isEqualTo("")
+        assertThat(viewModel.viewEvent.value).isEqualTo(ClearEditText)
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(newShoppingList))
-        coVerify { shoppingListRepository.createNewShopItem(shoppingList.id, itemName) }
-    }
-
-    @Test
-    fun givenRepositoryThrows_whenAddItem_thenItemsReverted() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        val name = "new_item"
-        givenShoppingList()
-        val currentState = viewModel.viewState.value
-        coEvery { shoppingListRepository.createNewShopItem(any(), any()) } throws DbQueryFailedException()
-
-        viewModel.addItem(name)
-
-        coVerifyOrder {
-            shoppingListRepository.getShoppingListById(shoppingList.id)
-            shoppingListRepository.createNewShopItem(shoppingList.id, name)
-            observer.onChanged(any<ShowToast>())
-        }
-        assertThat(viewModel.viewState.value).isEqualTo(currentState)
     }
 
     @Test
@@ -182,24 +158,6 @@ class ListViewModelTest {
 
         coVerify {
             quantityView.text = (quantity - 1).toString()
-            shoppingListRepository.updateShopItem(shopItem.id, shopItem.name, quantity - 1, shopItem.checked)
-        }
-    }
-
-    @Test
-    fun givenRepositoryThrows_whenOnQuantityDown_thenQuantityReverted() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        val quantity = 5
-        val quantityView: TextView = mockk(relaxUnitFun = true)
-        shopItem.quantity = quantity
-        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws DbQueryFailedException()
-
-        viewModel.onQuantityDown(quantityView, shopItem)
-
-        assertThat(shopItem.quantity).isEqualTo(quantity)
-        verify {
-            quantityView.text = quantity.toString()
-            observer.onChanged(any<ShowToast>())
         }
     }
 
@@ -226,24 +184,6 @@ class ListViewModelTest {
 
         coVerify {
             quantityView.text = (quantity + 1).toString()
-            shoppingListRepository.updateShopItem(shopItem.id, shopItem.name, quantity + 1, shopItem.checked)
-        }
-    }
-
-    @Test
-    fun givenRepositoryThrows_whenOnQuantityUp_thenQuantityReverted() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        val quantity = 5
-        val quantityView: TextView = mockk(relaxUnitFun = true)
-        shopItem.quantity = quantity
-        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws DbQueryFailedException()
-
-        viewModel.onQuantityUp(quantityView, shopItem)
-
-        assertThat(shopItem.quantity).isEqualTo(quantity)
-        verify {
-            quantityView.text = quantity.toString()
-            observer.onChanged(any<ShowToast>())
         }
     }
 
@@ -258,7 +198,6 @@ class ListViewModelTest {
             it == shopItem
         }
         assertThat(deletedItem).isNull()
-        coVerify { shoppingListRepository.deleteShopItem(shopItem.id) }
     }
 
     @Test
@@ -271,7 +210,6 @@ class ListViewModelTest {
 
         val shopItem = (viewModel.viewState.value as Loaded).shoppingList.items.first { it.id == shopItem.id }
         assertThat(shopItem.checked).isTrue
-        coVerify { shoppingListRepository.updateShopItem(shopItem.id, shopItem.name, shopItem.quantity, true) }
     }
 
     @Test
@@ -283,7 +221,6 @@ class ListViewModelTest {
         viewModel.onCheckboxChecked(checkBox, shopItem)
 
         assertThat(shopItem.checked).isFalse
-        coVerify { shoppingListRepository.updateShopItem(shopItem.id, shopItem.name, shopItem.quantity, false) }
     }
 
     @Test
@@ -301,25 +238,6 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenRepositoryThrows_whenOnCheckboxChanged_themShopItemCheckDoesNotChange() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        givenShoppingList()
-        val checkBox: CheckBox = mockk(relaxUnitFun = true)
-        val item = (viewModel.viewState.value as Loaded).shoppingList.items.first()
-        val checked = item.checked
-        every { checkBox.isChecked } returns (checked)
-        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws DbQueryFailedException()
-
-        viewModel.onCheckboxChecked(checkBox, item)
-
-        assertThat(item.checked).isEqualTo(checked)
-        coVerify {
-            shoppingListRepository.updateShopItem(item.id, item.name, item.quantity, item.checked)
-            observer.onChanged(any<ShowToast>())
-        }
-    }
-
-    @Test
     fun givenUpdatedItemIsInList_whenOnNameChanged_thenNameChangedToEditTextValueAndKeyboardHidden() {
         givenShoppingList()
         val editText: EditText = mockk()
@@ -327,12 +245,10 @@ class ListViewModelTest {
         val name = "sample_name"
         every { editable.toString() } returns (name)
         every { editText.text } returns (editable)
-        coEvery { shoppingListRepository.updateShopItem(shopItem.id, name, shopItem.quantity, shopItem.checked) } returns shopItem
 
         viewModel.onNameChanged(editText, shopItem)
 
         assertThat(shopItem.name).isEqualTo(name)
-        coVerify { shoppingListRepository.updateShopItem(shopItem.id, name, shopItem.quantity, shopItem.checked) }
     }
 
     @Test
@@ -348,27 +264,6 @@ class ListViewModelTest {
         viewModel.onNameChanged(editText, shopItem)
 
         coVerify(exactly = 0) { shoppingListRepository.updateShopItem(any(), any(), any(), any()) }
-    }
-
-    @Test
-    fun givenRepositoryThrows_whenOnNameChanged_thenNameNotChanged() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        val editText: EditText = mockk()
-        val editable: Editable = mockk()
-        givenShoppingList()
-        val item = (viewModel.viewState.value as Loaded).shoppingList.items.first()
-        val oldName = item.name
-        val changedName = "sample_name"
-        every { editable.toString() } returns (changedName)
-        every { editText.text } returns (editable)
-        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws DbQueryFailedException()
-
-        viewModel.onNameChanged(editText, item)
-
-        coVerify {
-            shoppingListRepository.updateShopItem(item.id, changedName, item.quantity, item.checked)
-            observer.onChanged(any<ShowToast>())
-        }
     }
 
     @Test
@@ -398,7 +293,7 @@ class ListViewModelTest {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()
         val newName = "new_name"
-        val shoppingListWithNewName = shoppingList.copy(name = newName)
+        val shoppingListWithNewName = shoppingList.copy(_name = newName)
         coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, newName) } returns (shoppingListWithNewName)
 
         viewModel.showRenameDialog()
@@ -407,17 +302,15 @@ class ListViewModelTest {
         verify { observer.onChanged(capture(slots)) }
         slots.last().callback.invoke(newName)
 
-        assertThat(viewModel.listName.get()).isEqualTo(newName)
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingListWithNewName))
     }
 
     @Test
-    fun givenNewNameIsEmpty_whenRenameDialogCallback_thenShoppingListRenamedToUnnamed() {
+    fun givenNewNameIsEmpty_whenRenameDialogCallback_thenShoppingListNotRenamed() {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()
+        val oldName = shoppingList.name
         val newName = ""
-        val shoppingListUnnamed = shoppingList.copy(name = ListViewModel.UNNAMED_LIST_TITLE)
-        coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, ListViewModel.UNNAMED_LIST_TITLE) } returns (shoppingListUnnamed)
 
         viewModel.showRenameDialog()
 
@@ -425,43 +318,7 @@ class ListViewModelTest {
         verify { observer.onChanged(capture(slots)) }
         slots.last().callback.invoke(newName)
 
-        assertThat(viewModel.listName.get()).isEqualTo(ListViewModel.UNNAMED_LIST_TITLE)
-        assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingListUnnamed))
-    }
-
-    @Test
-    fun givenUpdateReturnsNull_whenRenameDialogCallback_thenShoppingListNotRenamed() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        givenShoppingList()
-        val currentName = (viewModel.viewState.value as Loaded).shoppingList.name
-        val newName = "new_name"
-        coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, newName) } throws DbQueryFailedException()
-
-        viewModel.showRenameDialog()
-
-        val slots = mutableListOf<DisplayRenameDialog>()
-        verify { observer.onChanged(capture(slots)) }
-        verify { observer.onChanged(any<ShowToast>()) }
-        slots.last().callback.invoke(newName)
-        assertThat(viewModel.listName.get()).isEqualTo(currentName)
-    }
-
-    @Test
-    fun givenRepositoryThrows_whenRenameDialogCallback_thenShoppingListNotRenamed() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        givenShoppingList()
-        val currentName = (viewModel.viewState.value as Loaded).shoppingList.name
-        val newName = "new_name"
-        coEvery { shoppingListRepository.updateShoppingList(any(), any()) } throws DbQueryFailedException()
-
-        viewModel.showRenameDialog()
-
-        val slots = mutableListOf<DisplayRenameDialog>()
-        verify { observer.onChanged(capture(slots)) }
-        slots.last().callback.invoke(newName)
-        assertThat(viewModel.listName.get()).isEqualTo(currentName)
-        coVerify { shoppingListRepository.updateShoppingList(any(), newName) }
-        verify { observer.onChanged(any<ShowToast>()) }
+        assertThat((viewModel.viewState.value as Loaded).shoppingList.name).isEqualTo(oldName)
     }
 
     @Test

@@ -16,6 +16,7 @@ import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemAdapter
 import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
+import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
@@ -72,7 +73,7 @@ class ListFragment : DaggerFragment() {
     private fun observeState() {
         viewModel.viewState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is Loaded -> renderShopItems(state.shoppingList.items)
+                is Loaded -> renderShoppingList(state.shoppingList)
                 else -> doNothing()
             }
         }
@@ -82,6 +83,7 @@ class ListFragment : DaggerFragment() {
         when (event) {
             NavigateUp -> findNavController().navigateUp()
             ClearFocus -> binding.root.clearFocus()
+            ClearEditText -> binding.addItemEdit.setText("")
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
@@ -112,6 +114,11 @@ class ListFragment : DaggerFragment() {
             positiveButton = getString(R.string.ok) to { callback() },
             negativeButton = getString(R.string.cancel) to { },
         )
+    }
+
+    private fun renderShoppingList(shoppingList: ShoppingList) {
+        binding.title.text = shoppingList.name
+        renderShopItems(shoppingList.items)
     }
 
     private fun renderShopItems(items: List<ShopItem>) {
