@@ -123,17 +123,19 @@ class ListViewModel @Inject constructor(
             startLoadingExistingShoppingList(listId)
     }
 
-    fun tryAddItem(itemName: String) {
+    fun tryAddItem(itemName: String) = launchOnIo {
         try {
             addItem(itemName)
         } catch (exception: DbQueryFailedException) {
-            handleSaveError(exception)
+            handleWriteError(exception)
         }
     }
 
-    private fun addItem(itemName: String) {
+    private suspend fun addItem(itemName: String) {
         resetItemTextField()
         addTemporaryItem(itemName)
+        saveItem(itemName)
+        reloadShoppingList()
         sortListAndDisplay()
     }
 
@@ -145,9 +147,13 @@ class ListViewModel @Inject constructor(
         shoppingList.items.add(createTemporaryNewItem(itemName))
     }
 
+    private suspend fun saveItem(itemName: String) {
+        shoppingListRepository.createNewShopItem(listId, itemName)
+    }
+
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
 
-    private fun handleSaveError(exception: Throwable) {
+    private fun handleWriteError(exception: Throwable) {
         exception.printStackTrace()
         viewEventEmitter.postValue(ShowToast("Something went wrong"))
         reloadShoppingList()
@@ -157,7 +163,7 @@ class ListViewModel @Inject constructor(
         try {
             deleteList()
         } catch (exception: DbQueryFailedException) {
-            handleSaveError(exception)
+            handleWriteError(exception)
         }
     }
 
@@ -216,9 +222,9 @@ class ListViewModel @Inject constructor(
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    fun showRenameDialog() = shoppingList.let {
+    fun showRenameDialog() {
         clearFocus()
-        postDisplayRenameDialog(it.name)
+        postDisplayRenameDialog(shoppingList.name)
     }
 
     private fun clearFocus() {
@@ -236,11 +242,17 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(DisplayDeleteDialog(listName) { tryDeleteList() })
     }
 
-    fun clearChecked() {
-        launchOnIo {
-            deleteCheckedItems(shoppingList)
-            sortListAndDisplay()
+    fun tryClearChecked() = launchOnIo {
+        try {
+            clearChecked()
+        } catch (exception: DbQueryFailedException) {
+            handleWriteError(exception)
         }
+    }
+
+    private suspend fun clearChecked() {
+        deleteCheckedItems(shoppingList)
+        sortListAndDisplay()
     }
 
     private suspend fun deleteCheckedItems(shoppingList: ShoppingList) {

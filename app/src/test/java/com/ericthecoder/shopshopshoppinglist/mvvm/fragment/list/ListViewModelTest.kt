@@ -8,9 +8,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.TextView
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
@@ -140,46 +138,13 @@ class ListViewModelTest {
         val newShopItems = mutableListOf(aShopItem().withName(itemName).build())
         val newShoppingList = aShoppingList().withItems(newShopItems).build()
         givenShoppingList()
-        coEvery { shoppingListRepository.getShoppingListById(shoppingList.id) } returns (newShoppingList)
+        coEvery { shoppingListRepository.createNewShopItem(shoppingList.id, itemName) } returns newShopItems.first()
+        coEvery { shoppingListRepository.getShoppingListById(shoppingList.id) } returns newShoppingList
 
-        viewModel.addItem(itemName)
+        viewModel.tryAddItem(itemName)
 
         assertThat(viewModel.viewEvent.value).isEqualTo(ClearEditText)
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(newShoppingList))
-    }
-
-    @Test
-    fun givenShopItemWithQuantityGreaterThanOne_whenOnQuantityDown_thenQuantityDecreasedAndViewUpdated() {
-        givenShoppingList()
-        val quantity = 5
-        shopItem.quantity = quantity
-
-        viewModel.onQuantityDown(shopItem)
-
-        assertThat((viewModel.viewState.value as Loaded).shoppingList.items.first { it == shopItem }.quantity).isEqualTo(quantity - 1)
-    }
-
-    @Test
-    fun givenShopItemWithQuantityOne_whenOnQuantityDown_thenQuantityStaysTheSame() {
-        val quantity = 1
-        shopItem.quantity = quantity
-
-        viewModel.onQuantityDown(shopItem)
-
-        assertThat(shopItem.quantity).isEqualTo(quantity)
-    }
-
-    @Test
-    fun givenShopItem_whenOnQuantityUp_thenQuantityIncreasedAndViewUpdated() {
-        val quantity = 5
-        val quantityView: TextView = mockk(relaxUnitFun = true)
-        shopItem.quantity = quantity
-
-        viewModel.onQuantityUp(quantityView, shopItem)
-
-        coVerify {
-            quantityView.text = (quantity + 1).toString()
-        }
     }
 
     @Test
@@ -323,7 +288,7 @@ class ListViewModelTest {
         givenShoppingList(shoppingList.copy(items = mutableListOf(uncheckedItem, checkedItem)))
         coEvery { shoppingListRepository.deleteShopItem(any()) } returns mockk()
 
-        viewModel.clearChecked()
+        viewModel.tryClearChecked()
 
         assertThat((viewModel.viewState.value as Loaded).shoppingList.items).isEqualTo(listOf(uncheckedItem))
     }
@@ -333,7 +298,7 @@ class ListViewModelTest {
         val uncheckedItem = shopItem.copy(checked = false)
         givenShoppingList(shoppingList.copy(items = mutableListOf(uncheckedItem, uncheckedItem)))
 
-        viewModel.clearChecked()
+        viewModel.tryClearChecked()
 
         assertThat((viewModel.viewState.value as Loaded).shoppingList.items).isEqualTo(listOf(uncheckedItem, uncheckedItem))
     }
@@ -344,18 +309,9 @@ class ListViewModelTest {
         givenShoppingList(shoppingList.copy(items = mutableListOf(checkedItems, checkedItems)))
         coEvery { shoppingListRepository.deleteShopItem(any()) } returns mockk()
 
-        viewModel.clearChecked()
+        viewModel.tryClearChecked()
 
         assertThat((viewModel.viewState.value as Loaded).shoppingList.items).isEqualTo(emptyList<ShopItem>())
-    }
-
-    @Test
-    fun givenSwipeRevealLayout_whenOnFocusLost_thenCloseSwipeRevealLayout() {
-        val swipeRevealLayout: SwipeRevealLayout = mockk(relaxUnitFun = true)
-
-        viewModel.onFocusLost(swipeRevealLayout)
-
-        verify { swipeRevealLayout.close(true) }
     }
 
     @Test

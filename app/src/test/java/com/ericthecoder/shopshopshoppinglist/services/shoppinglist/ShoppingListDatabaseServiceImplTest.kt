@@ -1,5 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.services.shoppinglist
 
+import com.ericthecoder.shopshopshoppinglist.entities.database.DbQueryFailedException
 import com.ericthecoder.shopshopshoppinglist.entities.network.ShopItemResponse
 import com.ericthecoder.shopshopshoppinglist.entities.network.ShoppingListResponse
 import com.ericthecoder.shopshopshoppinglist.usecases.python.PythonDatabaseWrapper
@@ -60,7 +61,9 @@ class ShoppingListDatabaseServiceImplTest {
     val name = "sample_name"
     given(pythonDatabaseWrapper.insertShoppingList(name)).willReturn(EMPTY_OBJECT_RESPONSE)
 
-    assertThrows<IllegalStateException> { shoppingListDatabaseService.createShoppingList(name) }
+    assertThrows<DbQueryFailedException> {
+      shoppingListDatabaseService.createShoppingList(name)
+    }
   }
 
   @Test
@@ -73,10 +76,12 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbInsertIsNotSuccessful_whenCreateShopItem_thenShopItemIsCreated() = runBlockingTest {
+  fun givenDbInsertIsNotSuccessful_whenCreateShopItem_thenRethrowException() = runBlockingTest {
     given(pythonDatabaseWrapper.insertShopItem(any(), any(), eq(1), eq(false))).willReturn(EMPTY_OBJECT_RESPONSE)
 
-    assertThrows<IllegalStateException> { shoppingListDatabaseService.createShopItem(0, "name") }
+    assertThrows<DbQueryFailedException> {
+      shoppingListDatabaseService.createShopItem(0, "name")
+    }
   }
 
   @Test
@@ -92,9 +97,9 @@ class ShoppingListDatabaseServiceImplTest {
   fun givenDbDoesNotHaveShoppingList_whenUpdateShoppingList_thenReturnNull() = runBlockingTest {
     given(pythonDatabaseWrapper.updateShoppingList(any(), any())).willReturn(EMPTY_OBJECT_RESPONSE)
 
-    val shoppingList = shoppingListDatabaseService.updateShoppingList(1, "name")
-
-    assertThat(shoppingList).isNull()
+    assertThrows<DbQueryFailedException> {
+      shoppingListDatabaseService.updateShoppingList(1, "name")
+    }
   }
 
   @Test
@@ -107,12 +112,12 @@ class ShoppingListDatabaseServiceImplTest {
   }
 
   @Test
-  fun givenDbDoesNotHaveShopItem_whenUpdateShopItem_thenReturnNull() = runBlockingTest {
+  fun givenDbDoesNotHaveShopItem_whenUpdateShopItem_thenThrow() = runBlockingTest {
     given(pythonDatabaseWrapper.updateShopItem(any(), any(), any(), any())).willReturn(EMPTY_OBJECT_RESPONSE)
 
-    val shopItem = shoppingListDatabaseService.updateShopItem(1, "name", 1, false)
-
-    assertThat(shopItem).isNull()
+    assertThrows<DbQueryFailedException> {
+      shoppingListDatabaseService.updateShopItem(1, "name", 1, false)
+    }
   }
 
   @Test

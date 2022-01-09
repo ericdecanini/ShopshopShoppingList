@@ -45,8 +45,8 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenServiceReturnsNull_whenGetShoppingLists_thenReturnEmptyList() = runBlockingTest {
-    given(shoppingListDatabaseService.getShoppingLists()).willReturn(null)
+  fun givenServiceReturnsEmpty_whenGetShoppingLists_thenReturnEmptyList() = runBlockingTest {
+    given(shoppingListDatabaseService.getShoppingLists()).willReturn(emptyList())
 
     val shoppingLists = shoppingListRepository.getShoppingLists()
 
