@@ -82,7 +82,7 @@ class ListFragment : DaggerFragment() {
         when (event) {
             NavigateUp -> findNavController().navigateUp()
             ClearFocus -> binding.root.clearFocus()
-            is DisplayNewListDialog -> displayNewListDialog(event.callback)
+            is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)
@@ -123,7 +123,7 @@ class ListFragment : DaggerFragment() {
         binding.shopList.layoutManager?.onRestoreInstanceState(savedInstanceState)
     }
 
-    private fun inflateList(id: Int) = viewModel.handleArgs(id)
+    private fun inflateList(id: Int) = viewModel.loadShoppingList(id)
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_shopping_list, menu)

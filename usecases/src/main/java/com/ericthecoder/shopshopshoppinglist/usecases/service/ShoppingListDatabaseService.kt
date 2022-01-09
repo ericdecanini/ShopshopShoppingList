@@ -5,17 +5,17 @@ import com.ericthecoder.shopshopshoppinglist.entities.network.ShoppingListRespon
 
 interface ShoppingListDatabaseService {
 
-    suspend fun getShoppingLists(): List<ShoppingListResponse>?
+    suspend fun getShoppingLists(): List<ShoppingListResponse>
 
-    suspend fun getShoppingListById(id: Int): ShoppingListResponse?
+    suspend fun getShoppingListById(id: Int): ShoppingListResponse
 
     suspend fun createShoppingList(name: String): ShoppingListResponse
 
     suspend fun createShopItem(listId: Int, name: String): ShopItemResponse
 
-    suspend fun updateShoppingList(id: Int, name: String): ShoppingListResponse?
+    suspend fun updateShoppingList(id: Int, name: String): ShoppingListResponse
 
-    suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse?
+    suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse
 
     suspend fun deleteShoppingList(id: Int)
 

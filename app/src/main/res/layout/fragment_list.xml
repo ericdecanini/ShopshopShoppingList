@@ -200,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32dp"
-                android:onClick="@{() -> viewmodel.retryLoadShoppingList()}"
+                android:onClick="@{() -> viewmodel.reloadShoppingList()}"
                 android:text="@string/retry" />
 
         </LinearLayout>

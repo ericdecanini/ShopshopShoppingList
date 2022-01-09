@@ -7,13 +7,13 @@ interface ShoppingListRepository {
 
     suspend fun getShoppingLists(): List<ShoppingList>?
 
-    suspend fun getShoppingListById(id: Int): ShoppingList?
+    suspend fun getShoppingListById(id: Int): ShoppingList
 
     suspend fun createNewShoppingList(name: String): ShoppingList
 
     suspend fun createNewShopItem(listId: Int, name: String): ShopItem
 
-    suspend fun updateShoppingList(id: Int, name: String): ShoppingList?
+    suspend fun updateShoppingList(id: Int, name: String): ShoppingList
 
     suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItem?
 

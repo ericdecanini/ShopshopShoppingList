@@ -17,14 +17,14 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemEventHandler
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
+import com.ericthecoder.shopshopshoppinglist.entities.database.DbQueryFailedException
 import com.ericthecoder.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
-import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.NavigateUp
-import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.ShowToast
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
-import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -42,93 +42,154 @@ class ListViewModel @Inject constructor(
     private val viewEventEmitter = MutableSingleLiveEvent<ViewEvent>()
     val viewEvent: LiveData<ViewEvent> get() = viewEventEmitter
 
-    private val errorHandler = CoroutineExceptionHandler { _, throwable ->
-        throwable.printStackTrace()
-        viewStateEmitter.postValue(Error(throwable))
-    }
-
-    private var listId: Int = -1
+    private var listId = UNSET
 
     val listName = ObservableField<String>()
     val addItemText = ObservableField<String>()
 
-    fun createNewShoppingList() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
-        viewStateEmitter.postValue(Loading)
-        val shoppingList = shoppingListRepository.createNewShoppingList(UNNAMED_LIST)
-        setShoppingList(shoppingList)
+    fun loadShoppingList(id: Int) {
+        this.listId = id
+
+        if (id == UNSET)
+            startLoadingNewShoppingList()
+        else
+            startLoadingExistingShoppingList(id)
     }
 
-    fun loadShoppingList(id: Int) = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
-        listId = id
-        viewStateEmitter.postValue(Loading)
-
-        val shoppingList = shoppingListRepository.getShoppingListById(id)
-
-        if (shoppingList != null) {
-            setShoppingList(shoppingList)
-        } else {
-            viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.list_not_found)))
-            viewEventEmitter.postValue(NavigateUp)
+    private fun startLoadingNewShoppingList() {
+        displayLoading()
+        launchOnIo {
+            tryLoadNewShoppingList()
         }
     }
 
-    fun retryLoadShoppingList() =
-        if (listId > -1)
-            loadShoppingList(listId)
-        else
-            createNewShoppingList()
-
-    fun addItem(itemName: String) = viewModelScope.launch(coroutineContextProvider.IO) {
-        addItemText.set("")
-        shoppingList?.items?.add(createTemporaryNewItem(itemName))
-        sortListAndPost()
-
+    private suspend fun tryLoadNewShoppingList() {
         try {
-            shoppingListRepository.createNewShopItem(listId, itemName)
-        } catch (e: Exception) {
-            shoppingList?.items?.removeLastOrNull()
-            sortListAndPost()
-            viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
-            return@launch
+            loadNewShoppingList()
+        } catch (exception: DbQueryFailedException) {
+            handleListError(exception)
         }
-
-        val updatedShoppingList = shoppingListRepository.getShoppingListById(listId)
-
-        if (updatedShoppingList != null)
-            viewStateEmitter.postValue(Loaded(updatedShoppingList))
-        else
-            viewEventEmitter.postValue(NavigateUp)
     }
 
-    fun handleArgs(listId: Int) {
-        if (this.listId != -1)
-            return // ignore: args have been handled
-
-        this.listId = listId
-        if (listId != -1)
-            loadShoppingList(listId)
-        else
-            createNewShoppingList()
+    private suspend fun loadNewShoppingList() {
+        val shoppingList = createNewShoppingList()
+        displayShoppingList(shoppingList)
+        displayNewListDialog()
     }
 
-    private suspend fun setShoppingList(shoppingList: ShoppingList) =
-        withContext(coroutineContextProvider.Main) {
-            val isNewList = listId == -1
-            listId = shoppingList.id
-            listName.set(shoppingList.name)
-            viewStateEmitter.value = Loaded(shoppingList)
+    private suspend fun createNewShoppingList(): ShoppingList {
+        return shoppingListRepository.createNewShoppingList(UNNAMED_LIST_TITLE)
+    }
 
-            if (isNewList) { showNewListDialog() }
+    private fun startLoadingExistingShoppingList(id: Int) {
+        displayLoading()
+        launchOnIo {
+            tryLoadExistingShoppingList(id)
         }
+    }
+
+    private suspend fun tryLoadExistingShoppingList(id: Int) {
+        try {
+            loadExistingShoppingList(id)
+        } catch (exception: DbQueryFailedException) {
+            handleListError(exception)
+        }
+    }
+
+    private suspend fun loadExistingShoppingList(id: Int) {
+        val shoppingList = shoppingListRepository.getShoppingListById(id)
+        displayShoppingList(shoppingList)
+    }
+
+    private fun displayLoading() {
+        viewStateEmitter.postValue(Loading)
+    }
+
+    private fun displayShoppingList(shoppingList: ShoppingList) {
+        listId = shoppingList.id
+        listName.set(shoppingList.name)
+        viewStateEmitter.postValue(Loaded(shoppingList))
+    }
+
+    private fun displayNewListDialog() {
+        viewEventEmitter.postValue(DisplayNewListDialog(
+            onNameSet = { newName -> renameShoppingList(newName) }
+        ))
+    }
+
+    private fun handleListError(exception: Throwable) {
+        exception.printStackTrace()
+        displayErrorState()
+    }
+
+    private fun displayErrorState() {
+        viewStateEmitter.postValue(Error)
+    }
+
+    fun reloadShoppingList() {
+        if (listId == UNSET)
+            startLoadingNewShoppingList()
+        else
+            startLoadingExistingShoppingList(listId)
+    }
+
+    fun addItem(itemName: String) {
+        resetItemTextField()
+        addTemporaryItem(itemName)
+        sortListAndDisplay()
+        launchTryCreateNewItem(itemName)
+        reloadShoppingList()
+    }
+
+    private fun resetItemTextField() {
+        addItemText.set("")
+    }
+
+    private fun addTemporaryItem(itemName: String) {
+        shoppingList?.items?.add(createTemporaryNewItem(itemName))
+    }
 
     private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
+
+    private fun launchTryCreateNewItem(itemName: String) {
+        launchOnIo {
+            tryCreateNewItem(itemName)
+        }
+    }
+
+    private suspend fun tryCreateNewItem(itemName: String) {
+        try {
+            createNewItem(itemName)
+        } catch (exception: DbQueryFailedException) {
+            handleNewItemError(exception)
+        }
+    }
+
+    private suspend fun createNewItem(itemName: String) {
+        shoppingListRepository.createNewShopItem(listId, itemName)
+    }
+
+    private fun handleNewItemError(exception: Throwable) {
+        removeNewlyAddedItem()
+        handleItemError(exception)
+    }
+
+    private fun removeNewlyAddedItem() {
+        shoppingList?.items?.removeLastOrNull()
+        sortListAndDisplay()
+    }
+
+    private fun handleItemError(exception: Throwable) {
+        exception.printStackTrace()
+        viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
+    }
 
     private fun deleteList() = viewModelScope.launch(coroutineContextProvider.IO) {
         shoppingList?.let { shoppingListRepository.deleteShoppingList(it.id) }
         withContext(coroutineContextProvider.Main) { viewEventEmitter.postValue(NavigateUp) }
     }
 
-    private fun sortListAndPost() {
+    private fun sortListAndDisplay() {
         shoppingList?.items?.sortBy { it.checked }
         viewStateEmitter.notifyObservers()
     }
@@ -136,93 +197,174 @@ class ListViewModel @Inject constructor(
     //region: ui interaction events
 
     override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) {
-        if (shopItem.quantity <= 1) {
-            return
+        if (shopItem.quantity > 1) {
+            decrementQuantity(quantityView, shopItem)
         }
+    }
 
+    private fun decrementQuantity(quantityView: TextView, shopItem: ShopItem) {
+        decrementQuantityOnView(quantityView, shopItem)
+
+        launchOnIo {
+            tryDecrementQuantityInRepository(quantityView, shopItem)
+        }
+    }
+
+    private fun decrementQuantityOnView(quantityView: TextView, shopItem: ShopItem) {
         shopItem.quantity -= 1
         quantityView.text = shopItem.quantity.toString()
         viewStateEmitter.notifyObservers()
+    }
 
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            try {
-                with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
-            } catch (e: Exception) {
-                shopItem.quantity += 1
-                quantityView.text = shopItem.quantity.toString()
-                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
-            }
+    private suspend fun tryDecrementQuantityInRepository(quantityView: TextView, shopItem: ShopItem) {
+        try {
+            decrementQuantityInRepository(shopItem)
+        } catch (exception: DbQueryFailedException) {
+            handleDecrementQuantityError(exception, quantityView, shopItem)
         }
+    }
+
+    private suspend fun decrementQuantityInRepository(shopItem: ShopItem) {
+        with(shopItem) {
+            shoppingListRepository.updateShopItem(id, name, quantity, checked)
+        }
+    }
+
+    private fun handleDecrementQuantityError(exception: Throwable, quantityView: TextView, shopItem: ShopItem) {
+        shopItem.quantity += 1
+        quantityView.text = shopItem.quantity.toString()
+        handleItemError(exception)
     }
 
     override fun onQuantityUp(quantityView: TextView, shopItem: ShopItem) {
-        shopItem.quantity += 1
-        quantityView.text = shopItem.quantity.toString()
-        viewStateEmitter.notifyObservers()
+        incrementQuantityOnView(quantityView, shopItem)
 
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            try {
-                with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
-            } catch (e: Exception) {
-                shopItem.quantity -= 1
-                quantityView.text = shopItem.quantity.toString()
-                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
-            }
+        launchOnIo {
+            tryIncrementQuantityInRepository(quantityView, shopItem)
         }
     }
 
+    private fun incrementQuantityOnView(quantityView: TextView, shopItem: ShopItem) {
+        shopItem.quantity += 1
+        quantityView.text = shopItem.quantity.toString()
+        viewStateEmitter.notifyObservers()
+    }
+
+    private suspend fun tryIncrementQuantityInRepository(quantityView: TextView, shopItem: ShopItem) {
+        try {
+            incrementQuantityInRepository(shopItem)
+        } catch (exception: DbQueryFailedException) {
+            handleIncrementQuantityError(exception, quantityView, shopItem)
+        }
+    }
+
+    private suspend fun incrementQuantityInRepository(shopItem: ShopItem) {
+        with(shopItem) {
+            shoppingListRepository.updateShopItem(id, name, quantity, checked)
+        }
+    }
+
+    private fun handleIncrementQuantityError(exception: Throwable, quantityView: TextView, shopItem: ShopItem) {
+        shopItem.quantity -= 1
+        quantityView.text = shopItem.quantity.toString()
+        handleItemError(exception)
+    }
+
     override fun onDeleteClick(shopItem: ShopItem) {
+        deleteShopItemOnUi(shopItem)
+        deleteShopItemInRepository(shopItem)
+    }
+
+    private fun deleteShopItemOnUi(shopItem: ShopItem) {
+        deleteItemFromShoppingList(shopItem)
+        sortListAndDisplay()
+    }
+
+    private fun deleteItemFromShoppingList(shopItem: ShopItem) {
         shoppingList?.items?.removeIf { it.id == shopItem.id }
-        sortListAndPost()
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            try {
-                shoppingListRepository.deleteShopItem(shopItem.id)
-            } catch (e: Exception) {
-                shoppingList?.items?.add(shopItem)
-                sortListAndPost()
-                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
-            }
+    }
+
+    private fun deleteShopItemInRepository(shopItem: ShopItem) {
+        launchOnIo {
+            shoppingListRepository.deleteShopItem(shopItem.id)
         }
     }
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        if (shopItem.id == -1)
-            return
-
-        var item: ShopItem? = null
-
-        getShopItems()?.let { shopItems ->
-            val shopItemIndex = shopItems.indexOfFirst { it.id == shopItem.id }
-            item = shopItems.firstOrNull { it.id == shopItem.id }?.copy(checked = checkbox.isChecked)
-            item?.let { shopItems[shopItemIndex] = it }
-            sortListAndPost()
-        }
-
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            try {
-                item?.let { shoppingListRepository.updateShopItem(it.id, it.name, it.quantity, it.checked) }
-            } catch (e: Exception) {
-                withContext(coroutineContextProvider.Main) { checkbox.isChecked = item?.checked ?: false }
-                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
-            }
+        if (shopItem.id != UNSET) {
+            markItemChecked(checkbox, shopItem)
         }
     }
 
-    override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
-        if (shoppingList?.items?.firstOrNull { it.id == shopItem.id } == null)
-            return
+    private fun markItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
+        markItemCheckedInUi(checkbox, shopItem)
 
-        val oldName = shopItem.name
+        launchOnIo {
+            tryMarkItemCheckedInRepository(checkbox, shopItem)
+        }
+    }
+
+    private fun markItemCheckedInUi(checkbox: CheckBox, shopItem: ShopItem) {
+        getShopItems()?.let { shopItems ->
+            val shopItemIndex = shopItems.indexOfFirst { it.id == shopItem.id }
+            shopItems[shopItemIndex] = shopItem.copy(checked = checkbox.isChecked)
+            sortListAndDisplay()
+        }
+    }
+
+    private suspend fun tryMarkItemCheckedInRepository(checkbox: CheckBox, shopItem: ShopItem) {
+        try {
+            markItemCheckedInRepository(checkbox, shopItem)
+        } catch (exception: DbQueryFailedException) {
+            handleCheckItemError(exception, checkbox, shopItem)
+        }
+    }
+
+    private suspend fun markItemCheckedInRepository(checkbox: CheckBox, shopItem: ShopItem) {
+        shoppingListRepository.updateShopItem(shopItem.id, shopItem.name, shopItem.quantity, checkbox.isChecked)
+    }
+
+    private suspend fun handleCheckItemError(exception: Throwable, checkbox: CheckBox, shopItem: ShopItem) {
+        withContext(coroutineContextProvider.Main) {
+            checkbox.isChecked = shopItem.checked
+        }
+        handleItemError(exception)
+    }
+
+    override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
+        if (itemExistsInShoppingList(shopItem)) {
+            changeItemName(editText, shopItem)
+        }
+    }
+
+    private fun itemExistsInShoppingList(shopItem: ShopItem) = shoppingList
+        ?.items
+        ?.firstOrNull { it.id == shopItem.id } != null
+
+    private fun changeItemName(editText: EditText, shopItem: ShopItem) {
+        changeItemNameOnUi(editText, shopItem)
+
+        launchOnIo {
+            tryChangeItemNameInRepository(shopItem)
+        }
+    }
+
+    private fun changeItemNameOnUi(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
         viewStateEmitter.notifyObservers()
+    }
 
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            try {
-                with(shopItem) { shoppingListRepository.updateShopItem(id, name, quantity, checked) }
-            } catch (e: Exception) {
-                shopItem.name = oldName
-                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
-            }
+    private suspend fun tryChangeItemNameInRepository(shopItem: ShopItem) {
+        try {
+            changeItemNameInRepository(shopItem)
+        } catch (exception: DbQueryFailedException) {
+            handleItemError(exception)
+        }
+    }
+
+    private suspend fun changeItemNameInRepository(shopItem: ShopItem) {
+        with(shopItem) {
+            shoppingListRepository.updateShopItem(id, name, quantity, checked)
         }
     }
 
@@ -235,81 +377,108 @@ class ListViewModel @Inject constructor(
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
-    private fun showNewListDialog() = shoppingList?.let {
-        viewEventEmitter.value = ViewEvent.ClearFocus
-        viewEventEmitter.postValue(ViewEvent.DisplayNewListDialog { newName ->
-            renameShoppingList(newName)
-        })
+    fun showRenameDialog() = shoppingList?.let {
+        clearFocus()
+        postDisplayRenameDialog(it.name)
     }
 
-    fun showRenameDialog() {
-        showRenameDialog(null)
+    private fun clearFocus() {
+        viewEventEmitter.value = ClearFocus
     }
 
-    fun showRenameDialog(overrideName: String?) = shoppingList?.let {
-        viewEventEmitter.value = ViewEvent.ClearFocus
-        val listName = overrideName ?: it.name
-        viewEventEmitter.postValue(ViewEvent.DisplayRenameDialog(listName) { newName ->
+    private fun postDisplayRenameDialog(title: String) {
+        viewEventEmitter.postValue(DisplayRenameDialog(title) { newName ->
             renameShoppingList(newName)
         })
     }
 
     fun showDeleteDialog() = viewState.value?.let {
         val listName = listName.get() ?: return@let
-        viewEventEmitter.postValue(ViewEvent.DisplayDeleteDialog(listName) { deleteList() })
+        viewEventEmitter.postValue(DisplayDeleteDialog(listName) { deleteList() })
     }
 
-    fun clearChecked() = (viewState.value as? Loaded)?.shoppingList?.let { shoppingList ->
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            shoppingList.items.filter { it.checked }.forEach {
-                shoppingListRepository.deleteShopItem(it.id)
-                shoppingList.items.remove(it)
-            }
+    fun clearChecked() = shoppingList?.let { shoppingList ->
+        launchOnIo {
+            deleteCheckedItems(shoppingList)
+            sortListAndDisplay()
+        }
+    }
 
-            sortListAndPost()
+    private suspend fun deleteCheckedItems(shoppingList: ShoppingList) {
+        shoppingList.items.filter { it.checked }.forEach {
+            shoppingListRepository.deleteShopItem(it.id)
+            shoppingList.items.remove(it)
         }
     }
 
     fun onBackButtonPressed() {
+        navigateUp()
+    }
+
+    private fun navigateUp() {
         viewEventEmitter.postValue(NavigateUp)
     }
 
     //endregion
 
     private fun renameShoppingList(newName: String) {
-        val oldName = listName.get()
-        val nameToSet = newName.let { if (it.isBlank()) UNNAMED_LIST else it }
+        val oldName = shoppingList?.name ?: return
+        renameShoppingListOnUi(newName)
 
-        listName.set(nameToSet)
-
-        viewModelScope.launch(coroutineContextProvider.IO) {
-            try {
-                val shoppingList = shoppingListRepository.updateShoppingList(listId, nameToSet)
-                setShoppingList(requireNotNull(shoppingList))
-            } catch (e: Exception) {
-                listName.set(oldName)
-                shoppingList?.let { setShoppingList(it) }
-                viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
-                showRenameDialog(nameToSet)
-            }
+        launchOnIo {
+            tryRenameShoppingListInRepository(oldName, newName)
         }
+    }
+
+    private fun renameShoppingListOnUi(newName: String) {
+        val nameToSet = if (newName.isBlank()) UNNAMED_LIST_TITLE else newName
+        listName.set(nameToSet)
+    }
+
+    private suspend fun tryRenameShoppingListInRepository(oldName: String, newName: String) {
+        try {
+            renameShoppingListInRepository(newName)
+        } catch (exception: DbQueryFailedException) {
+            handleRenameListError(exception, oldName)
+        }
+    }
+
+    private suspend fun renameShoppingListInRepository(newName: String) {
+        val nameToSet = if (newName.isBlank()) UNNAMED_LIST_TITLE else newName
+        val shoppingList = shoppingListRepository.updateShoppingList(listId, nameToSet)
+        displayShoppingList(shoppingList)
+    }
+
+    private fun handleRenameListError(exception: Throwable, oldName: String) {
+        handleItemError(exception)
+        listName.set(oldName)
+        showRenameDialog()
     }
 
     private fun getShopItems() = (viewState.value as? Loaded)
         ?.shoppingList
         ?.items
 
+    private fun launchOnIo(block: suspend CoroutineScope.() -> Unit) {
+        viewModelScope.launch(coroutineContextProvider.IO) {
+            block.invoke(this)
+        }
+    }
+
     sealed class ViewEvent {
         object NavigateUp : ViewEvent()
         object ClearFocus : ViewEvent()
-        class DisplayNewListDialog(val callback: (String) -> Unit) : ViewEvent()
-        class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
+        class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
+        class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) :
+            ViewEvent()
+
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
     }
 
     companion object {
 
-        internal const val UNNAMED_LIST = "Unnamed List"
+        internal const val UNNAMED_LIST_TITLE = "Unnamed List"
+        internal const val UNSET = -1
     }
 }

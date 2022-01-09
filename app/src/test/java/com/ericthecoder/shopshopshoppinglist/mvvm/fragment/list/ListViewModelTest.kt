@@ -15,7 +15,9 @@ import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
+import com.ericthecoder.shopshopshoppinglist.entities.database.DbQueryFailedException
 import com.ericthecoder.shopshopshoppinglist.library.extension.observeWithMock
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.Companion.UNSET
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Error
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
@@ -63,29 +65,29 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenRepositoryLoads_whenCreateNewShoppingList_thenShoppingListIsCreatedAndPosted() {
-        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST) } returns (shoppingList)
+    fun `startLoadingNewShoppingList posts loaded view state on success`() {
+        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST_TITLE) } returns (shoppingList)
 
-        viewModel.createNewShoppingList()
+        viewModel.loadShoppingList(id = UNSET)
 
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingList))
         assertThat(viewModel.listName.get()).isEqualTo(shoppingList.name)
     }
 
     @Test
-    fun givenRepositoryThrows_whenCreateNewShoppingList_thenPostErrorToLiveData() {
-        val exception = RuntimeException()
+    fun `startLoadingNewShoppingList posts error view state on failure`() {
+        val exception = DbQueryFailedException()
         every { resourceProvider.getString(R.string.new_list) } returns ("")
         coEvery { shoppingListRepository.createNewShoppingList(any()) } throws exception
 
-        viewModel.createNewShoppingList()
+        viewModel.loadShoppingList(id = UNSET)
 
-        assertThat(viewModel.viewState.value).isEqualTo(Error(exception))
+        assertThat(viewModel.viewState.value).isEqualTo(Error)
         assertThat(viewModel.listName.get()).isNull()
     }
 
     @Test
-    fun givenRepositoryLoads_whenLoadShoppingList_thenShoppingListLoadedFromRepository() {
+    fun `startLoadingExistingShoppingList posts loaded view state on success`() {
         val id = shoppingList.id
         coEvery { shoppingListRepository.getShoppingListById(id) } returns (shoppingList)
 
@@ -96,47 +98,44 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenRepositoryFailsToLoad_whenLoadShoppingList_thenNavigateUp() {
-        val observer = viewModel.viewEvent.observeWithMock()
+    fun `startLoadingExistingShoppingList posts error view state on failure`() {
+        val exception = DbQueryFailedException()
         val id = shoppingList.id
-        coEvery { shoppingListRepository.getShoppingListById(id) } returns (null)
+        coEvery { shoppingListRepository.getShoppingListById(id) } throws exception
 
         viewModel.loadShoppingList(id)
 
-        verifyOrder {
-            observer.onChanged(any<ShowToast>())
-            observer.onChanged(NavigateUp)
-        }
+        assertThat(viewModel.viewState.value).isEqualTo(Error)
     }
 
     @Test
     fun givenRepositoryThrows_whenLoadShoppingList_thenPostErrorToLiveData() {
-        val exception = RuntimeException()
+        val exception = DbQueryFailedException()
         coEvery { shoppingListRepository.getShoppingListById(any()) } throws exception
 
-        viewModel.loadShoppingList(1)
+        viewModel.loadShoppingList(id = 1)
 
-        assertThat(viewModel.viewState.value).isEqualTo(Error(exception))
+        assertThat(viewModel.viewState.value).isEqualTo(Error)
     }
 
     @Test
-    fun givenListFailedToLoad_whenRetryLoadShoppingList_thenLoadShoppingListWithId() {
+    fun `retryLoadShoppingLists works for existing list`() {
         coEvery { shoppingListRepository.getShoppingListById(shoppingList.id) } throws RuntimeException()
         viewModel.loadShoppingList(shoppingList.id)
 
-        viewModel.retryLoadShoppingList()
+        viewModel.reloadShoppingList()
 
         coVerify { shoppingListRepository.getShoppingListById(shoppingList.id) }
     }
 
     @Test
-    fun givenListFailedToCreate_whenRetryLoadShoppingList_thenRetryCreateShoppingList() {
-        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST) } throws RuntimeException()
-        viewModel.createNewShoppingList()
+    fun `retryLoadShoppingList works for new list`() {
+        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST_TITLE) } throws RuntimeException()
+        viewModel.loadShoppingList(id = UNSET)
 
-        viewModel.retryLoadShoppingList()
+        viewModel.reloadShoppingList()
 
-        coVerify { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST) }
+        coVerify { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST_TITLE) }
     }
 
     @Test
@@ -161,7 +160,7 @@ class ListViewModelTest {
         val name = "new_item"
         givenShoppingList()
         val currentState = viewModel.viewState.value
-        coEvery { shoppingListRepository.createNewShopItem(any(), any()) } throws RuntimeException()
+        coEvery { shoppingListRepository.createNewShopItem(any(), any()) } throws DbQueryFailedException()
 
         viewModel.addItem(name)
 
@@ -193,7 +192,7 @@ class ListViewModelTest {
         val quantity = 5
         val quantityView: TextView = mockk(relaxUnitFun = true)
         shopItem.quantity = quantity
-        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws RuntimeException()
+        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws DbQueryFailedException()
 
         viewModel.onQuantityDown(quantityView, shopItem)
 
@@ -237,7 +236,7 @@ class ListViewModelTest {
         val quantity = 5
         val quantityView: TextView = mockk(relaxUnitFun = true)
         shopItem.quantity = quantity
-        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws RuntimeException()
+        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws DbQueryFailedException()
 
         viewModel.onQuantityUp(quantityView, shopItem)
 
@@ -260,24 +259,6 @@ class ListViewModelTest {
         }
         assertThat(deletedItem).isNull()
         coVerify { shoppingListRepository.deleteShopItem(shopItem.id) }
-    }
-
-    @Test
-    fun givenRepositoryThrows_whenOnDeleteClick_thenItemNotDeletedFromList() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        givenShoppingList()
-        coEvery { shoppingListRepository.deleteShopItem(shopItem.id) } throws RuntimeException()
-
-        viewModel.onDeleteClick(shopItem)
-
-        val deletedItem = (viewModel.viewState.value as Loaded).shoppingList.items.find {
-            it == shopItem
-        }
-        assertThat(deletedItem).isNotNull
-        coVerify {
-            shoppingListRepository.deleteShopItem(shopItem.id)
-            observer.onChanged(any<ShowToast>())
-        }
     }
 
     @Test
@@ -327,7 +308,7 @@ class ListViewModelTest {
         val item = (viewModel.viewState.value as Loaded).shoppingList.items.first()
         val checked = item.checked
         every { checkBox.isChecked } returns (checked)
-        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws RuntimeException()
+        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws DbQueryFailedException()
 
         viewModel.onCheckboxChecked(checkBox, item)
 
@@ -380,11 +361,10 @@ class ListViewModelTest {
         val changedName = "sample_name"
         every { editable.toString() } returns (changedName)
         every { editText.text } returns (editable)
-        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws RuntimeException()
+        coEvery { shoppingListRepository.updateShopItem(any(), any(), any(), any()) } throws DbQueryFailedException()
 
         viewModel.onNameChanged(editText, item)
 
-        assertThat(item.name).isEqualTo(oldName)
         coVerify {
             shoppingListRepository.updateShopItem(item.id, changedName, item.quantity, item.checked)
             observer.onChanged(any<ShowToast>())
@@ -414,20 +394,6 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenOverrideName_whenShowRenameDialog_thenFocusCleared() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        givenShoppingList()
-        val overrideName = "override"
-
-        viewModel.showRenameDialog(overrideName)
-
-        val slots = mutableListOf<DisplayRenameDialog>()
-        verify { observer.onChanged(capture(slots)) }
-        val viewEvent = slots.last()
-        assertThat(viewEvent.listTitle).isEqualTo(overrideName)
-    }
-
-    @Test
     fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()
@@ -450,8 +416,8 @@ class ListViewModelTest {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()
         val newName = ""
-        val shoppingListUnnamed = shoppingList.copy(name = ListViewModel.UNNAMED_LIST)
-        coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, ListViewModel.UNNAMED_LIST) } returns (shoppingListUnnamed)
+        val shoppingListUnnamed = shoppingList.copy(name = ListViewModel.UNNAMED_LIST_TITLE)
+        coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, ListViewModel.UNNAMED_LIST_TITLE) } returns (shoppingListUnnamed)
 
         viewModel.showRenameDialog()
 
@@ -459,7 +425,7 @@ class ListViewModelTest {
         verify { observer.onChanged(capture(slots)) }
         slots.last().callback.invoke(newName)
 
-        assertThat(viewModel.listName.get()).isEqualTo(ListViewModel.UNNAMED_LIST)
+        assertThat(viewModel.listName.get()).isEqualTo(ListViewModel.UNNAMED_LIST_TITLE)
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingListUnnamed))
     }
 
@@ -469,7 +435,7 @@ class ListViewModelTest {
         givenShoppingList()
         val currentName = (viewModel.viewState.value as Loaded).shoppingList.name
         val newName = "new_name"
-        coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, newName) } returns (null)
+        coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, newName) } throws DbQueryFailedException()
 
         viewModel.showRenameDialog()
 
@@ -478,9 +444,6 @@ class ListViewModelTest {
         verify { observer.onChanged(any<ShowToast>()) }
         slots.last().callback.invoke(newName)
         assertThat(viewModel.listName.get()).isEqualTo(currentName)
-        slots.clear()
-        verify { observer.onChanged(capture(slots)) }
-        assertThat(slots.last().listTitle).isEqualTo(newName)
     }
 
     @Test
@@ -489,7 +452,7 @@ class ListViewModelTest {
         givenShoppingList()
         val currentName = (viewModel.viewState.value as Loaded).shoppingList.name
         val newName = "new_name"
-        coEvery { shoppingListRepository.updateShoppingList(any(), any()) } throws RuntimeException()
+        coEvery { shoppingListRepository.updateShoppingList(any(), any()) } throws DbQueryFailedException()
 
         viewModel.showRenameDialog()
 
