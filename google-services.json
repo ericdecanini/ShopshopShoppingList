@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "353696128635",
+    "project_id": "shopshop-shopping-list-c6f4b",
+    "storage_bucket": "shopshop-shopping-list-c6f4b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353696128635:android:d86b3a4c47968192e44cde",
+        "android_client_info": {
+          "package_name": "com.ericdecanini.shopshopshoppinglist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353696128635-nk3k390kf42s3v8mdgneodm70c9ss8hh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASi3ywejIdAtXbbjVHQciH3YUwPpzVdHM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353696128635-nk3k390kf42s3v8mdgneodm70c9ss8hh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
