@@ -40,8 +40,8 @@ class RenameDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setButtonClicks(view.context)
-        addEditTextChangedListener(view.context)
+        setButtonClicks()
+        addEditTextChangedListener()
 
         binding.newName.post {
             binding.newName.requestFocus()
@@ -51,28 +51,25 @@ class RenameDialogFragment : DialogFragment() {
         }
     }
 
-    private fun addEditTextChangedListener(context: Context) {
-        val defaultEditTextBackground = AppCompatResources.getDrawable(context, R.drawable.bg_edit_new_item)
+    private fun addEditTextChangedListener() {
+        val defaultEditTextBackground = AppCompatResources.getDrawable(binding.newName.context, R.drawable.bg_edit_new_item)
         binding.newName.addTextChangedListener { binding.newName.background = defaultEditTextBackground }
     }
 
-    private fun setButtonClicks(context: Context) {
+    private fun setButtonClicks() {
         binding.positiveButton.setOnClickListener {
-            validateThenPerformPositiveOnClick(context)
+            validateThenPerformPositiveOnClick()
         }
         binding.negativeButton.setOnClickListener {
             performNegativeOnClick()
         }
     }
 
-    private fun validateThenPerformPositiveOnClick(context: Context) {
-        val errorEditTextBackground = AppCompatResources.getDrawable(context, R.drawable.bg_edit_new_item_error)
+    private fun validateThenPerformPositiveOnClick() {
         if (binding.newName.text.isNotBlank()) {
             performPositiveOnClick()
         } else {
-            binding.newName.background = errorEditTextBackground
-            binding.newName.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
-            binding.newName.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+            signalBlankNewName()
         }
     }
 
@@ -80,6 +77,13 @@ class RenameDialogFragment : DialogFragment() {
         val positiveOnClick = arguments?.getSerializable(EXTRA_POSITIVE_CLICK) as? ((String) -> Unit)
         positiveOnClick?.invoke(binding.newName.text.toString())
         dismiss()
+    }
+
+    private fun signalBlankNewName() {
+        val errorEditTextBackground = AppCompatResources.getDrawable(binding.newName.context, R.drawable.bg_edit_new_item_error)
+        binding.newName.background = errorEditTextBackground
+        binding.newName.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+        binding.newName.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
     }
 
     private fun performNegativeOnClick() {

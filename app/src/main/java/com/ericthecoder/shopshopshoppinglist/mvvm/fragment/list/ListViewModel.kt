@@ -134,22 +134,25 @@ class ListViewModel @Inject constructor(
             performAddItem(itemName)
         } catch (exception: DbQueryFailedException) {
             handleWriteError(exception)
+        } catch (exception: BlankFieldException) {
+            handleBlankNewItem()
         } catch (exception: ItemInListException) {
             handleItemAlreadyInList(itemName)
         }
     }
 
     private suspend fun performAddItem(itemName: String) {
-        checkItemNotPresent(itemName)
+        validateNewItem(itemName)
         clearItemTextField()
         saveItemInRepository(itemName)
         sortListAndDisplay()
     }
 
-    private fun checkItemNotPresent(itemName: String) {
+    private fun validateNewItem(itemName: String) {
         val itemIsInList = shoppingList.items.any { it.name == itemName }
-        if (itemIsInList) {
-            throw ItemInListException()
+        when {
+            itemName.isBlank() -> throw BlankFieldException()
+            itemIsInList -> throw ItemInListException()
         }
     }
 
@@ -186,6 +189,10 @@ class ListViewModel @Inject constructor(
     private fun sortListAndDisplay() {
         shoppingList.items.sortBy { it.checked }
         emitShoppingList()
+    }
+
+    private fun handleBlankNewItem() {
+        viewEventEmitter.postValue(SignalBlankNewItem)
     }
 
     private fun handleItemAlreadyInList(itemName: String) {
@@ -286,6 +293,7 @@ class ListViewModel @Inject constructor(
         object NavigateUp : ViewEvent()
         object ClearFocus : ViewEvent()
         object ClearEditText : ViewEvent()
+        object SignalBlankNewItem : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
@@ -293,6 +301,8 @@ class ListViewModel @Inject constructor(
     }
 
     inner class ItemInListException : Throwable()
+
+    inner class BlankFieldException : Throwable()
 
     companion object {
         internal const val UNSET = -1
