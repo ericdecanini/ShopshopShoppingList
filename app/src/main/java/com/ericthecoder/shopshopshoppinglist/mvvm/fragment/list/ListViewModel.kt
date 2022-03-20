@@ -51,17 +51,18 @@ class ListViewModel @Inject constructor(
 
     private fun startLoadingNewShoppingList() {
         displayLoading()
+
         launchOnIo {
-            tryLoadNewShoppingList()
+            try {
+                loadNewShoppingList()
+            } catch (exception: DbQueryFailedException) {
+                handleLoadError(exception)
+            }
         }
     }
 
-    private suspend fun tryLoadNewShoppingList() {
-        try {
-            loadNewShoppingList()
-        } catch (exception: DbQueryFailedException) {
-            handleLoadError(exception)
-        }
+    private fun displayLoading() {
+        viewStateEmitter.postValue(Loading)
     }
 
     private suspend fun loadNewShoppingList() {
@@ -71,31 +72,24 @@ class ListViewModel @Inject constructor(
     }
 
     private suspend fun createNewShoppingList(): ShoppingList {
-        return shoppingListRepository.createNewShoppingList(UNNAMED_LIST_TITLE)
+        val unnamedListTitle = resourceProvider.getString(R.string.unnamed_list)
+        return shoppingListRepository.createNewShoppingList(unnamedListTitle)
     }
 
     private fun startLoadingExistingShoppingList(id: Int) {
         displayLoading()
         launchOnIo {
-            tryLoadExistingShoppingList(id)
-        }
-    }
-
-    private suspend fun tryLoadExistingShoppingList(id: Int) {
-        try {
-            loadExistingShoppingList(id)
-        } catch (exception: DbQueryFailedException) {
-            handleLoadError(exception)
+            try {
+                loadExistingShoppingList(id)
+            } catch (exception: DbQueryFailedException) {
+                handleLoadError(exception)
+            }
         }
     }
 
     private suspend fun loadExistingShoppingList(id: Int) {
         val shoppingList = shoppingListRepository.getShoppingListById(id)
         displayShoppingList(shoppingList)
-    }
-
-    private fun displayLoading() {
-        viewStateEmitter.postValue(Loading)
     }
 
     private fun displayShoppingList(shoppingList: ShoppingList) {
@@ -126,9 +120,9 @@ class ListViewModel @Inject constructor(
             startLoadingExistingShoppingList(listId)
     }
 
-    fun tryAddItem(itemName: String) = launchOnIo {
+    fun addItem(itemName: String) = launchOnIo {
         try {
-            addItem(itemName)
+            performAddItem(itemName)
         } catch (exception: DbQueryFailedException) {
             handleWriteError(exception)
         } catch (exception: ItemInListException) {
@@ -136,11 +130,10 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun addItem(itemName: String) {
+    private suspend fun performAddItem(itemName: String) {
         checkItemNotPresent(itemName)
         clearItemTextField()
-        saveItem(itemName)
-        reloadShoppingList()
+        saveItemInRepository(itemName)
         sortListAndDisplay()
     }
 
@@ -155,7 +148,7 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(ClearEditText)
     }
 
-    private suspend fun saveItem(itemName: String) {
+    private suspend fun saveItemInRepository(itemName: String) {
         val shopItem = ShopItem.createNew(itemName)
         shoppingList.items.add(shopItem)
         shoppingListRepository.createNewShopItem(listId, itemName)
@@ -168,15 +161,15 @@ class ListViewModel @Inject constructor(
         reloadShoppingList()
     }
 
-    private fun tryDeleteList() = launchOnIo {
+    private fun deleteList() = launchOnIo {
         try {
-            deleteList()
+            performDeleteList()
         } catch (exception: DbQueryFailedException) {
             handleWriteError(exception)
         }
     }
 
-    private suspend fun deleteList() {
+    private suspend fun performDeleteList() {
         shoppingListRepository.deleteShoppingList(shoppingList.id)
         viewEventEmitter.postValue(NavigateUp)
     }
@@ -251,7 +244,7 @@ class ListViewModel @Inject constructor(
 
     fun showDeleteDialog() {
         val listName = shoppingList.name
-        viewEventEmitter.postValue(DisplayDeleteDialog(listName) { tryDeleteList() })
+        viewEventEmitter.postValue(DisplayDeleteDialog(listName) { deleteList() })
     }
 
     fun tryClearChecked() = launchOnIo {
@@ -318,8 +311,6 @@ class ListViewModel @Inject constructor(
     inner class ItemInListException : Throwable()
 
     companion object {
-
-        internal const val UNNAMED_LIST_TITLE = "Unnamed List"
         internal const val UNSET = -1
     }
 }

@@ -54,6 +54,7 @@ class ListViewModelTest {
     @Before
     fun setUp() {
         every { resourceProvider.getString(any(), *varargAny { true }) } returns ""
+        every { resourceProvider.getString(R.string.unnamed_list) } returns UNNAMED_LIST
 
         viewModel = ListViewModel(
             shoppingListRepository,
@@ -64,7 +65,7 @@ class ListViewModelTest {
 
     @Test
     fun `startLoadingNewShoppingList posts loaded view state on success`() {
-        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST_TITLE) } returns (shoppingList)
+        coEvery { shoppingListRepository.createNewShoppingList(UNNAMED_LIST) } returns (shoppingList)
 
         viewModel.loadShoppingList(id = UNSET)
 
@@ -125,27 +126,25 @@ class ListViewModelTest {
 
     @Test
     fun `retryLoadShoppingList works for new list`() {
-        coEvery { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST_TITLE) } throws RuntimeException()
+        coEvery { shoppingListRepository.createNewShoppingList(UNNAMED_LIST) } throws RuntimeException()
         viewModel.loadShoppingList(id = UNSET)
 
         viewModel.reloadShoppingList()
 
-        coVerify { shoppingListRepository.createNewShoppingList(ListViewModel.UNNAMED_LIST_TITLE) }
+        coVerify { shoppingListRepository.createNewShoppingList(UNNAMED_LIST) }
     }
 
     @Test
-    fun givenItemName_whenAddItem_thenItemAddedAndAddItemTextCleared() {
-        val itemName = "new_item"
-        val newShopItems = mutableListOf(aShopItem().withName(itemName).build())
-        val newShoppingList = aShoppingList().withItems(newShopItems).build()
+    fun givenItemName_whenAddItem_thenItemAdded() {
+        val newItem = ShopItem.createNew("new_item")
+        coEvery { shoppingListRepository.createNewShopItem(shoppingList.id, newItem.name) } returns newItem
         givenShoppingList()
-        coEvery { shoppingListRepository.createNewShopItem(shoppingList.id, itemName) } returns newShopItems.first()
-        coEvery { shoppingListRepository.getShoppingListById(shoppingList.id) } returns newShoppingList
 
-        viewModel.tryAddItem(itemName)
+        viewModel.addItem(newItem.name)
 
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
         assertThat(viewModel.viewEvent.value).isEqualTo(ClearEditText)
-        assertThat(viewModel.viewState.value).isEqualTo(Loaded(newShoppingList))
+        assertThat(updatedShoppingList.items).contains(newItem)
     }
 
     @Test
@@ -155,7 +154,7 @@ class ListViewModelTest {
         val shoppingListWithItem = aShoppingList().withItems(existingShopItems).build()
         givenShoppingList(shoppingListWithItem)
 
-        viewModel.tryAddItem(itemName)
+        viewModel.addItem(itemName)
 
         assertThat(viewModel.viewEvent.value).isInstanceOf(ShowToast::class.java)
         coVerify { shoppingListRepository.createNewShopItem(any(), any()) wasNot called }
@@ -326,5 +325,9 @@ class ListViewModelTest {
         val shoppingList = shoppingListOverride ?: shoppingList
         coEvery { shoppingListRepository.getShoppingListById(shoppingList.id) } returns shoppingList
         viewModel.loadShoppingList(shoppingList.id)
+    }
+
+    companion object {
+        private const val UNNAMED_LIST = "UNNAMED_LIST"
     }
 }
