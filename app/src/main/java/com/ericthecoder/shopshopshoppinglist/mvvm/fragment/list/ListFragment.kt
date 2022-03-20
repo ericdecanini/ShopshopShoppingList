@@ -3,8 +3,10 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -15,14 +17,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
-import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
-import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
@@ -96,7 +98,8 @@ class ListFragment : DaggerFragment() {
             NavigateUp -> findNavController().navigateUp()
             ClearFocus -> binding.root.clearFocus()
             ClearEditText -> binding.addItemEdit.setText("")
-            SignalBlankNewItem -> signalAddItemFieldError()
+            SignalBlankAddItem -> signalAddItemFieldError()
+            ResetAddItem -> resetAddItem()
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
@@ -109,6 +112,17 @@ class ListFragment : DaggerFragment() {
         binding.addItemLayout.background = errorEditTextBackground
         binding.addItemLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
         binding.addItemLayout.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+    }
+
+    private fun resetAddItem() {
+        val defaultEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item)
+        binding.addItemLayout.background = defaultEditTextBackground
+        hideKeyboard()
+    }
+
+    private fun hideKeyboard() {
+        val imm = ContextCompat.getSystemService(binding.root.context, InputMethodManager::class.java)
+        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     private fun displayNewListDialog(callback: (String) -> Unit) {

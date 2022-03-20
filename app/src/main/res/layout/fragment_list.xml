@@ -20,7 +20,9 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusableInTouchMode="true">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -86,6 +88,7 @@
                 app:layout_constraintEnd_toStartOf="@id/add_item_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:onFocusLost="@{() -> viewmodel.onAddItemTextFocusLost()}"
                 app:returnKeyClick="@{addItemButton}" />
 
             <ImageButton
@@ -108,11 +111,9 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
-            app:emptyAreaFocusable="@{true}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_item_layout"
             app:layout_constraintVertical_bias="0"
-            app:onFocusGained="@{(view) -> viewmodel.hideKeyboard(view)}"
             tools:itemCount="4"
             tools:listitem="@layout/list_item_shopitem" />
 

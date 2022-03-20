@@ -1,8 +1,5 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
-import android.app.Activity
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.lifecycle.LiveData
@@ -192,7 +189,7 @@ class ListViewModel @Inject constructor(
     }
 
     private fun handleBlankNewItem() {
-        viewEventEmitter.postValue(SignalBlankNewItem)
+        viewEventEmitter.postValue(SignalBlankAddItem)
     }
 
     private fun handleItemAlreadyInList(itemName: String) {
@@ -226,11 +223,6 @@ class ListViewModel @Inject constructor(
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
         viewStateEmitter.notifyObservers()
-    }
-
-    fun hideKeyboard(view: View) {
-        val imm = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     fun showRenameDialog() {
@@ -281,6 +273,10 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(NavigateUp)
     }
 
+    fun onAddItemTextFocusLost() {
+        viewEventEmitter.postValue(ResetAddItem)
+    }
+
     //endregion
 
     private fun launchOnIo(block: suspend CoroutineScope.() -> Unit) {
@@ -293,7 +289,8 @@ class ListViewModel @Inject constructor(
         object NavigateUp : ViewEvent()
         object ClearFocus : ViewEvent()
         object ClearEditText : ViewEvent()
-        object SignalBlankNewItem : ViewEvent()
+        object SignalBlankAddItem : ViewEvent()
+        object ResetAddItem : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()

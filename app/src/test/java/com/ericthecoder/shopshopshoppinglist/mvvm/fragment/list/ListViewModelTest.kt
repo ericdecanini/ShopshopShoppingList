@@ -1,11 +1,7 @@
 
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
-import android.app.Activity
-import android.content.Context
 import android.text.Editable
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
@@ -40,10 +36,6 @@ class ListViewModelTest {
     private val shoppingListRepository: ShoppingListRepository = mockk()
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
     private val resourceProvider: ResourceProvider = mockk()
-
-    private val context: Context = mockk()
-    private val view: View = mockk()
-    private val imm: InputMethodManager = mockk()
 
     private val shopItem = aShopItem().withQuantity(5).build()
     private val itemsList: MutableList<ShopItem> = mutableListOf(shopItem)
@@ -226,18 +218,6 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenView_whenHideKeyboard_thenKeyboardHidden() {
-        every { view.context } returns (context)
-        every { context.getSystemService(Activity.INPUT_METHOD_SERVICE) } returns (imm)
-        every { view.windowToken } returns mockk()
-        every { imm.hideSoftInputFromWindow(any(), any()) } returns true
-
-        viewModel.hideKeyboard(view)
-
-        verify { imm.hideSoftInputFromWindow(any(), any()) }
-    }
-
-    @Test
     fun whenShowRenameDialog_thenFocusCleared() {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()
@@ -303,6 +283,14 @@ class ListViewModelTest {
         viewModel.onBackButtonPressed()
 
         assertThat(viewModel.viewEvent.value).isEqualTo(NavigateUp)
+    }
+
+    @Test
+    fun whenOnAddItemTextFocusLost_thenResetAddItem() {
+
+        viewModel.onAddItemTextFocusLost()
+
+        assertThat(viewModel.viewEvent.value).isEqualTo(ResetAddItem)
     }
 
     private fun givenShoppingList(shoppingListOverride: ShoppingList? = null) {
