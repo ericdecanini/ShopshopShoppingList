@@ -24,11 +24,11 @@ class SQLiteShoppingListRepository(
     override suspend fun updateShoppingList(id: Int, name: String) = shoppingListDatabaseService.updateShoppingList(id, name)
         .let { shoppingListMapper.mapResponseToShoppingList(it) }
 
-    override suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean) =
-        shoppingListDatabaseService.updateShopItem(id, name, quantity, checked)
+    override suspend fun updateShopItem(currentName: String, newName: String, quantity: Int, checked: Boolean) =
+        shoppingListDatabaseService.updateShopItem(currentName, newName, quantity, checked)
             .let { shoppingListMapper.mapResponseToShopItem(it) }
 
     override suspend fun deleteShoppingList(id: Int) = shoppingListDatabaseService.deleteShoppingList(id)
 
-    override suspend fun deleteShopItem(id: Int) = shoppingListDatabaseService.deleteShopItem(id)
+    override suspend fun deleteShopItem(name: String) = shoppingListDatabaseService.deleteShopItem(name)
 }

@@ -12,11 +12,11 @@ interface PythonDatabaseWrapper {
 
     suspend fun updateShoppingList(id: Int, name: String): String
 
-    suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): String
+    suspend fun updateShopItem(currentName: String, newName: String, quantity: Int, checked: Boolean): String
 
     suspend fun deleteShoppingList(id: Int)
 
-    suspend fun deleteShopItem(id: Int)
+    suspend fun deleteShopItem(name: String)
 
     suspend fun cleanup()
 }

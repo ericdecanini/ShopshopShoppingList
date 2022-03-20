@@ -22,7 +22,7 @@ class SQLiteShoppingListMapper : ShoppingListMapper {
       else -> throw IllegalArgumentException("$INVALID_CHECKED_MESSAGE, checked = $checked")
     }
 
-    ShopItem(id, name, quantity, checkedBoolean)
+    ShopItem(name, quantity, checkedBoolean)
   }
 
   companion object {

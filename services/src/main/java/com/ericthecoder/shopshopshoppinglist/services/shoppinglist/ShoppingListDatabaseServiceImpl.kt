@@ -69,9 +69,9 @@ class ShoppingListDatabaseServiceImpl(
         }
     }
 
-    override suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse {
+    override suspend fun updateShopItem(currentName: String, newName: String, quantity: Int, checked: Boolean): ShopItemResponse {
         return try {
-            val json = pythonDatabaseWrapper.updateShopItem(id, name.escapeSpecialCharacters(), quantity, checked)
+            val json = pythonDatabaseWrapper.updateShopItem(currentName, newName.escapeSpecialCharacters(), quantity, checked)
             val adapter: JsonAdapter<ShopItemResponse> = moshi.adapter(ShopItemResponse::class.java)
             requireNotNull(adapter.getOrNull(json)) { "Shop item failed to update" }
         } catch (exception: Exception) {
@@ -87,9 +87,9 @@ class ShoppingListDatabaseServiceImpl(
         }
     }
 
-    override suspend fun deleteShopItem(id: Int) {
+    override suspend fun deleteShopItem(name: String) {
         try {
-            pythonDatabaseWrapper.deleteShopItem(id)
+            pythonDatabaseWrapper.deleteShopItem(name)
         } catch (exception: Exception) {
             throw DbQueryFailedException(exception)
         }

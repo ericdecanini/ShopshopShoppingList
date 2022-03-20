@@ -132,26 +132,21 @@ class ListViewModel @Inject constructor(
     }
 
     private suspend fun addItem(itemName: String) {
-        resetItemTextField()
-        addTemporaryItem(itemName)
+        clearItemTextField()
         saveItem(itemName)
         reloadShoppingList()
         sortListAndDisplay()
     }
 
-    private fun resetItemTextField() {
+    private fun clearItemTextField() {
         viewEventEmitter.postValue(ClearEditText)
     }
 
-    private fun addTemporaryItem(itemName: String) {
-        shoppingList.items.add(createTemporaryNewItem(itemName))
-    }
-
     private suspend fun saveItem(itemName: String) {
+        val shopItem = ShopItem.createNew(itemName)
+        shoppingList.items.add(shopItem)
         shoppingListRepository.createNewShopItem(listId, itemName)
     }
-
-    private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
 
     private fun handleWriteError(exception: Throwable) {
         exception.printStackTrace()
@@ -185,18 +180,16 @@ class ListViewModel @Inject constructor(
     }
 
     private fun deleteItemFromShoppingList(shopItem: ShopItem) {
-        shoppingList.items.removeIf { it.id == shopItem.id }
+        shoppingList.items.removeIf { it.name == shopItem.name }
     }
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        if (shopItem.id != UNSET) {
-            markItemChecked(checkbox, shopItem)
-        }
+        markItemChecked(checkbox, shopItem)
     }
 
     private fun markItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        getShopItems()?.let { shopItems ->
-            val shopItemIndex = shopItems.indexOfFirst { it.id == shopItem.id }
+        shoppingList.items.let { shopItems ->
+            val shopItemIndex = shopItems.indexOfFirst { it.name == shopItem.name }
             shopItems[shopItemIndex] = shopItem.copy(checked = checkbox.isChecked)
             sortListAndDisplay()
         }
@@ -210,7 +203,7 @@ class ListViewModel @Inject constructor(
 
     private fun itemExistsInShoppingList(shopItem: ShopItem) = shoppingList
         .items
-        .firstOrNull { it.id == shopItem.id } != null
+        .firstOrNull { it.name == shopItem.name } != null
 
     private fun changeItemName(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
@@ -257,7 +250,7 @@ class ListViewModel @Inject constructor(
 
     private suspend fun deleteCheckedItems(shoppingList: ShoppingList) {
         shoppingList.items.filter { it.checked }.forEach {
-            shoppingListRepository.deleteShopItem(it.id)
+            shoppingListRepository.deleteShopItem(it.name)
             shoppingList.items.remove(it)
         }
     }
@@ -286,10 +279,6 @@ class ListViewModel @Inject constructor(
     private fun emitShoppingList() {
         viewStateEmitter.postValue(Loaded(shoppingList))
     }
-
-    private fun getShopItems() = (viewState.value as? Loaded)
-        ?.shoppingList
-        ?.items
 
     private fun launchOnIo(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(coroutineContextProvider.IO) {

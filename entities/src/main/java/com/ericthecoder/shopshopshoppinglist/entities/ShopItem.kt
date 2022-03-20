@@ -1,8 +1,12 @@
 package com.ericthecoder.shopshopshoppinglist.entities
 
 data class ShopItem(
-    val id: Int,
     var name: String,
     var quantity: Int,
     var checked: Boolean
-)
+) {
+
+    companion object {
+        fun createNew(name: String) = ShopItem(name, 0, false)
+    }
+}

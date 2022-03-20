@@ -168,7 +168,7 @@ class ListViewModelTest {
 
         viewModel.onCheckboxChecked(checkBox, shopItem)
 
-        val shopItem = (viewModel.viewState.value as Loaded).shoppingList.items.first { it.id == shopItem.id }
+        val shopItem = (viewModel.viewState.value as Loaded).shoppingList.items.first { it.name == shopItem.name }
         assertThat(shopItem.checked).isTrue
     }
 
@@ -181,20 +181,6 @@ class ListViewModelTest {
         viewModel.onCheckboxChecked(checkBox, shopItem)
 
         assertThat(shopItem.checked).isFalse
-    }
-
-    @Test
-    fun givenCheckboxIsChecked_whenOnCheckboxChanged_themCheckedItemIsMovedToBottom() {
-        val checkBox: CheckBox = mockk()
-        every { checkBox.isChecked } returns (true)
-        val shopItemWithUniqueId = shopItem.copy(id = 5)
-        val shoppingList = aShoppingList().withItems(mutableListOf(shopItem, shopItemWithUniqueId, shopItem)).build()
-        givenShoppingList(shoppingList)
-
-        viewModel.onCheckboxChecked(checkBox, shopItemWithUniqueId)
-
-        val lastItem = (viewModel.viewState.value as Loaded).shoppingList.items.last()
-        assertThat(lastItem.id).isEqualTo(shopItemWithUniqueId.id)
     }
 
     @Test

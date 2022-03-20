@@ -122,14 +122,14 @@ class Commands:
             self.lock.release()
         return res
 
-    def update_shopitem(self, item_id, name, quantity, checked):
+    def update_shopitem(self, current_name, new_name, quantity, checked):
         try:
             self.lock.acquire(True)
             self.cursor.execute(
                 f"""
             UPDATE {TABLE_SHOPITEMS}
-            SET name = '{name}', quantity = {quantity}, checked = {checked}
-            WHERE id = {item_id}
+            SET name = '{new_name}', quantity = {quantity}, checked = {checked}
+            WHERE name = {current_name}
             """
             )
             self.cursor.execute(
@@ -154,11 +154,11 @@ class Commands:
         finally:
             self.lock.release()
 
-    def delete_shopitem(self, item_id):
+    def delete_shopitem(self, name):
         try:
             self.lock.acquire(True)
             self.cursor.execute(
-                f"DELETE FROM {TABLE_SHOPITEMS} WHERE id = {item_id}"
+                f"DELETE FROM {TABLE_SHOPITEMS} WHERE name = {name}"
             )
             self.connection.commit()
         finally:

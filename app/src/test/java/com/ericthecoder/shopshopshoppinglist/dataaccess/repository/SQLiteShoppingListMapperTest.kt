@@ -38,7 +38,7 @@ class SQLiteShoppingListMapperTest {
 
     val shopItem = shoppingListMapper.mapResponseToShopItem(response)
 
-    val expectedShopItem = ShopItem(id, name, quantity, false)
+    val expectedShopItem = ShopItem(name, quantity, false)
     assertThat(shopItem).isEqualTo(expectedShopItem)
   }
 
@@ -52,7 +52,7 @@ class SQLiteShoppingListMapperTest {
 
     val shopItem = shoppingListMapper.mapResponseToShopItem(response)
 
-    val expectedShopItem = ShopItem(id, name, quantity, true)
+    val expectedShopItem = ShopItem(name, quantity, true)
     assertThat(shopItem).isEqualTo(expectedShopItem)
   }
 

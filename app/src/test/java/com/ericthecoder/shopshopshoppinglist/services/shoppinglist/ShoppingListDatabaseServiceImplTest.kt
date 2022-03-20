@@ -106,7 +106,7 @@ class ShoppingListDatabaseServiceImplTest {
   fun givenDbHasShopItem_whenUpdateShopItem_thenReturnUpdatedShopItem() = runBlockingTest {
     given(pythonDatabaseWrapper.updateShopItem(any(), any(), any(), any())).willReturn(SAMPLE_SHOPITEM_JSON)
 
-    val shopItem = shoppingListDatabaseService.updateShopItem(1, "name", 1, false)
+    val shopItem = shoppingListDatabaseService.updateShopItem("name", "name", 1, false)
 
     assertThat(shopItem).isEqualTo(SAMPLE_SHOPITEM)
   }
@@ -116,7 +116,7 @@ class ShoppingListDatabaseServiceImplTest {
     given(pythonDatabaseWrapper.updateShopItem(any(), any(), any(), any())).willReturn(EMPTY_OBJECT_RESPONSE)
 
     assertThrows<DbQueryFailedException> {
-      shoppingListDatabaseService.updateShopItem(1, "name", 1, false)
+      shoppingListDatabaseService.updateShopItem("name", "name", 1, false)
     }
   }
 
@@ -131,11 +131,11 @@ class ShoppingListDatabaseServiceImplTest {
 
   @Test
   fun whenDeleteShopItem_thenDatabaseDeletesShopItem() = runBlockingTest {
-    val id = 1
+    val name = "name"
 
-    shoppingListDatabaseService.deleteShopItem(id)
+    shoppingListDatabaseService.deleteShopItem(name)
 
-    verify(pythonDatabaseWrapper).deleteShopItem(id)
+    verify(pythonDatabaseWrapper).deleteShopItem(name)
   }
 
   companion object {

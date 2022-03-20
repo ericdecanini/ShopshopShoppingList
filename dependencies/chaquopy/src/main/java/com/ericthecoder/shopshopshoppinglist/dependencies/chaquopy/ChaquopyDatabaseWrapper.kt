@@ -26,15 +26,15 @@ class ChaquopyDatabaseWrapper : PythonDatabaseWrapper {
     override suspend fun updateShoppingList(id: Int, name: String)
         = commands.callAttr("update_shoppinglist", id, name).toString()
 
-    override suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean)
-        = commands.callAttr("update_shopitem", id, name, quantity, checked).toString()
+    override suspend fun updateShopItem(currentName: String, newName: String, quantity: Int, checked: Boolean)
+        = commands.callAttr("update_shopitem", currentName, newName, quantity, checked).toString()
 
     override suspend fun deleteShoppingList(id: Int) {
         commands.callAttr("delete_shoppinglist", id)
     }
 
-    override suspend fun deleteShopItem(id: Int) {
-        commands.callAttr("delete_shopitem", id)
+    override suspend fun deleteShopItem(name: String) {
+        commands.callAttr("delete_shopitem", name)
     }
 
     override suspend fun cleanup() {

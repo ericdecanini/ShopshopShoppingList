@@ -15,10 +15,10 @@ interface ShoppingListRepository {
 
     suspend fun updateShoppingList(id: Int, name: String): ShoppingList
 
-    suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItem?
+    suspend fun updateShopItem(currentName: String, newName: String, quantity: Int, checked: Boolean): ShopItem?
 
     suspend fun deleteShoppingList(id: Int)
 
-    suspend fun deleteShopItem(id: Int)
+    suspend fun deleteShopItem(name: String)
 
 }

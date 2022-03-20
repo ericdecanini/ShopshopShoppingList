@@ -119,26 +119,24 @@ class SQLiteShoppingListRepositoryTest {
 
   @Test
   fun givenServiceReturnsResponse_whenUpdateShopItem_thenReturnUpdatedShopItem() = runBlockingTest {
-    val id = 1
     val name = "item_name"
     val quantity = 5
     val checked = false
-    given(shoppingListDatabaseService.updateShopItem(id, name, quantity, checked)).willReturn(sampleShopItemResponse)
+    given(shoppingListDatabaseService.updateShopItem(name, name, quantity, checked)).willReturn(sampleShopItemResponse)
 
-    val shopItem = shoppingListRepository.updateShopItem(id, name, quantity, checked)
+    val shopItem = shoppingListRepository.updateShopItem(name, name, quantity, checked)
 
     assertThat(shopItem).isEqualTo(sampleShopItem)
   }
 
   @Test
   fun givenServiceReturnsNull_whenUpdateShopItem_thenReturnNull() = runBlockingTest {
-    val id = 1
     val name = "item_name"
     val quantity = 5
     val checked = false
-    given(shoppingListDatabaseService.updateShopItem(id, name, quantity, checked)).willReturn(null)
+    given(shoppingListDatabaseService.updateShopItem(name, name, quantity, checked)).willReturn(null)
 
-    val shopItem = shoppingListRepository.updateShopItem(id, name, quantity, checked)
+    val shopItem = shoppingListRepository.updateShopItem(name, name, quantity, checked)
 
     assertThat(shopItem).isNull()
   }
@@ -153,11 +151,11 @@ class SQLiteShoppingListRepositoryTest {
   }
 
   @Test
-  fun givenId_whenDeleteShopItem_thenDatabaseDeletesShopItem() = runBlockingTest {
-    val id = 1
+  fun givenName_whenDeleteShopItem_thenDatabaseDeletesShopItem() = runBlockingTest {
+    val name = "item_name"
 
-    shoppingListRepository.deleteShopItem(id)
+    shoppingListRepository.deleteShopItem(name)
 
-    verify(shoppingListDatabaseService).deleteShopItem(id)
+    verify(shoppingListDatabaseService).deleteShopItem(name)
   }
 }

@@ -13,7 +13,7 @@ class ShopItemDiffCallback(
     override fun getNewListSize() = newItems.size
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldItems[oldItemPosition].id == newItems[newItemPosition].id
+        return oldItems[oldItemPosition].name == newItems[newItemPosition].name
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

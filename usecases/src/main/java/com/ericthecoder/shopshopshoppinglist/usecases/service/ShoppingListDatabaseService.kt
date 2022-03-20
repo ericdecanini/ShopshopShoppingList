@@ -15,10 +15,10 @@ interface ShoppingListDatabaseService {
 
     suspend fun updateShoppingList(id: Int, name: String): ShoppingListResponse
 
-    suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse
+    suspend fun updateShopItem(currentName: String, newName: String, quantity: Int, checked: Boolean): ShopItemResponse
 
     suspend fun deleteShoppingList(id: Int)
 
-    suspend fun deleteShopItem(id: Int)
+    suspend fun deleteShopItem(name: String)
 
 }
