@@ -98,10 +98,19 @@ class ListViewModel @Inject constructor(
         emitShoppingList()
     }
 
+    private fun emitShoppingList() {
+        viewStateEmitter.postValue(Loaded(shoppingList))
+    }
+
     private fun displayNewListDialog() {
         viewEventEmitter.postValue(DisplayNewListDialog(
             onNameSet = { newName -> renameShoppingList(newName) }
         ))
+    }
+
+    private fun renameShoppingList(newName: String) {
+        shoppingList.rename(newName)
+        emitShoppingList()
     }
 
     private fun handleLoadError(exception: Throwable) {
@@ -196,10 +205,10 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        markItemChecked(checkbox, shopItem)
+        toggleItemChecked(checkbox, shopItem)
     }
 
-    private fun markItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
+    private fun toggleItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
         shoppingList.items.let { shopItems ->
             val shopItemIndex = shopItems.indexOfFirst { it.name == shopItem.name }
             shopItems[shopItemIndex] = shopItem.copy(checked = checkbox.isChecked)
@@ -208,16 +217,6 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
-        if (itemExistsInShoppingList(shopItem)) {
-            changeItemName(editText, shopItem)
-        }
-    }
-
-    private fun itemExistsInShoppingList(shopItem: ShopItem) = shoppingList
-        .items
-        .firstOrNull { it.name == shopItem.name } != null
-
-    private fun changeItemName(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
         viewStateEmitter.notifyObservers()
     }
@@ -276,21 +275,6 @@ class ListViewModel @Inject constructor(
     }
 
     //endregion
-
-    private fun renameShoppingList(newName: String) {
-        renameShoppingListOnUi(newName)
-    }
-
-    private fun renameShoppingListOnUi(newName: String) {
-        if (newName.isNotBlank()) {
-            shoppingList.rename(newName)
-            emitShoppingList()
-        }
-    }
-
-    private fun emitShoppingList() {
-        viewStateEmitter.postValue(Loaded(shoppingList))
-    }
 
     private fun launchOnIo(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(coroutineContextProvider.IO) {

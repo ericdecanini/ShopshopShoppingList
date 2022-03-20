@@ -265,22 +265,6 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenNewNameIsEmpty_whenRenameDialogCallback_thenShoppingListNotRenamed() {
-        val observer = viewModel.viewEvent.observeWithMock()
-        givenShoppingList()
-        val oldName = shoppingList.name
-        val newName = ""
-
-        viewModel.showRenameDialog()
-
-        val slots = mutableListOf<DisplayRenameDialog>()
-        verify { observer.onChanged(capture(slots)) }
-        slots.last().callback.invoke(newName)
-
-        assertThat((viewModel.viewState.value as Loaded).shoppingList.name).isEqualTo(oldName)
-    }
-
-    @Test
     fun givenShoppingListWithCheckedItems_whenClearChecked_thenCheckedItemsCleared() {
         val uncheckedItem = shopItem.copy(checked = false)
         val checkedItem = shopItem.copy(checked = true)

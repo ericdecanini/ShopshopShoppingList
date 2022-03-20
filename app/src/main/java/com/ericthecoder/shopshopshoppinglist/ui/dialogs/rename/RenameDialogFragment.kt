@@ -2,17 +2,21 @@ package com.ericthecoder.shopshopshoppinglist.ui.dialogs.rename
 
 import android.content.Context
 import android.os.Bundle
+import android.view.HapticFeedbackConstants
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogRenameBinding
 import java.io.Serializable
 
+@Suppress("UNCHECKED_CAST")
 class RenameDialogFragment : DialogFragment() {
 
     private lateinit var binding: DialogRenameBinding
@@ -29,18 +33,59 @@ class RenameDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.dialog_rename, null, false)
-        binding.setVariable(BR.controller, RenameDialogController(this, arguments))
+        binding.title.text = arguments?.getString(EXTRA_HEADER)
+        binding.newName.setText(arguments?.getString(EXTRA_AUTOFILL_TEXT))
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setButtonClicks(view.context)
+        addEditTextChangedListener(view.context)
+
         binding.newName.post {
             binding.newName.requestFocus()
             binding.newName.selectAll()
             val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
         }
+    }
+
+    private fun addEditTextChangedListener(context: Context) {
+        val defaultEditTextBackground = AppCompatResources.getDrawable(context, R.drawable.bg_edit_new_item)
+        binding.newName.addTextChangedListener { binding.newName.background = defaultEditTextBackground }
+    }
+
+    private fun setButtonClicks(context: Context) {
+        binding.positiveButton.setOnClickListener {
+            validateThenPerformPositiveOnClick(context)
+        }
+        binding.negativeButton.setOnClickListener {
+            performNegativeOnClick()
+        }
+    }
+
+    private fun validateThenPerformPositiveOnClick(context: Context) {
+        val errorEditTextBackground = AppCompatResources.getDrawable(context, R.drawable.bg_edit_new_item_error)
+        if (binding.newName.text.isNotBlank()) {
+            performPositiveOnClick()
+        } else {
+            binding.newName.background = errorEditTextBackground
+            binding.newName.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+            binding.newName.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+        }
+    }
+
+    private fun performPositiveOnClick() {
+        val positiveOnClick = arguments?.getSerializable(EXTRA_POSITIVE_CLICK) as? ((String) -> Unit)
+        positiveOnClick?.invoke(binding.newName.text.toString())
+        dismiss()
+    }
+
+    private fun performNegativeOnClick() {
+        val negativeOnClick = arguments?.getSerializable(EXTRA_NEGATIVE_CLICK) as? (() -> Unit)
+        negativeOnClick?.invoke()
+        dismiss()
     }
 
     class Builder {
