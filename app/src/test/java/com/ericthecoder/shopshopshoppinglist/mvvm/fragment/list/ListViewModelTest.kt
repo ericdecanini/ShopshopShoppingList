@@ -38,10 +38,8 @@ class ListViewModelTest {
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val shoppingListRepository: ShoppingListRepository = mockk()
-    private val resourceProvider: ResourceProvider = mockk {
-        every { getString(any()) } returns ""
-    }
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
+    private val resourceProvider: ResourceProvider = mockk()
 
     private val context: Context = mockk()
     private val view: View = mockk()
@@ -55,9 +53,12 @@ class ListViewModelTest {
 
     @Before
     fun setUp() {
+        every { resourceProvider.getString(any(), *varargAny { true }) } returns ""
+
         viewModel = ListViewModel(
             shoppingListRepository,
             coroutineContextProvider,
+            resourceProvider,
         )
     }
 
@@ -145,6 +146,19 @@ class ListViewModelTest {
 
         assertThat(viewModel.viewEvent.value).isEqualTo(ClearEditText)
         assertThat(viewModel.viewState.value).isEqualTo(Loaded(newShoppingList))
+    }
+
+    @Test
+    fun givenItemIsAlreadyInList_whenAddItem_thenItemNotAdded() {
+        val itemName = "existing_item"
+        val existingShopItems = mutableListOf(aShopItem().withName(itemName).build())
+        val shoppingListWithItem = aShoppingList().withItems(existingShopItems).build()
+        givenShoppingList(shoppingListWithItem)
+
+        viewModel.tryAddItem(itemName)
+
+        assertThat(viewModel.viewEvent.value).isInstanceOf(ShowToast::class.java)
+        coVerify { shoppingListRepository.createNewShopItem(any(), any()) wasNot called }
     }
 
     @Test

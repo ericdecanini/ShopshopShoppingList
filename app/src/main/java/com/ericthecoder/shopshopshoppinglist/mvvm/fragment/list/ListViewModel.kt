@@ -9,6 +9,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ericthecoder.dependencies.android.resources.ResourceProvider
+import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.database.DbQueryFailedException
@@ -26,6 +28,7 @@ import javax.inject.Inject
 class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
     private val coroutineContextProvider: CoroutineContextProvider,
+    private val resourceProvider: ResourceProvider,
 ) : ViewModel(), ShopItemEventHandler {
 
     private val viewStateEmitter = MutableLiveData<ListViewState>(Initial)
@@ -128,14 +131,24 @@ class ListViewModel @Inject constructor(
             addItem(itemName)
         } catch (exception: DbQueryFailedException) {
             handleWriteError(exception)
+        } catch (exception: ItemInListException) {
+            handleItemAlreadyInList(itemName)
         }
     }
 
     private suspend fun addItem(itemName: String) {
+        checkItemNotPresent(itemName)
         clearItemTextField()
         saveItem(itemName)
         reloadShoppingList()
         sortListAndDisplay()
+    }
+
+    private fun checkItemNotPresent(itemName: String) {
+        val itemIsInList = shoppingList.items.any { it.name == itemName }
+        if (itemIsInList) {
+            throw ItemInListException()
+        }
     }
 
     private fun clearItemTextField() {
@@ -150,7 +163,8 @@ class ListViewModel @Inject constructor(
 
     private fun handleWriteError(exception: Throwable) {
         exception.printStackTrace()
-        viewEventEmitter.postValue(ShowToast("Something went wrong"))
+        val toastMessage = resourceProvider.getString(R.string.something_went_wrong)
+        viewEventEmitter.postValue(ShowToast(toastMessage))
         reloadShoppingList()
     }
 
@@ -170,6 +184,11 @@ class ListViewModel @Inject constructor(
     private fun sortListAndDisplay() {
         shoppingList.items.sortBy { it.checked }
         emitShoppingList()
+    }
+
+    private fun handleItemAlreadyInList(itemName: String) {
+        val toastMessage = resourceProvider.getString(R.string.item_already_in_list, itemName, shoppingList.name)
+        viewEventEmitter.postValue(ShowToast(toastMessage))
     }
 
     //region: ui interaction events
@@ -295,6 +314,8 @@ class ListViewModel @Inject constructor(
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
     }
+
+    inner class ItemInListException : Throwable()
 
     companion object {
 
