@@ -302,9 +302,7 @@ class ListViewModel @Inject constructor(
         object ClearFocus : ViewEvent()
         object ClearEditText : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
-        class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) :
-            ViewEvent()
-
+        class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
     }
