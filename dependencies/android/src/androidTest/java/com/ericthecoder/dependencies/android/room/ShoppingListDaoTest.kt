@@ -38,8 +38,8 @@ class ShoppingListDaoTest {
     fun testInsertAndGet() = runBlockingTest {
         val entity = aShoppingListEntity()
 
-        dao.insert(entity)
-        val resultFromDb = dao.getAll().first()
+        val id = dao.insert(entity)
+        val resultFromDb = dao.getById(id.toInt())
 
         resultFromDb.assertEqualComparingContents(entity)
     }
@@ -60,10 +60,9 @@ class ShoppingListDaoTest {
     @Test
     fun testInsertDeleteAndGetReturningNothing() = runBlockingTest {
         val entity = aShoppingListEntity()
-        dao.insert(entity)
-        val insertedEntity = dao.getAll().first()
 
-        dao.deleteById(insertedEntity.id)
+        val id = dao.insert(entity)
+        dao.deleteById(id.toInt())
         val resultFromDb = dao.getAll()
 
         assertThat(resultFromDb).isEmpty()

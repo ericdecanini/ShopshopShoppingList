@@ -108,6 +108,7 @@ class ListViewModel @Inject constructor(
     private fun renameShoppingList(newName: String) {
         shoppingList.rename(newName)
         emitShoppingList()
+        launchOnIo { shoppingListRepository.updateShoppingList(shoppingList) }
     }
 
     private fun handleLoadError(exception: Throwable) {
@@ -160,7 +161,7 @@ class ListViewModel @Inject constructor(
     private suspend fun saveItemInRepository(itemName: String) {
         val shopItem = ShopItem.createNew(itemName)
         shoppingList.items.add(shopItem)
-        shoppingListRepository.createNewShopItem(listId, itemName)
+        shoppingListRepository.updateShoppingList(shoppingList)
     }
 
     private fun handleWriteError(exception: Throwable) {
@@ -260,8 +261,8 @@ class ListViewModel @Inject constructor(
 
     private suspend fun deleteCheckedItems(shoppingList: ShoppingList) {
         shoppingList.items.filter { it.checked }.forEach {
-            shoppingListRepository.deleteShopItem(it.name)
             shoppingList.items.remove(it)
+            shoppingListRepository.updateShoppingList(shoppingList)
         }
     }
 

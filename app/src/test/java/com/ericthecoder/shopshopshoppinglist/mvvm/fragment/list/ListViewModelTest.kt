@@ -33,7 +33,7 @@ class ListViewModelTest {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private val shoppingListRepository: ShoppingListRepository = mockk()
+    private val shoppingListRepository: ShoppingListRepository = mockk(relaxUnitFun = true)
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
     private val resourceProvider: ResourceProvider = mockk()
 
@@ -129,7 +129,6 @@ class ListViewModelTest {
     @Test
     fun givenItemName_whenAddItem_thenItemAdded() {
         val newItem = ShopItem.createNew("new_item")
-        coEvery { shoppingListRepository.createNewShopItem(shoppingList.id, newItem.name) } returns newItem
         givenShoppingList()
 
         viewModel.addItem(newItem.name)
@@ -149,13 +148,12 @@ class ListViewModelTest {
         viewModel.addItem(itemName)
 
         assertThat(viewModel.viewEvent.value).isInstanceOf(ShowToast::class.java)
-        coVerify { shoppingListRepository.createNewShopItem(any(), any()) wasNot called }
+        coVerify(inverse = true) { shoppingListRepository.updateShoppingList(any()) }
     }
 
     @Test
     fun givenShopItem_whenOnDeleteClick_thenItemDeletedFromList() {
         givenShoppingList()
-        coEvery { shoppingListRepository.deleteShopItem(any()) } returns mockk()
 
         viewModel.onDeleteClick(shopItem)
 
@@ -214,7 +212,7 @@ class ListViewModelTest {
         (viewModel.viewState.value as Loaded).shoppingList.items.remove(shopItem)
         viewModel.onNameChanged(editText, shopItem)
 
-        coVerify(exactly = 0) { shoppingListRepository.updateShopItem(any(), any(), any(), any()) }
+        coVerify(exactly = 0) { shoppingListRepository.updateShoppingList(any()) }
     }
 
     @Test
@@ -233,7 +231,6 @@ class ListViewModelTest {
         givenShoppingList()
         val newName = "new_name"
         val shoppingListWithNewName = shoppingList.copy(_name = newName)
-        coEvery { shoppingListRepository.updateShoppingList(shoppingList.id, newName) } returns (shoppingListWithNewName)
 
         viewModel.showRenameDialog()
 
@@ -241,7 +238,9 @@ class ListViewModelTest {
         verify { observer.onChanged(capture(slots)) }
         slots.last().callback.invoke(newName)
 
-        assertThat(viewModel.viewState.value).isEqualTo(Loaded(shoppingListWithNewName))
+        val shoppingListSlot = slot<ShoppingList>()
+        coVerify { shoppingListRepository.updateShoppingList(capture(shoppingListSlot)) }
+        assertThat(shoppingListSlot.captured.name).isEqualTo(newName)
     }
 
     @Test
@@ -249,7 +248,6 @@ class ListViewModelTest {
         val uncheckedItem = shopItem.copy(checked = false)
         val checkedItem = shopItem.copy(checked = true)
         givenShoppingList(shoppingList.copy(items = mutableListOf(uncheckedItem, checkedItem)))
-        coEvery { shoppingListRepository.deleteShopItem(any()) } returns mockk()
 
         viewModel.tryClearChecked()
 
@@ -270,7 +268,6 @@ class ListViewModelTest {
     fun givenShoppingListWithAllCheckedItems_whenClearChecked_thenAllItemsCleared() {
         val checkedItems = shopItem.copy(checked = true)
         givenShoppingList(shoppingList.copy(items = mutableListOf(checkedItems, checkedItems)))
-        coEvery { shoppingListRepository.deleteShopItem(any()) } returns mockk()
 
         viewModel.tryClearChecked()
 

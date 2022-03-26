@@ -7,9 +7,9 @@ import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingL
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class RoomShoppingListDatabaseMapperTest {
+class RoomShoppingListDatabaseMapperImplTest {
 
-    private val mapper = RoomShoppingListDatabaseMapper()
+    private val mapper = RoomShoppingListDatabaseMapperImpl()
 
     @Test
     fun `test map shopping list to entity`() {

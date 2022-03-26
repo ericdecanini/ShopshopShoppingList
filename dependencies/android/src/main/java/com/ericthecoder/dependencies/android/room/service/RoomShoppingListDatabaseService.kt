@@ -1,43 +1,37 @@
 package com.ericthecoder.dependencies.android.room.service
 
 import com.ericthecoder.dependencies.android.room.dao.ShoppingListDao
-import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
+import com.ericthecoder.dependencies.android.room.entity.ShoppingListEntity
+import com.ericthecoder.dependencies.android.room.service.mapper.RoomShoppingListDatabaseMapper
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.usecases.service.ShoppingListDatabaseService
 
 class RoomShoppingListDatabaseService(
-    private val dao: ShoppingListDao
+    private val dao: ShoppingListDao,
+    private val mapper: RoomShoppingListDatabaseMapper,
 ) : ShoppingListDatabaseService {
 
-    override suspend fun getShoppingLists(): List<ShoppingList> {
-        TODO("Not yet implemented")
+    override suspend fun getShoppingLists() = dao.getAll()
+        .map { mapper.mapEntityToShoppingList(it) }
+
+    override suspend fun getShoppingListById(id: Int) = dao.getById(id)
+        .let { mapper.mapEntityToShoppingList(it) }
+
+    override suspend fun createShoppingList(name: String): Int {
+        val entity = ShoppingListEntity(IRRELEVANT, name, emptyList())
+        return dao.insert(entity).toInt()
     }
 
-    override suspend fun getShoppingListById(id: Int): ShoppingList {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun createShoppingList(name: String): ShoppingList {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun createShopItem(listId: Int, name: String): ShopItem {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateShoppingList(id: Int, name: String): ShoppingList {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun updateShopItem(currentName: String, newName: String, quantity: Int, checked: Boolean): ShopItem {
-        TODO("Not yet implemented")
+    override suspend fun updateShoppingList(shoppingList: ShoppingList) {
+        val entity = mapper.mapShoppingListToEntity(shoppingList)
+        dao.update(entity)
     }
 
     override suspend fun deleteShoppingList(id: Int) {
-        TODO("Not yet implemented")
+        dao.deleteById(id)
     }
 
-    override suspend fun deleteShopItem(name: String) {
-        TODO("Not yet implemented")
+    companion object {
+        internal const val IRRELEVANT = 0
     }
 }
