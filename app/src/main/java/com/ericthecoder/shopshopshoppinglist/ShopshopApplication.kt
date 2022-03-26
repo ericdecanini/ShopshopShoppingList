@@ -2,7 +2,6 @@ package com.ericthecoder.shopshopshoppinglist
 
 import com.ericthecoder.shopshopshoppinglist.di.DaggerAppComponent
 import com.ericthecoder.shopshopshoppinglist.library.firebase.admob.AppOpenAdManager
-import com.ericthecoder.shopshopshoppinglist.usecases.initializer.AppInitializer
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.google.android.gms.ads.MobileAds
 import dagger.android.AndroidInjector
@@ -11,7 +10,6 @@ import javax.inject.Inject
 
 class ShopshopApplication: DaggerApplication() {
 
-    @Inject lateinit var appInitializer: AppInitializer
     @Inject lateinit var persistentStorageReader: PersistentStorageReader
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
@@ -22,6 +20,5 @@ class ShopshopApplication: DaggerApplication() {
         super.onCreate()
         MobileAds.initialize(this)
         AppOpenAdManager.initialize(this, persistentStorageReader)
-        appInitializer.initialize()
     }
 }

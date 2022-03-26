@@ -1,6 +1,5 @@
 include ':dependencies:billing'
 include ':dependencies:android'
-include ':dependencies:chaquopy'
 include ':dependencies'
 include ':testdata'
 include ':entities'
