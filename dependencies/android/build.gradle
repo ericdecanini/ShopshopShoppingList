@@ -24,16 +24,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     kotlinOptions {
         jvmTarget = '1.8'
     }
 
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/*'
+    }
+
+    sourceSets {
+        String sharedTestDir = 'src/sharedTest/java'
+        test {
+            java.srcDir sharedTestDir
+        }
+        androidTest {
+            java.srcDir sharedTestDir
+        }
     }
 }
 
@@ -64,6 +82,7 @@ dependencies {
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
     testImplementation 'android.arch.core:core-testing:1.1.1'
 
     // Mockito & Mockk

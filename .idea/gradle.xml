@@ -18,7 +18,6 @@
             <option value="$PROJECT_DIR$/dependencies/billing" />
             <option value="$PROJECT_DIR$/dependencies/chaquopy" />
             <option value="$PROJECT_DIR$/entities" />
-            <option value="$PROJECT_DIR$/services" />
             <option value="$PROJECT_DIR$/testdata" />
             <option value="$PROJECT_DIR$/usecases" />
           </set>

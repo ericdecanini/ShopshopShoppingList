@@ -10,7 +10,7 @@ import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
-import com.ericthecoder.shopshopshoppinglist.entities.database.DbQueryFailedException
+import com.ericthecoder.shopshopshoppinglist.entities.exception.DbQueryFailedException
 import com.ericthecoder.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*

@@ -1,7 +1,5 @@
 package com.ericthecoder.shopshopshoppinglist
 
-import androidx.room.Room
-import com.ericthecoder.dependencies.android.room.ShopshopDatabase
 import com.ericthecoder.shopshopshoppinglist.di.DaggerAppComponent
 import com.ericthecoder.shopshopshoppinglist.library.firebase.admob.AppOpenAdManager
 import com.ericthecoder.shopshopshoppinglist.usecases.initializer.AppInitializer
@@ -22,22 +20,8 @@ class ShopshopApplication: DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
-        initializeDatabase()
         MobileAds.initialize(this)
         AppOpenAdManager.initialize(this, persistentStorageReader)
         appInitializer.initialize()
-    }
-
-    private fun initializeDatabase() {
-        database = Room.databaseBuilder(
-            this,
-            ShopshopDatabase::class.java,
-            "shopshop-db"
-        ).build()
-    }
-
-    companion object {
-
-         var database: ShopshopDatabase? = null
     }
 }

@@ -9,14 +9,14 @@ import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
-import com.ericthecoder.shopshopshoppinglist.entities.database.DbQueryFailedException
+import com.ericthecoder.shopshopshoppinglist.entities.exception.DbQueryFailedException
 import com.ericthecoder.shopshopshoppinglist.library.extension.observeWithMock
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.Companion.UNSET
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Error
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShopItemBuilder.Companion.aShopItem
-import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.Companion.aShoppingList
+import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.aShoppingList
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.util.TestCoroutineContextProvider
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
@@ -39,7 +39,7 @@ class ListViewModelTest {
 
     private val shopItem = aShopItem().withQuantity(5).build()
     private val itemsList: MutableList<ShopItem> = mutableListOf(shopItem)
-    private val shoppingList = aShoppingList().withItems(itemsList).build()
+    private val shoppingList = aShoppingList(items = itemsList)
 
     private lateinit var viewModel: ListViewModel
 
@@ -143,7 +143,7 @@ class ListViewModelTest {
     fun givenItemIsAlreadyInList_whenAddItem_thenItemNotAdded() {
         val itemName = "existing_item"
         val existingShopItems = mutableListOf(aShopItem().withName(itemName).build())
-        val shoppingListWithItem = aShoppingList().withItems(existingShopItems).build()
+        val shoppingListWithItem = aShoppingList(items = existingShopItems)
         givenShoppingList(shoppingListWithItem)
 
         viewModel.addItem(itemName)

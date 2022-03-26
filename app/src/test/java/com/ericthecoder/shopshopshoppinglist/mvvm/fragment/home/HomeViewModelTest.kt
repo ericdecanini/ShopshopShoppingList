@@ -3,7 +3,7 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.OpenList
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.OpenUpsell
-import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder
+import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.aShoppingList
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.util.TestCoroutineContextProvider
@@ -32,7 +32,7 @@ class HomeViewModelTest {
         persistentStorageReader,
     )
 
-    private val shoppingList = ShoppingListBuilder.aShoppingList().build()
+    private val shoppingList = aShoppingList()
 
     @Test
     fun givenRepositoryReturnsShoppingLists_whenRefreshLists_thenPostShoppingListsToLiveData() = runBlockingTest {
