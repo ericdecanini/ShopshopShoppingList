@@ -55,7 +55,7 @@
             app:layout_constraintBottom_toBottomOf="@id/checkbox"
             tools:text="Oringe" />
 
-        <TextView
+        <EditText
             android:id="@+id/quantity"
             style="@style/ListFragmentQuantityText"
             android:layout_width="wrap_content"
@@ -64,7 +64,12 @@
             android:paddingStart="@dimen/quantity_padding"
             android:paddingEnd="@dimen/quantity_padding"
             android:background="@drawable/bg_ripple_gray"
+            android:hint="@string/zero"
+            android:importantForAutofill="no"
             android:text="@{Integer.toString(viewstate.quantity), default=0}"
+            android:inputType="number"
+            android:selectAllOnFocus="true"
+            app:onFocusLost="@{(view) -> handler.onQuantityChanged(view, viewstate)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -41,6 +41,7 @@
     <string name="toast_list_saved">%s saved</string>
     <string name="unnamed_list">Unnamed List</string>
     <string name="item_already_in_list">%1$s is already in the %2$s</string>
+    <string name="zero">0</string>
 
     <!-- Upsell Activity -->
     <string name="upsell_title">Shopshop Premium</string>

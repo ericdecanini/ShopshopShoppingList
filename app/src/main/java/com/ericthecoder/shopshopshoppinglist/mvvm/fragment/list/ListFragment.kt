@@ -100,6 +100,7 @@ class ListFragment : DaggerFragment() {
             ClearEditText -> binding.addItemEdit.setText("")
             SignalBlankAddItem -> signalAddItemFieldError()
             ResetAddItem -> resetAddItem()
+            HideKeyboard -> hideKeyboard()
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)

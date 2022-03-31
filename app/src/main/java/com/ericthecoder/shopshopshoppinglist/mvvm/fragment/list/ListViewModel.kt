@@ -11,7 +11,6 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.exception.DbQueryFailedException
-import com.ericthecoder.shopshopshoppinglist.library.extension.notifyObservers
 import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
@@ -40,10 +39,11 @@ class ListViewModel @Inject constructor(
     fun loadShoppingList(id: Int) {
         this.listId = id
 
-        if (id == UNSET)
+        if (id == UNSET) {
             startLoadingNewShoppingList()
-        else
+        } else {
             startLoadingExistingShoppingList(id)
+        }
     }
 
     private fun startLoadingNewShoppingList() {
@@ -223,7 +223,18 @@ class ListViewModel @Inject constructor(
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
-        viewStateEmitter.notifyObservers()
+        saveShoppingList()
+    }
+
+    private fun saveShoppingList() = launchOnIo {
+        shoppingListRepository.updateShoppingList(shoppingList)
+    }
+
+    override fun onQuantityChanged(editText: EditText, shopItem: ShopItem) {
+        val newQuantity = editText.text.toString().toIntOrNull() ?: 0
+        editText.setText(newQuantity.toString())
+        shopItem.quantity = newQuantity
+        saveShoppingList()
     }
 
     fun showRenameDialog() {
@@ -278,6 +289,10 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(ResetAddItem)
     }
 
+    fun hideKeyboard() {
+        viewEventEmitter.postValue(HideKeyboard)
+    }
+
     //endregion
 
     private fun launchOnIo(block: suspend CoroutineScope.() -> Unit) {
@@ -292,6 +307,7 @@ class ListViewModel @Inject constructor(
         object ClearEditText : ViewEvent()
         object SignalBlankAddItem : ViewEvent()
         object ResetAddItem : ViewEvent()
+        object HideKeyboard : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()

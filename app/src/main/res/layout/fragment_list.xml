@@ -21,8 +21,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusableInTouchMode="true">
+        android:onClick="@{() -> viewmodel.hideKeyboard()}"
+        app:clearsFocusOnClick="@{true}">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -111,9 +111,10 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="16dp"
+            android:onClick="@{() -> viewmodel.hideKeyboard()}"
+            app:clearsFocusOnClick="@{true}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/add_item_layout"
-            app:layout_constraintVertical_bias="0"
             tools:itemCount="4"
             tools:listitem="@layout/list_item_shopitem" />
 

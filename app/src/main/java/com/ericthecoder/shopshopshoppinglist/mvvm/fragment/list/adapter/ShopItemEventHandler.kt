@@ -12,4 +12,6 @@ interface ShopItemEventHandler {
 
   fun onNameChanged(editText: EditText, shopItem: ShopItem)
 
+  fun onQuantityChanged(editText: EditText, shopItem: ShopItem)
+
 }

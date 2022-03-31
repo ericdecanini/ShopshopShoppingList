@@ -127,6 +127,25 @@ class ListViewModelTest {
     }
 
     @Test
+    fun `onQuantityChanged updates list`() {
+        givenShoppingList()
+        val mockEditText = mockEditText("1")
+        coJustRun { shoppingListRepository.updateShoppingList(shoppingList) }
+
+        viewModel.onQuantityChanged(mockEditText, shoppingList.items.first())
+
+        coVerify { shoppingListRepository.updateShoppingList(shoppingList) }
+    }
+
+    private fun mockEditText(text: String): EditText {
+        val mockEditText = mockk<EditText>(relaxUnitFun = true)
+        val mockEditable = mockk<Editable>()
+        every { mockEditable.toString() } returns text
+        every { mockEditText.text } returns mockEditable
+        return mockEditText
+    }
+
+    @Test
     fun givenItemName_whenAddItem_thenItemAdded() {
         val newItem = ShopItem.createNew("new_item")
         givenShoppingList()
@@ -198,21 +217,6 @@ class ListViewModelTest {
         viewModel.onNameChanged(editText, shopItem)
 
         assertThat(shopItem.name).isEqualTo(name)
-    }
-
-    @Test
-    fun givenUpdatedItemIsNotInList_whenOnNameChanged_thenRepositoryNotUpdated() {
-        val editText: EditText = mockk()
-        val editable: Editable = mockk()
-        val name = "sample_name"
-        givenShoppingList()
-        every { editable.toString() } returns (name)
-        every { editText.text } returns (editable)
-
-        (viewModel.viewState.value as Loaded).shoppingList.items.remove(shopItem)
-        viewModel.onNameChanged(editText, shopItem)
-
-        coVerify(exactly = 0) { shoppingListRepository.updateShoppingList(any()) }
     }
 
     @Test
