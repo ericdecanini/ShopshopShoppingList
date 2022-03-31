@@ -17,6 +17,7 @@ class ShopItemDiffCallback(
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldItems[oldItemPosition] == newItems[newItemPosition]
+        // We want to force an update each time
+        return false
     }
 }

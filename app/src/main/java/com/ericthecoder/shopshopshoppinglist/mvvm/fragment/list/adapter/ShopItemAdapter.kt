@@ -9,7 +9,7 @@ import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 
 class ShopItemAdapter(
     val items: MutableList<ShopItem>,
-    private val shopItemEventHandler: ShopItemEventHandler
+    private val shopItemEventHandler: ShopItemEventHandler,
 ) : RecyclerView.Adapter<ShopItemAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

@@ -28,9 +28,9 @@ open class MutableSingleLiveEvent<T> : MutableLiveData<T>() {
         }
 
         // Observe the internal MutableLiveData
-        super.observe(owner) { t ->
+        super.observe(owner) { value ->
             if (mPending.compareAndSet(true, false)) {
-                observer.onChanged(t)
+                observer.onChanged(value)
             }
         }
     }
@@ -39,13 +39,5 @@ open class MutableSingleLiveEvent<T> : MutableLiveData<T>() {
     override fun setValue(t: T?) {
         mPending.set(true)
         super.setValue(t)
-    }
-
-    /**
-     * Used for cases where T is Void, to make calls cleaner.
-     */
-    @MainThread
-    fun call() {
-        value = null
     }
 }

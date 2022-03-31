@@ -7,6 +7,6 @@ data class ShopItem(
 ) {
 
     companion object {
-        fun createNew(name: String) = ShopItem(name, 0, false)
+        fun createNew(name: String) = ShopItem(name, 1, false)
     }
 }

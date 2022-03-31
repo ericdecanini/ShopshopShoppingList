@@ -8,7 +8,7 @@ interface ShopItemEventHandler {
 
   fun onDeleteClick(shopItem: ShopItem)
 
-  fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem)
+  fun onItemChecked(checkbox: CheckBox, shopItem: ShopItem)
 
   fun onNameChanged(editText: EditText, shopItem: ShopItem)
 

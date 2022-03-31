@@ -88,7 +88,8 @@
                 app:layout_constraintEnd_toStartOf="@id/add_item_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:onFocusLost="@{() -> viewmodel.onAddItemTextFocusLost()}"
+                app:onFocusGained="@{() -> viewmodel.resetAddItemBackground()}"
+                app:onFocusLost="@{() -> viewmodel.resetAddItemBackground()}"
                 app:returnKeyClick="@{addItemButton}" />
 
             <ImageButton

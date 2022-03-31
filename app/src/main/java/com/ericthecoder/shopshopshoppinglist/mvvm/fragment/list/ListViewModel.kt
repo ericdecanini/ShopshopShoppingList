@@ -143,7 +143,7 @@ class ListViewModel @Inject constructor(
         validateNewItem(itemName)
         clearItemTextField()
         saveItemInRepository(itemName)
-        sortListAndDisplay()
+        emitShoppingList()
     }
 
     private fun validateNewItem(itemName: String) {
@@ -184,11 +184,6 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(NavigateUp)
     }
 
-    private fun sortListAndDisplay() {
-        shoppingList.items.sortBy { it.checked }
-        emitShoppingList()
-    }
-
     private fun handleBlankNewItem() {
         viewEventEmitter.postValue(SignalBlankAddItem)
     }
@@ -202,23 +197,17 @@ class ListViewModel @Inject constructor(
 
     override fun onDeleteClick(shopItem: ShopItem) {
         deleteItemFromShoppingList(shopItem)
-        sortListAndDisplay()
+        emitShoppingList()
     }
 
     private fun deleteItemFromShoppingList(shopItem: ShopItem) {
         shoppingList.items.removeIf { it.name == shopItem.name }
     }
 
-    override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        toggleItemChecked(checkbox, shopItem)
-    }
-
-    private fun toggleItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        shoppingList.items.let { shopItems ->
-            val shopItemIndex = shopItems.indexOfFirst { it.name == shopItem.name }
-            shopItems[shopItemIndex] = shopItem.copy(checked = checkbox.isChecked)
-            sortListAndDisplay()
-        }
+    override fun onItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
+        shopItem.checked = checkbox.isChecked
+        emitShoppingList()
+        saveShoppingList()
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
@@ -267,7 +256,7 @@ class ListViewModel @Inject constructor(
 
     private suspend fun clearChecked() {
         deleteCheckedItems(shoppingList)
-        sortListAndDisplay()
+        emitShoppingList()
     }
 
     private suspend fun deleteCheckedItems(shoppingList: ShoppingList) {
@@ -285,12 +274,12 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(NavigateUp)
     }
 
-    fun onAddItemTextFocusLost() {
-        viewEventEmitter.postValue(ResetAddItem)
+    fun resetAddItemBackground() {
+        viewEventEmitter.value = ResetAddItem
     }
 
     fun hideKeyboard() {
-        viewEventEmitter.postValue(HideKeyboard)
+        viewEventEmitter.value = HideKeyboard
     }
 
     //endregion

@@ -118,7 +118,6 @@ class ListFragment : DaggerFragment() {
     private fun resetAddItem() {
         val defaultEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item)
         binding.addItemLayout.background = defaultEditTextBackground
-        hideKeyboard()
     }
 
     private fun hideKeyboard() {

@@ -188,7 +188,7 @@ class ListViewModelTest {
         every { checkBox.isChecked } returns (true)
         givenShoppingList()
 
-        viewModel.onCheckboxChecked(checkBox, shopItem)
+        viewModel.onItemChecked(checkBox, shopItem)
 
         val shopItem = (viewModel.viewState.value as Loaded).shoppingList.items.first { it.name == shopItem.name }
         assertThat(shopItem.checked).isTrue
@@ -200,7 +200,7 @@ class ListViewModelTest {
         every { checkBox.isChecked } returns (false)
         givenShoppingList()
 
-        viewModel.onCheckboxChecked(checkBox, shopItem)
+        viewModel.onItemChecked(checkBox, shopItem)
 
         assertThat(shopItem.checked).isFalse
     }
@@ -289,7 +289,7 @@ class ListViewModelTest {
     @Test
     fun whenOnAddItemTextFocusLost_thenResetAddItem() {
 
-        viewModel.onAddItemTextFocusLost()
+        viewModel.resetAddItemBackground()
 
         assertThat(viewModel.viewEvent.value).isEqualTo(ResetAddItem)
     }
