@@ -1,4 +1,4 @@
-package com.ericthecoder.shopshopshoppinglist.ui.dialogs.rename
+package com.ericthecoder.shopshopshoppinglist.ui.dialog.rename
 
 import android.content.Context
 import android.os.Bundle

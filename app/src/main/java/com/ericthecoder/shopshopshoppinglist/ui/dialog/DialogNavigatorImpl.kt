@@ -1,10 +1,10 @@
-package com.ericthecoder.shopshopshoppinglist.ui.dialogs
+package com.ericthecoder.shopshopshoppinglist.ui.dialog
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.rename.RenameDialogFragment
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFragment
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.rename.RenameDialogFragment
 
 class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavigator {
 

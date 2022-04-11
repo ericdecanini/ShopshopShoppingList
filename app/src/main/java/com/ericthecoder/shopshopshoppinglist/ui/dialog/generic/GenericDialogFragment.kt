@@ -1,4 +1,4 @@
-package com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic
+package com.ericthecoder.shopshopshoppinglist.ui.dialog.generic
 
 import android.content.Context
 import android.os.Bundle

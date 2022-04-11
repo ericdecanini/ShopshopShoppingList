@@ -1,4 +1,4 @@
-package com.ericthecoder.shopshopshoppinglist.ui.dialogs
+package com.ericthecoder.shopshopshoppinglist.ui.dialog
 
 interface DialogNavigator {
 

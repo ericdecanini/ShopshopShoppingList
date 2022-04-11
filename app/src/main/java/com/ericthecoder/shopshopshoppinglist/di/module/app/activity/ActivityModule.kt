@@ -2,8 +2,8 @@ package com.ericthecoder.shopshopshoppinglist.di.module.app.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigatorImpl
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator

@@ -1,14 +1,14 @@
-package com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic
+package com.ericthecoder.shopshopshoppinglist.ui.dialog.generic
 
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
 import com.ericthecoder.shopshopshoppinglist.R
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment.Companion.EXTRA_MESSAGE
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment.Companion.EXTRA_NEGATIVE_CLICK
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment.Companion.EXTRA_NEGATIVE_TEXT
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment.Companion.EXTRA_POSITIVE_CLICK
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment.Companion.EXTRA_POSITIVE_TEXT
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.generic.GenericDialogFragment.Companion.EXTRA_TITLE
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFragment.Companion.EXTRA_MESSAGE
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFragment.Companion.EXTRA_NEGATIVE_CLICK
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFragment.Companion.EXTRA_NEGATIVE_TEXT
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFragment.Companion.EXTRA_POSITIVE_CLICK
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFragment.Companion.EXTRA_POSITIVE_TEXT
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFragment.Companion.EXTRA_TITLE
 
 @Suppress("UNCHECKED_CAST")
 class GenericDialogController(
