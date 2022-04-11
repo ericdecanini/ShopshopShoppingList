@@ -29,6 +29,13 @@ class ShopItemAdapter(
         items.addAll(newItems)
     }
 
+    fun moveItem(from: Int, to: Int) {
+        val item = items[from]
+        items.removeAt(from)
+        items.add(to, item)
+        // TODO: Add callback to viewmodel to update model
+    }
+
     class ViewHolder(private val binding: ListItemShopitemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(shopItem: ShopItem, shopItemEventHandler: ShopItemEventHandler) = with(shopItem) {
