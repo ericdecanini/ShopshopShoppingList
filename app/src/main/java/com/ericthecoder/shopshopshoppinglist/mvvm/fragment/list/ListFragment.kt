@@ -191,7 +191,7 @@ class ListFragment : DaggerFragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.ic_delete -> viewModel.showDeleteDialog()
-            R.id.ic_clear_checked -> viewModel.tryClearChecked()
+            R.id.ic_clear_checked -> viewModel.clearCheckedItems()
             else -> return false
         }
         return true

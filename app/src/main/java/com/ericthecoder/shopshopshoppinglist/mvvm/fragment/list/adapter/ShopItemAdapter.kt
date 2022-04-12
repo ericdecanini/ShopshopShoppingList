@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.databinding.ListItemShopitemBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
+import com.ericthecoder.shopshopshoppinglist.library.extension.moveItem
 
 class ShopItemAdapter(
     val items: MutableList<ShopItem>,
@@ -30,10 +31,8 @@ class ShopItemAdapter(
     }
 
     fun moveItem(from: Int, to: Int) {
-        val item = items[from]
-        items.removeAt(from)
-        items.add(to, item)
-        // TODO: Add callback to viewmodel to update model
+        items.moveItem(from, to)
+        shopItemEventHandler.onItemMoved(from, to)
     }
 
     class ViewHolder(private val binding: ListItemShopitemBinding) : RecyclerView.ViewHolder(binding.root) {

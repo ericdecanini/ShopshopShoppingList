@@ -11,6 +11,7 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.exception.DbQueryFailedException
+import com.ericthecoder.shopshopshoppinglist.library.extension.moveItem
 import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
@@ -108,7 +109,7 @@ class ListViewModel @Inject constructor(
     private fun renameShoppingList(newName: String) {
         shoppingList.rename(newName)
         emitShoppingList()
-        launchOnIo { shoppingListRepository.updateShoppingList(shoppingList) }
+        saveShoppingList()
     }
 
     private fun handleLoadError(exception: Throwable) {
@@ -127,7 +128,7 @@ class ListViewModel @Inject constructor(
             startLoadingExistingShoppingList(listId)
     }
 
-    fun addItem(itemName: String) = launchOnIo {
+    fun addItem(itemName: String) {
         try {
             performAddItem(itemName)
         } catch (exception: DbQueryFailedException) {
@@ -139,10 +140,10 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    private suspend fun performAddItem(itemName: String) {
+    private fun performAddItem(itemName: String) {
         validateNewItem(itemName)
         clearItemTextField()
-        saveItemInRepository(itemName)
+        addAndSaveItem(itemName)
         emitShoppingList()
     }
 
@@ -158,10 +159,10 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(ClearEditText)
     }
 
-    private suspend fun saveItemInRepository(itemName: String) {
+    private fun addAndSaveItem(itemName: String) {
         val shopItem = ShopItem.createNew(itemName)
         shoppingList.items.add(shopItem)
-        shoppingListRepository.updateShoppingList(shoppingList)
+        saveShoppingList()
     }
 
     private fun handleWriteError(exception: Throwable) {
@@ -196,12 +197,13 @@ class ListViewModel @Inject constructor(
     //region: ui interaction events
 
     override fun onDeleteClick(shopItem: ShopItem) {
-        deleteItemFromShoppingList(shopItem)
+        deleteItem(shopItem)
         emitShoppingList()
     }
 
-    private fun deleteItemFromShoppingList(shopItem: ShopItem) {
+    private fun deleteItem(shopItem: ShopItem) {
         shoppingList.items.removeIf { it.name == shopItem.name }
+        saveShoppingList()
     }
 
     override fun onItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
@@ -226,6 +228,11 @@ class ListViewModel @Inject constructor(
         saveShoppingList()
     }
 
+    override fun onItemMoved(from: Int, to: Int) {
+        shoppingList.items.moveItem(from, to)
+        saveShoppingList()
+    }
+
     fun showRenameDialog() {
         clearFocus()
         postDisplayRenameDialog(shoppingList.name)
@@ -246,23 +253,25 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(DisplayDeleteDialog(listName) { deleteList() })
     }
 
-    fun tryClearChecked() = launchOnIo {
+    fun clearCheckedItems() {
         try {
-            clearChecked()
+            deleteCheckedItems()
+            emitShoppingList()
         } catch (exception: DbQueryFailedException) {
             handleWriteError(exception)
         }
     }
 
-    private suspend fun clearChecked() {
-        deleteCheckedItems(shoppingList)
-        emitShoppingList()
-    }
+    private fun deleteCheckedItems() {
+        var wasUpdated = false
 
-    private suspend fun deleteCheckedItems(shoppingList: ShoppingList) {
         shoppingList.items.filter { it.checked }.forEach {
             shoppingList.items.remove(it)
-            shoppingListRepository.updateShoppingList(shoppingList)
+            wasUpdated = true
+        }
+
+        if (wasUpdated) {
+            saveShoppingList()
         }
     }
 

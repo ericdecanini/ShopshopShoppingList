@@ -5,6 +5,7 @@ import android.text.Editable
 import android.widget.CheckBox
 import android.widget.EditText
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
@@ -146,7 +147,21 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenItemName_whenAddItem_thenItemAdded() {
+    fun `onItemMoved updates shopping list and repository`() {
+        val shopItem1 = aShopItem().withName("shop item one").build()
+        val shopItem2 = aShopItem().withName("shop item two").build()
+        val items = mutableListOf(shopItem1, shopItem2)
+        givenShoppingList(shoppingList.copy(items = items))
+
+        viewModel.onItemMoved(1, 0)
+
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+        assertThat(updatedShoppingList.items).containsSequence(shopItem2, shopItem1)
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
+    }
+
+    @Test
+    fun `addItem updates shopping list and repository`() {
         val newItem = ShopItem.createNew("new_item")
         givenShoppingList()
 
@@ -155,10 +170,11 @@ class ListViewModelTest {
         val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
         assertThat(viewModel.viewEvent.value).isEqualTo(ClearEditText)
         assertThat(updatedShoppingList.items).contains(newItem)
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
     }
 
     @Test
-    fun givenItemIsAlreadyInList_whenAddItem_thenItemNotAdded() {
+    fun `adding duplicate item fails`() {
         val itemName = "existing_item"
         val existingShopItems = mutableListOf(aShopItem().withName(itemName).build())
         val shoppingListWithItem = aShoppingList(items = existingShopItems)
@@ -171,42 +187,47 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenShopItem_whenOnDeleteClick_thenItemDeletedFromList() {
+    fun `onDeleteClick updates shopping list and repository`() {
         givenShoppingList()
 
         viewModel.onDeleteClick(shopItem)
 
-        val deletedItem = (viewModel.viewState.value as Loaded).shoppingList.items.find {
-            it == shopItem
-        }
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+        val deletedItem = updatedShoppingList.items.find { it == shopItem }
         assertThat(deletedItem).isNull()
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
     }
 
     @Test
-    fun givenCheckboxIsChecked_whenOnCheckboxChanged_themShopItemIsChecked() {
+    fun `when true onItemChecked updates shopping list and repository`() {
         val checkBox: CheckBox = mockk()
         every { checkBox.isChecked } returns (true)
         givenShoppingList()
 
         viewModel.onItemChecked(checkBox, shopItem)
 
-        val shopItem = (viewModel.viewState.value as Loaded).shoppingList.items.first { it.name == shopItem.name }
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+        val shopItem = updatedShoppingList.items.first { it.name == shopItem.name }
         assertThat(shopItem.checked).isTrue
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
     }
 
     @Test
-    fun givenCheckboxIsNotChecked_whenOnCheckboxChanged_themShopItemIsNotChecked() {
+    fun `when false onItemChecked updates shopping list and repository`() {
         val checkBox: CheckBox = mockk()
         every { checkBox.isChecked } returns (false)
         givenShoppingList()
 
         viewModel.onItemChecked(checkBox, shopItem)
 
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+        val shopItem = updatedShoppingList.items.first { it.name == shopItem.name }
         assertThat(shopItem.checked).isFalse
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
     }
 
     @Test
-    fun givenUpdatedItemIsInList_whenOnNameChanged_thenNameChangedToEditTextValueAndKeyboardHidden() {
+    fun `onNameChanged updates shopping list and repository`() {
         givenShoppingList()
         val editText: EditText = mockk()
         val editable: Editable = mockk()
@@ -216,11 +237,13 @@ class ListViewModelTest {
 
         viewModel.onNameChanged(editText, shopItem)
 
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
         assertThat(shopItem.name).isEqualTo(name)
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
     }
 
     @Test
-    fun whenShowRenameDialog_thenFocusCleared() {
+    fun `showing rename dialog clears focus`() {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()
 
@@ -230,56 +253,65 @@ class ListViewModelTest {
     }
 
     @Test
-    fun givenNewName_whenRenameDialogCallback_thenRenameShoppingList() {
+    fun `rename dialog callbacks updates shopping list and repository`() {
         val observer = viewModel.viewEvent.observeWithMock()
         givenShoppingList()
         val newName = "new_name"
-        val shoppingListWithNewName = shoppingList.copy(_name = newName)
 
         viewModel.showRenameDialog()
+        performRenameDialogCallback(observer, newName)
 
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+        assertThat(updatedShoppingList.name).isEqualTo(newName)
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
+    }
+
+    private fun performRenameDialogCallback(observer: Observer<ListViewModel.ViewEvent>, newName: String) {
         val slots = mutableListOf<DisplayRenameDialog>()
         verify { observer.onChanged(capture(slots)) }
         slots.last().callback.invoke(newName)
-
-        val shoppingListSlot = slot<ShoppingList>()
-        coVerify { shoppingListRepository.updateShoppingList(capture(shoppingListSlot)) }
-        assertThat(shoppingListSlot.captured.name).isEqualTo(newName)
     }
 
     @Test
-    fun givenShoppingListWithCheckedItems_whenClearChecked_thenCheckedItemsCleared() {
+    fun `clearCheckedItems updates shopping list and repository`() {
         val uncheckedItem = shopItem.copy(checked = false)
         val checkedItem = shopItem.copy(checked = true)
         givenShoppingList(shoppingList.copy(items = mutableListOf(uncheckedItem, checkedItem)))
 
-        viewModel.tryClearChecked()
+        viewModel.clearCheckedItems()
 
-        assertThat((viewModel.viewState.value as Loaded).shoppingList.items).isEqualTo(listOf(uncheckedItem))
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+        assertThat(updatedShoppingList.items).isEqualTo(listOf(uncheckedItem))
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
     }
 
     @Test
-    fun givenShoppingListWithNoCheckedItems_whenClearChecked_thenNoItemsCleared() {
+    fun `when no items are checked, clearCheckedItems does not update repository`() {
         val uncheckedItem = shopItem.copy(checked = false)
-        givenShoppingList(shoppingList.copy(items = mutableListOf(uncheckedItem, uncheckedItem)))
+        val currentShoppingList = mutableListOf(uncheckedItem, uncheckedItem)
+        givenShoppingList(shoppingList.copy(items = currentShoppingList))
 
-        viewModel.tryClearChecked()
+        viewModel.clearCheckedItems()
 
-        assertThat((viewModel.viewState.value as Loaded).shoppingList.items).isEqualTo(listOf(uncheckedItem, uncheckedItem))
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+        assertThat(updatedShoppingList).isEqualTo(currentShoppingList)
+        coVerify(inverse = true) { shoppingListRepository.updateShoppingList(any()) }
     }
 
     @Test
-    fun givenShoppingListWithAllCheckedItems_whenClearChecked_thenAllItemsCleared() {
+    fun `when all items are checked, clearCheckedItems clears all items`() {
         val checkedItems = shopItem.copy(checked = true)
         givenShoppingList(shoppingList.copy(items = mutableListOf(checkedItems, checkedItems)))
 
-        viewModel.tryClearChecked()
+        viewModel.clearCheckedItems()
 
-        assertThat((viewModel.viewState.value as Loaded).shoppingList.items).isEqualTo(emptyList<ShopItem>())
+        val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+        assertThat(updatedShoppingList.items).isEmpty()
+        coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
     }
 
     @Test
-    fun whenOnBackButtonPressed_thenNavigateUp() {
+    fun `onBackButtonPressed navigates up`() {
 
         viewModel.onBackButtonPressed()
 
@@ -287,7 +319,7 @@ class ListViewModelTest {
     }
 
     @Test
-    fun whenOnAddItemTextFocusLost_thenResetAddItem() {
+    fun `resetAddItemBackground emits reset event`() {
 
         viewModel.resetAddItemBackground()
 
