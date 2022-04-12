@@ -46,7 +46,8 @@ android {
         dataBinding true
     }
     testOptions {
-        unitTests {
+        unitTests.all {
+            useJUnitPlatform()
             unitTests.returnDefaultValues = true
         }
     }
@@ -97,7 +98,7 @@ dependencies {
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
     testImplementation 'android.arch.core:core-testing:1.1.1'
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3"
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
