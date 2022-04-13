@@ -92,12 +92,11 @@ class ListViewModel @Inject constructor(
 
     private fun displayShoppingList(shoppingList: ShoppingList) {
         this.listId = shoppingList.id
-        this.shoppingList = shoppingList
-        emitShoppingList()
+        this.shoppingList = shoppingList.apply { emit() }
     }
 
-    private fun emitShoppingList() {
-        viewStateEmitter.postValue(Loaded(shoppingList))
+    private fun ShoppingList.emit() {
+        viewStateEmitter.postValue(Loaded(this))
     }
 
     private fun displayNewListDialog() {
@@ -106,10 +105,10 @@ class ListViewModel @Inject constructor(
         ))
     }
 
-    private fun renameShoppingList(newName: String) {
-        shoppingList.rename(newName)
-        emitShoppingList()
-        saveShoppingList()
+    private fun renameShoppingList(newName: String) = with (shoppingList) {
+        rename(newName)
+        emit()
+        save()
     }
 
     private fun handleLoadError(exception: Throwable) {
@@ -144,7 +143,7 @@ class ListViewModel @Inject constructor(
         validateNewItem(itemName)
         clearItemTextField()
         addAndSaveItem(itemName)
-        emitShoppingList()
+        shoppingList.emit()
     }
 
     private fun validateNewItem(itemName: String) {
@@ -162,7 +161,7 @@ class ListViewModel @Inject constructor(
     private fun addAndSaveItem(itemName: String) {
         val shopItem = ShopItem.createNew(itemName)
         shoppingList.items.add(shopItem)
-        saveShoppingList()
+        shoppingList.save()
     }
 
     private fun handleWriteError(exception: Throwable) {
@@ -198,44 +197,46 @@ class ListViewModel @Inject constructor(
 
     override fun onDeleteClick(shopItem: ShopItem) {
         deleteItem(shopItem)
-        emitShoppingList()
+        shoppingList.emit()
     }
 
     private fun deleteItem(shopItem: ShopItem) {
         shoppingList.items.removeIf { it.name == shopItem.name }
-        saveShoppingList()
+        shoppingList.save()
     }
 
     override fun onItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
         shopItem.checked = checkbox.isChecked
-        emitShoppingList()
-        saveShoppingList()
+        shoppingList.apply {
+            emit()
+            save()
+        }
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
         shopItem.name = editText.text.toString()
-        saveShoppingList()
+        shoppingList.save()
     }
 
-    private fun saveShoppingList() = launchOnIo {
-        shoppingListRepository.updateShoppingList(shoppingList)
+    private fun ShoppingList.save() = launchOnIo {
+        shoppingListRepository.updateShoppingList(this@save)
     }
 
     override fun onQuantityChanged(editText: EditText, shopItem: ShopItem) {
         val newQuantity = editText.text.toString().toIntOrNull() ?: 0
         editText.setText(newQuantity.toString())
         shopItem.quantity = newQuantity
-        saveShoppingList()
+        shoppingList.save()
     }
 
     override fun onItemMoved(from: Int, to: Int) {
         shoppingList.items.moveItem(from, to)
-        saveShoppingList()
+        shoppingList.save()
     }
 
     override fun onItemRemoved(position: Int) {
         shoppingList.items.removeAt(position)
-        saveShoppingList()
+        shoppingList.save()
     }
 
     fun showRenameDialog() {
@@ -260,14 +261,16 @@ class ListViewModel @Inject constructor(
 
     fun clearCheckedItems() {
         try {
-            deleteCheckedItems()
-            emitShoppingList()
+            shoppingList.takeIf { deleteCheckedItems() }?.apply {
+                emit()
+                save()
+            }
         } catch (exception: DbQueryFailedException) {
             handleWriteError(exception)
         }
     }
 
-    private fun deleteCheckedItems() {
+    private fun deleteCheckedItems(): Boolean {
         var wasUpdated = false
 
         shoppingList.items.filter { it.checked }.forEach {
@@ -275,9 +278,7 @@ class ListViewModel @Inject constructor(
             wasUpdated = true
         }
 
-        if (wasUpdated) {
-            saveShoppingList()
-        }
+        return wasUpdated
     }
 
     fun onBackButtonPressed() {
