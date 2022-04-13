@@ -81,7 +81,7 @@ class ListFragment : DaggerFragment() {
     private fun setupItemTouchHelper() {
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-            0
+            ItemTouchHelper.START or ItemTouchHelper.END,
         ) {
             override fun onMove(
                 recyclerView: RecyclerView,
@@ -95,7 +95,11 @@ class ListFragment : DaggerFragment() {
                 return true
             }
 
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int, ) = Unit
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                adapter.removeItem(position)
+                adapter.notifyItemRemoved(position)
+            }
         }
         ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(binding.shopList)
     }

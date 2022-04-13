@@ -35,6 +35,11 @@ class ShopItemAdapter(
         shopItemEventHandler.onItemMoved(from, to)
     }
 
+    fun removeItem(position: Int) {
+        items.removeAt(position)
+        shopItemEventHandler.onItemRemoved(position)
+    }
+
     class ViewHolder(private val binding: ListItemShopitemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(shopItem: ShopItem, shopItemEventHandler: ShopItemEventHandler) = with(shopItem) {

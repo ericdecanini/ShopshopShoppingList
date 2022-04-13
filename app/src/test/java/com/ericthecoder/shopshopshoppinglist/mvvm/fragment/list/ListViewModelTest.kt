@@ -206,6 +206,20 @@ class ListViewModelTest {
         }
 
         @Test
+        fun `onItemRemoved updates shopping list and repository`() {
+            val shopItem1 = aShopItem().withName("shop item one").build()
+            val shopItem2 = aShopItem().withName("shop item two").build()
+            val items = mutableListOf(shopItem1, shopItem2)
+            givenShoppingList(shoppingList.copy(items = items))
+
+            viewModel.onItemRemoved(1)
+
+            val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+            assertThat(updatedShoppingList.items).containsOnly(shopItem1)
+            coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
+        }
+
+        @Test
         fun `onDeleteClick updates shopping list and repository`() {
             givenShoppingList()
 

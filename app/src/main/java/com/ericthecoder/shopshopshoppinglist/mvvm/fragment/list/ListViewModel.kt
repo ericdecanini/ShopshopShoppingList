@@ -233,6 +233,11 @@ class ListViewModel @Inject constructor(
         saveShoppingList()
     }
 
+    override fun onItemRemoved(position: Int) {
+        shoppingList.items.removeAt(position)
+        saveShoppingList()
+    }
+
     fun showRenameDialog() {
         clearFocus()
         postDisplayRenameDialog(shoppingList.name)

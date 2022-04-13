@@ -16,4 +16,5 @@ interface ShopItemEventHandler {
 
   fun onItemMoved(from: Int, to: Int)
 
+  fun onItemRemoved(position: Int)
 }
