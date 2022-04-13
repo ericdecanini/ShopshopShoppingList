@@ -24,6 +24,7 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Lo
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import dagger.android.support.DaggerFragment
@@ -43,6 +44,8 @@ class ListFragment : DaggerFragment() {
     lateinit var dialogNavigator: DialogNavigator
     @Inject
     lateinit var toastNavigator: ToastNavigator
+    @Inject
+    lateinit var snackbarNavigator: SnackbarNavigator
 
     private lateinit var binding: FragmentListBinding
     private val args: ListFragmentArgs by navArgs()
@@ -130,6 +133,7 @@ class ListFragment : DaggerFragment() {
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)
+            is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
         }
     }
 
@@ -172,6 +176,14 @@ class ListFragment : DaggerFragment() {
             message = getString(R.string.delete_dialog_message, listTitle),
             positiveButton = getString(R.string.ok) to { callback() },
             negativeButton = getString(R.string.cancel) to { },
+        )
+    }
+
+    private fun showUndoRemoveSnackbar(removedItem: ShopItem, position: Int) {
+        snackbarNavigator.displaySnackbar(
+            message = getString(R.string.deleted_item, removedItem.name),
+            ctaText = getString(R.string.undo),
+            ctaCallback = { viewModel.reAddItem(removedItem, position) }
         )
     }
 

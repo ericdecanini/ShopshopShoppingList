@@ -142,7 +142,7 @@ class ListViewModel @Inject constructor(
     private fun performAddItem(itemName: String) {
         validateNewItem(itemName)
         clearItemTextField()
-        addAndSaveItem(itemName)
+        addAndSaveNewItem(itemName)
         shoppingList.emit()
     }
 
@@ -158,7 +158,7 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(ClearEditText)
     }
 
-    private fun addAndSaveItem(itemName: String) {
+    private fun addAndSaveNewItem(itemName: String) {
         val shopItem = ShopItem.createNew(itemName)
         shoppingList.items.add(shopItem)
         shoppingList.save()
@@ -235,8 +235,22 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onItemRemoved(position: Int) {
-        shoppingList.items.removeAt(position)
+        val removedItem = shoppingList.items[position]
+        shoppingList.items.remove(removedItem)
         shoppingList.save()
+        showUndoRemoveSnackbar(removedItem, position)
+    }
+
+    private fun showUndoRemoveSnackbar(removedItem: ShopItem, position: Int) {
+        viewEventEmitter.value = ShowUndoRemoveItemSnackbar(removedItem, position)
+    }
+
+    fun reAddItem(shopItem: ShopItem, position: Int) {
+        shoppingList.items.add(position, shopItem)
+        shoppingList.apply {
+            emit()
+            save()
+        }
     }
 
     fun showRenameDialog() {
@@ -316,6 +330,7 @@ class ListViewModel @Inject constructor(
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
+        data class ShowUndoRemoveItemSnackbar(val item: ShopItem, val position: Int) : ViewEvent()
     }
 
     inner class ItemInListException : Throwable()

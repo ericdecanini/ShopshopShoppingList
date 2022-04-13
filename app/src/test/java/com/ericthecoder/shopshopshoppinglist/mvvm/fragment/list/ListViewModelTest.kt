@@ -220,6 +220,27 @@ class ListViewModelTest {
         }
 
         @Test
+        fun `onItemRemoved shows undo snackbar`() {
+            givenShoppingList()
+
+            viewModel.onItemRemoved(0)
+
+            assertThat(viewModel.viewEvent.value).isEqualTo(ShowUndoRemoveItemSnackbar(shopItem, 0))
+        }
+
+        @Test
+        fun `reAddItem adds the item back`() {
+            val removedItem = aShopItem().build()
+            givenShoppingList()
+
+            viewModel.reAddItem(removedItem, 0)
+
+            val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+            assertThat(updatedShoppingList.items.first()).isEqualTo(removedItem)
+            coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
+        }
+
+        @Test
         fun `onDeleteClick updates shopping list and repository`() {
             givenShoppingList()
 

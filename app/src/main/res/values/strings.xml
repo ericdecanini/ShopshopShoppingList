@@ -12,6 +12,7 @@
     <string name="retry">Retry</string>
     <string name="next">Next</string>
     <string name="save">Save</string>
+    <string name="undo">Undo</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="something_went_wrong_try_again">Something went wrong. Please try again.</string>
     <string name="splash_generic_error">An unexpected error has occurred. Please try again.</string>
@@ -42,6 +43,7 @@
     <string name="unnamed_list">Unnamed List</string>
     <string name="item_already_in_list">%1$s is already in the %2$s</string>
     <string name="zero">0</string>
+    <string name="deleted_item">Deleted %1$s</string>
 
     <!-- Upsell Activity -->
     <string name="upsell_title">Shopshop Premium</string>
