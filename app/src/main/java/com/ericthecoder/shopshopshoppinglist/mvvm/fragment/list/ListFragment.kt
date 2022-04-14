@@ -13,12 +13,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG
+import androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_IDLE
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.DraggingState.DRAGGING
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.DraggingState.IDLE
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
@@ -83,9 +87,18 @@ class ListFragment : DaggerFragment() {
 
     private fun setupItemTouchHelper() {
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN or ItemTouchHelper.START or ItemTouchHelper.END,
             ItemTouchHelper.START or ItemTouchHelper.END,
         ) {
+            override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
+                super.onSelectedChanged(viewHolder, actionState)
+                when (actionState) {
+                    ACTION_STATE_DRAG -> viewModel.setDraggingState(DRAGGING)
+                    ACTION_STATE_IDLE -> viewModel.setDraggingState(IDLE)
+                    else -> Unit
+                }
+            }
+
             override fun onMove(
                 recyclerView: RecyclerView,
                 viewHolder: RecyclerView.ViewHolder,
@@ -134,6 +147,7 @@ class ListFragment : DaggerFragment() {
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)
             is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
+            is ToggleFloatingDeleteVisibility -> toggleFloatingDeleteVisibility(event.isVisible)
         }
     }
 
@@ -185,6 +199,16 @@ class ListFragment : DaggerFragment() {
             ctaText = getString(R.string.undo),
             ctaCallback = { viewModel.reAddItem(removedItem, position) }
         )
+    }
+
+    private fun toggleFloatingDeleteVisibility(isVisible: Boolean) {
+        binding.dropToDeleteButton.apply {
+            if (isVisible) {
+                binding.deleteMotionLayout.transitionToEnd()
+            } else {
+                binding.deleteMotionLayout.transitionToStart()
+            }
+        }
     }
 
     private fun renderShoppingList(shoppingList: ShoppingList) {

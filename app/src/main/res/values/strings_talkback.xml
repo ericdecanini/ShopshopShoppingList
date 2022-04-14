@@ -9,5 +9,6 @@
     <string name="talkback_item_name">Item name</string>
     <string name="talkback_quantity_down">Quantity Down</string>
     <string name="talkback_delete_item">Delete Item</string>
+    <string name="talkback_drag_here_to_delete">Drag here to delete</string>
 
 </resources>

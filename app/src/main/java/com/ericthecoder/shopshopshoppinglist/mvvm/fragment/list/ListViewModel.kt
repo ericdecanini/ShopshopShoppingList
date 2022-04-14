@@ -21,6 +21,7 @@ import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProv
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
@@ -36,6 +37,12 @@ class ListViewModel @Inject constructor(
 
     private lateinit var shoppingList: ShoppingList
     private var listId = UNSET
+
+    private var isDragging by Delegates.observable(false) { _, oldValue, newValue ->
+        if (oldValue != newValue) {
+            toggleFloatingDeleteVisibility(newValue)
+        }
+    }
 
     fun loadShoppingList(id: Int) {
         this.listId = id
@@ -105,7 +112,7 @@ class ListViewModel @Inject constructor(
         ))
     }
 
-    private fun renameShoppingList(newName: String) = with (shoppingList) {
+    private fun renameShoppingList(newName: String) = with(shoppingList) {
         rename(newName)
         emit()
         save()
@@ -253,6 +260,17 @@ class ListViewModel @Inject constructor(
         }
     }
 
+    internal fun setDraggingState(state: DraggingState) {
+        isDragging = when (state) {
+            DraggingState.IDLE -> false
+            DraggingState.DRAGGING -> true
+        }
+    }
+
+    private fun toggleFloatingDeleteVisibility(isVisible: Boolean) {
+        viewEventEmitter.postValue(ToggleFloatingDeleteVisibility(isVisible))
+    }
+
     fun showRenameDialog() {
         clearFocus()
         postDisplayRenameDialog(shoppingList.name)
@@ -331,11 +349,16 @@ class ListViewModel @Inject constructor(
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
         data class ShowUndoRemoveItemSnackbar(val item: ShopItem, val position: Int) : ViewEvent()
+        data class ToggleFloatingDeleteVisibility(val isVisible: Boolean) : ViewEvent()
     }
 
     inner class ItemInListException : Throwable()
 
     inner class BlankFieldException : Throwable()
+
+    internal enum class DraggingState {
+        IDLE, DRAGGING
+    }
 
     companion object {
         internal const val UNSET = -1
