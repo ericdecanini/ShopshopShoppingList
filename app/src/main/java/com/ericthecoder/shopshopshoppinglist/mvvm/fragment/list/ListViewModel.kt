@@ -20,8 +20,8 @@ import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRep
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.lang.Integer.min
 import javax.inject.Inject
-import kotlin.properties.Delegates
 
 class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
@@ -37,12 +37,6 @@ class ListViewModel @Inject constructor(
 
     private lateinit var shoppingList: ShoppingList
     private var listId = UNSET
-
-    private var isDragging by Delegates.observable(false) { _, oldValue, newValue ->
-        if (oldValue != newValue) {
-            toggleFloatingDeleteVisibility(newValue)
-        }
-    }
 
     fun loadShoppingList(id: Int) {
         this.listId = id
@@ -230,7 +224,7 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onQuantityChanged(editText: EditText, shopItem: ShopItem) {
-        val newQuantity = editText.text.toString().toIntOrNull() ?: 0
+        val newQuantity = min(editText.text.toString().toInt(), MAX_QUANTITY)
         editText.setText(newQuantity.toString())
         shopItem.quantity = newQuantity
         shoppingList.save()
@@ -260,12 +254,12 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    internal fun setDraggingState(state: DraggingState) {
-        isDragging = when (state) {
+    internal fun setDraggingState(state: DraggingState) = toggleFloatingDeleteVisibility(
+        when (state) {
             DraggingState.IDLE -> false
             DraggingState.DRAGGING -> true
         }
-    }
+    )
 
     private fun toggleFloatingDeleteVisibility(isVisible: Boolean) {
         viewEventEmitter.postValue(ToggleFloatingDeleteVisibility(isVisible))
@@ -362,5 +356,6 @@ class ListViewModel @Inject constructor(
 
     companion object {
         internal const val UNSET = -1
+        internal const val MAX_QUANTITY = 10000
     }
 }
