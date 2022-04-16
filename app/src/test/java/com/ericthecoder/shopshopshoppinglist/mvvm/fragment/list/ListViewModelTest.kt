@@ -45,6 +45,7 @@ class ListViewModelTest {
 
     @BeforeEach
     fun setUp() {
+        every { resourceProvider.getString(any()) } returns ""
         every { resourceProvider.getString(any(), *varargAny { true }) } returns ""
         every { resourceProvider.getString(R.string.unnamed_list) } returns UNNAMED_LIST
 
@@ -142,6 +143,23 @@ class ListViewModelTest {
             val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
             assertThat(shopItem.name).isEqualTo(name)
             coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
+        }
+
+        @Test
+        fun `when new name is blank, onNameChanged shows error and does not change name`() {
+            givenShoppingList()
+            val editText: EditText = mockk(relaxUnitFun = true)
+            val editable: Editable = mockk()
+            val oldName = shopItem.name
+            val newName = ""
+            every { editable.toString() } returns (newName)
+            every { editText.text } returns (editable)
+
+            viewModel.onNameChanged(editText, shopItem)
+
+            assertThat(shopItem.name).isEqualTo(oldName)
+            coVerify(inverse = true) { shoppingListRepository.updateShoppingList(any()) }
+            assertThat(viewModel.viewEvent.value).isInstanceOf(DisplayGenericDialog::class.java)
         }
 
         @Test

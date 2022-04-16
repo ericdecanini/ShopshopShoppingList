@@ -44,7 +44,7 @@
             android:autofillHints="@string/talkback_item_name"
             android:inputType="textCapSentences"
             android:background="@drawable/bg_ripple_gray"
-            android:text="@={viewstate.name}"
+            android:text="@{viewstate.name}"
             android:textColor="@{viewstate.checked ? @color/gray_700 : @color/defaultTextColor}"
             app:strikeThrough="@{viewstate.checked}"
             app:onFocusLost="@{(view) -> handler.onNameChanged(view, viewstate)}"

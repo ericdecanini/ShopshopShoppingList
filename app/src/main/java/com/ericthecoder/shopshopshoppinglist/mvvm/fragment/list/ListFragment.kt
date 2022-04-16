@@ -127,6 +127,7 @@ class ListFragment : DaggerFragment() {
             SignalBlankAddItem -> signalAddItemFieldError()
             ResetAddItem -> resetAddItem()
             HideKeyboard -> hideKeyboard()
+            is DisplayGenericDialog -> displayGenericDialog(event.title, event.message)
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
@@ -150,6 +151,10 @@ class ListFragment : DaggerFragment() {
     private fun hideKeyboard() {
         val imm = ContextCompat.getSystemService(binding.root.context, InputMethodManager::class.java)
         imm?.hideSoftInputFromWindow(view?.windowToken, 0)
+    }
+
+    private fun displayGenericDialog(title: String, message: String) {
+        dialogNavigator.displayGenericDialog(title = title, message = message)
     }
 
     private fun displayNewListDialog(callback: (String) -> Unit) {

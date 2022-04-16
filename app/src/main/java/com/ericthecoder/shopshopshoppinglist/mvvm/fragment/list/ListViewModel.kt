@@ -215,8 +215,32 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
-        shopItem.name = editText.text.toString()
+        try {
+            val newName = editText.text.toString()
+            validateNameChanged(newName)
+            setNewItemName(shopItem, newName)
+        } catch (exception: BlankFieldException) {
+            handleNameChangedError(editText, shopItem)
+        }
+    }
+
+    private fun validateNameChanged(newName: String) {
+        if (newName.isBlank()) {
+            throw BlankFieldException()
+        }
+    }
+
+    private fun setNewItemName(shopItem: ShopItem, newName: String) {
+        shopItem.name = newName
         shoppingList.save()
+    }
+
+    private fun handleNameChangedError(editText: EditText, shopItem: ShopItem) {
+        editText.setText(shopItem.name)
+        viewEventEmitter.value = DisplayGenericDialog(
+            resourceProvider.getString(R.string.error),
+            resourceProvider.getString(R.string.empty_item_name_entered),
+        )
     }
 
     private fun ShoppingList.save() = launchOnIo {
@@ -327,6 +351,7 @@ class ListViewModel @Inject constructor(
         object SignalBlankAddItem : ViewEvent()
         object ResetAddItem : ViewEvent()
         object HideKeyboard : ViewEvent()
+        class DisplayGenericDialog(val title: String, val message: String) : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
