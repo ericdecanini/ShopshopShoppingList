@@ -68,6 +68,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clipChildren="false"
+            app:clearsFocusOnClick="@{true}"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -76,7 +77,6 @@
                 android:layout_height="0dp"
                 android:onClick="@{() -> viewmodel.hideKeyboard()}"
                 android:clipChildren="false"
-                android:paddingBottom="90dp"
                 app:clearsFocusOnClick="@{true}">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -130,6 +130,12 @@
                     app:layout_constraintTop_toBottomOf="@id/add_item_layout"
                     tools:itemCount="4"
                     tools:listitem="@layout/list_item_shopitem" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="90dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/shop_list" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
