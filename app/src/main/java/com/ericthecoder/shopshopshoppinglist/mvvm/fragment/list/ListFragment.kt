@@ -19,6 +19,7 @@ import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
+import com.ericthecoder.shopshopshoppinglist.library.util.hideKeyboard
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
@@ -126,7 +127,7 @@ class ListFragment : DaggerFragment() {
             ClearEditText -> binding.addItemEdit.setText("")
             SignalBlankAddItem -> signalAddItemFieldError()
             ResetAddItem -> resetAddItem()
-            HideKeyboard -> hideKeyboard()
+            HideKeyboard -> hideKeyboard(binding.root)
             is DisplayGenericDialog -> displayGenericDialog(event.title, event.message)
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
@@ -146,11 +147,6 @@ class ListFragment : DaggerFragment() {
     private fun resetAddItem() {
         val defaultEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item)
         binding.addItemLayout.background = defaultEditTextBackground
-    }
-
-    private fun hideKeyboard() {
-        val imm = ContextCompat.getSystemService(binding.root.context, InputMethodManager::class.java)
-        imm?.hideSoftInputFromWindow(view?.windowToken, 0)
     }
 
     private fun displayGenericDialog(title: String, message: String) {
