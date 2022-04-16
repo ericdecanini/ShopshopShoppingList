@@ -254,17 +254,6 @@ class ListViewModel @Inject constructor(
         }
     }
 
-    internal fun setDraggingState(state: DraggingState) = toggleFloatingDeleteVisibility(
-        when (state) {
-            DraggingState.IDLE -> false
-            DraggingState.DRAGGING -> true
-        }
-    )
-
-    private fun toggleFloatingDeleteVisibility(isVisible: Boolean) {
-        viewEventEmitter.postValue(ToggleFloatingDeleteVisibility(isVisible))
-    }
-
     fun showRenameDialog() {
         clearFocus()
         postDisplayRenameDialog(shoppingList.name)
@@ -343,16 +332,11 @@ class ListViewModel @Inject constructor(
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
         data class ShowUndoRemoveItemSnackbar(val item: ShopItem, val position: Int) : ViewEvent()
-        data class ToggleFloatingDeleteVisibility(val isVisible: Boolean) : ViewEvent()
     }
 
     inner class ItemInListException : Throwable()
 
     inner class BlankFieldException : Throwable()
-
-    internal enum class DraggingState {
-        IDLE, DRAGGING
-    }
 
     companion object {
         internal const val UNSET = -1

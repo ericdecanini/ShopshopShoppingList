@@ -67,6 +67,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:clipChildren="false"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -74,6 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:onClick="@{() -> viewmodel.hideKeyboard()}"
+                android:clipChildren="false"
+                android:paddingBottom="90dp"
                 app:clearsFocusOnClick="@{true}">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -122,6 +125,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
+                    android:clipToPadding="false"
                     android:onClick="@{() -> viewmodel.hideKeyboard()}"
                     app:layout_constraintTop_toBottomOf="@id/add_item_layout"
                     tools:itemCount="4"
@@ -229,28 +233,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:visibility="gone" />
-
-        <androidx.constraintlayout.motion.widget.MotionLayout
-            android:id="@+id/delete_motion_layout"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layoutDescription="@xml/delete_button_scene">
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/drop_to_delete_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_delete_white"
-                android:contentDescription="@string/talkback_drag_here_to_delete"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintVertical_bias="0.9" />
-
-        </androidx.constraintlayout.motion.widget.MotionLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

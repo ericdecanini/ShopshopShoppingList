@@ -32,11 +32,13 @@ class ShopItemAdapter(
 
     fun moveItem(from: Int, to: Int) {
         items.moveItem(from, to)
+        notifyItemMoved(from, to)
         shopItemEventHandler.onItemMoved(from, to)
     }
 
     fun removeItem(position: Int) {
         items.removeAt(position)
+        notifyItemRemoved(position)
         shopItemEventHandler.onItemRemoved(position)
     }
 

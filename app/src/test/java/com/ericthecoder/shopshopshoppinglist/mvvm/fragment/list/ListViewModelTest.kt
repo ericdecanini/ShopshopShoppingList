@@ -12,7 +12,6 @@ import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.exception.DbQueryFailedException
 import com.ericthecoder.shopshopshoppinglist.library.extension.observeWithMock
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.Companion.UNSET
-import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.DraggingState
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Error
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
@@ -358,22 +357,6 @@ class ListViewModelTest {
             viewModel.resetAddItemBackground()
 
             assertThat(viewModel.viewEvent.value).isEqualTo(ResetAddItem)
-        }
-
-        @Test
-        fun `setDraggingState to idle hides floating delete button`() {
-
-            viewModel.setDraggingState(DraggingState.IDLE)
-
-            assertThat(viewModel.viewEvent.value).isEqualTo(ToggleFloatingDeleteVisibility(false))
-        }
-
-        @Test
-        fun `setDraggingState to dragging shows floating delete button`() {
-
-            viewModel.setDraggingState(DraggingState.DRAGGING)
-
-            assertThat(viewModel.viewEvent.value).isEqualTo(ToggleFloatingDeleteVisibility(true))
         }
     }
 
