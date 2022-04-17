@@ -4,6 +4,7 @@ package com.ericthecoder.dependencies.android.sharedprefs
 class SharedPrefsKeys {
 
     val KEY_ONBOARDING_SHOWN = "KEY_ONBOARDING_SHOWN"
-    val KEY_IS_PREMIUM = "KEY_IS_PREMIUM"
+    val KEY_PREMIUM_STATUS = "KEY_IS_PREMIUM"
     val KEY_CURRENT_THEME = "KEY_CURRENT_THEME_COLOR"
+    val KEY_HAS_CHANGED_THEME = "KEY_HAS_CHANGED_THEME"
 }

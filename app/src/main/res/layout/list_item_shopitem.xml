@@ -64,6 +64,7 @@
             android:paddingEnd="@dimen/quantity_padding"
             android:background="@drawable/bg_ripple_gray"
             android:hint="@string/zero"
+            android:maxLength="4"
             android:importantForAutofill="no"
             android:text="@{Integer.toString(viewstate.quantity), default=0}"
             android:inputType="number"

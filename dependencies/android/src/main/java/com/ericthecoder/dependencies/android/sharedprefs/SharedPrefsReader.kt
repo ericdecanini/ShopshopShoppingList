@@ -13,10 +13,13 @@ class SharedPrefsReader(
         sharedPreferences.getBoolean(keys.KEY_ONBOARDING_SHOWN, false)
 
     override fun getPremiumStatus() =
-        sharedPreferences.getInt(keys.KEY_IS_PREMIUM, 0).let { premiumCode ->
+        sharedPreferences.getInt(keys.KEY_PREMIUM_STATUS, 0).let { premiumCode ->
             PremiumStatus.values().first { it.code == premiumCode }
         }
 
     override fun getCurrentTheme() =
         sharedPreferences.getInt(keys.KEY_CURRENT_THEME, 0)
+
+    override fun hasChangedTheme() =
+        sharedPreferences.getBoolean(keys.KEY_HAS_CHANGED_THEME, false)
 }

@@ -16,11 +16,15 @@ class SharedPrefsWriter(
     }
 
     override fun setPremiumStatus(premiumStatus: PremiumStatus) {
-        saveInt(keys.KEY_IS_PREMIUM, premiumStatus.code)
+        saveInt(keys.KEY_PREMIUM_STATUS, premiumStatus.code)
     }
 
     override fun setCurrentTheme(index: Int) {
         saveInt(keys.KEY_CURRENT_THEME, index)
+    }
+
+    override fun setHasChangedTheme(hasChangedTheme: Boolean) {
+        saveBoolean(keys.KEY_HAS_CHANGED_THEME, hasChangedTheme)
     }
 
     private fun saveBoolean(key: String, value: Boolean) {

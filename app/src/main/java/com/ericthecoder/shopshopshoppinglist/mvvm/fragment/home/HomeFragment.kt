@@ -2,6 +2,8 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
 import android.os.Bundle
 import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -20,6 +22,7 @@ import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+
 
 class HomeFragment : DaggerFragment() {
 
@@ -45,7 +48,7 @@ class HomeFragment : DaggerFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
@@ -95,6 +98,7 @@ class HomeFragment : DaggerFragment() {
         when (event) {
             is SetHasOptionsMenu -> setHasOptionsMenu(event.enabled)
             is OpenList -> goToList(event.shoppingList)
+            is SetPlayingBreatheTitle -> setPlayingBreatheTitle(event.playing)
             CycleTheme -> cycleTheme()
             OpenUpsell -> navigator.goToUpsell()
         }
@@ -104,6 +108,15 @@ class HomeFragment : DaggerFragment() {
         val action = HomeFragmentDirections.actionHomeFragmentToListFragment()
         shoppingList?.let { action.shoppingListId = it.id }
         findNavController().navigate(action)
+    }
+
+    private fun setPlayingBreatheTitle(playing: Boolean) {
+        if (playing) {
+            val breatheAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.breathe)
+            binding.title.startAnimation(breatheAnimation)
+        } else {
+            binding.title.clearAnimation()
+        }
     }
 
     private fun cycleTheme() {
