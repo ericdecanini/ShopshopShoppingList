@@ -16,4 +16,7 @@ class SharedPrefsReader(
         sharedPreferences.getInt(keys.KEY_IS_PREMIUM, 0).let { premiumCode ->
             PremiumStatus.values().first { it.code == premiumCode }
         }
+
+    override fun getCurrentThemeColorIndex() =
+        sharedPreferences.getInt(keys.KEY_CURRENT_THEME_COLOR_INDEX, 0)
 }

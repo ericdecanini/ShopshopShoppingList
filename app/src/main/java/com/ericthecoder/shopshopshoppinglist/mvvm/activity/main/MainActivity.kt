@@ -3,6 +3,7 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.activity.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.annotation.ColorInt
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -21,78 +22,84 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 class MainActivity : DaggerAppCompatActivity() {
 
-  @Inject
-  lateinit var viewModelFactory: ViewModelProvider.Factory
-  private val viewModel by lazy {
-    ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
-  }
-
-  @Inject lateinit var navigator: Navigator
-  @Inject lateinit var dialogNavigator: DialogNavigator
-
-  private lateinit var binding: ActivityMainBinding
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-    binding.lifecycleOwner = this
-    binding.setVariable(BR.viewmodel, viewModel)
-
-    loadAd()
-    viewModel.launchOnboardingIfNecessary()
-    handleIntent()
-    observeViewEvents()
-  }
-
-  override fun onResume() {
-    super.onResume()
-    viewModel.fetchPremiumState()
-  }
-
-  private fun observeViewEvents() = viewModel.viewEvent.observe(this) { event ->
-    when (event) {
-      GoToList -> goToList()
-      GoToOnboarding -> navigator.goToOnboarding()
-      ShowPremiumPurchasedDialog -> showPremiumPurchasedDialog()
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    private val viewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
     }
-  }
 
-  private fun goToList() {
-    val action = NavGraphDirections.actionOpenListFragment()
-    findNavController(R.id.fragment_container_view).navigate(action)
-  }
+    @Inject lateinit var navigator: Navigator
+    @Inject lateinit var dialogNavigator: DialogNavigator
 
-  private fun handleIntent() {
-    intent.extras?.let { extras ->
-      (extras.getSerializable(KEY_NESTED_NAVIGATION_INSTRUCTION) as? NestedNavigationInstruction)
-        ?.let {
-          viewModel.handleNestedInstruction(it)
+    private lateinit var binding: ActivityMainBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding.lifecycleOwner = this
+        binding.setVariable(BR.viewmodel, viewModel)
+
+        viewModel.initTheme()
+        loadAd()
+        viewModel.launchOnboardingIfNecessary()
+        handleIntent()
+        observeViewEvents()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchPremiumState()
+    }
+
+    private fun observeViewEvents() = viewModel.viewEvent.observe(this) { event ->
+        when (event) {
+            GoToList -> goToList()
+            GoToOnboarding -> navigator.goToOnboarding()
+            ShowPremiumPurchasedDialog -> showPremiumPurchasedDialog()
+            is SetStatusBarColor -> setStatusBarColor(event.color)
         }
     }
 
-    intent.removeExtra(KEY_NESTED_NAVIGATION_INSTRUCTION)
-  }
+    private fun goToList() {
+        val action = NavGraphDirections.actionOpenListFragment()
+        findNavController(R.id.fragment_container_view).navigate(action)
+    }
 
-  private fun loadAd() {
-    val adRequest = AdRequest.Builder().build()
-    binding.adView.loadAd(adRequest)
-  }
+    private fun handleIntent() {
+        intent.extras?.let { extras ->
+            (extras.getSerializable(KEY_NESTED_NAVIGATION_INSTRUCTION) as? NestedNavigationInstruction)
+                ?.let {
+                    viewModel.handleNestedInstruction(it)
+                }
+        }
 
-  private fun showPremiumPurchasedDialog() = dialogNavigator.displayGenericDialog(
-    title = getString(R.string.purchase_dialog_purchased_title),
-    message = getString(R.string.purchase_dialog_purchased_message),
-    positiveButton = getString(R.string.ok) to {},
-  )
+        intent.removeExtra(KEY_NESTED_NAVIGATION_INSTRUCTION)
+    }
 
-  companion object {
+    private fun loadAd() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
+    }
 
-    private const val KEY_NESTED_NAVIGATION_INSTRUCTION = "KEY_NESTED_NAVIGATION_INSTRUCTION"
+    private fun showPremiumPurchasedDialog() = dialogNavigator.displayGenericDialog(
+        title = getString(R.string.purchase_dialog_purchased_title),
+        message = getString(R.string.purchase_dialog_purchased_message),
+        positiveButton = getString(R.string.ok) to {},
+    )
 
-    fun getIntent(context: Context) = Intent(context, MainActivity::class.java)
-      .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    private fun setStatusBarColor(@ColorInt color: Int) {
+        window.statusBarColor = color
+    }
 
-    fun getIntent(context: Context, nestedNavigationInstruction: NestedNavigationInstruction) =
-      getIntent(context)
-        .putExtra(KEY_NESTED_NAVIGATION_INSTRUCTION, nestedNavigationInstruction)
-  }
+    companion object {
+
+        private const val KEY_NESTED_NAVIGATION_INSTRUCTION = "KEY_NESTED_NAVIGATION_INSTRUCTION"
+
+        fun getIntent(context: Context) = Intent(context, MainActivity::class.java)
+            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
+        fun getIntent(context: Context, nestedNavigationInstruction: NestedNavigationInstruction) =
+            getIntent(context)
+                .putExtra(KEY_NESTED_NAVIGATION_INSTRUCTION, nestedNavigationInstruction)
+    }
 }

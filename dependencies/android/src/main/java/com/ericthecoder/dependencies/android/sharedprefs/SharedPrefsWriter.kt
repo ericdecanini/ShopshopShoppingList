@@ -19,6 +19,10 @@ class SharedPrefsWriter(
         saveInt(keys.KEY_IS_PREMIUM, premiumStatus.code)
     }
 
+    override fun setCurrentThemeColorIndex(index: Int) {
+        saveInt(keys.KEY_CURRENT_THEME_COLOR_INDEX, index)
+    }
+
     private fun saveBoolean(key: String, value: Boolean) {
         editor.putBoolean(key, value)
         editor.apply()

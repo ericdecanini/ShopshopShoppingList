@@ -13,6 +13,7 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
@@ -45,17 +46,13 @@ class HomeFragment : DaggerFragment() {
         binding.lifecycleOwner = this
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar as Toolbar)
 
+        viewModel.initTheme()
         initShoppingLists()
         observeState()
         observeEvents()
+        setToolbarClickListener()
 
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.refreshLists()
-        viewModel.refreshPremiumState()
     }
 
     private fun initShoppingLists() {
@@ -74,10 +71,17 @@ class HomeFragment : DaggerFragment() {
 
     private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
         when (event) {
-            is HomeViewModel.ViewEvent.SetHasOptionsMenu -> setHasOptionsMenu(event.enabled)
-            is HomeViewModel.ViewEvent.OpenList -> goToList(event.shoppingList)
-            HomeViewModel.ViewEvent.OpenUpsell -> navigator.goToUpsell()
+            is SetHasOptionsMenu -> setHasOptionsMenu(event.enabled)
+            is OpenList -> goToList(event.shoppingList)
+            is SetThemeColor -> updateThemeColor(event.color)
+            OpenUpsell -> navigator.goToUpsell()
         }
+    }
+
+    private fun updateShoppingLists(lists: List<ShoppingList>) {
+        this.shoppingLists.clear()
+        this.shoppingLists.addAll(lists)
+        adapter.notifyDataSetChanged()
     }
 
     private fun goToList(shoppingList: ShoppingList? = null) {
@@ -86,10 +90,18 @@ class HomeFragment : DaggerFragment() {
         findNavController().navigate(action)
     }
 
-    private fun updateShoppingLists(lists: List<ShoppingList>) {
-        this.shoppingLists.clear()
-        this.shoppingLists.addAll(lists)
-        adapter.notifyDataSetChanged()
+    private fun updateThemeColor(color: Int) {
+        binding.toolbar.setBackgroundColor(color)
+    }
+
+    private fun setToolbarClickListener() {
+        binding.toolbar.setOnClickListener { viewModel.onToolbarClick() }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshLists()
+        viewModel.refreshPremiumState()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -8,4 +8,5 @@ interface PersistentStorageReader {
 
     fun getPremiumStatus(): PremiumStatus
 
+    fun getCurrentThemeColorIndex(): Int
 }
