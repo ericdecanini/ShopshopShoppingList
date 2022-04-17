@@ -2,6 +2,7 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell
 
 import android.content.Context
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +10,7 @@ import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityUpsellBinding
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ViewEvent.NavigateUp
+import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -18,8 +20,13 @@ class UpsellActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(UpsellViewModel::class.java)
+    }
+
+    private val themeViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
     }
 
     private lateinit var binding: ActivityUpsellBinding
@@ -31,8 +38,25 @@ class UpsellActivity : DaggerAppCompatActivity() {
         binding.setVariable(BR.viewmodel, viewModel)
 
         setSupportActionBar(binding.toolbar)
+        observeTheme()
         observeViewEvents()
         observePurchaseResult()
+    }
+
+    private fun observeTheme() = themeViewModel.theme.observe(this) { theme ->
+        setTheme(theme)
+    }
+
+    private fun setTheme(theme: ThemeViewModel.Theme) {
+        val themeColor = getColor(theme.colorRes)
+        val themeColorVariant = getColor(theme.colorVariantRes)
+
+        binding.toolbar.setBackgroundColor(themeColor)
+        window.statusBarColor = themeColorVariant
+        binding.colorScrimOne.backgroundTintList = ColorStateList.valueOf(themeColorVariant)
+        binding.colorScrimTwo.backgroundTintList = ColorStateList.valueOf(themeColorVariant)
+        binding.imageBoxOneTextbox.setBackgroundColor(themeColorVariant)
+        binding.imageBoxTwoTextbox.setBackgroundColor(themeColorVariant)
     }
 
     private fun observeViewEvents() = viewModel.viewEventLiveData.observe(this) { event ->

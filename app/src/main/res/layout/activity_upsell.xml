@@ -109,6 +109,7 @@
           />
 
       <View
+          android:id="@+id/color_scrim_one"
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:background="@drawable/dark_green_vertical_fade"
@@ -165,6 +166,7 @@
           />
 
       <View
+          android:id="@+id/color_scrim_two"
           android:layout_width="match_parent"
           android:layout_height="0dp"
           android:background="@drawable/dark_green_vertical_fade"
