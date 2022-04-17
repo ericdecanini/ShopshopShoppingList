@@ -20,7 +20,6 @@ import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRep
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.lang.Integer.min
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
@@ -248,7 +247,7 @@ class ListViewModel @Inject constructor(
     }
 
     override fun onQuantityChanged(editText: EditText, shopItem: ShopItem) {
-        val newQuantity = min(editText.text.toString().toInt(), MAX_QUANTITY)
+        val newQuantity = editText.text.toString().toInt()
         editText.setText(newQuantity.toString())
         shopItem.quantity = newQuantity
         shoppingList.save()
@@ -365,6 +364,5 @@ class ListViewModel @Inject constructor(
 
     companion object {
         internal const val UNSET = -1
-        internal const val MAX_QUANTITY = 10000
     }
 }

@@ -174,18 +174,6 @@ class ListViewModelTest {
             coVerify { shoppingListRepository.updateShoppingList(shoppingList) }
         }
 
-        @Test
-        fun `quantity maxes at 10000`() {
-            givenShoppingList()
-            val mockEditText = mockEditText("50000")
-            coJustRun { shoppingListRepository.updateShoppingList(shoppingList) }
-
-            viewModel.onQuantityChanged(mockEditText, shoppingList.items.first())
-
-            assertThat(shoppingList.items.first().quantity).isEqualTo(10000)
-            coVerify { shoppingListRepository.updateShoppingList(shoppingList) }
-        }
-
         private fun mockEditText(text: String): EditText {
             val mockEditText = mockk<EditText>(relaxUnitFun = true)
             val mockEditable = mockk<Editable>()
