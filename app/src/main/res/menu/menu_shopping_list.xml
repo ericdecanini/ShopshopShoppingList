@@ -14,4 +14,11 @@
         android:orderInCategory="300"
         app:showAsAction="never" />
 
+    <item
+        android:id="@+id/ic_share"
+        android:title="@string/share"
+        android:icon="@drawable/ic_share"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
+
 </menu>

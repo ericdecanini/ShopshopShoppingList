@@ -364,6 +364,31 @@ class ListViewModelTest {
 
             assertThat(viewModel.viewEvent.value).isEqualTo(ResetAddItem)
         }
+
+        @Test
+        fun `onShareButtonClicked emits share event`() {
+            givenShoppingList()
+
+            viewModel.onShareButtonClicked()
+
+            assertThat(viewModel.viewEvent.value).isInstanceOf(Share::class.java)
+        }
+
+        @Test
+        fun `onShareButtonClicked builds share from shopping list`() {
+            givenShoppingList()
+
+            viewModel.onShareButtonClicked()
+
+            val shareText = (viewModel.viewEvent.value as Share).text
+            assertThat(shareText.lines()[0]).isEqualTo(shoppingList.name)
+            assertThat(shareText.lines()[1]).isBlank
+            shoppingList.items.forEachIndexed { index, shopItem ->
+                assertThat(shareText.lines()[index + 2]).isEqualTo(
+                    "${shopItem.quantity} ${shopItem.name}"
+                )
+            }
+        }
     }
 
     private fun givenShoppingList(shoppingListOverride: ShoppingList? = null) {

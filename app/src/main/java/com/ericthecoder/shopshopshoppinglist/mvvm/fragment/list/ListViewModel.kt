@@ -319,6 +319,22 @@ class ListViewModel @Inject constructor(
         return wasUpdated
     }
 
+    fun onShareButtonClicked() {
+        viewEventEmitter.value = Share(buildShoppingListAsText())
+    }
+
+    private fun buildShoppingListAsText() = StringBuilder().apply {
+        appendLine(shoppingList.name)
+        appendLine()
+        shoppingList.items.forEach { item ->
+            append("${item.quantity} ${item.name}")
+            if (item.checked) {
+                append(" (checked)")
+            }
+            appendLine()
+        }
+    }.toString()
+
     fun onBackButtonPressed() {
         navigateUp()
     }
@@ -355,6 +371,7 @@ class ListViewModel @Inject constructor(
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
+        class Share(val text: String) : ViewEvent()
         data class ShowUndoRemoveItemSnackbar(val item: ShopItem, val position: Int) : ViewEvent()
     }
 

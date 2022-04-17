@@ -1,12 +1,11 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.view.animation.AnimationUtils
-import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -150,6 +149,7 @@ class ListFragment : DaggerFragment() {
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)
+            is Share -> share(event.text)
             is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
         }
     }
@@ -195,6 +195,17 @@ class ListFragment : DaggerFragment() {
         )
     }
 
+    private fun share(text: String) {
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, text)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
     private fun showUndoRemoveSnackbar(removedItem: ShopItem, position: Int) {
         snackbarNavigator.displaySnackbar(
             message = getString(R.string.deleted_item, removedItem.name),
@@ -224,6 +235,7 @@ class ListFragment : DaggerFragment() {
         when (item.itemId) {
             R.id.ic_delete -> viewModel.showDeleteDialog()
             R.id.ic_clear_checked -> viewModel.clearCheckedItems()
+            R.id.ic_share -> viewModel.onShareButtonClicked()
             else -> return false
         }
         return true

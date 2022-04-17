@@ -13,6 +13,7 @@
     <string name="next">Next</string>
     <string name="save">Save</string>
     <string name="undo">Undo</string>
+    <string name="share">Share</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="something_went_wrong_try_again">Something went wrong. Please try again.</string>
     <string name="splash_generic_error">An unexpected error has occurred. Please try again.</string>
