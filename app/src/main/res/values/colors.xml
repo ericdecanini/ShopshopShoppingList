@@ -57,22 +57,4 @@
 
     <color name="lightblue_secondary">#B3E5FC</color>
     <color name="lightblue_secondary_dark">#4FC3F7</color>
-
-    <array name="theme_colors">
-        <item>@color/colorPrimary</item>
-        <item>#F44336</item>
-        <item>#2196F3</item>
-        <item>#FDD835</item>
-        <item>#512DA8</item>
-        <item>#F48FB1</item>
-    </array>
-
-    <array name="theme_colors_variant">
-        <item>@color/colorPrimaryDark</item>
-        <item>#D32F2F</item>
-        <item>#1976D2</item>
-        <item>#F9A825</item>
-        <item>#512DA8</item>
-        <item>#EC407A</item>
-    </array>
 </resources>

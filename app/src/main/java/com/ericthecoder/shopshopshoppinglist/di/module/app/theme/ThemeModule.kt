@@ -6,11 +6,13 @@ import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import javax.inject.Singleton
 
 @Module
 interface ThemeModule {
 
     @Binds
+    @Singleton
     @IntoMap
     @ViewModelKey(ThemeViewModel::class)
     fun bindThemeViewModel(viewModel: ThemeViewModel): ViewModel

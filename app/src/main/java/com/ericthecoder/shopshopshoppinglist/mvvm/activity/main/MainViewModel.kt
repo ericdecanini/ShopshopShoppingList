@@ -1,6 +1,5 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.activity.main
 
-import androidx.annotation.ColorInt
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -71,6 +70,5 @@ class MainViewModel @Inject constructor(
         object GoToList : ViewEvent()
         object GoToOnboarding : ViewEvent()
         object ShowPremiumPurchasedDialog : ViewEvent()
-        data class SetStatusBarColor(@ColorInt val color: Int) : ViewEvent()
     }
 }

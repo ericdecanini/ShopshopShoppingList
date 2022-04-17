@@ -3,7 +3,6 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.activity.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.annotation.ColorInt
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -12,6 +11,7 @@ import com.ericthecoder.shopshopshoppinglist.NavGraphDirections
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityMainBinding
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel.ViewEvent.*
+import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.gms.ads.AdRequest
@@ -24,8 +24,13 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+    }
+
+    private val themeViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
     }
 
     @Inject lateinit var navigator: Navigator
@@ -40,31 +45,18 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.setVariable(BR.viewmodel, viewModel)
 
         loadAd()
-        viewModel.launchOnboardingIfNecessary()
-        handleIntent()
+        handleNestedNavigation()
+        observeTheme()
         observeViewEvents()
+        viewModel.launchOnboardingIfNecessary()
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.fetchPremiumState()
+    private fun loadAd() {
+        val adRequest = AdRequest.Builder().build()
+        binding.adView.loadAd(adRequest)
     }
 
-    private fun observeViewEvents() = viewModel.viewEvent.observe(this) { event ->
-        when (event) {
-            GoToList -> goToList()
-            GoToOnboarding -> navigator.goToOnboarding()
-            ShowPremiumPurchasedDialog -> showPremiumPurchasedDialog()
-            is SetStatusBarColor -> setStatusBarColor(event.color)
-        }
-    }
-
-    private fun goToList() {
-        val action = NavGraphDirections.actionOpenListFragment()
-        findNavController(R.id.fragment_container_view).navigate(action)
-    }
-
-    private fun handleIntent() {
+    private fun handleNestedNavigation() {
         intent.extras?.let { extras ->
             (extras.getSerializable(KEY_NESTED_NAVIGATION_INSTRUCTION) as? NestedNavigationInstruction)
                 ?.let {
@@ -75,9 +67,27 @@ class MainActivity : DaggerAppCompatActivity() {
         intent.removeExtra(KEY_NESTED_NAVIGATION_INSTRUCTION)
     }
 
-    private fun loadAd() {
-        val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+    private fun observeTheme() {
+        themeViewModel.theme.observe(this) { theme ->
+            setTheme(theme)
+        }
+    }
+
+    private fun setTheme(theme: ThemeViewModel.Theme) {
+        window.statusBarColor = resources.getColor(theme.colorVariantRes, getTheme())
+    }
+
+    private fun observeViewEvents() = viewModel.viewEvent.observe(this) { event ->
+        when (event) {
+            GoToList -> goToList()
+            GoToOnboarding -> navigator.goToOnboarding()
+            ShowPremiumPurchasedDialog -> showPremiumPurchasedDialog()
+        }
+    }
+
+    private fun goToList() {
+        val action = NavGraphDirections.actionOpenListFragment()
+        findNavController(R.id.fragment_container_view).navigate(action)
     }
 
     private fun showPremiumPurchasedDialog() = dialogNavigator.displayGenericDialog(
@@ -86,8 +96,9 @@ class MainActivity : DaggerAppCompatActivity() {
         positiveButton = getString(R.string.ok) to {},
     )
 
-    private fun setStatusBarColor(@ColorInt color: Int) {
-        window.statusBarColor = color
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchPremiumState()
     }
 
     companion object {

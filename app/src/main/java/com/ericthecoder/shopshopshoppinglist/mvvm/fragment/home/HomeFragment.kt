@@ -53,6 +53,7 @@ class HomeFragment : DaggerFragment() {
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar as Toolbar)
 
         initShoppingLists()
+        observeTheme()
         observeState()
         observeEvents()
         setToolbarClickListener()
@@ -65,6 +66,16 @@ class HomeFragment : DaggerFragment() {
         binding.shoppingLists.layoutManager = LinearLayoutManager(context)
     }
 
+    private fun observeTheme() {
+        themeViewModel.theme.observe(viewLifecycleOwner) { theme ->
+            setTheme(theme)
+        }
+    }
+
+    private fun setTheme(theme: ThemeViewModel.Theme) {
+        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
+    }
+
     private fun observeState() {
         viewModel.viewState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -72,6 +83,12 @@ class HomeFragment : DaggerFragment() {
                 else -> doNothing()
             }
         }
+    }
+
+    private fun updateShoppingLists(lists: List<ShoppingList>) {
+        this.shoppingLists.clear()
+        this.shoppingLists.addAll(lists)
+        adapter.notifyDataSetChanged()
     }
 
     private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
@@ -83,12 +100,6 @@ class HomeFragment : DaggerFragment() {
         }
     }
 
-    private fun updateShoppingLists(lists: List<ShoppingList>) {
-        this.shoppingLists.clear()
-        this.shoppingLists.addAll(lists)
-        adapter.notifyDataSetChanged()
-    }
-
     private fun goToList(shoppingList: ShoppingList? = null) {
         val action = HomeFragmentDirections.actionHomeFragmentToListFragment()
         shoppingList?.let { action.shoppingListId = it.id }
@@ -96,7 +107,7 @@ class HomeFragment : DaggerFragment() {
     }
 
     private fun cycleTheme() {
-        // TODO: Implement
+        themeViewModel.cycleNextTheme()
     }
 
     private fun setToolbarClickListener() {

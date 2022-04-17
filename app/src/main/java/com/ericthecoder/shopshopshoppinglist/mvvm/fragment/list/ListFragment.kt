@@ -24,6 +24,7 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.Vi
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
+import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
@@ -35,8 +36,13 @@ class ListFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(ListViewModel::class.java)
+    }
+
+    private val themeViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
     }
 
     @Inject
@@ -68,6 +74,7 @@ class ListFragment : DaggerFragment() {
 
         initList()
         configureAddItemField()
+        observeTheme()
         observeState()
         observeEvents()
         inflateList(args.shoppingListId)
@@ -109,6 +116,16 @@ class ListFragment : DaggerFragment() {
     private fun configureAddItemField() {
         val defaultEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item)
         binding.addItemEdit.addTextChangedListener { binding.addItemLayout.background = defaultEditTextBackground }
+    }
+
+    private fun observeTheme() {
+        themeViewModel.theme.observe(viewLifecycleOwner) { theme ->
+            setTheme(theme)
+        }
+    }
+
+    private fun setTheme(theme: ThemeViewModel.Theme) {
+        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
     }
 
     private fun observeState() {
