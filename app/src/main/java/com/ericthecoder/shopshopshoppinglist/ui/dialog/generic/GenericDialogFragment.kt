@@ -10,9 +10,10 @@ import androidx.fragment.app.DialogFragment
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogGenericBinding
+import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import java.io.Serializable
 
-class GenericDialogFragment : DialogFragment() {
+class GenericDialogFragment(private val theme: ThemeViewModel.Theme) : DialogFragment() {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -27,6 +28,9 @@ class GenericDialogFragment : DialogFragment() {
   ): View {
     val binding: DialogGenericBinding = DataBindingUtil.inflate(inflater, R.layout.dialog_generic, null, false)
     binding.setVariable(BR.controller, GenericDialogController(this, arguments))
+    context?.let {
+      binding.title.setBackgroundColor(it.resources.getColor(theme.colorRes, context?.theme))
+    }
     return binding.root
   }
 
@@ -62,7 +66,7 @@ class GenericDialogFragment : DialogFragment() {
       this.cancellable = cancellable
     }
 
-    fun create(): GenericDialogFragment = GenericDialogFragment().apply {
+    fun create(theme: ThemeViewModel.Theme): GenericDialogFragment = GenericDialogFragment(theme).apply {
       val args = Bundle().apply {
         putString(EXTRA_TITLE, title)
         putString(EXTRA_MESSAGE, message)

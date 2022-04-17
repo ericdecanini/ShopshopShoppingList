@@ -3,17 +3,21 @@ package com.ericthecoder.shopshopshoppinglist.ui.dialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFragment
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.rename.RenameDialogFragment
 
-class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavigator {
+class DialogNavigatorImpl(
+    private val activity: AppCompatActivity,
+    private val themeViewModel: ThemeViewModel,
+) : DialogNavigator {
 
     override fun displayGenericDialog(
         title: String?,
         message: String?,
         positiveButton: Pair<String, (() -> Unit)?>?,
         negativeButton: Pair<String, (() -> Unit)?>?,
-        cancellable: Boolean
+        cancellable: Boolean,
     ) {
         val builder = GenericDialogFragment.Builder(activity)
             .setCancellable(cancellable)
@@ -22,7 +26,7 @@ class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavig
         builder.setPositiveButton(positiveButton?.first, positiveButton?.second)
         builder.setNegativeButton(negativeButton?.first, negativeButton?.second)
 
-        val fragment = builder.create()
+        val fragment = builder.create(theme = themeViewModel.getTheme())
         fragment.showAllowingStateLoss(DIALOG_TAG)
     }
 
@@ -31,7 +35,7 @@ class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavig
         autofillText: String,
         positiveOnClick: (String) -> Unit,
         negativeOnClick: (() -> Unit)?,
-        cancellable: Boolean
+        cancellable: Boolean,
     ) {
         val builder = RenameDialogFragment.Builder()
             .setHeader(header)
@@ -40,7 +44,7 @@ class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavig
             .setNegativeOnClick(negativeOnClick)
             .setCancellable(cancellable)
 
-        val fragment = builder.build()
+        val fragment = builder.build(themeViewModel.getTheme())
         fragment.showAllowingStateLoss(DIALOG_TAG)
     }
 

@@ -29,6 +29,17 @@ class ThemeViewModelTest {
     }
 
     @Test
+    fun `getTheme returns theme from live data`() {
+        val currentTheme = GREEN
+        every { persistentStorageReader.getCurrentTheme() } returns currentTheme.ordinal
+        val viewModel = initViewModel()
+
+        val theme = viewModel.getTheme()
+
+        assertThat(theme).isEqualTo(currentTheme)
+    }
+
+    @Test
     fun `cycleNextTheme cycles to the next theme`() {
         val currentTheme = GREEN
         every { persistentStorageReader.getCurrentTheme() } returns currentTheme.ordinal

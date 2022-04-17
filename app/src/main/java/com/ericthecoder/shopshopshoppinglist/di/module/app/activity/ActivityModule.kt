@@ -2,6 +2,7 @@ package com.ericthecoder.shopshopshoppinglist.di.module.app.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
+import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
@@ -23,8 +24,10 @@ class ActivityModule {
         NavigatorImpl(originActivity)
 
     @Provides
-    fun provideDialogNavigator(activity: AppCompatActivity): DialogNavigator =
-        DialogNavigatorImpl(activity)
+    fun provideDialogNavigator(
+        activity: AppCompatActivity,
+        themeViewModel: ThemeViewModel,
+    ): DialogNavigator = DialogNavigatorImpl(activity, themeViewModel)
 
     @Provides
     fun provideToastNavigator(activity: AppCompatActivity): ToastNavigator =

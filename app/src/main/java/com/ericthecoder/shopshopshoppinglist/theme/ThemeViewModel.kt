@@ -22,6 +22,8 @@ class ThemeViewModel @Inject constructor(
         themeEmitter.value = Theme.values()[currentTheme]
     }
 
+    fun getTheme() = theme.value ?: Theme.GREEN
+
     fun cycleNextTheme() {
         val currentTheme = theme.value!!
         val nextTheme = if (currentTheme.ordinal == Theme.values().lastIndex) {
