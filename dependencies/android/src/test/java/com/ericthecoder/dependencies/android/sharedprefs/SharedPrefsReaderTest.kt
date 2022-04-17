@@ -16,8 +16,8 @@ class SharedPrefsReaderTest {
     @Test
     fun `hasOnboardingShown returns from preferences`() {
         val hasOnboardingShown = true
-        every { keys.KEY_ONBOARDING_SHOWN } returns "key"
-        every { sharedPreferences.getBoolean(keys.KEY_ONBOARDING_SHOWN, false) } returns hasOnboardingShown
+        every { keys.KEY_ONBOARDING_SHOWN } returns COMMON_KEY
+        every { sharedPreferences.getBoolean(COMMON_KEY, false) } returns hasOnboardingShown
 
         val result = persistentStorageReader.hasOnboardingShown()
 
@@ -27,8 +27,8 @@ class SharedPrefsReaderTest {
     @Test
     fun `getPremiumStatus returns from preferences`() {
         val premiumStatus = PremiumStatus.PREMIUM
-        every { keys.KEY_PREMIUM_STATUS } returns "key"
-        every { sharedPreferences.getInt(keys.KEY_PREMIUM_STATUS, 0) } returns premiumStatus.code
+        every { keys.KEY_PREMIUM_STATUS } returns COMMON_KEY
+        every { sharedPreferences.getInt(COMMON_KEY, 0) } returns premiumStatus.code
 
         val result = persistentStorageReader.getPremiumStatus()
 
@@ -38,8 +38,8 @@ class SharedPrefsReaderTest {
     @Test
     fun `getCurrentTheme returns from preferences`() {
         val currentThemeCode = 1
-        every { keys.KEY_CURRENT_THEME } returns "key"
-        every { sharedPreferences.getInt(keys.KEY_CURRENT_THEME, 0) } returns currentThemeCode
+        every { keys.KEY_CURRENT_THEME } returns COMMON_KEY
+        every { sharedPreferences.getInt(COMMON_KEY, 0) } returns currentThemeCode
 
         val result = persistentStorageReader.getCurrentTheme()
 
@@ -49,11 +49,15 @@ class SharedPrefsReaderTest {
     @Test
     fun `hasChangedTheme returns from preferences`() {
         val hasChangedTheme = true
-        every { keys.KEY_HAS_CHANGED_THEME } returns "key"
-        every { sharedPreferences.getBoolean(keys.KEY_HAS_CHANGED_THEME, false) } returns hasChangedTheme
+        every { keys.KEY_HAS_CHANGED_THEME } returns COMMON_KEY
+        every { sharedPreferences.getBoolean(COMMON_KEY, false) } returns hasChangedTheme
 
-        val result = persistentStorageReader.hasOnboardingShown()
+        val result = persistentStorageReader.hasChangedTheme()
 
         assertThat(result).isEqualTo(hasChangedTheme)
+    }
+
+    companion object {
+        private const val COMMON_KEY = "KEY"
     }
 }

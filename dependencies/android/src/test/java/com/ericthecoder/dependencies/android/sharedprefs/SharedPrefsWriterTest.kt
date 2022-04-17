@@ -2,8 +2,8 @@ package com.ericthecoder.dependencies.android.sharedprefs
 
 import android.content.SharedPreferences
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
-import com.nhaarman.mockitokotlin2.given
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.verifyOrder
 import org.junit.jupiter.api.BeforeEach
@@ -13,13 +13,15 @@ class SharedPrefsWriterTest {
 
     private val sharedPreferences: SharedPreferences = mockk()
     private val keys: SharedPrefsKeys = mockk()
+    private val editor: SharedPreferences.Editor = mockk()
     private val persistentStorageWriter get() = SharedPrefsWriter(sharedPreferences, keys)
-
-    private val sharedPreferencesEditor: SharedPreferences.Editor = mockk()
 
     @BeforeEach
     fun setup() {
-        given(sharedPreferences.edit()).willReturn(sharedPreferencesEditor)
+        every { sharedPreferences.edit() } returns editor
+        every { editor.putInt(any(), any()) } returns editor
+        every { editor.putBoolean(any(), any()) } returns editor
+        justRun { editor.apply() }
     }
 
     @Test
@@ -31,8 +33,8 @@ class SharedPrefsWriterTest {
 
 
         verifyOrder {
-            sharedPreferencesEditor.putBoolean(COMMON_PREF_KEY, hasShown)
-            sharedPreferencesEditor.apply()
+            editor.putBoolean(COMMON_PREF_KEY, hasShown)
+            editor.apply()
         }
     }
 
@@ -45,8 +47,8 @@ class SharedPrefsWriterTest {
 
 
         verifyOrder {
-            sharedPreferencesEditor.putInt(COMMON_PREF_KEY, premiumStatus.code)
-            sharedPreferencesEditor.apply()
+            editor.putInt(COMMON_PREF_KEY, premiumStatus.code)
+            editor.apply()
         }
     }
 
@@ -59,8 +61,8 @@ class SharedPrefsWriterTest {
 
 
         verifyOrder {
-            sharedPreferencesEditor.putInt(COMMON_PREF_KEY, currentTheme)
-            sharedPreferencesEditor.apply()
+            editor.putInt(COMMON_PREF_KEY, currentTheme)
+            editor.apply()
         }
     }
 
@@ -73,8 +75,8 @@ class SharedPrefsWriterTest {
 
 
         verifyOrder {
-            sharedPreferencesEditor.putBoolean(COMMON_PREF_KEY, hasChangedTheme)
-            sharedPreferencesEditor.apply()
+            editor.putBoolean(COMMON_PREF_KEY, hasChangedTheme)
+            editor.apply()
         }
     }
 
