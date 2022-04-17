@@ -1,24 +1,16 @@
 package com.ericthecoder.shopshopshoppinglist.usecases.service
 
-import com.ericthecoder.shopshopshoppinglist.entities.network.ShopItemResponse
-import com.ericthecoder.shopshopshoppinglist.entities.network.ShoppingListResponse
+import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 
 interface ShoppingListDatabaseService {
 
-    suspend fun getShoppingLists(): List<ShoppingListResponse>
+    suspend fun getShoppingLists(): List<ShoppingList>
 
-    suspend fun getShoppingListById(id: Int): ShoppingListResponse
+    suspend fun getShoppingListById(id: Int): ShoppingList
 
-    suspend fun createShoppingList(name: String): ShoppingListResponse
+    suspend fun createShoppingList(name: String): Int
 
-    suspend fun createShopItem(listId: Int, name: String): ShopItemResponse
-
-    suspend fun updateShoppingList(id: Int, name: String): ShoppingListResponse
-
-    suspend fun updateShopItem(id: Int, name: String, quantity: Int, checked: Boolean): ShopItemResponse
+    suspend fun updateShoppingList(shoppingList: ShoppingList)
 
     suspend fun deleteShoppingList(id: Int)
-
-    suspend fun deleteShopItem(id: Int)
-
 }

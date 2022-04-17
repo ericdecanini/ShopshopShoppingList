@@ -2,24 +2,31 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
 import android.os.Bundle
 import android.view.*
+import android.view.animation.AnimationUtils
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.*
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
-import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemAdapter
-import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemDiffCallback
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
+import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
+import com.ericthecoder.shopshopshoppinglist.library.util.hideKeyboard
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
-import com.ericthecoder.shopshopshoppinglist.ui.dialogs.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
+import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
+import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import dagger.android.support.DaggerFragment
@@ -29,13 +36,23 @@ class ListFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(ListViewModel::class.java)
     }
 
-    @Inject lateinit var navigator: Navigator
-    @Inject lateinit var dialogNavigator: DialogNavigator
-    @Inject lateinit var toastNavigator: ToastNavigator
+    private val themeViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
+    }
+
+    @Inject
+    lateinit var navigator: Navigator
+    @Inject
+    lateinit var dialogNavigator: DialogNavigator
+    @Inject
+    lateinit var toastNavigator: ToastNavigator
+    @Inject
+    lateinit var snackbarNavigator: SnackbarNavigator
 
     private lateinit var binding: FragmentListBinding
     private val args: ListFragmentArgs by navArgs()
@@ -46,7 +63,7 @@ class ListFragment : DaggerFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
@@ -56,6 +73,8 @@ class ListFragment : DaggerFragment() {
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
         initList()
+        configureAddItemField()
+        observeTheme()
         observeState()
         observeEvents()
         inflateList(args.shoppingListId)
@@ -67,12 +86,52 @@ class ListFragment : DaggerFragment() {
         binding.shopList.adapter = adapter
         binding.shopList.layoutManager = LinearLayoutManager(context)
         binding.shopList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        setupItemTouchHelper()
+    }
+
+    private fun setupItemTouchHelper() {
+        val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            ItemTouchHelper.START or ItemTouchHelper.END,
+        ) {
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder,
+            ): Boolean {
+                val from = viewHolder.adapterPosition
+                val to = target.adapterPosition
+                adapter.moveItem(from, to)
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                adapter.removeItem(position)
+            }
+        }
+        ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(binding.shopList)
+    }
+
+    private fun configureAddItemField() {
+        val defaultEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item)
+        binding.addItemEdit.addTextChangedListener { binding.addItemLayout.background = defaultEditTextBackground }
+    }
+
+    private fun observeTheme() {
+        themeViewModel.theme.observe(viewLifecycleOwner) { theme ->
+            setTheme(theme)
+        }
+    }
+
+    private fun setTheme(theme: ThemeViewModel.Theme) {
+        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
     }
 
     private fun observeState() {
         viewModel.viewState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is Loaded -> renderShopItems(state.shoppingList.items)
+                is Loaded -> renderShoppingList(state.shoppingList)
                 else -> doNothing()
             }
         }
@@ -82,11 +141,33 @@ class ListFragment : DaggerFragment() {
         when (event) {
             NavigateUp -> findNavController().navigateUp()
             ClearFocus -> binding.root.clearFocus()
+            ClearEditText -> binding.addItemEdit.setText("")
+            SignalBlankAddItem -> signalAddItemFieldError()
+            ResetAddItem -> resetAddItem()
+            HideKeyboard -> hideKeyboard(binding.root)
+            is DisplayGenericDialog -> displayGenericDialog(event.title, event.message)
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
             is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)
+            is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
         }
+    }
+
+    private fun signalAddItemFieldError() {
+        val errorEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item_error)
+        binding.addItemLayout.background = errorEditTextBackground
+        binding.addItemLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+        binding.addItemLayout.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
+    }
+
+    private fun resetAddItem() {
+        val defaultEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item)
+        binding.addItemLayout.background = defaultEditTextBackground
+    }
+
+    private fun displayGenericDialog(title: String, message: String) {
+        dialogNavigator.displayGenericDialog(title = title, message = message)
     }
 
     private fun displayNewListDialog(callback: (String) -> Unit) {
@@ -114,13 +195,23 @@ class ListFragment : DaggerFragment() {
         )
     }
 
+    private fun showUndoRemoveSnackbar(removedItem: ShopItem, position: Int) {
+        snackbarNavigator.displaySnackbar(
+            message = getString(R.string.deleted_item, removedItem.name),
+            ctaText = getString(R.string.undo),
+            ctaCallback = { viewModel.reAddItem(removedItem, position) }
+        )
+    }
+
+    private fun renderShoppingList(shoppingList: ShoppingList) {
+        binding.title.text = shoppingList.name
+        renderShopItems(shoppingList.items)
+    }
+
     private fun renderShopItems(items: List<ShopItem>) {
-        val savedInstanceState = binding.shopList.layoutManager?.onSaveInstanceState()
         val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, items))
         adapter.replaceItems(items)
         diffResult.dispatchUpdatesTo(adapter)
-
-        binding.shopList.layoutManager?.onRestoreInstanceState(savedInstanceState)
     }
 
     private fun inflateList(id: Int) = viewModel.loadShoppingList(id)
@@ -130,9 +221,9 @@ class ListFragment : DaggerFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.ic_delete -> viewModel.showDeleteDialog()
-            R.id.ic_clear_checked -> viewModel.clearChecked()
+            R.id.ic_clear_checked -> viewModel.clearCheckedItems()
             else -> return false
         }
         return true

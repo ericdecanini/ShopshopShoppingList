@@ -11,6 +11,7 @@ import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveE
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
+import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val persistentStorageReader: PersistentStorageReader,
     private val persistentStorageWriter: PersistentStorageWriter,
+    private val coroutineContextProvider: CoroutineContextProvider,
     private val billingInteractor: BillingInteractor,
 ) : ViewModel() {
 
@@ -40,25 +42,25 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun fetchPremiumState() = viewModelScope.launch {
+    fun fetchPremiumState() = viewModelScope.launch(coroutineContextProvider.IO) {
         if (billingInteractor.connectIfNeeded()) {
             when (billingInteractor.getPremiumState()) {
                 PremiumState.FRESHLY_ACKNOWLEDGED -> {
-                    viewEventEmitter.value = ViewEvent.ShowPremiumPurchasedDialog
+                    viewEventEmitter.postValue(ViewEvent.ShowPremiumPurchasedDialog)
                     persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM)
-                    premiumStatusEmitter.value = PremiumStatus.PREMIUM
+                    premiumStatusEmitter.postValue(PremiumStatus.PREMIUM)
                 }
                 PremiumState.PREMIUM -> {
                     persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM)
-                    premiumStatusEmitter.value = PremiumStatus.PREMIUM
+                    premiumStatusEmitter.postValue(PremiumStatus.PREMIUM)
                 }
                 PremiumState.PENDING -> {
                     persistentStorageWriter.setPremiumStatus(PremiumStatus.PENDING)
-                    premiumStatusEmitter.value = PremiumStatus.PENDING
+                    premiumStatusEmitter.postValue(PremiumStatus.PENDING)
                 }
                 PremiumState.FREE -> {
                     persistentStorageWriter.setPremiumStatus(PremiumStatus.FREE)
-                    premiumStatusEmitter.value = PremiumStatus.FREE
+                    premiumStatusEmitter.postValue(PremiumStatus.FREE)
                 }
             }
         }

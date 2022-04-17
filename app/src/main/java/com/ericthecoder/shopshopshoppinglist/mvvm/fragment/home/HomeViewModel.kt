@@ -11,6 +11,7 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ class HomeViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
     private val coroutineContextProvider: CoroutineContextProvider,
     private val persistentStorageReader: PersistentStorageReader,
+    private val persistentStorageWriter: PersistentStorageWriter,
 ) : ViewModel(), ShoppingListEventHandler {
 
     private val viewStateEmitter = MutableLiveData<HomeViewState>(Initial)
@@ -30,6 +32,18 @@ class HomeViewModel @Inject constructor(
 
     private val errorHandler = CoroutineExceptionHandler { _, throwable ->
         viewStateEmitter.postValue(Error(throwable))
+    }
+
+    private var hasChangedTheme = persistentStorageReader.hasChangedTheme()
+
+    init {
+        initTitleBreathing()
+    }
+
+    private fun initTitleBreathing() {
+        if (!hasChangedTheme) {
+            viewEventEmitter.value = ViewEvent.SetPlayingBreatheTitle(true)
+        }
     }
 
     fun refreshLists() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
@@ -59,6 +73,20 @@ class HomeViewModel @Inject constructor(
 
     //region: ui interaction events
 
+    fun onToolbarClick() {
+        viewEventEmitter.value = ViewEvent.CycleTheme
+
+        if (!hasChangedTheme) {
+            stopTitleBreathing()
+        }
+    }
+
+    private fun stopTitleBreathing() {
+        hasChangedTheme = true
+        persistentStorageWriter.setHasChangedTheme(true)
+        viewEventEmitter.value = ViewEvent.SetPlayingBreatheTitle(false)
+    }
+
     override fun onShoppingListClick(shoppingList: ShoppingList) {
         viewEventEmitter.value = ViewEvent.OpenList(shoppingList)
     }
@@ -68,6 +96,8 @@ class HomeViewModel @Inject constructor(
     sealed class ViewEvent {
         data class SetHasOptionsMenu(val enabled: Boolean) : ViewEvent()
         data class OpenList(val shoppingList: ShoppingList?) : ViewEvent()
+        data class SetPlayingBreatheTitle(val playing: Boolean) : ViewEvent()
+        object CycleTheme : ViewEvent()
         object OpenUpsell : ViewEvent()
     }
 }

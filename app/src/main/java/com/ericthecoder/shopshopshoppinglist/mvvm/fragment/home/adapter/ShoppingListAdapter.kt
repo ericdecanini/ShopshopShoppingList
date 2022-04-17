@@ -37,7 +37,7 @@ class ShoppingListAdapter(
         fun bind(shoppingList: ShoppingList) {
             (itemView.preview_items.adapter as? PreviewItemsAdapter)?.apply {
                 if (shoppingList.items.isEmpty()) {
-                    shoppingList.items.add(ShopItem(-1, "No items", 0, false))
+                    shoppingList.items.add(ShopItem("No items", 0, false))
                 }
                 replaceItems(shoppingList.items)
                 notifyDataSetChanged()

@@ -1,74 +1,66 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
-import android.app.Activity
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.CheckBox
 import android.widget.EditText
-import android.widget.TextView
-import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.chauthai.swipereveallayout.SwipeRevealLayout
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
-import com.ericthecoder.shopshopshoppinglist.adapter.ShopItemEventHandler
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
-import com.ericthecoder.shopshopshoppinglist.entities.database.DbQueryFailedException
-import com.ericthecoder.shopshopshoppinglist.library.extension.notifyObservers
+import com.ericthecoder.shopshopshoppinglist.entities.exception.DbQueryFailedException
+import com.ericthecoder.shopshopshoppinglist.library.extension.moveItem
 import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.*
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ListViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
-    private val resourceProvider: ResourceProvider,
     private val coroutineContextProvider: CoroutineContextProvider,
+    private val resourceProvider: ResourceProvider,
 ) : ViewModel(), ShopItemEventHandler {
 
     private val viewStateEmitter = MutableLiveData<ListViewState>(Initial)
     val viewState: LiveData<ListViewState> get() = viewStateEmitter
-    private val shoppingList get() = (viewState.value as? Loaded)?.shoppingList
 
     private val viewEventEmitter = MutableSingleLiveEvent<ViewEvent>()
     val viewEvent: LiveData<ViewEvent> get() = viewEventEmitter
 
+    private lateinit var shoppingList: ShoppingList
     private var listId = UNSET
-
-    val listName = ObservableField<String>()
-    val addItemText = ObservableField<String>()
 
     fun loadShoppingList(id: Int) {
         this.listId = id
 
-        if (id == UNSET)
+        if (id == UNSET) {
             startLoadingNewShoppingList()
-        else
+        } else {
             startLoadingExistingShoppingList(id)
+        }
     }
 
     private fun startLoadingNewShoppingList() {
         displayLoading()
+
         launchOnIo {
-            tryLoadNewShoppingList()
+            try {
+                loadNewShoppingList()
+            } catch (exception: DbQueryFailedException) {
+                handleLoadError(exception)
+            }
         }
     }
 
-    private suspend fun tryLoadNewShoppingList() {
-        try {
-            loadNewShoppingList()
-        } catch (exception: DbQueryFailedException) {
-            handleListError(exception)
-        }
+    private fun displayLoading() {
+        viewStateEmitter.postValue(Loading)
     }
 
     private suspend fun loadNewShoppingList() {
@@ -78,21 +70,18 @@ class ListViewModel @Inject constructor(
     }
 
     private suspend fun createNewShoppingList(): ShoppingList {
-        return shoppingListRepository.createNewShoppingList(UNNAMED_LIST_TITLE)
+        val unnamedListTitle = resourceProvider.getString(R.string.unnamed_list)
+        return shoppingListRepository.createNewShoppingList(unnamedListTitle)
     }
 
     private fun startLoadingExistingShoppingList(id: Int) {
         displayLoading()
         launchOnIo {
-            tryLoadExistingShoppingList(id)
-        }
-    }
-
-    private suspend fun tryLoadExistingShoppingList(id: Int) {
-        try {
-            loadExistingShoppingList(id)
-        } catch (exception: DbQueryFailedException) {
-            handleListError(exception)
+            try {
+                loadExistingShoppingList(id)
+            } catch (exception: DbQueryFailedException) {
+                handleLoadError(exception)
+            }
         }
     }
 
@@ -101,14 +90,13 @@ class ListViewModel @Inject constructor(
         displayShoppingList(shoppingList)
     }
 
-    private fun displayLoading() {
-        viewStateEmitter.postValue(Loading)
+    private fun displayShoppingList(shoppingList: ShoppingList) {
+        this.listId = shoppingList.id
+        this.shoppingList = shoppingList.apply { emit() }
     }
 
-    private fun displayShoppingList(shoppingList: ShoppingList) {
-        listId = shoppingList.id
-        listName.set(shoppingList.name)
-        viewStateEmitter.postValue(Loaded(shoppingList))
+    private fun ShoppingList.emit() {
+        viewStateEmitter.postValue(Loaded(this))
     }
 
     private fun displayNewListDialog() {
@@ -117,7 +105,13 @@ class ListViewModel @Inject constructor(
         ))
     }
 
-    private fun handleListError(exception: Throwable) {
+    private fun renameShoppingList(newName: String) = with(shoppingList) {
+        rename(newName)
+        emit()
+        save()
+    }
+
+    private fun handleLoadError(exception: Throwable) {
         exception.printStackTrace()
         displayErrorState()
     }
@@ -134,252 +128,158 @@ class ListViewModel @Inject constructor(
     }
 
     fun addItem(itemName: String) {
-        resetItemTextField()
-        addTemporaryItem(itemName)
-        sortListAndDisplay()
-        launchTryCreateNewItem(itemName)
+        try {
+            performAddItem(itemName)
+        } catch (exception: DbQueryFailedException) {
+            handleWriteError(exception)
+        } catch (exception: BlankFieldException) {
+            handleBlankNewItem()
+        } catch (exception: ItemInListException) {
+            handleItemAlreadyInList(itemName)
+        }
+    }
+
+    private fun performAddItem(itemName: String) {
+        validateNewItem(itemName)
+        clearItemTextField()
+        addAndSaveNewItem(itemName)
+        shoppingList.emit()
+    }
+
+    private fun validateNewItem(itemName: String) {
+        val itemIsInList = shoppingList.items.any { it.name == itemName }
+        when {
+            itemName.isBlank() -> throw BlankFieldException()
+            itemIsInList -> throw ItemInListException()
+        }
+    }
+
+    private fun clearItemTextField() {
+        viewEventEmitter.postValue(ClearEditText)
+    }
+
+    private fun addAndSaveNewItem(itemName: String) {
+        val shopItem = ShopItem.createNew(itemName)
+        shoppingList.items.add(shopItem)
+        shoppingList.save()
+    }
+
+    private fun handleWriteError(exception: Throwable) {
+        exception.printStackTrace()
+        val toastMessage = resourceProvider.getString(R.string.something_went_wrong)
+        viewEventEmitter.postValue(ShowToast(toastMessage))
         reloadShoppingList()
     }
 
-    private fun resetItemTextField() {
-        addItemText.set("")
-    }
-
-    private fun addTemporaryItem(itemName: String) {
-        shoppingList?.items?.add(createTemporaryNewItem(itemName))
-    }
-
-    private fun createTemporaryNewItem(itemName: String) = ShopItem(-1, itemName, 1, false)
-
-    private fun launchTryCreateNewItem(itemName: String) {
-        launchOnIo {
-            tryCreateNewItem(itemName)
-        }
-    }
-
-    private suspend fun tryCreateNewItem(itemName: String) {
+    private fun deleteList() = launchOnIo {
         try {
-            createNewItem(itemName)
+            performDeleteList()
         } catch (exception: DbQueryFailedException) {
-            handleNewItemError(exception)
+            handleWriteError(exception)
         }
     }
 
-    private suspend fun createNewItem(itemName: String) {
-        shoppingListRepository.createNewShopItem(listId, itemName)
+    private suspend fun performDeleteList() {
+        shoppingListRepository.deleteShoppingList(shoppingList.id)
+        viewEventEmitter.postValue(NavigateUp)
     }
 
-    private fun handleNewItemError(exception: Throwable) {
-        removeNewlyAddedItem()
-        handleItemError(exception)
+    private fun handleBlankNewItem() {
+        viewEventEmitter.postValue(SignalBlankAddItem)
     }
 
-    private fun removeNewlyAddedItem() {
-        shoppingList?.items?.removeLastOrNull()
-        sortListAndDisplay()
-    }
-
-    private fun handleItemError(exception: Throwable) {
-        exception.printStackTrace()
-        viewEventEmitter.postValue(ShowToast(resourceProvider.getString(R.string.something_went_wrong)))
-    }
-
-    private fun deleteList() = viewModelScope.launch(coroutineContextProvider.IO) {
-        shoppingList?.let { shoppingListRepository.deleteShoppingList(it.id) }
-        withContext(coroutineContextProvider.Main) { viewEventEmitter.postValue(NavigateUp) }
-    }
-
-    private fun sortListAndDisplay() {
-        shoppingList?.items?.sortBy { it.checked }
-        viewStateEmitter.notifyObservers()
+    private fun handleItemAlreadyInList(itemName: String) {
+        val toastMessage = resourceProvider.getString(R.string.item_already_in_list, itemName, shoppingList.name)
+        viewEventEmitter.postValue(ShowToast(toastMessage))
     }
 
     //region: ui interaction events
 
-    override fun onQuantityDown(quantityView: TextView, shopItem: ShopItem) {
-        if (shopItem.quantity > 1) {
-            decrementQuantity(quantityView, shopItem)
-        }
-    }
-
-    private fun decrementQuantity(quantityView: TextView, shopItem: ShopItem) {
-        decrementQuantityOnView(quantityView, shopItem)
-
-        launchOnIo {
-            tryDecrementQuantityInRepository(quantityView, shopItem)
-        }
-    }
-
-    private fun decrementQuantityOnView(quantityView: TextView, shopItem: ShopItem) {
-        shopItem.quantity -= 1
-        quantityView.text = shopItem.quantity.toString()
-        viewStateEmitter.notifyObservers()
-    }
-
-    private suspend fun tryDecrementQuantityInRepository(quantityView: TextView, shopItem: ShopItem) {
-        try {
-            decrementQuantityInRepository(shopItem)
-        } catch (exception: DbQueryFailedException) {
-            handleDecrementQuantityError(exception, quantityView, shopItem)
-        }
-    }
-
-    private suspend fun decrementQuantityInRepository(shopItem: ShopItem) {
-        with(shopItem) {
-            shoppingListRepository.updateShopItem(id, name, quantity, checked)
-        }
-    }
-
-    private fun handleDecrementQuantityError(exception: Throwable, quantityView: TextView, shopItem: ShopItem) {
-        shopItem.quantity += 1
-        quantityView.text = shopItem.quantity.toString()
-        handleItemError(exception)
-    }
-
-    override fun onQuantityUp(quantityView: TextView, shopItem: ShopItem) {
-        incrementQuantityOnView(quantityView, shopItem)
-
-        launchOnIo {
-            tryIncrementQuantityInRepository(quantityView, shopItem)
-        }
-    }
-
-    private fun incrementQuantityOnView(quantityView: TextView, shopItem: ShopItem) {
-        shopItem.quantity += 1
-        quantityView.text = shopItem.quantity.toString()
-        viewStateEmitter.notifyObservers()
-    }
-
-    private suspend fun tryIncrementQuantityInRepository(quantityView: TextView, shopItem: ShopItem) {
-        try {
-            incrementQuantityInRepository(shopItem)
-        } catch (exception: DbQueryFailedException) {
-            handleIncrementQuantityError(exception, quantityView, shopItem)
-        }
-    }
-
-    private suspend fun incrementQuantityInRepository(shopItem: ShopItem) {
-        with(shopItem) {
-            shoppingListRepository.updateShopItem(id, name, quantity, checked)
-        }
-    }
-
-    private fun handleIncrementQuantityError(exception: Throwable, quantityView: TextView, shopItem: ShopItem) {
-        shopItem.quantity -= 1
-        quantityView.text = shopItem.quantity.toString()
-        handleItemError(exception)
-    }
-
     override fun onDeleteClick(shopItem: ShopItem) {
-        deleteShopItemOnUi(shopItem)
-        deleteShopItemInRepository(shopItem)
+        deleteItem(shopItem)
+        shoppingList.emit()
     }
 
-    private fun deleteShopItemOnUi(shopItem: ShopItem) {
-        deleteItemFromShoppingList(shopItem)
-        sortListAndDisplay()
+    private fun deleteItem(shopItem: ShopItem) {
+        shoppingList.items.removeIf { it.name == shopItem.name }
+        shoppingList.save()
     }
 
-    private fun deleteItemFromShoppingList(shopItem: ShopItem) {
-        shoppingList?.items?.removeIf { it.id == shopItem.id }
-    }
-
-    private fun deleteShopItemInRepository(shopItem: ShopItem) {
-        launchOnIo {
-            shoppingListRepository.deleteShopItem(shopItem.id)
+    override fun onItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
+        shopItem.checked = checkbox.isChecked
+        shoppingList.apply {
+            emit()
+            save()
         }
-    }
-
-    override fun onCheckboxChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        if (shopItem.id != UNSET) {
-            markItemChecked(checkbox, shopItem)
-        }
-    }
-
-    private fun markItemChecked(checkbox: CheckBox, shopItem: ShopItem) {
-        markItemCheckedInUi(checkbox, shopItem)
-
-        launchOnIo {
-            tryMarkItemCheckedInRepository(checkbox, shopItem)
-        }
-    }
-
-    private fun markItemCheckedInUi(checkbox: CheckBox, shopItem: ShopItem) {
-        getShopItems()?.let { shopItems ->
-            val shopItemIndex = shopItems.indexOfFirst { it.id == shopItem.id }
-            shopItems[shopItemIndex] = shopItem.copy(checked = checkbox.isChecked)
-            sortListAndDisplay()
-        }
-    }
-
-    private suspend fun tryMarkItemCheckedInRepository(checkbox: CheckBox, shopItem: ShopItem) {
-        try {
-            markItemCheckedInRepository(checkbox, shopItem)
-        } catch (exception: DbQueryFailedException) {
-            handleCheckItemError(exception, checkbox, shopItem)
-        }
-    }
-
-    private suspend fun markItemCheckedInRepository(checkbox: CheckBox, shopItem: ShopItem) {
-        shoppingListRepository.updateShopItem(shopItem.id, shopItem.name, shopItem.quantity, checkbox.isChecked)
-    }
-
-    private suspend fun handleCheckItemError(exception: Throwable, checkbox: CheckBox, shopItem: ShopItem) {
-        withContext(coroutineContextProvider.Main) {
-            checkbox.isChecked = shopItem.checked
-        }
-        handleItemError(exception)
     }
 
     override fun onNameChanged(editText: EditText, shopItem: ShopItem) {
-        if (itemExistsInShoppingList(shopItem)) {
-            changeItemName(editText, shopItem)
-        }
-    }
-
-    private fun itemExistsInShoppingList(shopItem: ShopItem) = shoppingList
-        ?.items
-        ?.firstOrNull { it.id == shopItem.id } != null
-
-    private fun changeItemName(editText: EditText, shopItem: ShopItem) {
-        changeItemNameOnUi(editText, shopItem)
-
-        launchOnIo {
-            tryChangeItemNameInRepository(shopItem)
-        }
-    }
-
-    private fun changeItemNameOnUi(editText: EditText, shopItem: ShopItem) {
-        shopItem.name = editText.text.toString()
-        viewStateEmitter.notifyObservers()
-    }
-
-    private suspend fun tryChangeItemNameInRepository(shopItem: ShopItem) {
         try {
-            changeItemNameInRepository(shopItem)
-        } catch (exception: DbQueryFailedException) {
-            handleItemError(exception)
+            val newName = editText.text.toString()
+            validateNameChanged(newName)
+            setNewItemName(shopItem, newName)
+        } catch (exception: BlankFieldException) {
+            handleNameChangedError(editText, shopItem)
         }
     }
 
-    private suspend fun changeItemNameInRepository(shopItem: ShopItem) {
-        with(shopItem) {
-            shoppingListRepository.updateShopItem(id, name, quantity, checked)
+    private fun validateNameChanged(newName: String) {
+        if (newName.isBlank()) {
+            throw BlankFieldException()
         }
     }
 
-    override fun onFocusLost(swipeRevealLayout: SwipeRevealLayout) {
-        swipeRevealLayout.close(true)
+    private fun setNewItemName(shopItem: ShopItem, newName: String) {
+        shopItem.name = newName
+        shoppingList.save()
     }
 
-    fun hideKeyboard(view: View) {
-        val imm = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    private fun handleNameChangedError(editText: EditText, shopItem: ShopItem) {
+        editText.setText(shopItem.name)
+        viewEventEmitter.value = DisplayGenericDialog(
+            resourceProvider.getString(R.string.error),
+            resourceProvider.getString(R.string.empty_item_name_entered),
+        )
     }
 
-    fun showRenameDialog() = shoppingList?.let {
+    private fun ShoppingList.save() = launchOnIo {
+        shoppingListRepository.updateShoppingList(this@save)
+    }
+
+    override fun onQuantityChanged(editText: EditText, shopItem: ShopItem) {
+        val newQuantity = editText.text.toString().toInt()
+        editText.setText(newQuantity.toString())
+        shopItem.quantity = newQuantity
+        shoppingList.save()
+    }
+
+    override fun onItemMoved(from: Int, to: Int) {
+        shoppingList.items.moveItem(from, to)
+        shoppingList.save()
+    }
+
+    override fun onItemRemoved(position: Int) {
+        val removedItem = shoppingList.items[position]
+        shoppingList.items.remove(removedItem)
+        shoppingList.save()
+        showUndoRemoveSnackbar(removedItem, position)
+    }
+
+    private fun showUndoRemoveSnackbar(removedItem: ShopItem, position: Int) {
+        viewEventEmitter.value = ShowUndoRemoveItemSnackbar(removedItem, position)
+    }
+
+    fun reAddItem(shopItem: ShopItem, position: Int) {
+        shoppingList.items.add(position, shopItem)
+        shoppingList.apply {
+            emit()
+            save()
+        }
+    }
+
+    fun showRenameDialog() {
         clearFocus()
-        postDisplayRenameDialog(it.name)
+        postDisplayRenameDialog(shoppingList.name)
     }
 
     private fun clearFocus() {
@@ -392,23 +292,31 @@ class ListViewModel @Inject constructor(
         })
     }
 
-    fun showDeleteDialog() = viewState.value?.let {
-        val listName = listName.get() ?: return@let
+    fun showDeleteDialog() {
+        val listName = shoppingList.name
         viewEventEmitter.postValue(DisplayDeleteDialog(listName) { deleteList() })
     }
 
-    fun clearChecked() = shoppingList?.let { shoppingList ->
-        launchOnIo {
-            deleteCheckedItems(shoppingList)
-            sortListAndDisplay()
+    fun clearCheckedItems() {
+        try {
+            shoppingList.takeIf { deleteCheckedItems() }?.apply {
+                emit()
+                save()
+            }
+        } catch (exception: DbQueryFailedException) {
+            handleWriteError(exception)
         }
     }
 
-    private suspend fun deleteCheckedItems(shoppingList: ShoppingList) {
+    private fun deleteCheckedItems(): Boolean {
+        var wasUpdated = false
+
         shoppingList.items.filter { it.checked }.forEach {
-            shoppingListRepository.deleteShopItem(it.id)
             shoppingList.items.remove(it)
+            wasUpdated = true
         }
+
+        return wasUpdated
     }
 
     fun onBackButtonPressed() {
@@ -419,45 +327,15 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(NavigateUp)
     }
 
+    fun resetAddItemBackground() {
+        viewEventEmitter.value = ResetAddItem
+    }
+
+    fun hideKeyboard() {
+        viewEventEmitter.value = HideKeyboard
+    }
+
     //endregion
-
-    private fun renameShoppingList(newName: String) {
-        val oldName = shoppingList?.name ?: return
-        renameShoppingListOnUi(newName)
-
-        launchOnIo {
-            tryRenameShoppingListInRepository(oldName, newName)
-        }
-    }
-
-    private fun renameShoppingListOnUi(newName: String) {
-        val nameToSet = if (newName.isBlank()) UNNAMED_LIST_TITLE else newName
-        listName.set(nameToSet)
-    }
-
-    private suspend fun tryRenameShoppingListInRepository(oldName: String, newName: String) {
-        try {
-            renameShoppingListInRepository(newName)
-        } catch (exception: DbQueryFailedException) {
-            handleRenameListError(exception, oldName)
-        }
-    }
-
-    private suspend fun renameShoppingListInRepository(newName: String) {
-        val nameToSet = if (newName.isBlank()) UNNAMED_LIST_TITLE else newName
-        val shoppingList = shoppingListRepository.updateShoppingList(listId, nameToSet)
-        displayShoppingList(shoppingList)
-    }
-
-    private fun handleRenameListError(exception: Throwable, oldName: String) {
-        handleItemError(exception)
-        listName.set(oldName)
-        showRenameDialog()
-    }
-
-    private fun getShopItems() = (viewState.value as? Loaded)
-        ?.shoppingList
-        ?.items
 
     private fun launchOnIo(block: suspend CoroutineScope.() -> Unit) {
         viewModelScope.launch(coroutineContextProvider.IO) {
@@ -468,17 +346,23 @@ class ListViewModel @Inject constructor(
     sealed class ViewEvent {
         object NavigateUp : ViewEvent()
         object ClearFocus : ViewEvent()
+        object ClearEditText : ViewEvent()
+        object SignalBlankAddItem : ViewEvent()
+        object ResetAddItem : ViewEvent()
+        object HideKeyboard : ViewEvent()
+        class DisplayGenericDialog(val title: String, val message: String) : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
-        class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) :
-            ViewEvent()
-
+        class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
         class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
+        data class ShowUndoRemoveItemSnackbar(val item: ShopItem, val position: Int) : ViewEvent()
     }
 
-    companion object {
+    inner class ItemInListException : Throwable()
 
-        internal const val UNNAMED_LIST_TITLE = "Unnamed List"
+    inner class BlankFieldException : Throwable()
+
+    companion object {
         internal const val UNSET = -1
     }
 }

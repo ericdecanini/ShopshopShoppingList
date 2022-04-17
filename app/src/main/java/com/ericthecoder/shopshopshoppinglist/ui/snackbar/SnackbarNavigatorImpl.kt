@@ -10,13 +10,28 @@ class SnackbarNavigatorImpl(
     private val resourceProvider: ResourceProvider,
 ) : SnackbarNavigator {
 
-    override fun displaySnackbar(message: String, length: Int) {
+    override fun displaySnackbar(
+        message: String,
+        ctaText: String?,
+        ctaCallback: (() -> Unit)?,
+        length: Int,
+    ) {
         activity.runOnUiThread {
-            Snackbar.make(activity.getRootView(), message, length).show()
+            val snackbar = Snackbar.make(activity.getRootView(), message, length)
+            if (!ctaText.isNullOrEmpty()) {
+                snackbar.setAction(ctaText) { ctaCallback?.invoke() }
+            }
+            snackbar.show()
         }
     }
 
-    override fun displaySnackbar(stringRes: Int, length: Int) {
-        displaySnackbar(resourceProvider.getString(stringRes), length)
+    override fun displaySnackbar(
+        stringRes: Int,
+        ctaText: String?,
+        ctaCallback: (() -> Unit)?,
+        length: Int,
+    ) {
+        val message = resourceProvider.getString(stringRes)
+        displaySnackbar(message, ctaText, ctaCallback, length)
     }
 }

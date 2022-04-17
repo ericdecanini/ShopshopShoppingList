@@ -12,7 +12,9 @@
     <string name="retry">Retry</string>
     <string name="next">Next</string>
     <string name="save">Save</string>
-    <string name="something_went_wrong">Something went wrong. Please try again.</string>
+    <string name="undo">Undo</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="something_went_wrong_try_again">Something went wrong. Please try again.</string>
     <string name="splash_generic_error">An unexpected error has occurred. Please try again.</string>
 
     <!-- Onboarding Activity -->
@@ -38,6 +40,11 @@
     <string name="list_not_found">List couldn\'t be found. Going back</string>
     <string name="clear_checked">Clear checked</string>
     <string name="toast_list_saved">%s saved</string>
+    <string name="unnamed_list">Unnamed List</string>
+    <string name="item_already_in_list">%1$s is already in the %2$s</string>
+    <string name="zero">0</string>
+    <string name="deleted_item">Deleted %1$s</string>
+    <string name="empty_item_name_entered">Please enter a valid item name</string>
 
     <!-- Upsell Activity -->
     <string name="upsell_title">Shopshop Premium</string>

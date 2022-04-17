@@ -1,112 +1,131 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.activity.main
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
+import com.ericthecoder.shopshopshoppinglist.util.InstantTaskExecutorExtension
+import com.ericthecoder.shopshopshoppinglist.util.TestCoroutineContextProvider
+import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import io.mockk.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.assertj.core.api.Assertions.assertThat
-import org.junit.Rule
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
 @ExperimentalCoroutinesApi
+@ExtendWith(InstantTaskExecutorExtension::class)
 class MainViewModelTest {
-
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private val persistentStorageReader: PersistentStorageReader = mockk()
     private val persistentStorageWriter: PersistentStorageWriter = mockk(relaxUnitFun = true)
-    private val billingInteractor: BillingInteractor = mockk(relaxUnitFun = true) {
-        coEvery { connectIfNeeded() } returns true
-    }
+    private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
+    private val billingInteractor: BillingInteractor = mockk(relaxUnitFun = true)
 
     private val viewModel = MainViewModel(
         persistentStorageReader,
         persistentStorageWriter,
+        coroutineContextProvider,
         billingInteractor,
     )
 
-    @Test
-    fun givenOnboardingHasNotShown_whenLaunchOnboardingIfNecessary_thenOnboardingLaunched() {
-        every { persistentStorageReader.hasOnboardingShown() } returns false
-
-        viewModel.launchOnboardingIfNecessary()
-
-        assertThat(viewModel.viewEvent.value).isEqualTo(GoToOnboarding)
-        verify { persistentStorageWriter.setOnboardingShown(true) }
+    @BeforeEach
+    fun setup() {
+        coEvery { billingInteractor.connectIfNeeded() } returns true
     }
 
-    @Test
-    fun givenOnboardingHasShown_whenLaunchOnboardingIfNecessary_thenDoNothing() {
-        every { persistentStorageReader.hasOnboardingShown() } returns true
+    @Nested
+    inner class LaunchOnboarding {
 
-        viewModel.launchOnboardingIfNecessary()
+        @Test
+        fun `if not previously shown, launchOnboardingIfNecessary launches onboarding flow`() {
+            every { persistentStorageReader.hasOnboardingShown() } returns false
 
-        assertThat(viewModel.viewEvent.value).isNotEqualTo(GoToOnboarding)
-        verify(inverse = true) { persistentStorageWriter.setOnboardingShown(true) }
+            viewModel.launchOnboardingIfNecessary()
+
+            assertThat(viewModel.viewEvent.value).isEqualTo(GoToOnboarding)
+            verify { persistentStorageWriter.setOnboardingShown(true) }
+        }
+
+        @Test
+        fun `if previously shown, launchOnboardingIfNecessary does nothing`() {
+            every { persistentStorageReader.hasOnboardingShown() } returns true
+
+            viewModel.launchOnboardingIfNecessary()
+
+            assertThat(viewModel.viewEvent.value).isNotEqualTo(GoToOnboarding)
+            verify(inverse = true) { persistentStorageWriter.setOnboardingShown(true) }
+        }
     }
 
-    @Test
-    fun givenOpenNewListInstruction_whenHandleNestedInstruction_thenOpenList() {
-        val instruction = NestedNavigationInstruction.OpenNewList
+    @Nested
+    inner class NestedNavigation {
 
-        viewModel.handleNestedInstruction(instruction)
+        @Test
+        fun `handles nested GoToList instruction`() {
+            val instruction = NestedNavigationInstruction.OpenNewList
 
-        assertThat(viewModel.viewEvent.value).isEqualTo(GoToList)
+            viewModel.handleNestedInstruction(instruction)
+
+            assertThat(viewModel.viewEvent.value).isEqualTo(GoToList)
+        }
     }
 
-    @Test
-    fun givenFreshlyAcknowledged_whenFetchPremiumState_thenSetStateAndShowDialog() {
-        coEvery { billingInteractor.getPremiumState() } returns PremiumState.FRESHLY_ACKNOWLEDGED
+    @Nested
+    inner class FetchPremiumState {
 
-        viewModel.fetchPremiumState()
+        @Test
+        fun `when freshly acknowledged, fetchPremiumState saves premium state and shows dialog`() {
+            coEvery { billingInteractor.getPremiumState() } returns PremiumState.FRESHLY_ACKNOWLEDGED
 
-        assertThat(viewModel.viewEvent.value).isEqualTo(ShowPremiumPurchasedDialog)
-        verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM) }
-        assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PREMIUM)
-    }
+            viewModel.fetchPremiumState()
 
-    @Test
-    fun givenPremium_whenFetchPremiumState_thenSetState() {
-        coEvery { billingInteractor.getPremiumState() } returns PremiumState.PREMIUM
+            assertThat(viewModel.viewEvent.value).isEqualTo(ShowPremiumPurchasedDialog)
+            verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM) }
+            assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PREMIUM)
+        }
 
-        viewModel.fetchPremiumState()
+        @Test
+        fun `when premium, fetchPremiumState saves state`() {
+            coEvery { billingInteractor.getPremiumState() } returns PremiumState.PREMIUM
 
-        verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM) }
-        assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PREMIUM)
-    }
+            viewModel.fetchPremiumState()
 
-    @Test
-    fun givenPending_whenFetchPremiumState_thenSetState() {
-        coEvery { billingInteractor.getPremiumState() } returns PremiumState.PENDING
+            verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PREMIUM) }
+            assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PREMIUM)
+        }
 
-        viewModel.fetchPremiumState()
+        @Test
+        fun `when pending, fetchPremiumState saves state`() {
+            coEvery { billingInteractor.getPremiumState() } returns PremiumState.PENDING
 
-        verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PENDING) }
-        assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PENDING)
-    }
+            viewModel.fetchPremiumState()
 
-    @Test
-    fun givenFree_whenFetchPremiumState_thenSetState() {
-        coEvery { billingInteractor.getPremiumState() } returns PremiumState.FREE
+            verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.PENDING) }
+            assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.PENDING)
+        }
 
-        viewModel.fetchPremiumState()
+        @Test
+        fun `when free, fetchPremiumState saves state`() {
+            coEvery { billingInteractor.getPremiumState() } returns PremiumState.FREE
 
-        verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.FREE) }
-        assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.FREE)
-    }
+            viewModel.fetchPremiumState()
 
-    @Test
-    fun givenBillingFailsToConnect_whenFetchPremiumState_thenDoNothing() {
-        coEvery { billingInteractor.connectIfNeeded() } returns false
+            verify { persistentStorageWriter.setPremiumStatus(PremiumStatus.FREE) }
+            assertThat(viewModel.premiumStatus.value).isEqualTo(PremiumStatus.FREE)
+        }
 
-        viewModel.fetchPremiumState()
+        @Test
+        fun `when billing fails to connect, fetchPremiumState does nothing`() {
+            coEvery { billingInteractor.connectIfNeeded() } returns false
 
-        verify { persistentStorageWriter wasNot called }
+            viewModel.fetchPremiumState()
+
+            verify { persistentStorageWriter wasNot called }
+        }
     }
 }

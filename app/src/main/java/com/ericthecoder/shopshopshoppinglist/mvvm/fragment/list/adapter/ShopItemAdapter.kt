@@ -1,20 +1,17 @@
-package com.ericthecoder.shopshopshoppinglist.adapter
+package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.chauthai.swipereveallayout.SwipeRevealLayout
-import com.chauthai.swipereveallayout.ViewBinderHelper
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.databinding.ListItemShopitemBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
+import com.ericthecoder.shopshopshoppinglist.library.extension.moveItem
 
 class ShopItemAdapter(
     val items: MutableList<ShopItem>,
-    private val shopItemEventHandler: ShopItemEventHandler
+    private val shopItemEventHandler: ShopItemEventHandler,
 ) : RecyclerView.Adapter<ShopItemAdapter.ViewHolder>() {
-
-    private val viewBinderHelper = ViewBinderHelper()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ListItemShopitemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -25,7 +22,6 @@ class ShopItemAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        viewBinderHelper.bind(holder.itemView as SwipeRevealLayout, item.id.toString())
         holder.bind(item, shopItemEventHandler)
     }
 
@@ -34,30 +30,24 @@ class ShopItemAdapter(
         items.addAll(newItems)
     }
 
+    fun moveItem(from: Int, to: Int) {
+        items.moveItem(from, to)
+        notifyItemMoved(from, to)
+        shopItemEventHandler.onItemMoved(from, to)
+    }
+
+    fun removeItem(position: Int) {
+        items.removeAt(position)
+        notifyItemRemoved(position)
+        shopItemEventHandler.onItemRemoved(position)
+    }
+
     class ViewHolder(private val binding: ListItemShopitemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(shopItem: ShopItem, shopItemEventHandler: ShopItemEventHandler) = with(shopItem) {
             binding.setVariable(BR.viewstate, this)
             binding.setVariable(BR.handler, shopItemEventHandler)
             binding.setVariable(BR.quantity, binding.quantity)
-
-            with(binding.swipeLayout) {
-                close(false)
-
-                binding.quantity.setOnClickListener {
-                    if (isClosed) {
-                        open(true)
-                        requestFocus()
-                    } else {
-                        close(true)
-                        clearFocus()
-                    }
-                }
-
-                setOnFocusChangeListener { _, hasFocus ->
-                    if (!hasFocus) { close(true) }
-                }
-            }
         }
     }
 }

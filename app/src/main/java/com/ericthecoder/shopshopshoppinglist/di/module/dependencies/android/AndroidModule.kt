@@ -3,13 +3,15 @@ package com.ericthecoder.shopshopshoppinglist.di.module.dependencies.android
 import android.app.Application
 import android.content.Context
 import com.ericthecoder.shopshopshoppinglist.di.module.dependencies.android.resource.ResourceModule
+import com.ericthecoder.shopshopshoppinglist.di.module.dependencies.android.room.RoomModule
 import com.ericthecoder.shopshopshoppinglist.di.module.dependencies.android.sharedprefs.SharedPrefsModule
 import dagger.Module
 import dagger.Provides
 
 @Module(includes = [
     ResourceModule::class,
-    SharedPrefsModule::class
+    RoomModule::class,
+    SharedPrefsModule::class,
 ])
 class AndroidModule {
 

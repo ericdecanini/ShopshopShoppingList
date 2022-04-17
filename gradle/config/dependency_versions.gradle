@@ -12,6 +12,7 @@ ext {
     materialVersion = '1.4.0'
     billingVersion = '4.0.0'
     lifecycle_version = "2.2.0"
+    room_version = "2.3.0"
 
     // Android testing libraries
     assertJVersion = '3.12.0'
