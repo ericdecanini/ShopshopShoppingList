@@ -39,7 +39,6 @@ class MainActivity : DaggerAppCompatActivity() {
         binding.lifecycleOwner = this
         binding.setVariable(BR.viewmodel, viewModel)
 
-        viewModel.initTheme()
         loadAd()
         viewModel.launchOnboardingIfNecessary()
         handleIntent()

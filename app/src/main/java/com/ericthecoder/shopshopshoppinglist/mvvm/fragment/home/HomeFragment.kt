@@ -16,6 +16,7 @@ import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
+import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -24,8 +25,13 @@ class HomeFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+    }
+
+    private val themeViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
     }
 
     @Inject
@@ -46,7 +52,6 @@ class HomeFragment : DaggerFragment() {
         binding.lifecycleOwner = this
         (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar as Toolbar)
 
-        viewModel.initTheme()
         initShoppingLists()
         observeState()
         observeEvents()
@@ -73,7 +78,7 @@ class HomeFragment : DaggerFragment() {
         when (event) {
             is SetHasOptionsMenu -> setHasOptionsMenu(event.enabled)
             is OpenList -> goToList(event.shoppingList)
-            is SetThemeColor -> updateThemeColor(event.color)
+            CycleTheme -> cycleTheme()
             OpenUpsell -> navigator.goToUpsell()
         }
     }
@@ -90,8 +95,8 @@ class HomeFragment : DaggerFragment() {
         findNavController().navigate(action)
     }
 
-    private fun updateThemeColor(color: Int) {
-        binding.toolbar.setBackgroundColor(color)
+    private fun cycleTheme() {
+        // TODO: Implement
     }
 
     private fun setToolbarClickListener() {

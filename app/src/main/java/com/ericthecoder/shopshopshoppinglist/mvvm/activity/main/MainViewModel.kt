@@ -5,8 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ericthecoder.dependencies.android.resources.ResourceProvider
-import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState
@@ -23,7 +21,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val persistentStorageReader: PersistentStorageReader,
     private val persistentStorageWriter: PersistentStorageWriter,
-    private val resourceProvider: ResourceProvider,
     private val coroutineContextProvider: CoroutineContextProvider,
     private val billingInteractor: BillingInteractor,
 ) : ViewModel() {
@@ -33,12 +30,6 @@ class MainViewModel @Inject constructor(
 
     private val viewEventEmitter = MutableSingleLiveEvent<ViewEvent>()
     val viewEvent: LiveData<ViewEvent> get() = viewEventEmitter
-
-    fun initTheme() {
-        val currentThemeColorIndex = persistentStorageReader.getCurrentThemeColorIndex()
-        val statusBarThemeColors = resourceProvider.getColorArray(R.array.theme_colors_variant)
-        viewEventEmitter.value = ViewEvent.SetStatusBarColor(statusBarThemeColors[currentThemeColorIndex])
-    }
 
     fun handleNestedInstruction(nestedNavigationInstruction: NestedNavigationInstruction) =
         when (nestedNavigationInstruction) {

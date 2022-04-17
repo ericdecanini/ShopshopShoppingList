@@ -1,7 +1,5 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.activity.main
 
-import com.ericthecoder.dependencies.android.resources.ResourceProvider
-import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState
@@ -25,14 +23,12 @@ class MainViewModelTest {
 
     private val persistentStorageReader: PersistentStorageReader = mockk()
     private val persistentStorageWriter: PersistentStorageWriter = mockk(relaxUnitFun = true)
-    private val resourceProvider: ResourceProvider = mockk()
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
     private val billingInteractor: BillingInteractor = mockk(relaxUnitFun = true)
 
     private val viewModel = MainViewModel(
         persistentStorageReader,
         persistentStorageWriter,
-        resourceProvider,
         coroutineContextProvider,
         billingInteractor,
     )
@@ -40,27 +36,6 @@ class MainViewModelTest {
     @BeforeEach
     fun setup() {
         coEvery { billingInteractor.connectIfNeeded() } returns true
-    }
-
-    @Nested
-    inner class Theming {
-
-        private val themeColors = intArrayOf(0xFFFF0, 0xFFFF1, 0xFFFF2)
-
-        @BeforeEach
-        fun setup() {
-            every { resourceProvider.getColorArray(R.array.theme_colors_variant) } returns themeColors
-        }
-
-        @Test
-        fun `initTheme sets status bar color`() {
-            val themeColorIndex = 1
-            every { persistentStorageReader.getCurrentThemeColorIndex() } returns themeColorIndex
-
-            viewModel.initTheme()
-
-            assertThat(viewModel.viewEvent.value).isEqualTo(SetStatusBarColor(themeColors[themeColorIndex]))
-        }
     }
 
     @Nested

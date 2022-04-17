@@ -8,5 +8,5 @@ interface PersistentStorageWriter {
 
     fun setPremiumStatus(premiumStatus: PremiumStatus)
 
-    fun setCurrentThemeColorIndex(index: Int)
+    fun setCurrentTheme(index: Int)
 }

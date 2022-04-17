@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.ericthecoder.dependencies.android.room.ShopshopDatabase
 import com.ericthecoder.shopshopshoppinglist.di.module.app.activity.ActivityBuildersModule
+import com.ericthecoder.shopshopshoppinglist.di.module.app.theme.ThemeModule
 import com.ericthecoder.shopshopshoppinglist.di.module.dependencies.android.AndroidModule
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProviderImpl
@@ -18,6 +19,7 @@ import javax.inject.Singleton
     includes = [
         AndroidSupportInjectionModule::class,
         ActivityBuildersModule::class,
+        ThemeModule::class,
         ViewModelFactoryModule::class,
         AndroidModule::class,
     ]
