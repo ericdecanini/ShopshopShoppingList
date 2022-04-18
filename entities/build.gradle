@@ -1,14 +1,11 @@
 plugins {
-    id 'java-library'
     id 'kotlin'
 }
 
 apply from: '../gradle/config/common_java_library_block.gradle'
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
 }

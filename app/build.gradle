@@ -60,24 +60,27 @@ dependencies {
     implementation project (':dependencies:android')
     implementation project (':dependencies:billing')
 
-    implementation 'androidx.core:core-ktx:1.6.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
+    implementation "androidx.core:core-ktx:${coreKtxVersion}"
+    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
     implementation "com.google.android.material:material:$materialVersion"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}"
 
     // Fragment
     implementation "androidx.fragment:fragment-ktx:$fragmentVersion"
 
+    // Room
+    implementation "androidx.room:room-ktx:$roomVersion"
+
     // Preferences
-    implementation "androidx.preference:preference-ktx:1.1.1"
+    implementation "androidx.preference:preference-ktx:1.2.0"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$navVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navVersion"
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$daggerVersion"
@@ -90,17 +93,17 @@ dependencies {
     implementation "com.android.billingclient:billing-ktx:$billingVersion"
 
     // Firebase
-    implementation 'com.google.firebase:firebase-analytics:19.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.1.0'
-    implementation 'com.google.firebase:firebase-ads:20.2.0'
-    implementation 'com.google.firebase:firebase-messaging:22.0.0'
+    implementation 'com.google.firebase:firebase-analytics:20.1.2'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:18.2.9'
+    implementation 'com.google.firebase:firebase-ads:20.6.0'
+    implementation 'com.google.firebase:firebase-messaging:23.0.2'
 
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
-    testImplementation 'android.arch.core:core-testing:1.1.1'
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
+    testImplementation "android.arch.core:core-testing:${coreTestingVersion}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${coroutinesTestVersion}"
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
 
     // Mockito & Mockk
@@ -109,6 +112,6 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:${mockitoVersion}"
     testImplementation "io.mockk:mockk:${mockkVersion}"
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.test.ext:junit:${androidJUnitVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
 }

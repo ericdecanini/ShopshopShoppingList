@@ -1,6 +1,6 @@
 android {
     compileSdkVersion compileSdkVersionSet
-    buildToolsVersion buildToolsVersionSet
+    buildToolsVersion "$buildToolsVersion"
 
     defaultConfig {
         minSdkVersion minSdkVersionSet

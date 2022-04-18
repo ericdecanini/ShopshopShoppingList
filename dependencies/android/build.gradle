@@ -4,16 +4,11 @@ plugins {
     id 'kotlin-kapt'
 }
 
+apply from: '../../gradle/config/common_android_library_block.gradle'
+
 android {
-    compileSdkVersion 30
-    buildToolsVersion "$buildToolsVersion"
 
     defaultConfig {
-        minSdkVersion 23
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
@@ -39,10 +34,15 @@ android {
             useJUnitPlatform()
         }
     }
-
     packagingOptions {
-        exclude 'META-INF/*'
+        jniLibs {
+            excludes += ['META-INF/*']
+        }
+        resources {
+            excludes += ['META-INF/*']
+        }
     }
+
 
     sourceSets {
         String sharedTestDir = 'src/sharedTest/java'
@@ -59,11 +59,10 @@ dependencies {
     implementation project(':entities')
     implementation project(':usecases')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    implementation 'androidx.core:core-ktx:1.3.2'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation "androidx.core:core-ktx:${coreKtxVersion}"
+    implementation "androidx.appcompat:appcompat:${appCompatVersion}"
     implementation "com.google.android.material:material:$materialVersion"
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation "androidx.constraintlayout:constraintlayout:${constraintLayoutVersion}"
 
     // Dagger
     implementation "com.google.dagger:dagger-android:$daggerVersion"
@@ -72,19 +71,19 @@ dependencies {
     kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     // Room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-ktx:$roomVersion"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
 
     // Moshi
-    implementation "com.squareup.moshi:moshi-kotlin:1.12.0"
+    implementation "com.squareup.moshi:moshi-kotlin:1.13.0"
 
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
-    testImplementation 'android.arch.core:core-testing:1.1.1'
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
+    testImplementation "android.arch.core:core-testing:${coreTestingVersion}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${coroutinesTestVersion}"
 
     // Mockito & Mockk
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
@@ -93,9 +92,9 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:${mockitoVersion}"
     testImplementation "io.mockk:mockk:${mockkVersion}"
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation "android.arch.core:core-testing:1.1.0"
+    androidTestImplementation "androidx.test.ext:junit:${androidJUnitVersion}"
+    androidTestImplementation "android.arch.core:core-testing:${coreTestingVersion}"
     androidTestImplementation "org.assertj:assertj-core:${assertJVersion}"
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${espressoVersion}"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${coroutinesTestVersion}"
 }

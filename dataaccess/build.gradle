@@ -1,5 +1,4 @@
 plugins {
-    id 'java-library'
     id 'kotlin'
 }
 
@@ -9,12 +8,10 @@ dependencies {
     implementation project(':entities')
     implementation project(':usecases')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-
     testImplementation project(":testdata")
     testImplementation "org.assertj:assertj-core:${assertJVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.0"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${jUnitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${jUnitVersion}"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:${coroutinesTestVersion}"
     testImplementation "io.mockk:mockk:${mockkVersion}"
 }

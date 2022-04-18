@@ -1,5 +1,4 @@
 plugins {
-    id 'java-library'
     id 'kotlin'
 }
 
@@ -8,7 +7,5 @@ apply from: '../gradle/config/common_java_library_block.gradle'
 dependencies {
     implementation project(':entities')
     implementation project(':usecases')
-
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:${kotlinVersion}"
 }
 
