@@ -11,6 +11,7 @@ import com.ericthecoder.shopshopshoppinglist.NavGraphDirections
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityMainBinding
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel.ViewEvent.*
+import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
@@ -26,11 +27,11 @@ class MainActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(MainViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
     }
 
     private val themeViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[ThemeViewModel::class.java]
     }
 
     @Inject lateinit var navigator: Navigator
@@ -73,7 +74,7 @@ class MainActivity : DaggerAppCompatActivity() {
         }
     }
 
-    private fun setTheme(theme: ThemeViewModel.Theme) {
+    private fun setTheme(theme: Theme) {
         window.statusBarColor = resources.getColor(theme.colorVariantRes, getTheme())
     }
 

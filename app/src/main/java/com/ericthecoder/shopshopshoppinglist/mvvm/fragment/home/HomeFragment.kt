@@ -18,6 +18,7 @@ import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
+import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import dagger.android.support.DaggerFragment
@@ -30,11 +31,11 @@ class HomeFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
     }
 
     private val themeViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[ThemeViewModel::class.java]
     }
 
     @Inject
@@ -75,7 +76,7 @@ class HomeFragment : DaggerFragment() {
         }
     }
 
-    private fun setTheme(theme: ThemeViewModel.Theme) {
+    private fun setTheme(theme: Theme) {
         binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
     }
 

@@ -14,11 +14,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogRenameBinding
-import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
+import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import java.io.Serializable
 
 @Suppress("UNCHECKED_CAST")
-class RenameDialogFragment(private val theme: ThemeViewModel.Theme) : DialogFragment() {
+class RenameDialogFragment(private val theme: Theme) : DialogFragment() {
 
     private lateinit var binding: DialogRenameBinding
 
@@ -124,7 +124,7 @@ class RenameDialogFragment(private val theme: ThemeViewModel.Theme) : DialogFrag
             this.cancellable = cancellable
         }
 
-        fun build(theme: ThemeViewModel.Theme) = RenameDialogFragment(theme).apply {
+        fun build(theme: Theme) = RenameDialogFragment(theme).apply {
             val args = Bundle().apply {
                 putString(EXTRA_HEADER, header)
                 putString(EXTRA_AUTOFILL_TEXT, autofillText)

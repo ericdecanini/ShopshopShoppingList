@@ -10,6 +10,7 @@ import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityUpsellBinding
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ViewEvent.NavigateUp
+import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -22,11 +23,11 @@ class UpsellActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(UpsellViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[UpsellViewModel::class.java]
     }
 
     private val themeViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[ThemeViewModel::class.java]
     }
 
     private lateinit var binding: ActivityUpsellBinding
@@ -47,7 +48,7 @@ class UpsellActivity : DaggerAppCompatActivity() {
         setTheme(theme)
     }
 
-    private fun setTheme(theme: ThemeViewModel.Theme) {
+    private fun setTheme(theme: Theme) {
         val themeColor = getColor(theme.colorRes)
         val themeColorVariant = getColor(theme.colorVariantRes)
 

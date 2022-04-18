@@ -31,8 +31,7 @@
             app:onChecked="@{(view) -> handler.onItemChecked(view, viewstate)}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text=" " />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/name"

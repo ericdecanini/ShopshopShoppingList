@@ -37,11 +37,11 @@ class ListFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val viewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(ListViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[ListViewModel::class.java]
     }
 
     private val themeViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory).get(ThemeViewModel::class.java)
+        ViewModelProvider(this, viewModelFactory)[ThemeViewModel::class.java]
     }
 
     @Inject
@@ -56,7 +56,7 @@ class ListFragment : DaggerFragment() {
     private lateinit var binding: FragmentListBinding
     private val args: ListFragmentArgs by navArgs()
     private val adapter by lazy {
-        ShopItemAdapter(mutableListOf(), viewModel)
+        ShopItemAdapter(mutableListOf(), themeViewModel.getTheme(), viewModel)
     }
 
     override fun onCreateView(
@@ -73,7 +73,7 @@ class ListFragment : DaggerFragment() {
 
         initList()
         configureAddItemField()
-        observeTheme()
+        setTheme()
         observeState()
         observeEvents()
         inflateList(args.shoppingListId)
@@ -117,13 +117,8 @@ class ListFragment : DaggerFragment() {
         binding.addItemEdit.addTextChangedListener { binding.addItemLayout.background = defaultEditTextBackground }
     }
 
-    private fun observeTheme() {
-        themeViewModel.theme.observe(viewLifecycleOwner) { theme ->
-            setTheme(theme)
-        }
-    }
-
-    private fun setTheme(theme: ThemeViewModel.Theme) {
+    private fun setTheme() {
+        val theme = themeViewModel.getTheme()
         binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
     }
 
