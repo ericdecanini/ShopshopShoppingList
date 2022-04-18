@@ -3,8 +3,18 @@
 
     <color name="theme_color_green">#006E17</color>
     <color name="theme_color_on_green">#FFFFFF</color>
+    <color name="theme_color_green_inverse">#78DC77</color>
     <color name="theme_color_green_container">#93F990</color>
     <color name="theme_color_on_green_container">#002203</color>
+    <color name="theme_color_green_surface">#FCFDF6</color>
+    <color name="theme_color_on_green_surface">#1A1C19</color>
+    <color name="theme_color_green_surface_inverse">#2F312D</color>
+    <color name="theme_color_on_green_surface_inverse">#F0F1EB</color>
+    <color name="theme_color_green_surface_variant">#DEE5D8</color>
+    <color name="theme_color_on_green_surface_variant">#424840</color>
+    <color name="theme_color_green_background">#FCFDF6</color>
+    <color name="theme_color_on_green_background">#1A1C19</color>
+    <color name="theme_color_green_outline">#73796F</color>
 
     <color name="theme_color_red">#BA1A20</color>
     <color name="theme_color_on_red">#FFFFFF</color>
