@@ -57,7 +57,7 @@ class ShopItemAdapter(
 
             val context = binding.root.context
             binding.checkbox.buttonTintList = ColorStateList.valueOf(
-                context.resources.getColor(theme.colorVariantRes, context.theme)
+                context.resources.getColor(theme.colorRes, context.theme)
             )
         }
     }

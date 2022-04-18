@@ -1,5 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import android.view.animation.Animation
@@ -78,6 +79,10 @@ class HomeFragment : DaggerFragment() {
 
     private fun setTheme(theme: Theme) {
         binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
+        binding.fab.apply {
+            backgroundTintList = ColorStateList.valueOf(resources.getColor(theme.colorContainerRes, context?.theme))
+            imageTintList = ColorStateList.valueOf(resources.getColor(theme.onColorContainerRes, context?.theme))
+        }
     }
 
     private fun observeState() {

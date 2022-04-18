@@ -50,14 +50,13 @@ class UpsellActivity : DaggerAppCompatActivity() {
 
     private fun setTheme(theme: Theme) {
         val themeColor = getColor(theme.colorRes)
-        val themeColorVariant = getColor(theme.colorVariantRes)
 
         binding.toolbar.setBackgroundColor(themeColor)
-        window.statusBarColor = themeColorVariant
-        binding.colorScrimOne.backgroundTintList = ColorStateList.valueOf(themeColorVariant)
-        binding.colorScrimTwo.backgroundTintList = ColorStateList.valueOf(themeColorVariant)
-        binding.imageBoxOneTextbox.setBackgroundColor(themeColorVariant)
-        binding.imageBoxTwoTextbox.setBackgroundColor(themeColorVariant)
+        window.statusBarColor = themeColor
+        binding.colorScrimOne.backgroundTintList = ColorStateList.valueOf(themeColor)
+        binding.colorScrimTwo.backgroundTintList = ColorStateList.valueOf(themeColor)
+        binding.imageBoxOneTextbox.setBackgroundColor(themeColor)
+        binding.imageBoxTwoTextbox.setBackgroundColor(themeColor)
     }
 
     private fun observeViewEvents() = viewModel.viewEventLiveData.observe(this) { event ->

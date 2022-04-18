@@ -75,7 +75,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun setTheme(theme: Theme) {
-        window.statusBarColor = resources.getColor(theme.colorVariantRes, getTheme())
+        window.statusBarColor = resources.getColor(theme.colorRes, getTheme())
     }
 
     private fun observeViewEvents() = viewModel.viewEvent.observe(this) { event ->

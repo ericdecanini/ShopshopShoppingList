@@ -58,8 +58,6 @@
             android:src="@drawable/ic_add_white"
             android:contentDescription="@string/talkback_add_new_list"
             android:onClick="@{() -> viewmodel.navigateToListFragment()}"
-            app:tint="@color/colorOnSecondary"
-            app:fabCustomSize="56dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
