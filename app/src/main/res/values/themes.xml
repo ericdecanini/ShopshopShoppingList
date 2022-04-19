@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.ShopshopShoppingList" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.ShopshopShoppingList" parent="Theme.Material3.DayNight.NoActionBar">
 
         <item name="colorPrimary">@color/theme_color_green</item>
         <item name="colorOnPrimary">@color/theme_color_on_green</item>
@@ -16,8 +16,10 @@
         <item name="colorPrimaryInverse">@color/theme_color_green_inverse</item>
         <item name="colorSurfaceInverse">@color/theme_color_green_surface_inverse</item>
         <item name="colorOnSurfaceInverse">@color/theme_color_on_green_surface_inverse</item>
-
         <item name="android:statusBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.ShopshopShoppingList" parent="Base.Theme.ShopshopShoppingList">
         <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

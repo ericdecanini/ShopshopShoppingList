@@ -10,7 +10,12 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import javax.inject.Inject
 
-// TODO: disable cycle theming, implement material 3
+/**
+ * Material 3 Migration:
+ * Step 1 - Set theme colours and typography for base theme
+ * Step 2 - Change widgets based on theme
+ * Step 3 - Apply dynamic colour UI
+ */
 class ShopshopApplication: DaggerApplication() {
 
     @Inject lateinit var persistentStorageReader: PersistentStorageReader
