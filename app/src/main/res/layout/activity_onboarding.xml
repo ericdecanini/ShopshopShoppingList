@@ -23,7 +23,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:tabTextAppearance="@style/TinyText"
+            app:tabTextAppearance="@style/NonexistentText"
             app:tabTextColor="@android:color/transparent"
             app:tabBackground="@drawable/pager_dot_selector"
             app:tabPaddingStart="15dp"

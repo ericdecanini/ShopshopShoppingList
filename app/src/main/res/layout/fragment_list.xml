@@ -22,11 +22,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.Toolbar
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
             android:gravity="center_horizontal"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -51,7 +50,7 @@
                     android:id="@+id/back_button"
                     android:layout_width="@dimen/toolbar_back_button_size"
                     android:layout_height="@dimen/toolbar_back_button_size"
-                    android:background="@drawable/bg_ripple_primary_bg_round"
+                    android:background="@drawable/bg_ripple_gray_round"
                     android:contentDescription="@string/talkback_back"
                     android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
                     android:padding="4dp"
@@ -62,7 +61,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -81,7 +80,6 @@
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/add_item_layout"
-                    style="@style/EditTextPrimary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -89,12 +87,12 @@
                     android:layout_marginEnd="16dp"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_item_edit"
+                        style="@style/Widget.App.TextInputEditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:autofillHints="@string/new_item"
-                        android:background="@android:color/transparent"
                         android:hint="@string/new_item"
                         android:inputType="textCapSentences"
                         android:nextFocusDown="@id/add_item_edit"
@@ -112,8 +110,8 @@
                         android:background="@drawable/bg_ripple_gray"
                         android:contentDescription="@string/talkback_add_new_item"
                         android:onClick="@{() -> viewmodel.addItem(newitem.text.toString())}"
-                        android:src="@drawable/ic_return_24dp"
-                        app:tint="@color/newItemClearButtonColor"
+                        android:src="@drawable/ic_return"
+                        app:tint="?attr/colorOnSurface"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -146,7 +144,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/add_item_layout"
-                    tools:visibility="visible">
+                    tools:visibility="gone">
 
                     <ImageView
                         android:id="@+id/splash_no_items_image"
@@ -162,7 +160,7 @@
 
                     <TextView
                         android:id="@+id/splash_no_items_text"
-                        style="@style/SplashText"
+                        android:textAppearance="@style/TextAppearance.App.TitleMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
@@ -185,7 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:alpha="0.8"
-            android:background="@color/white"
+            android:background="#FFFFFF"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
@@ -208,7 +206,7 @@
             tools:visibility="gone">
 
             <TextView
-                style="@style/SplashText"
+                android:textAppearance="@style/TextAppearance.App.TitleMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -217,8 +215,8 @@
                 android:paddingEnd="@dimen/splash_text_horizontal_padding"
                 android:text="@string/splash_generic_error" />
 
-            <Button
-                style="@style/ButtonPrimary"
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.App.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

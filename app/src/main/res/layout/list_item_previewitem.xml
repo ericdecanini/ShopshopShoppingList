@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <import type="android.view.View" />
 
         <variable
@@ -9,41 +10,39 @@
             type="com.ericthecoder.shopshopshoppinglist.entities.ShopItem" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:bind="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/item"
-            style="@style/ShoppingListPreviewText"
             android:layout_width="wrap_content"
             android:layout_height="32dp"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:text="@{viewstate.name}"
-            android:textColor="@color/defaultTextColor"
+            android:textAppearance="@style/TextAppearance.App.LabelLarge"
             android:visibility="@{viewstate != null ? View.VISIBLE : View.GONE}"
-            app:drawableTint="@color/previewItemDrawableTint"
-            app:strikeThrough="@{viewstate.checked}"
-            app:layout_constraintTop_toTopOf="parent"
+            app:drawableTint="?attr/colorOnSurface"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:strikeThrough="@{viewstate.checked}"
             bind:drawableStart="@{viewstate.checked ? @drawable/checkbox_checked : @drawable/checkbox_unchecked}"
             tools:text="Oringe" />
 
         <TextView
-            style="@style/ShoppingListPreviewEllipsisText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingEnd="4dp"
             android:text="@string/ellipsis"
+            android:textAppearance="@style/TextAppearance.App.LabelLarge"
             android:visibility="@{viewstate == null ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

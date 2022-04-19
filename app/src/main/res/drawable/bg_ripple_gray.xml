@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@color/gray_500">
-
-    <!-- the normal bg color -->
-    <item>
-        <color android:color="@color/shopItemBackgroundColor" />
-    </item>
+    android:color="?attr/colorOnSurface">
 
     <!-- make sure the ripple doesn't exceed the bounds -->
     <item android:id="@android:id/mask">

@@ -25,7 +25,7 @@ class RenameDialogFragment(private val theme: Theme) : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setStyle(STYLE_NORMAL, R.style.DialogTheme)
+        setStyle(STYLE_NORMAL, R.style.Theme_App_Dialog)
     }
 
     override fun onCreateView(

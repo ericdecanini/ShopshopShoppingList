@@ -21,13 +21,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/backgroundColorUpsell">
+        android:background="?attr/backgroundColor">
 
-      <androidx.appcompat.widget.Toolbar
+      <com.google.android.material.appbar.MaterialToolbar
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
-          android:background="@color/colorPrimary"
           android:gravity="center_horizontal"
           app:layout_constraintTop_toTopOf="parent">
 
@@ -36,7 +35,7 @@
             android:layout_width="@dimen/toolbar_back_button_size"
             android:layout_height="@dimen/toolbar_back_button_size"
             android:src="@drawable/ic_arrow_back"
-            android:background="@drawable/bg_ripple_primary_bg_round"
+            android:background="@drawable/bg_ripple_gray_round"
             android:padding="4dp"
             android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
             android:contentDescription="@string/talkback_back"
@@ -44,11 +43,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
-      </androidx.appcompat.widget.Toolbar>
+      </com.google.android.material.appbar.MaterialToolbar>
 
       <TextView
           android:id="@+id/upsell_title"
-          style="@style/UpsellTitleText"
+          android:textAppearance="@style/TextAppearance.App.HeadlineLarge"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center_horizontal"
@@ -59,7 +58,7 @@
 
       <TextView
           android:id="@+id/upsell_price"
-          style="@style/UpsellPriceText"
+          android:textAppearance="@style/TextAppearance.App.HeadlineMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:gravity="center_horizontal"
@@ -70,7 +69,7 @@
 
       <TextView
           android:id="@+id/upsell_description"
-          style="@style/UpsellBodyText"
+          android:textAppearance="@style/TextAppearance.App.TitleMedium"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="@string/upsell_description"
@@ -81,13 +80,12 @@
           app:layout_constraintTop_toBottomOf="@id/upsell_price"
           />
 
-      <Button
+      <com.google.android.material.button.MaterialButton
           android:id="@+id/upsell_button_upper"
-          style="@style/UpsellButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
-          android:backgroundTint="@{viewmodel.premiumStatus != PremiumStatus.PENDING ? @color/colorSecondaryDark : @color/gray_500}"
+          android:backgroundTint="@{viewmodel.premiumStatus != PremiumStatus.PENDING ? @color/colorPrimaryButton : @color/colorDisabled}"
           android:text="@{viewmodel.premiumStatus == PremiumStatus.PENDING ? @string/upsell_cta_pending : @string/upsell_cta}"
           android:onClick="@{() -> viewmodel.onCtaButtonPressed()}"
           app:layout_constraintTop_toBottomOf="@id/upsell_description"
@@ -121,18 +119,19 @@
           android:id="@+id/image_box_one_textbox"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:background="@color/green_900"
+          android:background="?attr/colorPrimaryVariant"
           app:layout_constraintTop_toTopOf="@id/image_box_one_title"
           app:layout_constraintBottom_toBottomOf="@id/image_box_one_description"
           />
 
       <TextView
           android:id="@+id/image_box_one_title"
-          style="@style/UpsellImageBoxTitleText"
+          android:textAppearance="@style/TextAppearance.App.HeadlineMedium"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/upsell_image_box_one_title"
           android:paddingTop="16dp"
+          android:textColor="?attr/colorOnPrimary"
           app:layout_constraintTop_toBottomOf="@id/image_box_one"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
@@ -140,9 +139,10 @@
 
       <TextView
           android:id="@+id/image_box_one_description"
-          style="@style/UpsellImageBoxDescriptionText"
+          android:textAppearance="@style/TextAppearance.App.BodyLarge"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:textColor="?attr/colorOnPrimary"
           android:text="@string/upsell_image_box_one_description"
           android:gravity="center_horizontal"
           android:layout_marginTop="16dp"
@@ -178,18 +178,19 @@
           android:id="@+id/image_box_two_textbox"
           android:layout_width="match_parent"
           android:layout_height="0dp"
-          android:background="@color/green_900"
+          android:background="?attr/colorPrimaryVariant"
           app:layout_constraintTop_toTopOf="@id/image_box_two_title"
           app:layout_constraintBottom_toBottomOf="@id/image_box_two_bottom_space"
           />
 
       <TextView
           android:id="@+id/image_box_two_title"
-          style="@style/UpsellImageBoxTitleText"
+          android:textAppearance="@style/TextAppearance.App.HeadlineMedium"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@{String.format(@string/upsell_image_box_two_title, viewmodel.premiumPrice)}"
           android:paddingTop="16dp"
+          android:textColor="?attr/colorOnPrimary"
           app:layout_constraintTop_toBottomOf="@id/image_box_two"
           app:layout_constraintStart_toStartOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
@@ -198,11 +199,12 @@
 
       <TextView
           android:id="@+id/image_box_two_description"
-          style="@style/UpsellImageBoxDescriptionText"
+          android:textAppearance="@style/TextAppearance.App.BodyLarge"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="@string/upsell_image_box_two_description"
           android:gravity="center_horizontal"
+          android:textColor="?attr/colorOnPrimary"
           android:layout_marginTop="16dp"
           android:layout_marginStart="16dp"
           android:layout_marginEnd="16dp"
@@ -212,9 +214,9 @@
           app:layout_constraintEnd_toEndOf="parent"
           />
 
-      <Button
+      <com.google.android.material.button.MaterialButton
           android:id="@+id/upsell_button_lower"
-          style="@style/UpsellButtonSecondary"
+          style="@style/Widget.App.Button.TextButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="32dp"

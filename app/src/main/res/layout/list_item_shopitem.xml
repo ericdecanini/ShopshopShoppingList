@@ -18,8 +18,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/shopitem_height"
-        android:background="@color/shopItemBackgroundColor">
+        android:layout_height="@dimen/shopitem_height">
 
         <CheckBox
             android:id="@+id/checkbox"
@@ -35,16 +34,16 @@
 
         <EditText
             android:id="@+id/name"
-            style="@style/ListFragmentItemText"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:padding="12dp"
             android:hint="@string/talkback_item_name"
             android:autofillHints="@string/talkback_item_name"
+            android:textAppearance="@style/TextAppearance.App.BodyLarge"
             android:inputType="textCapSentences"
             android:background="@drawable/bg_ripple_gray"
             android:text="@{viewstate.name}"
-            android:textColor="@{viewstate.checked ? @color/gray_700 : @color/defaultTextColor}"
+            android:textColor="@{viewstate.checked ? @color/colorDisabled : @color/colorText}"
             app:strikeThrough="@{viewstate.checked}"
             app:onFocusLost="@{(view) -> handler.onNameChanged(view, viewstate)}"
             app:layout_constraintStart_toEndOf="@id/checkbox"
@@ -55,7 +54,7 @@
 
         <EditText
             android:id="@+id/quantity"
-            style="@style/ListFragmentQuantityText"
+            android:textAppearance="@style/TextAppearance.App.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:gravity="center_vertical"
@@ -78,7 +77,7 @@
             android:id="@+id/divider"
             android:layout_width="1dp"
             android:layout_height="0dp"
-            android:background="@color/gray_400"
+            android:background="?attr/colorOnBackground"
             app:layout_constraintTop_toTopOf="@id/checkbox"
             app:layout_constraintBottom_toBottomOf="@id/checkbox"
             app:layout_constraintStart_toEndOf="@id/name" />

@@ -3,66 +3,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/dialogBackgroundColor">
-
-    <TextView
-        android:id="@+id/title"
-        style="@style/DialogTitleText"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        android:gravity="center_horizontal"
-        android:padding="@dimen/dialog_title_padding"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Rename Dialog" />
+        android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/new_name"
-        style="@style/DialogBodyText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_edit_new_item"
-        android:hint="@string/hint_list_title"
-        android:inputType="text"
-        android:importantForAutofill="no"
-        android:paddingTop="@dimen/edittext_box_vertical_padding"
-        android:paddingBottom="@dimen/edittext_box_vertical_padding"
-        android:paddingStart="@dimen/edittext_box_horizontal_padding"
-        android:paddingEnd="@dimen/edittext_box_horizontal_padding"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="@dimen/dialog_body_horizontal_padding"
-        android:layout_marginEnd="@dimen/dialog_body_horizontal_padding"
-        android:selectAllOnFocus="true"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title" />
+        <TextView
+            android:id="@+id/title"
+            android:textAppearance="@style/TextAppearance.App.Dialog.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorSurface"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/dialog_title_padding"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Rename Dialog" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/negative_button"
-        style="@style/DialogButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dialog_body_vertical_padding_bottom"
-        android:text="@string/cancel"
-        app:layout_constraintTop_toBottomOf="@id/new_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/positive_button"
-        tools:text="Cancel" />
+        <EditText
+            android:id="@+id/new_name"
+            android:textAppearance="@style/TextAppearance.App.Dialog.Body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dialog_body_horizontal_padding"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="@dimen/dialog_body_horizontal_padding"
+            android:background="@drawable/bg_edit_new_item"
+            android:hint="@string/hint_list_title"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:paddingStart="@dimen/edittext_box_horizontal_padding"
+            android:paddingTop="@dimen/edittext_box_vertical_padding"
+            android:paddingEnd="@dimen/edittext_box_horizontal_padding"
+            android:paddingBottom="@dimen/edittext_box_vertical_padding"
+            android:selectAllOnFocus="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/positive_button"
-        style="@style/DialogButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dialog_body_vertical_padding_bottom"
-        android:text="@string/ok"
-        app:layout_constraintTop_toBottomOf="@id/new_name"
-        app:layout_constraintStart_toEndOf="@id/negative_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:text="Ok" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/negative_button"
+            style="@style/Widget.App.Button.TextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_body_vertical_padding_bottom"
+            android:text="@string/cancel"
+            app:layout_constraintEnd_toStartOf="@id/positive_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/new_name"
+            app:layout_constraintWidth_percent="0.25"
+            tools:text="Cancel" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/positive_button"
+            style="@style/Widget.App.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dialog_body_vertical_padding_bottom"
+            android:text="@string/ok"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/negative_button"
+            app:layout_constraintTop_toBottomOf="@id/new_name"
+            app:layout_constraintWidth_percent="0.25"
+            tools:text="Ok" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
