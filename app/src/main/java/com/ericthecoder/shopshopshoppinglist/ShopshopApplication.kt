@@ -10,6 +10,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import javax.inject.Inject
 
+// TODO: disable cycle theming, implement material 3
 class ShopshopApplication: DaggerApplication() {
 
     @Inject lateinit var persistentStorageReader: PersistentStorageReader

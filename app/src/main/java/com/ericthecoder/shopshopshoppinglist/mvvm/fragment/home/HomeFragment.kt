@@ -78,11 +78,11 @@ class HomeFragment : DaggerFragment() {
     }
 
     private fun setTheme(theme: Theme) {
-        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
-        binding.fab.apply {
-            backgroundTintList = ColorStateList.valueOf(resources.getColor(theme.colorContainerRes, context?.theme))
-            imageTintList = ColorStateList.valueOf(resources.getColor(theme.onColorContainerRes, context?.theme))
-        }
+//        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
+//        binding.fab.apply {
+//            backgroundTintList = ColorStateList.valueOf(resources.getColor(theme.colorContainerRes, context?.theme))
+//            imageTintList = ColorStateList.valueOf(resources.getColor(theme.onColorContainerRes, context?.theme))
+//        }
     }
 
     private fun observeState() {
@@ -117,12 +117,12 @@ class HomeFragment : DaggerFragment() {
     }
 
     private fun setPlayingBreatheTitle(playing: Boolean) {
-        if (playing) {
-            val breatheAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.breathe)
-            binding.title.startAnimation(breatheAnimation)
-        } else {
-            binding.title.clearAnimation()
-        }
+//        if (playing) {
+//            val breatheAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.breathe)
+//            binding.title.startAnimation(breatheAnimation)
+//        } else {
+//            binding.title.clearAnimation()
+//        }
     }
 
     private fun cycleTheme() {

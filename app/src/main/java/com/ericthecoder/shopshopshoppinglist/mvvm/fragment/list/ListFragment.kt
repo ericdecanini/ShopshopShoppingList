@@ -118,8 +118,8 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun setTheme() {
-        val theme = themeViewModel.getTheme()
-        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
+//        val theme = themeViewModel.getTheme()
+//        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
     }
 
     private fun observeState() {
