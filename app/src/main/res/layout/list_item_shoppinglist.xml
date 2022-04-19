@@ -23,10 +23,10 @@
         android:paddingEnd="@dimen/home_fragment_horizontal_padding"
         android:paddingBottom="@dimen/home_fragment_vertical_padding">
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="2dp"
+            app:cardElevation="8dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -41,6 +41,7 @@
                     android:layout_height="wrap_content"
                     android:text="@{viewstate.name}"
                     android:textAppearance="@style/TextAppearance.App.TitleLarge"
+                    android:textColor="?attr/colorOnSurface"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="Shopping List" />
@@ -73,7 +74,7 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
