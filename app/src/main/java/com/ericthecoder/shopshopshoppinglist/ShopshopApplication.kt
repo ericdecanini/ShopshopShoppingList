@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 /**
  * Material 3 Migration:
- * Step 1 - Set theme colours and typography for base theme
+ * Step 1 - Set theme colours and typography for base theme (DONE)
  * Step 2 - Change widgets based on theme
  * Step 3 - Apply dynamic colour UI
  */

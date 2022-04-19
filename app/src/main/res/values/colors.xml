@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryButton">?attr/colorPrimary</color>
+    <color name="colorPrimaryButton">@color/md_theme_primary</color>
     <color name="colorDisabled">#777777</color>
-    <color name="colorText">?attr/colorOnBackground</color>
+    <color name="colorText">@color/md_theme_onBackground</color>
     <color name="textInputEditTextBackgroundColor">#FFFFFF</color>
 </resources>

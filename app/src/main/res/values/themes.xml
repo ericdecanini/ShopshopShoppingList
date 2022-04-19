@@ -17,7 +17,7 @@
         <item name="colorErrorContainer">@color/md_theme_errorContainer</item>
         <item name="colorOnError">@color/md_theme_onError</item>
         <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer</item>
-        <item name="android:colorBackground">@color/md_theme_background</item>
+        <item name="backgroundColor">@color/md_theme_background</item>
         <item name="colorOnBackground">@color/md_theme_onBackground</item>
         <item name="colorSurface">@color/md_theme_surface</item>
         <item name="colorOnSurface">@color/md_theme_onSurface</item>
@@ -28,7 +28,7 @@
         <item name="colorSurfaceInverse">@color/md_theme_inverseSurface</item>
         <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
         <item name="android:shadowColor">@color/md_theme_shadow</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">?attr/colorSurface</item>
     </style>
 
     <style name="Theme.ShopshopShoppingList" parent="Base.Theme.ShopshopShoppingList">
