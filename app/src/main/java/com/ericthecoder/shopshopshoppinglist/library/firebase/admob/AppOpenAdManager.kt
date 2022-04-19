@@ -44,7 +44,7 @@ class AppOpenAdManager private constructor(
         if (isAdAvailable)
             return
 
-        loadCallback = object: AppOpenAdLoadCallback() {
+        loadCallback = object : AppOpenAdLoadCallback() {
             override fun onAdLoaded(ad: AppOpenAd) {
                 this@AppOpenAdManager.appOpenAd = ad
             }
@@ -65,7 +65,7 @@ class AppOpenAdManager private constructor(
 
     private fun showAdIfAvailable() {
         if (!isShowingAd && isAdAvailable) {
-            val fullScreenContentCallback: FullScreenContentCallback = object: FullScreenContentCallback() {
+            val fullScreenContentCallback: FullScreenContentCallback = object : FullScreenContentCallback() {
                 override fun onAdDismissedFullScreenContent() {
                     this@AppOpenAdManager.appOpenAd = null
                     isShowingAd = false
@@ -90,7 +90,9 @@ class AppOpenAdManager private constructor(
 
     @OnLifecycleEvent(ON_START)
     fun onStart() {
-        if (shouldShowAd()) { showAdIfAvailable() }
+        if (shouldShowAd()) {
+            showAdIfAvailable()
+        }
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {

@@ -13,30 +13,30 @@ import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogFrag
 @Suppress("UNCHECKED_CAST")
 class GenericDialogController(
     private val dialogFragment: DialogFragment,
-    args: Bundle?
+    args: Bundle?,
 ) {
 
-  val title = args?.getString(EXTRA_TITLE)
+    val title = args?.getString(EXTRA_TITLE)
 
-  val message = args?.getString(EXTRA_MESSAGE)
+    val message = args?.getString(EXTRA_MESSAGE)
 
-  val positiveText = args?.getString(EXTRA_POSITIVE_TEXT) ?: dialogFragment.context?.getString(R.string.ok)
+    val positiveText = args?.getString(EXTRA_POSITIVE_TEXT) ?: dialogFragment.context?.getString(R.string.ok)
 
-  val positiveOnClick = {
-    val positiveOnClick = args?.getSerializable(EXTRA_POSITIVE_CLICK) as (() -> Unit)?
-    positiveOnClick?.invoke()
-    dismiss()
-  }
+    val positiveOnClick = {
+        val positiveOnClick = args?.getSerializable(EXTRA_POSITIVE_CLICK) as (() -> Unit)?
+        positiveOnClick?.invoke()
+        dismiss()
+    }
 
-  val negativeText = args?.getString(EXTRA_NEGATIVE_TEXT)
+    val negativeText = args?.getString(EXTRA_NEGATIVE_TEXT)
 
-  val negativeOnClick = {
-    val negativeOnClick = args?.getSerializable(EXTRA_NEGATIVE_CLICK) as (() -> Unit)?
-    negativeOnClick?.invoke()
-    dismiss()
-  }
+    val negativeOnClick = {
+        val negativeOnClick = args?.getSerializable(EXTRA_NEGATIVE_CLICK) as (() -> Unit)?
+        negativeOnClick?.invoke()
+        dismiss()
+    }
 
-  private fun dismiss() {
-    dialogFragment.dismiss()
-  }
+    private fun dismiss() {
+        dialogFragment.dismiss()
+    }
 }

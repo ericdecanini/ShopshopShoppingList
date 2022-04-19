@@ -6,15 +6,15 @@ import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 
 interface ShopItemEventHandler {
 
-  fun onDeleteClick(shopItem: ShopItem)
+    fun onDeleteClick(shopItem: ShopItem)
 
-  fun onItemChecked(checkbox: CheckBox, shopItem: ShopItem)
+    fun onItemChecked(checkbox: CheckBox, shopItem: ShopItem)
 
-  fun onNameChanged(editText: EditText, shopItem: ShopItem)
+    fun onNameChanged(editText: EditText, shopItem: ShopItem)
 
-  fun onQuantityChanged(editText: EditText, shopItem: ShopItem)
+    fun onQuantityChanged(editText: EditText, shopItem: ShopItem)
 
-  fun onItemMoved(from: Int, to: Int)
+    fun onItemMoved(from: Int, to: Int)
 
-  fun onItemRemoved(position: Int)
+    fun onItemRemoved(position: Int)
 }

@@ -6,7 +6,7 @@ enum class OnboardingPage(
     val titleRes: Int,
     val descriptionRes: Int,
     val imageRes: Int,
-    val backgroundRes: Int
+    val backgroundRes: Int,
 ) {
     FIRST(
         R.string.onboarding_title_one,

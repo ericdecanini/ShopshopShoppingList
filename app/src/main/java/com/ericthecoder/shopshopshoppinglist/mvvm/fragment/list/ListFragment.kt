@@ -46,10 +46,13 @@ class ListFragment : DaggerFragment() {
 
     @Inject
     lateinit var navigator: Navigator
+
     @Inject
     lateinit var dialogNavigator: DialogNavigator
+
     @Inject
     lateinit var toastNavigator: ToastNavigator
+
     @Inject
     lateinit var snackbarNavigator: SnackbarNavigator
 

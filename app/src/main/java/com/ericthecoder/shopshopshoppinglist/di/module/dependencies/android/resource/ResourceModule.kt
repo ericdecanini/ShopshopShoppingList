@@ -14,7 +14,6 @@ class ResourceModule {
     fun provideResources(context: Context): Resources = context.resources
 
     @Provides
-    fun provideResourceProvider(resources: Resources): ResourceProvider
-            = ResourceProviderImpl(resources)
+    fun provideResourceProvider(resources: Resources): ResourceProvider = ResourceProviderImpl(resources)
 
 }

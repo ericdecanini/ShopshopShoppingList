@@ -1,4 +1,3 @@
-
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
 import android.text.Editable
@@ -323,7 +322,7 @@ class ListViewModelTest {
         @Test
         fun `when no items are checked, clearCheckedItems does not update repository`() {
             val uncheckedItem = shopItem.copy(checked = false)
-            val currentShoppingList =shoppingList.copy(items = mutableListOf(uncheckedItem, uncheckedItem))
+            val currentShoppingList = shoppingList.copy(items = mutableListOf(uncheckedItem, uncheckedItem))
             givenShoppingList(currentShoppingList)
 
             viewModel.clearCheckedItems()

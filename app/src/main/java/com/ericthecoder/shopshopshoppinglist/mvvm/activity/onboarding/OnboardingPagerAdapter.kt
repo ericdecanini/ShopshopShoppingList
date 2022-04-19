@@ -12,7 +12,7 @@ import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 
 class OnboardingPagerAdapter(
     private val pager: ViewPager,
-    private val navigator: Navigator
+    private val navigator: Navigator,
 ) : PagerAdapter() {
 
     private val context = pager.context

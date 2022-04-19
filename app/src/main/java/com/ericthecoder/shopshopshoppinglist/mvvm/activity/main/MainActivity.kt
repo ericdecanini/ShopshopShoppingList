@@ -34,8 +34,10 @@ class MainActivity : DaggerAppCompatActivity() {
         ViewModelProvider(this, viewModelFactory)[ThemeViewModel::class.java]
     }
 
-    @Inject lateinit var navigator: Navigator
-    @Inject lateinit var dialogNavigator: DialogNavigator
+    @Inject
+    lateinit var navigator: Navigator
+    @Inject
+    lateinit var dialogNavigator: DialogNavigator
 
     private lateinit var binding: ActivityMainBinding
 

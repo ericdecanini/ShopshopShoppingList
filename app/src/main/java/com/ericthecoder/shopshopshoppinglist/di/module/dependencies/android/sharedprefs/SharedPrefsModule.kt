@@ -19,19 +19,19 @@ class SharedPrefsModule {
 
     @Provides
     fun provideSharedPreferences(
-        context: Context
+        context: Context,
     ): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
     @Provides
     fun providePersistentStorageReader(
         sharedPreferences: SharedPreferences,
-        keys: SharedPrefsKeys
+        keys: SharedPrefsKeys,
     ): PersistentStorageReader = SharedPrefsReader(sharedPreferences, keys)
 
     @Provides
     fun providePersistentStorageWriter(
         sharedPreferences: SharedPreferences,
-        keys: SharedPrefsKeys
+        keys: SharedPrefsKeys,
     ): PersistentStorageWriter = SharedPrefsWriter(sharedPreferences, keys)
 
 }

@@ -12,8 +12,8 @@ import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 
 class ShoppingListAdapter(
     private val shoppingLists: List<ShoppingList>,
-    private val onShoppingListClick: ShoppingListEventHandler
-): RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
+    private val onShoppingListClick: ShoppingListEventHandler,
+) : RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ListItemShoppinglistBinding.inflate(LayoutInflater.from(parent.context))
@@ -32,7 +32,7 @@ class ShoppingListAdapter(
         }
     }
 
-    class ViewHolder(val binding: ListItemShoppinglistBinding): RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(val binding: ListItemShoppinglistBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(shoppingList: ShoppingList) {
             (itemView.preview_items.adapter as? PreviewItemsAdapter)?.apply {

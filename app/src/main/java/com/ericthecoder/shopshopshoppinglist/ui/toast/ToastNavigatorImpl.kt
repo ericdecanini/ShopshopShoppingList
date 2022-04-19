@@ -4,7 +4,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 class ToastNavigatorImpl(
-    private val activity: AppCompatActivity
+    private val activity: AppCompatActivity,
 ) : ToastNavigator {
 
     override fun show(message: String, length: Int) {

@@ -2,7 +2,6 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell
 
 import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -60,7 +59,7 @@ class UpsellActivity : DaggerAppCompatActivity() {
     }
 
     private fun observeViewEvents() = viewModel.viewEventLiveData.observe(this) { event ->
-        when(event) {
+        when (event) {
             NavigateUp -> onBackPressed()
         }
     }

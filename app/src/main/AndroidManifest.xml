@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.ericthecoder.shopshopshoppinglist" >
+    package="com.ericthecoder.shopshopshoppinglist">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.android.vending.BILLING" />
@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ShopshopShoppingList"
-        tools:ignore="AllowBackup" >
+        tools:ignore="AllowBackup">
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
@@ -22,8 +22,8 @@
 
         <activity
             android:name=".mvvm.activity.main.MainActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,9 +33,10 @@
 
         <activity android:name=".mvvm.activity.onboarding.OnboardingActivity" />
 
-        <activity android:name=".mvvm.activity.upsell.UpsellActivity"
-            android:parentActivityName=".mvvm.activity.main.MainActivity"
-            android:label="" />
+        <activity
+            android:name=".mvvm.activity.upsell.UpsellActivity"
+            android:label=""
+            android:parentActivityName=".mvvm.activity.main.MainActivity" />
 
         <!-- Firebase Cloud Messaging -->
         <meta-data

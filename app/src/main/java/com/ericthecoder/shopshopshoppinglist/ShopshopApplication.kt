@@ -16,11 +16,14 @@ import javax.inject.Inject
  * Step 2 - Change widgets based on theme
  * Step 3 - Apply dynamic colour UI
  */
-class ShopshopApplication: DaggerApplication() {
+class ShopshopApplication : DaggerApplication() {
 
-    @Inject lateinit var persistentStorageReader: PersistentStorageReader
-    @Inject lateinit var persistentStorageWriter: PersistentStorageWriter
-    @Inject lateinit var resourceProvider: ResourceProvider
+    @Inject
+    lateinit var persistentStorageReader: PersistentStorageReader
+    @Inject
+    lateinit var persistentStorageWriter: PersistentStorageWriter
+    @Inject
+    lateinit var resourceProvider: ResourceProvider
 
     override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
         return DaggerAppComponent.factory().create(this)

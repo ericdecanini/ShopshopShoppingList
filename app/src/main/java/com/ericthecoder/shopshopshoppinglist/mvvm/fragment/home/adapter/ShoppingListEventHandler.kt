@@ -4,6 +4,6 @@ import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 
 interface ShoppingListEventHandler {
 
-  fun onShoppingListClick(shoppingList: ShoppingList)
+    fun onShoppingListClick(shoppingList: ShoppingList)
 
 }

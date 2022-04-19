@@ -1,10 +1,7 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
@@ -143,7 +140,7 @@ class HomeFragment : DaggerFragment() {
         inflater.inflate(R.menu.menu_home, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem) = when(item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
         R.id.ic_remove_ads -> {
             viewModel.navigateToUpsell()
             true

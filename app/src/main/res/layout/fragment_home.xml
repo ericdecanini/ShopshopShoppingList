@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <import type="android.view.View" />
+
         <import type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState" />
 
         <variable
@@ -26,13 +28,14 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <TextView
                     android:id="@+id/title"
-                    android:textAppearance="@style/TextAppearance.App.Toolbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="@string/app_name_short"/>
+                    android:text="@string/app_name_short"
+                    android:textAppearance="@style/TextAppearance.App.Toolbar" />
             </FrameLayout>
 
         </com.google.android.material.appbar.MaterialToolbar>
@@ -43,20 +46,20 @@
             android:layout_height="0dp"
             android:nestedScrollingEnabled="false"
             android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loaded ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            tools:itemCount="2"
             tools:listitem="@layout/list_item_shoppinglist"
-            tools:itemCount="2" />
+            tools:visibility="visible" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_add"
             android:contentDescription="@string/talkback_add_new_list"
             android:onClick="@{() -> viewmodel.navigateToListFragment()}"
+            android:src="@drawable/ic_add"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -65,20 +68,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:visibility="gone" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="@{(viewmodel.viewState instanceof HomeViewState.Loaded ? (HomeViewState.Loaded) viewmodel.viewState : null).items.isEmpty() ? View.VISIBLE : View.GONE}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:visibility="gone">
 
             <ImageView
@@ -87,21 +90,21 @@
                 android:layout_height="250dp"
                 android:importantForAccessibility="no"
                 android:src="@drawable/empty_shopping_cart"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:textAppearance="@style/TextAppearance.App.TitleMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/splash_home_no_items"
-                android:gravity="center_horizontal"
                 android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
                 android:paddingStart="@dimen/splash_text_horizontal_padding"
                 android:paddingEnd="@dimen/splash_text_horizontal_padding"
-                app:layout_constraintStart_toStartOf="parent"
+                android:text="@string/splash_home_no_items"
+                android:textAppearance="@style/TextAppearance.App.TitleMedium"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -109,24 +112,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:visibility="@{viewmodel.viewState instanceof HomeViewState.Error ? View.VISIBLE : View.GONE}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
             tools:visibility="visible">
 
             <TextView
-                android:textAppearance="@style/TextAppearance.App.TitleMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:gravity="center_horizontal"
                 android:paddingStart="@dimen/splash_text_horizontal_padding"
                 android:paddingEnd="@dimen/splash_text_horizontal_padding"
                 android:text="@string/splash_generic_error"
-                android:layout_gravity="center_horizontal" />
+                android:textAppearance="@style/TextAppearance.App.TitleMedium" />
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.App.Button"

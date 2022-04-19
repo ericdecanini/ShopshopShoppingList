@@ -2,9 +2,11 @@
 <layout>
 
     <data>
+
         <variable
             name="handler"
             type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler" />
+
         <variable
             name="viewstate"
             type="com.ericthecoder.shopshopshoppinglist.entities.ShoppingList" />
@@ -17,8 +19,8 @@
         android:layout_height="wrap_content"
         android:onClick="@{() -> handler.onShoppingListClick(viewstate)}"
         android:paddingStart="@dimen/home_fragment_horizontal_padding"
-        android:paddingEnd="@dimen/home_fragment_horizontal_padding"
         android:paddingTop="@dimen/home_fragment_vertical_padding"
+        android:paddingEnd="@dimen/home_fragment_horizontal_padding"
         android:paddingBottom="@dimen/home_fragment_vertical_padding">
 
         <androidx.cardview.widget.CardView
@@ -35,20 +37,20 @@
 
                 <TextView
                     android:id="@+id/title"
-                    android:textAppearance="@style/TextAppearance.App.TitleLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{viewstate.name}"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:textAppearance="@style/TextAppearance.App.TitleLarge"
                     app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:text="Shopping List" />
 
                 <View
                     android:id="@+id/divider"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="?attr/colorOnSurface"
                     android:layout_marginTop="8dp"
+                    android:background="?attr/colorOnSurface"
                     app:layout_constraintTop_toBottomOf="@id/title" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -64,10 +66,10 @@
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:onClick="@{() -> handler.onShoppingListClick(viewstate)}"
-                    app:layout_constraintTop_toTopOf="@id/preview_items"
                     app:layout_constraintBottom_toBottomOf="@id/preview_items"
+                    app:layout_constraintEnd_toEndOf="@id/preview_items"
                     app:layout_constraintStart_toStartOf="@id/preview_items"
-                    app:layout_constraintEnd_toEndOf="@id/preview_items" />
+                    app:layout_constraintTop_toTopOf="@id/preview_items" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

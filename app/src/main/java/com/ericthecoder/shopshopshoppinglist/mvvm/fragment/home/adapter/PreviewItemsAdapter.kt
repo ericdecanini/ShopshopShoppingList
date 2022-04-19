@@ -8,7 +8,7 @@ import com.ericthecoder.shopshopshoppinglist.databinding.ListItemPreviewitemBind
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import kotlin.math.min
 
-class PreviewItemsAdapter: RecyclerView.Adapter<PreviewItemsAdapter.ViewHolder>() {
+class PreviewItemsAdapter : RecyclerView.Adapter<PreviewItemsAdapter.ViewHolder>() {
 
     private val items: MutableList<ShopItem> = mutableListOf()
 
@@ -31,6 +31,6 @@ class PreviewItemsAdapter: RecyclerView.Adapter<PreviewItemsAdapter.ViewHolder>(
         this.items.addAll(items)
     }
 
-    class ViewHolder(val binding: ListItemPreviewitemBinding): RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ListItemPreviewitemBinding) : RecyclerView.ViewHolder(binding.root)
 
 }

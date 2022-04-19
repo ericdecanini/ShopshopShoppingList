@@ -4,21 +4,21 @@
 
     <Transition
         android:id="@+id/show"
-        motion:constraintSetStart="@+id/gone"
-        motion:constraintSetEnd="@+id/visible"
         motion:autoTransition="animateToStart"
-        motion:motionInterpolator="easeOut"
-        motion:duration="200"/>
+        motion:constraintSetEnd="@+id/visible"
+        motion:constraintSetStart="@+id/gone"
+        motion:duration="200"
+        motion:motionInterpolator="easeOut" />
 
     <ConstraintSet android:id="@+id/visible">
         <Constraint
             android:id="@+id/drop_to_delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="parent"
-            motion:layout_constraintEnd_toEndOf="parent"
-            motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintBottom_toBottomOf="parent"
+            motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
+            motion:layout_constraintTop_toTopOf="parent"
             motion:layout_constraintVertical_bias="0.9" />
     </ConstraintSet>
 
@@ -27,8 +27,8 @@
             android:id="@+id/drop_to_delete_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintEnd_toEndOf="parent"
+            motion:layout_constraintStart_toStartOf="parent"
             motion:layout_constraintTop_toBottomOf="parent" />
     </ConstraintSet>
 

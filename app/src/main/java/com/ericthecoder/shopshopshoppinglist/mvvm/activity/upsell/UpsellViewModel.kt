@@ -32,7 +32,7 @@ class UpsellViewModel @Inject constructor(
     private val persistentStorageWriter: PersistentStorageWriter,
     persistentStorageReader: PersistentStorageReader,
     private val snackbarNavigator: SnackbarNavigator,
-): ViewModel() {
+) : ViewModel() {
 
     private val viewEventEmitter = MutableLiveData<ViewEvent>()
     val viewEventLiveData: LiveData<ViewEvent> get() = viewEventEmitter
@@ -58,7 +58,9 @@ class UpsellViewModel @Inject constructor(
         is Success -> handlePurchase(purchaseResult.purchase)
         AlreadyOwned -> handleError(ALREADY_OWNED)
         Unavailable -> handleError(UNAVAILABLE)
-        Error -> { handleError(UNKNOWN) }
+        Error -> {
+            handleError(UNKNOWN)
+        }
     }
 
     private fun connectToBilling() = viewModelScope.launch {
@@ -132,11 +134,11 @@ class UpsellViewModel @Inject constructor(
     }
 
     private enum class ErrorReason(
-        @StringRes val messageRes: Int
+        @StringRes val messageRes: Int,
     ) {
         CONNECTION_FAILURE(R.string.purchase_dialog_connection_failed_message),
         ALREADY_OWNED(R.string.purchase_dialog_already_owned_message),
         UNAVAILABLE(R.string.purchase_dialog_unavailable_message),
-            UNKNOWN(R.string.purchase_dialog_unknown_message)
+        UNKNOWN(R.string.purchase_dialog_unknown_message)
     }
 }

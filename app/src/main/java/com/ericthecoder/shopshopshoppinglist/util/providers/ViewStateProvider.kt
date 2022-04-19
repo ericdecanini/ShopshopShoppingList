@@ -4,5 +4,5 @@ import com.ericthecoder.shopshopshoppinglist.entities.ViewState
 
 interface ViewStateProvider {
 
-    fun <T: ViewState> create(entityClass: Class<T>): T
+    fun <T : ViewState> create(entityClass: Class<T>): T
 }

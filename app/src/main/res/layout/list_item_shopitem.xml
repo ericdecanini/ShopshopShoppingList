@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="handler"
             type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemEventHandler" />
+
         <variable
             name="viewstate"
             type="com.ericthecoder.shopshopshoppinglist.entities.ShopItem" />
+
         <variable
             name="quantity"
             type="android.widget.TextView" />
@@ -27,50 +30,50 @@
             android:layout_marginStart="16dp"
             android:checked="@{viewstate.checked}"
             app:clearsFocusOnCheck="@{true}"
-            app:onChecked="@{(view) -> handler.onItemChecked(view, viewstate)}"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:onChecked="@{(view) -> handler.onItemChecked(view, viewstate)}" />
 
         <EditText
             android:id="@+id/name"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="12dp"
-            android:hint="@string/talkback_item_name"
             android:autofillHints="@string/talkback_item_name"
-            android:textAppearance="@style/TextAppearance.App.BodyLarge"
-            android:inputType="textCapSentences"
             android:background="@drawable/bg_ripple_gray"
+            android:hint="@string/talkback_item_name"
+            android:inputType="textCapSentences"
+            android:padding="12dp"
             android:text="@{viewstate.name}"
+            android:textAppearance="@style/TextAppearance.App.BodyLarge"
             android:textColor="@{viewstate.checked ? @color/colorDisabled : @color/colorText}"
-            app:strikeThrough="@{viewstate.checked}"
-            app:onFocusLost="@{(view) -> handler.onNameChanged(view, viewstate)}"
-            app:layout_constraintStart_toEndOf="@id/checkbox"
-            app:layout_constraintEnd_toStartOf="@id/quantity"
-            app:layout_constraintTop_toTopOf="@id/checkbox"
             app:layout_constraintBottom_toBottomOf="@id/checkbox"
+            app:layout_constraintEnd_toStartOf="@id/quantity"
+            app:layout_constraintStart_toEndOf="@id/checkbox"
+            app:layout_constraintTop_toTopOf="@id/checkbox"
+            app:onFocusLost="@{(view) -> handler.onNameChanged(view, viewstate)}"
+            app:strikeThrough="@{viewstate.checked}"
             tools:text="Oringe" />
 
         <EditText
             android:id="@+id/quantity"
-            android:textAppearance="@style/TextAppearance.App.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:background="@drawable/bg_ripple_gray"
             android:gravity="center_vertical"
+            android:hint="@string/zero"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:maxLength="4"
             android:paddingStart="@dimen/quantity_padding"
             android:paddingEnd="@dimen/quantity_padding"
-            android:background="@drawable/bg_ripple_gray"
-            android:hint="@string/zero"
-            android:maxLength="4"
-            android:importantForAutofill="no"
-            android:text="@{Integer.toString(viewstate.quantity), default=0}"
-            android:inputType="number"
             android:selectAllOnFocus="true"
-            app:onFocusLost="@{(view) -> handler.onQuantityChanged(view, viewstate)}"
+            android:text="@{Integer.toString(viewstate.quantity), default=0}"
+            android:textAppearance="@style/TextAppearance.App.BodyLarge"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:onFocusLost="@{(view) -> handler.onQuantityChanged(view, viewstate)}"
             tools:text="2" />
 
         <View
@@ -78,9 +81,9 @@
             android:layout_width="1dp"
             android:layout_height="0dp"
             android:background="?attr/colorOnBackground"
-            app:layout_constraintTop_toTopOf="@id/checkbox"
             app:layout_constraintBottom_toBottomOf="@id/checkbox"
-            app:layout_constraintStart_toEndOf="@id/name" />
+            app:layout_constraintStart_toEndOf="@id/name"
+            app:layout_constraintTop_toTopOf="@id/checkbox" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

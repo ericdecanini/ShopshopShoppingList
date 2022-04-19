@@ -9,18 +9,17 @@
 
         <TextView
             android:id="@+id/title"
-            android:textAppearance="@style/TextAppearance.App.Dialog.Title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorSurface"
             android:gravity="center_horizontal"
             android:padding="@dimen/dialog_title_padding"
+            android:textAppearance="@style/TextAppearance.App.Dialog.Title"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Rename Dialog" />
 
         <EditText
             android:id="@+id/new_name"
-            android:textAppearance="@style/TextAppearance.App.Dialog.Body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dialog_body_horizontal_padding"
@@ -35,6 +34,7 @@
             android:paddingEnd="@dimen/edittext_box_horizontal_padding"
             android:paddingBottom="@dimen/edittext_box_vertical_padding"
             android:selectAllOnFocus="true"
+            android:textAppearance="@style/TextAppearance.App.Dialog.Body"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/title" />
 
