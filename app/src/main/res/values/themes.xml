@@ -1,21 +1,33 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.ShopshopShoppingList" parent="Theme.Material3.DayNight.NoActionBar">
+<resources>
 
-        <item name="colorPrimary">@color/theme_color_green</item>
-        <item name="colorOnPrimary">@color/theme_color_on_green</item>
-        <item name="colorPrimaryContainer">@color/theme_color_green_container</item>
-        <item name="colorOnPrimaryContainer">@color/theme_color_on_green_container</item>
-        <item name="colorSurface">@color/theme_color_green_surface</item>
-        <item name="colorOnSurface">@color/theme_color_on_green_surface</item>
-        <item name="colorSurfaceVariant">@color/theme_color_green_surface_variant</item>
-        <item name="colorOnSurfaceVariant">@color/theme_color_on_green_surface_variant</item>
-        <item name="android:colorBackground">@color/theme_color_green_background</item>
-        <item name="colorOnBackground">@color/theme_color_on_green_background</item>
-        <item name="colorOutline">@color/theme_color_green_outline</item>
-        <item name="colorPrimaryInverse">@color/theme_color_green_inverse</item>
-        <item name="colorSurfaceInverse">@color/theme_color_green_surface_inverse</item>
-        <item name="colorOnSurfaceInverse">@color/theme_color_on_green_surface_inverse</item>
+    <style name="Base.Theme.ShopshopShoppingList" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_error</item>
+        <item name="colorErrorContainer">@color/md_theme_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer</item>
+        <item name="android:colorBackground">@color/md_theme_background</item>
+        <item name="colorOnBackground">@color/md_theme_onBackground</item>
+        <item name="colorSurface">@color/md_theme_surface</item>
+        <item name="colorOnSurface">@color/md_theme_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
+        <item name="android:shadowColor">@color/md_theme_shadow</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
