@@ -1,6 +1,9 @@
 package com.ericthecoder.dependencies.android.room.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import androidx.room.Update
 import com.ericthecoder.dependencies.android.room.entity.ShoppingListEntity
 
 @Dao

@@ -6,7 +6,7 @@ import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageW
 
 class SharedPrefsWriter(
     sharedPreferences: SharedPreferences,
-    private val keys: SharedPrefsKeys
+    private val keys: SharedPrefsKeys,
 ) : PersistentStorageWriter {
 
     private val editor: SharedPreferences.Editor = sharedPreferences.edit()

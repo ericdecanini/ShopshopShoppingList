@@ -6,7 +6,7 @@ import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageR
 
 class SharedPrefsReader(
     private val sharedPreferences: SharedPreferences,
-    private val keys: SharedPrefsKeys
+    private val keys: SharedPrefsKeys,
 ) : PersistentStorageReader {
 
     override fun hasOnboardingShown() =

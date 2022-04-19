@@ -3,7 +3,7 @@ package com.ericthecoder.shopshopshoppinglist.entities
 data class ShopItem(
     var name: String,
     var quantity: Int,
-    var checked: Boolean
+    var checked: Boolean,
 ) {
 
     companion object {
