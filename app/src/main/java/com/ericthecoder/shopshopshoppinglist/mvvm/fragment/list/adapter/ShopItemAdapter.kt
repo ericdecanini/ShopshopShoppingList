@@ -1,6 +1,5 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter
 
-import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -54,11 +53,6 @@ class ShopItemAdapter(
             binding.setVariable(BR.viewstate, this)
             binding.setVariable(BR.handler, shopItemEventHandler)
             binding.setVariable(BR.quantity, binding.quantity)
-
-            val context = binding.root.context
-            binding.checkbox.buttonTintList = ColorStateList.valueOf(
-                context.resources.getColor(theme.colorRes, context.theme)
-            )
         }
     }
 }
