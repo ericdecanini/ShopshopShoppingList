@@ -69,7 +69,7 @@
     <string name="purchase_dialog_pending_message">Your purchase is still being confirmed by Google Play. As soon as it\'s confirmed, you will start enjoying an ad-free experience</string>
 
     <!-- Rename Dialog -->
-    <string name="header_rename">Rename</string>
+    <string name="rename">Rename</string>
     <string name="header_new_list">New List</string>
     <string name="hint_list_title">List title</string>
 

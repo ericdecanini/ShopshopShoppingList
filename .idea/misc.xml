@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1045" />
+        <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_dialog.xml" value="0.158" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_edit_new_item.xml" value="0.146" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_edit_new_item_error.xml" value="0.146" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_ripple_gray.xml" value="0.1045" />
@@ -14,6 +15,7 @@
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_arrow_back.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_return_24dp.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_share.xml" value="0.1045" />
+        <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_sticky_note.xml" value="0.158" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/pager_dot_selected.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/activity_main.xml" value="0.15384615384615385" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/activity_onboarding.xml" value="0.1" />

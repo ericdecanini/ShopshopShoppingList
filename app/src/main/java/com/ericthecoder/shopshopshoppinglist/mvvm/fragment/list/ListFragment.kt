@@ -165,7 +165,11 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun displayGenericDialog(title: String, message: String) {
-        dialogNavigator.displayGenericDialog(title = title, message = message)
+        dialogNavigator.displayGenericDialog(
+            title = title,
+            message = message,
+            positiveButton = getString(R.string.ok) to { }
+        )
     }
 
     private fun displayNewListDialog(callback: (String) -> Unit) {
@@ -178,7 +182,7 @@ class ListFragment : DaggerFragment() {
 
     private fun displayRenameDialog(listTitle: String, callback: (String) -> Unit) {
         dialogNavigator.displayRenameDialog(
-            getString(R.string.header_rename),
+            getString(R.string.rename),
             listTitle,
             callback
         )

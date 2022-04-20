@@ -29,6 +29,7 @@
         <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
         <item name="android:shadowColor">@color/md_theme_shadow</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog.Centered</item>
     </style>
 
     <style name="Theme.ShopshopShoppingList" parent="Base.Theme.ShopshopShoppingList">
