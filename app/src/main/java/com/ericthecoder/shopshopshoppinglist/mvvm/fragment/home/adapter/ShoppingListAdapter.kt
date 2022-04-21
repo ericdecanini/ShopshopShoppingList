@@ -16,7 +16,7 @@ class ShoppingListAdapter(
 ) : RecyclerView.Adapter<ShoppingListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val binding = ListItemShoppinglistBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = ListItemShoppinglistBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         binding.previewItems.adapter = PreviewItemsAdapter()
         binding.previewItems.layoutManager = LinearLayoutManager(parent.context)
         return ViewHolder(binding)
