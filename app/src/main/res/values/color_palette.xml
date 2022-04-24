@@ -28,6 +28,4 @@
     <color name="md_theme_inversePrimary">#83CFFF</color>
     <color name="md_theme_shadow">#000000</color>
     <color name="md_theme_primaryInverse">#83CFFF</color>
-
-    <color name="edittext_header_color">#E5ECFA</color>
 </resources>
