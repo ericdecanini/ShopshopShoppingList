@@ -34,5 +34,6 @@
 
     <style name="Theme.ShopshopShoppingList" parent="Base.Theme.ShopshopShoppingList">
         <item name="android:windowLightStatusBar">true</item>
+        <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
     </style>
 </resources>

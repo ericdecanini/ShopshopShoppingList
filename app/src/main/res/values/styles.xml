@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
+        <item name="titleTextAppearance">@style/TextAppearance.App.TitleLarge</item>
+    </style>
+
     <style name="Widget.App.Button" parent="Widget.Material3.Button" />
 
     <style name="Widget.App.Button.TextButton" parent="Widget.Material3.Button.TextButton" />
@@ -8,5 +12,9 @@
     <style name="Widget.App.TextInputEditText" parent="Widget.Material3.TextInputEditText.FilledBox" />
 
     <style name="Theme.App.Dialog" parent="Theme.Material3.DayNight.Dialog" />
+
+    <style name="Widget.App.CardView.Outlined" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardElevation">4dp</item>
+    </style>
 
 </resources>

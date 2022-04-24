@@ -16,13 +16,15 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
         android:onClick="@{() -> handler.onShoppingListClick(viewstate)}"
         android:paddingStart="@dimen/home_fragment_horizontal_padding"
         android:paddingTop="@dimen/home_fragment_vertical_padding"
-        android:paddingEnd="@dimen/home_fragment_horizontal_padding">
+        android:paddingEnd="@dimen/home_fragment_horizontal_padding"
+        android:paddingBottom="@dimen/home_fragment_vertical_padding">
 
         <com.google.android.material.card.MaterialCardView
-            style="?attr/materialCardViewFilledStyle"
+            style="@style/Widget.App.CardView.Outlined"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
