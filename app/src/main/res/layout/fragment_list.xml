@@ -89,7 +89,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/add_item_edit"
-                        style="@style/Widget.App.TextInputEditText"
+                        style="@style/Widget.App.EditText"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:autofillHints="@string/new_item"

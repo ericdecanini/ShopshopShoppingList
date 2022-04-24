@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Widget" />
+
+    <style name="Widget.App" />
+
     <style name="Widget.App.Toolbar" parent="Widget.Material3.Toolbar">
         <item name="titleTextAppearance">@style/TextAppearance.App.TitleLarge</item>
     </style>
@@ -9,7 +13,21 @@
 
     <style name="Widget.App.Button.TextButton" parent="Widget.Material3.Button.TextButton" />
 
-    <style name="Widget.App.TextInputEditText" parent="Widget.Material3.TextInputEditText.FilledBox" />
+    <style name="Widget.App.EditText" />
+
+    <style name="Widget.App.EditTextLayout">
+        <item name="android:background">@drawable/bg_edit_header</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+    </style>
+
+    <style name="Widget.App.EditText.Header">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColorHint">?attr/colorSecondary</item>
+    </style>
 
     <style name="Theme.App.Dialog" parent="Theme.Material3.DayNight.Dialog" />
 

@@ -12,7 +12,7 @@
     <dimen name="shopping_list_title_size">18sp</dimen>
     <dimen name="shopitem_height">60dp</dimen>
     <dimen name="home_fragment_horizontal_padding">16dp</dimen>
-    <dimen name="home_fragment_vertical_padding">8dp</dimen>
+    <dimen name="home_fragment_vertical_padding">12dp</dimen>
 
     <!-- List Fragment -->
     <dimen name="quantity_padding">24dp</dimen>

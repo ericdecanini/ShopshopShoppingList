@@ -31,6 +31,8 @@
     <string name="splash_home_no_items">You have no shopping lists. Click on the button to add one.</string>
     <string name="upgrade_to_ad_free">Upgrade to ad-free</string>
     <string name="no_items">No items</string>
+    <string name="home_search_bar_hint">Search in lists</string>
+    <string name="shopping_lists">Shopping lists</string>
 
     <!-- List Fragment -->
     <string name="new_list">New List</string>
