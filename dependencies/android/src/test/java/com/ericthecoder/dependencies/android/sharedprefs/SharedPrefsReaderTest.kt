@@ -46,17 +46,6 @@ class SharedPrefsReaderTest {
         assertThat(result).isEqualTo(currentThemeCode)
     }
 
-    @Test
-    fun `hasChangedTheme returns from preferences`() {
-        val hasChangedTheme = true
-        every { keys.KEY_HAS_CHANGED_THEME } returns COMMON_KEY
-        every { sharedPreferences.getBoolean(COMMON_KEY, false) } returns hasChangedTheme
-
-        val result = persistentStorageReader.hasChangedTheme()
-
-        assertThat(result).isEqualTo(hasChangedTheme)
-    }
-
     companion object {
         private const val COMMON_KEY = "KEY"
     }

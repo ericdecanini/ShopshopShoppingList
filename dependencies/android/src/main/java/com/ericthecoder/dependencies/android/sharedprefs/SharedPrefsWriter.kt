@@ -23,10 +23,6 @@ class SharedPrefsWriter(
         saveInt(keys.KEY_CURRENT_THEME, index)
     }
 
-    override fun setHasChangedTheme(hasChangedTheme: Boolean) {
-        saveBoolean(keys.KEY_HAS_CHANGED_THEME, hasChangedTheme)
-    }
-
     private fun saveBoolean(key: String, value: Boolean) {
         editor.putBoolean(key, value)
         editor.apply()

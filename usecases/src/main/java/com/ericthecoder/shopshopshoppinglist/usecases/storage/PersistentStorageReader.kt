@@ -9,6 +9,4 @@ interface PersistentStorageReader {
     fun getPremiumStatus(): PremiumStatus
 
     fun getCurrentTheme(): Int
-
-    fun hasChangedTheme(): Boolean
 }

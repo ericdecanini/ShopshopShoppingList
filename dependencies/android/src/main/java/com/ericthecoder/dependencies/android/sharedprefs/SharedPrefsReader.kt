@@ -19,7 +19,4 @@ class SharedPrefsReader(
 
     override fun getCurrentTheme() =
         sharedPreferences.getInt(keys.KEY_CURRENT_THEME, 0)
-
-    override fun hasChangedTheme() =
-        sharedPreferences.getBoolean(keys.KEY_HAS_CHANGED_THEME, false)
 }

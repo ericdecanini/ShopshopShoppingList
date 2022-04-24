@@ -66,20 +66,6 @@ class SharedPrefsWriterTest {
         }
     }
 
-    @Test
-    fun `setHasChangedTheme saves to preferences`() {
-        every { keys.KEY_HAS_CHANGED_THEME } returns COMMON_PREF_KEY
-        val hasChangedTheme = true
-
-        persistentStorageWriter.setHasChangedTheme(hasChangedTheme)
-
-
-        verifyOrder {
-            editor.putBoolean(COMMON_PREF_KEY, hasChangedTheme)
-            editor.apply()
-        }
-    }
-
     companion object {
         private const val COMMON_PREF_KEY = "common_key"
     }

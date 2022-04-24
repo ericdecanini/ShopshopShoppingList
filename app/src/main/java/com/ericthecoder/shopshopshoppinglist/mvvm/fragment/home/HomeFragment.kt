@@ -1,8 +1,9 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -54,13 +55,30 @@ class HomeFragment : DaggerFragment() {
         binding.setVariable(BR.viewmodel, viewModel)
         binding.lifecycleOwner = this
 
+        initMenuItems()
+        initSearchBar()
         initShoppingLists()
         observeTheme()
         observeState()
         observeEvents()
-        setToolbarClickListener()
 
         return binding.root
+    }
+
+    private fun initMenuItems() {
+        binding.upgradeToPremiumButton.setOnClickListener { viewModel.navigateToUpsell() }
+    }
+
+    private fun initSearchBar() {
+        binding.searchBar.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.onSearchBarTextChanged(s?.toString().orEmpty())
+            }
+
+            override fun afterTextChanged(s: Editable?) = Unit
+        })
     }
 
     private fun initShoppingLists() {
@@ -99,12 +117,15 @@ class HomeFragment : DaggerFragment() {
 
     private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
         when (event) {
-            is SetHasOptionsMenu -> setHasOptionsMenu(event.enabled)
+            is SetUpsellButtonVisible -> setUpsellButtonVisible(event.visible)
             is OpenList -> goToList(event.shoppingList)
-            is SetPlayingBreatheTitle -> setPlayingBreatheTitle(event.playing)
             CycleTheme -> cycleTheme()
             OpenUpsell -> navigator.goToUpsell()
         }
+    }
+
+    private fun setUpsellButtonVisible(visible: Boolean) {
+        binding.upgradeToPremiumButton.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun goToList(shoppingList: ShoppingList? = null) {
@@ -113,34 +134,13 @@ class HomeFragment : DaggerFragment() {
         findNavController().navigate(action)
     }
 
-    private fun setPlayingBreatheTitle(playing: Boolean) {
-//        if (playing) {
-//            val breatheAnimation: Animation = AnimationUtils.loadAnimation(context, R.anim.breathe)
-//            binding.title.startAnimation(breatheAnimation)
-//        } else {
-//            binding.title.clearAnimation()
-//        }
-    }
-
     private fun cycleTheme() {
         themeViewModel.cycleNextTheme()
-    }
-
-    private fun setToolbarClickListener() {
-//        binding.toolbar.setOnClickListener { viewModel.onToolbarClick() }
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.refreshLists()
         viewModel.refreshPremiumState()
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        R.id.ic_remove_ads -> {
-            viewModel.navigateToUpsell()
-            true
-        }
-        else -> false
     }
 }
