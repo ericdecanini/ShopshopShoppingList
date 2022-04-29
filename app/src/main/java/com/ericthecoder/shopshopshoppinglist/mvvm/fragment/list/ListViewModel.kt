@@ -127,15 +127,15 @@ class ListViewModel @Inject constructor(
             startLoadingExistingShoppingList(listId)
     }
 
-    fun addItem(itemName: String) {
+    fun addItem(itemName: String) = itemName.trim().let {
         try {
-            performAddItem(itemName)
+            performAddItem(it)
         } catch (exception: DbQueryFailedException) {
             handleWriteError(exception)
         } catch (exception: BlankFieldException) {
             handleBlankNewItem()
         } catch (exception: ItemInListException) {
-            handleItemAlreadyInList(itemName)
+            handleItemAlreadyInList(it)
         }
     }
 
@@ -185,7 +185,7 @@ class ListViewModel @Inject constructor(
     }
 
     private fun handleBlankNewItem() {
-        viewEventEmitter.postValue(SignalBlankAddItem)
+        // TODO: do something here
     }
 
     private fun handleItemAlreadyInList(itemName: String) {
@@ -343,10 +343,6 @@ class ListViewModel @Inject constructor(
         viewEventEmitter.postValue(NavigateUp)
     }
 
-    fun resetAddItemBackground() {
-        viewEventEmitter.value = ResetAddItem
-    }
-
     fun hideKeyboard() {
         viewEventEmitter.value = HideKeyboard
     }
@@ -363,8 +359,6 @@ class ListViewModel @Inject constructor(
         object NavigateUp : ViewEvent()
         object ClearFocus : ViewEvent()
         object ClearEditText : ViewEvent()
-        object SignalBlankAddItem : ViewEvent()
-        object ResetAddItem : ViewEvent()
         object HideKeyboard : ViewEvent()
         class DisplayGenericDialog(val title: String, val message: String) : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()

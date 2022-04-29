@@ -116,6 +116,19 @@ class ListViewModelTest {
         }
 
         @Test
+        fun `addItem trims surrounding whitespace`() {
+            val newItem = ShopItem.createNew("new_item")
+            givenShoppingList()
+
+            viewModel.addItem(" ${newItem.name} ")
+
+            val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+            assertThat(viewModel.viewEvent.value).isEqualTo(ClearEditText)
+            assertThat(updatedShoppingList.items).contains(newItem)
+            coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
+        }
+
+        @Test
         fun `adding duplicate item fails`() {
             val itemName = "existing_item"
             val existingShopItems = mutableListOf(aShopItem().withName(itemName).build())
@@ -354,14 +367,6 @@ class ListViewModelTest {
             viewModel.onBackButtonPressed()
 
             assertThat(viewModel.viewEvent.value).isEqualTo(NavigateUp)
-        }
-
-        @Test
-        fun `resetAddItemBackground emits reset event`() {
-
-            viewModel.resetAddItemBackground()
-
-            assertThat(viewModel.viewEvent.value).isEqualTo(ResetAddItem)
         }
 
         @Test

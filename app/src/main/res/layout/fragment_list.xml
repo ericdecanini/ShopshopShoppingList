@@ -18,105 +18,71 @@
             type="android.widget.EditText" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:gravity="center_horizontal"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="wrap_content">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/title"
-                    style="@style/AutosizingToolbarText"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:gravity="center"
-                    android:onClick="@{() -> viewmodel.showRenameDialog()}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/back_button"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:text="Grocery List" />
-
-                <ImageButton
-                    android:id="@+id/back_button"
-                    android:layout_width="@dimen/toolbar_back_button_size"
-                    android:layout_height="@dimen/toolbar_back_button_size"
-                    android:background="@drawable/bg_ripple_gray_round"
-                    android:contentDescription="@string/talkback_back"
-                    android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
-                    android:padding="4dp"
-                    android:src="@drawable/ic_arrow_back"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.appbar.MaterialToolbar>
-
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:clipChildren="false"
-            app:clearsFocusOnClick="@{true}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:clipChildren="false"
-                android:onClick="@{() -> viewmodel.hideKeyboard()}"
-                app:clearsFocusOnClick="@{true}">
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center_horizontal">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/add_item_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    app:layout_constraintTop_toTopOf="parent">
+                    android:layout_height="match_parent">
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/add_item_edit"
-                        style="@style/Widget.App.EditText"
+                    <TextView
+                        android:id="@+id/title"
+                        style="@style/AutosizingToolbarText"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:autofillHints="@string/new_item"
-                        android:hint="@string/new_item"
-                        android:inputType="textCapSentences"
-                        android:nextFocusDown="@id/add_item_edit"
-                        app:layout_constraintEnd_toStartOf="@id/add_item_button"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:onFocusGained="@{() -> viewmodel.resetAddItemBackground()}"
-                        app:onFocusLost="@{() -> viewmodel.resetAddItemBackground()}"
-                        app:returnKeyClick="@{addItemButton}" />
-
-                    <ImageButton
-                        android:id="@+id/add_item_button"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:background="@drawable/bg_ripple_gray"
-                        android:contentDescription="@string/talkback_add_new_item"
-                        android:onClick="@{() -> viewmodel.addItem(newitem.text.toString())}"
-                        android:src="@drawable/ic_return"
+                        android:layout_height="0dp"
+                        android:gravity="center"
+                        android:onClick="@{() -> viewmodel.showRenameDialog()}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/back_button"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="Grocery List" />
+
+                    <ImageButton
+                        android:id="@+id/back_button"
+                        android:layout_width="@dimen/toolbar_back_button_size"
+                        android:layout_height="@dimen/toolbar_back_button_size"
+                        android:background="@drawable/bg_ripple_gray_round"
+                        android:contentDescription="@string/talkback_back"
+                        android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
+                        android:padding="4dp"
+                        android:src="@drawable/ic_arrow_back"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:tint="?attr/colorOnSurface" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            app:clearsFocusOnClick="@{true}"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:onClick="@{() -> viewmodel.hideKeyboard()}"
+                app:clearsFocusOnClick="@{true}">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/shop_list"
@@ -125,9 +91,44 @@
                     android:layout_marginTop="16dp"
                     android:clipToPadding="false"
                     android:onClick="@{() -> viewmodel.hideKeyboard()}"
-                    app:layout_constraintTop_toBottomOf="@id/add_item_layout"
+                    app:layout_constraintTop_toTopOf="parent"
                     tools:itemCount="4"
                     tools:listitem="@layout/list_item_shopitem" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/add_item_edit"
+                    style="@style/Widget.App.EditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autofillHints="@string/new_item"
+                    android:background="@drawable/bg_ripple_gray"
+                    android:hint="@string/new_item"
+                    android:inputType="textCapSentences"
+                    android:nextFocusDown="@id/add_item_edit"
+                    android:paddingStart="76dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:textAppearance="@style/TextAppearance.App.BodyLarge"
+                    app:layout_constraintTop_toBottomOf="@id/shop_list"
+                    app:returnKeyClick="@{addItemButton}"
+                    tools:ignore="RtlSymmetry" />
+
+                <ImageView
+                    android:id="@+id/add_item_button"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="16dp"
+                    android:alpha="0.5"
+                    android:background="@drawable/bg_ripple_gray"
+                    android:contentDescription="@string/talkback_add_new_item"
+                    android:importantForAccessibility="no"
+                    android:onClick="@{() -> viewmodel.addItem(newitem.text.toString())}"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintBottom_toBottomOf="@id/add_item_edit"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/add_item_edit"
+                    app:tint="?attr/colorOnBackground" />
 
                 <Space
                     android:layout_width="0dp"
@@ -143,7 +144,6 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/add_item_layout"
                     tools:visibility="gone">
 
                     <ImageView
@@ -177,32 +177,14 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </ScrollView>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:alpha="0.8"
-            android:background="#FFFFFF"
-            android:clickable="true"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:translationZ="3dp"
-            android:visibility="@{viewmodel.viewState instanceof ListViewState.Loaded ? View.GONE : View.VISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:visibility="gone" />
+        </androidx.core.widget.NestedScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:translationZ="5dp"
             android:visibility="@{viewmodel.viewState instanceof ListViewState.Error ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_gravity="center"
             tools:visibility="gone">
 
             <TextView
@@ -230,14 +212,10 @@
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:translationZ="10dp"
             android:visibility="@{viewmodel.viewState instanceof ListViewState.Loading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            android:layout_gravity="center"
             tools:visibility="gone" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

@@ -1,7 +1,5 @@
 package com.ericthecoder.shopshopshoppinglist.theme
 
-import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel.Theme.GREEN
-import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel.Theme.values
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import com.ericthecoder.shopshopshoppinglist.util.InstantTaskExecutorExtension
@@ -20,7 +18,7 @@ class ThemeViewModelTest {
 
     @Test
     fun `init gets currently stored theme`() {
-        val currentTheme = GREEN
+        val currentTheme = Theme.GREEN
         every { persistentStorageReader.getCurrentTheme() } returns currentTheme.ordinal
 
         val viewModel = initViewModel()
@@ -30,7 +28,7 @@ class ThemeViewModelTest {
 
     @Test
     fun `getTheme returns theme from live data`() {
-        val currentTheme = GREEN
+        val currentTheme = Theme.GREEN
         every { persistentStorageReader.getCurrentTheme() } returns currentTheme.ordinal
         val viewModel = initViewModel()
 
@@ -41,26 +39,26 @@ class ThemeViewModelTest {
 
     @Test
     fun `cycleNextTheme cycles to the next theme`() {
-        val currentTheme = GREEN
+        val currentTheme = Theme.GREEN
         every { persistentStorageReader.getCurrentTheme() } returns currentTheme.ordinal
         val viewModel = initViewModel()
 
         viewModel.cycleNextTheme()
 
-        assertThat(viewModel.theme.value).isEqualTo(values()[currentTheme.ordinal + 1])
+        assertThat(viewModel.theme.value).isEqualTo(Theme.values()[currentTheme.ordinal + 1])
         verify { persistentStorageWriter.setCurrentTheme(currentTheme.ordinal + 1) }
     }
 
     @Test
     fun `when current theme color is last in set, cycleNextTheme cycles back to the first theme`() {
-        val currentTheme = values()[values().lastIndex]
+        val currentTheme = Theme.values()[Theme.values().lastIndex]
         every { persistentStorageReader.getCurrentTheme() } returns currentTheme.ordinal
         val viewModel = initViewModel()
 
         viewModel.cycleNextTheme()
 
-        assertThat(viewModel.theme.value).isEqualTo(values().first())
-        verify { persistentStorageWriter.setCurrentTheme(values().first().ordinal) }
+        assertThat(viewModel.theme.value).isEqualTo(Theme.values().first())
+        verify { persistentStorageWriter.setCurrentTheme(Theme.values().first().ordinal) }
     }
 
     private fun initViewModel() = ThemeViewModel(persistentStorageReader, persistentStorageWriter)

@@ -60,30 +60,20 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:background="@drawable/bg_ripple_gray"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:hint="@string/zero"
             android:importantForAutofill="no"
             android:inputType="number"
             android:maxLength="4"
-            android:paddingStart="@dimen/quantity_padding"
-            android:paddingEnd="@dimen/quantity_padding"
+            android:minWidth="64dp"
             android:selectAllOnFocus="true"
             android:text="@{Integer.toString(viewstate.quantity), default=0}"
-            android:textAppearance="@style/TextAppearance.App.BodyLarge"
+            android:textAppearance="@style/TextAppearance.App.LabelLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:onFocusLost="@{(view) -> handler.onQuantityChanged(view, viewstate)}"
             tools:text="2" />
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="1dp"
-            android:layout_height="0dp"
-            android:background="?attr/colorOnBackground"
-            app:layout_constraintBottom_toBottomOf="@id/checkbox"
-            app:layout_constraintStart_toEndOf="@id/name"
-            app:layout_constraintTop_toTopOf="@id/checkbox" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

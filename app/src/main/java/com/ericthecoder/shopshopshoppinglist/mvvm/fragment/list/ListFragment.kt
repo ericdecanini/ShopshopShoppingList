@@ -1,12 +1,13 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -28,6 +29,8 @@ import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
+import com.google.android.material.color.MaterialColors
+import com.google.android.material.textfield.TextInputEditText
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -76,7 +79,6 @@ class ListFragment : DaggerFragment() {
 
         initList()
         configureAddItemField()
-        setTheme()
         observeState()
         observeEvents()
         inflateList(args.shoppingListId)
@@ -116,13 +118,33 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun configureAddItemField() {
-        val defaultEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item)
-        binding.addItemEdit.addTextChangedListener { binding.addItemLayout.background = defaultEditTextBackground }
+        val colorAnimator = createColorAnimator()
+        binding.addItemEdit.addTextChangedColorChanging(colorAnimator)
     }
 
-    private fun setTheme() {
-//        val theme = themeViewModel.getTheme()
-//        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
+    private fun createColorAnimator() = ObjectAnimator.ofObject(
+        binding.addItemButton,
+        "colorFilter",
+        ArgbEvaluator(),
+        0, 0,
+    ).setDuration(200)
+
+    private fun TextInputEditText.addTextChangedColorChanging(animator: ObjectAnimator) {
+        val colorPrimary = MaterialColors.getColor(binding.root, R.attr.colorPrimary)
+        val colorSecondary = MaterialColors.getColor(binding.root, R.attr.colorSecondary)
+
+        addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
+
+            override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+                val currentColor = animator.animatedValue
+                    ?: if (text.isBlank()) colorPrimary else colorSecondary
+                animator.setObjectValues(currentColor, if (text.isBlank()) colorSecondary else colorPrimary)
+                animator.start()
+            }
+
+            override fun afterTextChanged(s: Editable) = Unit
+        })
     }
 
     private fun observeState() {
@@ -139,8 +161,6 @@ class ListFragment : DaggerFragment() {
             NavigateUp -> findNavController().navigateUp()
             ClearFocus -> binding.root.clearFocus()
             ClearEditText -> binding.addItemEdit.setText("")
-            SignalBlankAddItem -> signalAddItemFieldError()
-            ResetAddItem -> resetAddItem()
             HideKeyboard -> hideKeyboard(binding.root)
             is DisplayGenericDialog -> displayGenericDialog(event.title, event.message)
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
@@ -150,18 +170,6 @@ class ListFragment : DaggerFragment() {
             is Share -> share(event.text)
             is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
         }
-    }
-
-    private fun signalAddItemFieldError() {
-        val errorEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item_error)
-        binding.addItemLayout.background = errorEditTextBackground
-        binding.addItemLayout.startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
-        binding.addItemLayout.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
-    }
-
-    private fun resetAddItem() {
-        val defaultEditTextBackground = AppCompatResources.getDrawable(binding.addItemLayout.context, R.drawable.bg_edit_new_item)
-        binding.addItemLayout.background = defaultEditTextBackground
     }
 
     private fun displayGenericDialog(title: String, message: String) {

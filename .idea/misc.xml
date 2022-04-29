@@ -8,6 +8,7 @@
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_edit_header.xml" value="0.158" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_edit_new_item.xml" value="0.146" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_edit_new_item_error.xml" value="0.146" />
+        <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_quantity.xml" value="0.158" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_ripple_gray.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_ripple_gray_round.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/bg_ripple_primary.xml" value="0.1045" />
@@ -25,7 +26,7 @@
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/dialog_generic.xml" value="0.17617753623188406" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/dialog_rename.xml" value="0.17617753623188406" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/fragment_home.xml" value="0.3" />
-        <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/fragment_list.xml" value="0.17592592592592593" />
+        <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/fragment_list.xml" value="0.2" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/list_item_delete.xml" value="0.17617753623188406" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/list_item_previewitem.xml" value="0.268" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/list_item_shopitem.xml" value="0.17617753623188406" />
