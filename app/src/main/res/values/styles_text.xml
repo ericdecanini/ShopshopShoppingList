@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="TextAppearance.App.Toolbar" parent="TextAppearance.Material3.HeadlineLarge">
+    <style name="TextAppearance.App.Toolbar" parent="TextAppearance.Material3.HeadlineSmall">
         <item name="android:textColor">?attr/colorOnSurface</item>
-        <item name="android:textAllCaps">true</item>
         <item name="android:maxLines">1</item>
     </style>
 

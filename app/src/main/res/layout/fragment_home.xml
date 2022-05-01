@@ -20,7 +20,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_bar_layout"
-            style="@style/Widget.App.EditTextLayout"
+            style="@style/Widget.App.EditTextLayout.Header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -31,7 +31,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/search_bar"
-                style="@style/Widget.App.EditText.Header"
+                style="@style/Widget.App.EditText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/home_search_bar_hint"
@@ -91,7 +91,8 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="32dp"
             android:contentDescription="@string/talkback_add_new_list"
             android:onClick="@{() -> viewmodel.navigateToListFragment()}"
             android:src="@drawable/ic_new_list"

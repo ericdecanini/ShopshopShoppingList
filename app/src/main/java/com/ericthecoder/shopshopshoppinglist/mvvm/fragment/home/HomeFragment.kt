@@ -15,6 +15,7 @@ import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
+import com.ericthecoder.shopshopshoppinglist.library.extension.setStatusBarAttrColor
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
@@ -54,6 +55,7 @@ class HomeFragment : DaggerFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
         binding.lifecycleOwner = this
+        setStatusBarAttrColor(R.attr.colorSurface)
 
         initMenuItems()
         initSearchBar()

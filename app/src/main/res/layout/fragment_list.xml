@@ -25,52 +25,37 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:liftOnScroll="true">
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:gravity="center_horizontal">
+                android:background="?attr/colorSurface"
+                android:elevation="4dp"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:menu="@menu/menu_shopping_list"
+                app:navigationIcon="@drawable/ic_arrow_back">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/title"
-                        style="@style/AutosizingToolbarText"
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:gravity="center"
-                        android:onClick="@{() -> viewmodel.showRenameDialog()}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/back_button"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="Grocery List" />
-
-                    <ImageButton
-                        android:id="@+id/back_button"
-                        android:layout_width="@dimen/toolbar_back_button_size"
-                        android:layout_height="@dimen/toolbar_back_button_size"
-                        android:background="@drawable/bg_ripple_gray_round"
-                        android:contentDescription="@string/talkback_back"
-                        android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_arrow_back"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:tint="?attr/colorOnSurface" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/title"
+                    style="@style/AutosizingToolbarText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_gravity="center_horizontal"
+                    android:onClick="@{() -> viewmodel.showRenameDialog()}"
+                    tools:text="Grocery List" />
 
             </com.google.android.material.appbar.MaterialToolbar>
 
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clipChildren="false"
@@ -88,7 +73,6 @@
                     android:id="@+id/shop_list"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
                     android:clipToPadding="false"
                     android:onClick="@{() -> viewmodel.hideKeyboard()}"
                     app:layout_constraintTop_toTopOf="parent"
@@ -182,9 +166,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:orientation="vertical"
             android:visibility="@{viewmodel.viewState instanceof ListViewState.Error ? View.VISIBLE : View.GONE}"
-            android:layout_gravity="center"
             tools:visibility="gone">
 
             <TextView
@@ -212,8 +196,8 @@
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{viewmodel.viewState instanceof ListViewState.Loading ? View.VISIBLE : View.GONE}"
             android:layout_gravity="center"
+            android:visibility="@{viewmodel.viewState instanceof ListViewState.Loading ? View.VISIBLE : View.GONE}"
             tools:visibility="gone" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

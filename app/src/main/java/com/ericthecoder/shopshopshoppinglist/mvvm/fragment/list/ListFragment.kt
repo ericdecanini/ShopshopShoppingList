@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -19,6 +18,10 @@ import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
+import com.ericthecoder.shopshopshoppinglist.library.extension.getSupportActionBar
+import com.ericthecoder.shopshopshoppinglist.library.extension.setStatusBarAttrColor
+import com.ericthecoder.shopshopshoppinglist.library.extension.setStatusBarColor
+import com.ericthecoder.shopshopshoppinglist.library.extension.setSupportActionBar
 import com.ericthecoder.shopshopshoppinglist.library.util.hideKeyboard
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
@@ -30,9 +33,11 @@ import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.textfield.TextInputEditText
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
+
 
 class ListFragment : DaggerFragment() {
 
@@ -74,9 +79,9 @@ class ListFragment : DaggerFragment() {
         binding.setVariable(BR.viewmodel, viewModel)
         binding.setVariable(BR.newitem, binding.addItemEdit)
         binding.lifecycleOwner = this
-        setHasOptionsMenu(true)
-        (requireActivity() as AppCompatActivity).setSupportActionBar(binding.toolbar)
 
+        setHasOptionsMenu(true)
+        initAppBar()
         initList()
         configureAddItemField()
         observeState()
@@ -84,6 +89,25 @@ class ListFragment : DaggerFragment() {
         inflateList(args.shoppingListId)
 
         return binding.root
+    }
+
+    private fun initAppBar() {
+        val toolbarColor = (binding.toolbar.background as MaterialShapeDrawable).resolvedTintColor
+        setSupportActionBar(binding.toolbar)
+        getSupportActionBar()?.setDisplayShowTitleEnabled(false)
+        setStatusBarColor(toolbarColor)
+
+        binding.scrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
+            if (scrollY > oldScrollY) {
+                setStatusBarAttrColor(R.attr.colorSurface)
+            } else {
+                setStatusBarColor(toolbarColor)
+            }
+        }
+
+        binding.toolbar.setOnClickListener {
+            viewModel.showRenameDialog()
+        }
     }
 
     private fun initList() {
@@ -243,10 +267,11 @@ class ListFragment : DaggerFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            android.R.id.home -> findNavController().navigateUp()
             R.id.ic_delete -> viewModel.showDeleteDialog()
             R.id.ic_clear_checked -> viewModel.clearCheckedItems()
             R.id.ic_share -> viewModel.onShareButtonClicked()
-            else -> return false
+            else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
