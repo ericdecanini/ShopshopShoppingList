@@ -84,7 +84,7 @@
                     style="@style/Widget.App.EditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:autofillHints="@string/new_item"
+                    android:importantForAutofill="no"
                     android:background="@drawable/bg_ripple_gray"
                     android:hint="@string/new_item"
                     android:inputType="textCapSentences"

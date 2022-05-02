@@ -206,7 +206,7 @@ class ListFragment : DaggerFragment() {
         when (event) {
             NavigateUp -> findNavController().navigateUp()
             ClearFocus -> binding.root.clearFocus()
-            ClearEditText -> binding.addItemEdit.setText("")
+            ResetEditText -> binding.addItemEdit.reset()
             HideKeyboard -> hideKeyboard(binding.root)
             ShakeAddItemField -> binding.addItemEdit.shake()
             is DisplayGenericDialog -> displayGenericDialog(event.title, event.message)
@@ -217,6 +217,11 @@ class ListFragment : DaggerFragment() {
             is Share -> share(event.text)
             is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
         }
+    }
+
+    private fun TextInputEditText.reset() {
+        setText("")
+        post { requestFocus() }
     }
 
     private fun View.shake() {

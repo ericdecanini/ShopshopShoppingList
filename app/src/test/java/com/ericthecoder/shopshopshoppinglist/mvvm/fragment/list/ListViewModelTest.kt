@@ -111,7 +111,7 @@ class ListViewModelTest {
             viewModel.addItem(newItem.name)
 
             val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
-            assertThat(viewModel.viewEvent.value).isEqualTo(ClearEditText)
+            assertThat(viewModel.viewEvent.value).isEqualTo(ResetEditText)
             assertThat(updatedShoppingList.items).contains(newItem)
             coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
         }
@@ -124,7 +124,7 @@ class ListViewModelTest {
             viewModel.addItem(" ${newItem.name} ")
 
             val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
-            assertThat(viewModel.viewEvent.value).isEqualTo(ClearEditText)
+            assertThat(viewModel.viewEvent.value).isEqualTo(ResetEditText)
             assertThat(updatedShoppingList.items).contains(newItem)
             coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
         }

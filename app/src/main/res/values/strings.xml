@@ -39,12 +39,12 @@
     <string name="delete_list">Delete list</string>
     <string name="new_item">New item</string>
     <string name="UNKNOWN_LIST">UNKNOWN LIST</string>
-    <string name="splash_list_no_items">You have no items. Add one using the text box above.</string>
+    <string name="splash_list_no_items">You have no items. Add one using the text field above</string>
     <string name="list_not_found">List couldn\'t be found. Going back</string>
     <string name="clear_checked">Clear checked</string>
     <string name="toast_list_saved">%s saved</string>
     <string name="unnamed_list">Unnamed List</string>
-    <string name="item_already_in_list">%1$s is already in the %2$s</string>
+    <string name="item_already_in_list">%1$s is already in %2$s</string>
     <string name="zero">0</string>
     <string name="deleted_item">Deleted %1$s</string>
     <string name="empty_item_name_entered">Please enter a valid item name</string>

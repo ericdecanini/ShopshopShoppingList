@@ -155,7 +155,7 @@ class ListViewModel @Inject constructor(
     }
 
     private fun clearItemTextField() {
-        viewEventEmitter.postValue(ClearEditText)
+        viewEventEmitter.postValue(ResetEditText)
     }
 
     private fun addAndSaveNewItem(itemName: String) {
@@ -358,7 +358,7 @@ class ListViewModel @Inject constructor(
     sealed class ViewEvent {
         object NavigateUp : ViewEvent()
         object ClearFocus : ViewEvent()
-        object ClearEditText : ViewEvent()
+        object ResetEditText : ViewEvent()
         object HideKeyboard : ViewEvent()
         object ShakeAddItemField : ViewEvent()
         class DisplayGenericDialog(val title: String, val message: String) : ViewEvent()
