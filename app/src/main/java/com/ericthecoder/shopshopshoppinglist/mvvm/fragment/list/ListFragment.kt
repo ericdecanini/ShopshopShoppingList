@@ -165,7 +165,6 @@ class ListFragment : DaggerFragment() {
     private fun initList() {
         binding.shopList.adapter = adapter
         binding.shopList.layoutManager = LinearLayoutManager(context)
-        binding.shopList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         setupItemTouchHelper()
     }
 

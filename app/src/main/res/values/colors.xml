@@ -5,5 +5,7 @@
     <color name="colorText">@color/md_theme_onBackground</color>
     <color name="textInputEditTextBackgroundColor">#FFFFFF</color>
 
-    <color name="colorListAppBar">#E3E6FC</color>
+    <color name="elevatedCardBackground">#FFFFFF</color>
+    <color name="searchBarColor">#F0F0F0</color>
+    <color name="colorEditTextHint">#616161</color>
 </resources>

@@ -15,14 +15,15 @@
 
     <style name="Widget.App.EditText">
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:textColorHint">?attr/colorSecondary</item>
+        <item name="android:textColorHint">@color/colorEditTextHint</item>
+        <item name="android:letterSpacing">0.005</item>
+        <item name="android:textAppearance">@style/TextAppearance.App.BodyLarge</item>
     </style>
 
     <style name="Widget.App.EditTextLayout">
-
-        <item name="android:backgroundTint">?attr/colorPrimary</item>
-        <item name="android:paddingTop">14dp</item>
-        <item name="android:paddingBottom">14dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
         <item name="android:paddingStart">24dp</item>
         <item name="android:paddingEnd">24dp</item>
     </style>
@@ -33,6 +34,7 @@
 
     <style name="Widget.App.EditTextLayout.Dialog">
         <item name="android:background">@drawable/bg_edit_dialog</item>
+        <item name="android:backgroundTint">?attr/colorPrimary</item>
     </style>
 
     <style name="Theme.App.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered" />
@@ -41,6 +43,7 @@
 
     <style name="Widget.App.CardView.Elevated" parent="Widget.Material3.CardView.Elevated">
         <item name="cardElevation">5dp</item>
+        <item name="cardBackgroundColor">@color/elevatedCardBackground</item>
     </style>
 
 </resources>

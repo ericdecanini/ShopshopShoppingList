@@ -2,15 +2,12 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ericthecoder.shopshopshoppinglist.BR
-import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ListItemShoppinglistBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
-import com.google.android.material.color.MaterialColors
 import kotlinx.android.synthetic.main.list_item_shoppinglist.view.*
 
 class ShoppingListAdapter(
@@ -45,19 +42,6 @@ class ShoppingListAdapter(
                 replaceItems(shoppingList.items)
                 notifyDataSetChanged()
             }
-            setThemeColors()
         }
-
-        private fun setThemeColors() {
-            val colorSurface = MaterialColors.getColor(binding.root, R.attr.colorSurface)
-            val colorPrimary = MaterialColors.getColor(binding.root, R.attr.colorPrimary)
-            val cardTint = ColorUtils.blendARGB(colorSurface, colorPrimary, if (isDarkMode()) 1F else 0.2F)
-            binding.cardView.setCardBackgroundColor(cardTint)
-
-            val textColor = MaterialColors.getColor(binding.root, if (isDarkMode()) R.attr.colorOnPrimary else R.attr.colorOnSurface)
-            binding.title.setTextColor(textColor)
-        }
-
-        private fun isDarkMode() = binding.root.context.resources.getBoolean(R.bool.isDarkMode)
     }
 }
