@@ -1,11 +1,15 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.TextViewCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ericthecoder.shopshopshoppinglist.BR
+import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ListItemPreviewitemBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
+import com.google.android.material.color.MaterialColors
 import kotlin.math.min
 
 class PreviewItemsAdapter : RecyclerView.Adapter<PreviewItemsAdapter.ViewHolder>() {
@@ -24,6 +28,8 @@ class PreviewItemsAdapter : RecyclerView.Adapter<PreviewItemsAdapter.ViewHolder>
             holder.binding.setVariable(BR.viewstate, items[position])
         else
             holder.binding.setVariable(BR.viewstate, null)
+
+        holder.setThemeColors()
     }
 
     fun replaceItems(items: List<ShopItem>) {
@@ -31,6 +37,16 @@ class PreviewItemsAdapter : RecyclerView.Adapter<PreviewItemsAdapter.ViewHolder>
         this.items.addAll(items)
     }
 
-    class ViewHolder(val binding: ListItemPreviewitemBinding) : RecyclerView.ViewHolder(binding.root)
+    class ViewHolder(val binding: ListItemPreviewitemBinding) : RecyclerView.ViewHolder(binding.root) {
+
+        fun setThemeColors() {
+            val textColor = MaterialColors.getColor(binding.root, if (isDarkMode()) R.attr.colorOnPrimary else R.attr.colorOnSurface)
+            binding.item.setTextColor(textColor)
+            binding.continuationDots.setTextColor(textColor)
+            TextViewCompat.setCompoundDrawableTintList(binding.item, ColorStateList.valueOf(textColor))
+        }
+
+        private fun isDarkMode() = binding.root.context.resources.getBoolean(R.bool.isDarkMode)
+    }
 
 }

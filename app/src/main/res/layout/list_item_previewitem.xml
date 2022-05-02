@@ -25,9 +25,9 @@
             android:gravity="center_vertical"
             android:text="@{viewstate.name}"
             android:textAppearance="@style/TextAppearance.App.LabelLarge"
-            android:textColor="?android:attr/textColorSecondary"
+            android:textColor="?attr/colorOnSurface"
             android:visibility="@{viewstate != null ? View.VISIBLE : View.GONE}"
-            app:drawableTint="?android:attr/textColorSecondary"
+            app:drawableTint="?attr/colorOnSurface"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:strikeThrough="@{viewstate.checked}"
@@ -35,12 +35,13 @@
             tools:text="Oringe" />
 
         <TextView
+            android:id="@+id/continuation_dots"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingEnd="4dp"
             android:text="@string/ellipsis"
-            android:textColor="?attr/colorSecondary"
+            android:textColor="?attr/colorOnPrimary"
             android:textAppearance="@style/TextAppearance.App.LabelLarge"
             android:visibility="@{viewstate == null ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
