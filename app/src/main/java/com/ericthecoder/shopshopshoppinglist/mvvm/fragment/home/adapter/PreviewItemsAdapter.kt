@@ -48,5 +48,4 @@ class PreviewItemsAdapter : RecyclerView.Adapter<PreviewItemsAdapter.ViewHolder>
 
         private fun isDarkMode() = binding.root.context.resources.getBoolean(R.bool.isDarkMode)
     }
-
 }

@@ -37,6 +37,8 @@
 
     <style name="Theme.App.Dialog" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered" />
 
+    <style name="Widget.App.CardView.Filled" parent="Widget.Material3.CardView.Filled" />
+
     <style name="Widget.App.CardView.Elevated" parent="Widget.Material3.CardView.Elevated">
         <item name="cardElevation">5dp</item>
     </style>

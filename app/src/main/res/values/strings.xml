@@ -57,8 +57,10 @@
     <string name="upsell_cta_pending">Purchase Pending</string>
     <string name="upsell_image_box_one_title">Completely Ad-Free</string>
     <string name="upsell_image_box_one_description">Get rid of ads for a completely seamless shopping experience</string>
-    <string name="upsell_image_box_two_title">Only %s</string>
-    <string name="upsell_image_box_two_description">Pay once and enjoy a premium shopping list forever!</string>
+    <string name="upsell_image_box_two_title">Pick your own theme</string>
+    <string name="upsell_image_box_two_description">Pick from a list of theme colors to make your shopping list feel like your own</string>
+    <string name="upsell_image_box_three_title">Only %s</string>
+    <string name="upsell_image_box_three_description">Pay once and enjoy a premium shopping list forever!</string>
 
     <!-- Purchase Result Dialogs -->
     <string name="purchase_dialog_connection_failed_title">Error</string>
