@@ -212,7 +212,8 @@ class ListFragment : DaggerFragment() {
             is DisplayGenericDialog -> displayGenericDialog(event.title, event.message)
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
-            is DisplayDeleteDialog -> displayDeleteDialog(event.listTitle, event.callback)
+            is DisplayClearAllDialog -> displayClearAllDialog(event.listTitle, event.callback)
+            is DisplayDeleteListDialog -> displayDeleteListDialog(event.listTitle, event.callback)
             is ShowToast -> toastNavigator.show(event.message)
             is Share -> share(event.text)
             is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
@@ -253,7 +254,16 @@ class ListFragment : DaggerFragment() {
         )
     }
 
-    private fun displayDeleteDialog(listTitle: String, callback: () -> Unit) {
+    private fun displayClearAllDialog(listTitle: String, callback: () -> Unit) {
+        dialogNavigator.displayGenericDialog(
+            title = getString(R.string.clear_all),
+            message = getString(R.string.clear_all_dialog_message, listTitle),
+            positiveButton = getString(R.string.ok) to { callback() },
+            negativeButton = getString(R.string.cancel) to { },
+        )
+    }
+
+    private fun displayDeleteListDialog(listTitle: String, callback: () -> Unit) {
         dialogNavigator.displayGenericDialog(
             title = getString(R.string.delete),
             message = getString(R.string.delete_dialog_message, listTitle),
@@ -306,6 +316,7 @@ class ListFragment : DaggerFragment() {
             android.R.id.home -> findNavController().navigateUp()
             R.id.ic_delete -> viewModel.showDeleteDialog()
             R.id.ic_clear_checked -> viewModel.clearCheckedItems()
+            R.id.ic_clear_all -> viewModel.showClearAllDialog()
             R.id.ic_share -> viewModel.onShareButtonClicked()
             else -> return super.onOptionsItemSelected(item)
         }

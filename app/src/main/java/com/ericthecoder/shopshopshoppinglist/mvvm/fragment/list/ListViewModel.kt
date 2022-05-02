@@ -294,7 +294,7 @@ class ListViewModel @Inject constructor(
 
     fun showDeleteDialog() {
         val listName = shoppingList.name
-        viewEventEmitter.postValue(DisplayDeleteDialog(listName) { deleteList() })
+        viewEventEmitter.postValue(DisplayDeleteListDialog(listName) { deleteList() })
     }
 
     fun clearCheckedItems() {
@@ -317,6 +317,28 @@ class ListViewModel @Inject constructor(
         }
 
         return wasUpdated
+    }
+
+    fun showClearAllDialog() {
+        viewEventEmitter.postValue(DisplayClearAllDialog(shoppingList.name, ::clearAllItems))
+    }
+
+    private fun clearAllItems() {
+        try {
+            shoppingList.takeIf { deleteAllItems() }?.apply {
+                emit()
+                save()
+            }
+        } catch (exception: DbQueryFailedException) {
+            handleWriteError(exception)
+        }
+    }
+
+    private fun deleteAllItems() = if (shoppingList.items.isNotEmpty())  {
+        shoppingList.items.clear()
+        true
+    } else {
+        false
     }
 
     fun onShareButtonClicked() {
@@ -364,7 +386,8 @@ class ListViewModel @Inject constructor(
         class DisplayGenericDialog(val title: String, val message: String) : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()
-        class DisplayDeleteDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
+        class DisplayClearAllDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
+        class DisplayDeleteListDialog(val listTitle: String, val callback: () -> Unit) : ViewEvent()
         class ShowToast(val message: String) : ViewEvent()
         class Share(val text: String) : ViewEvent()
         data class ShowUndoRemoveItemSnackbar(val item: ShopItem, val position: Int) : ViewEvent()

@@ -9,6 +9,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/ic_clear_all"
+        android:orderInCategory="250"
+        android:title="@string/clear_all"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/ic_delete"
         android:orderInCategory="300"
         android:title="@string/delete_list"

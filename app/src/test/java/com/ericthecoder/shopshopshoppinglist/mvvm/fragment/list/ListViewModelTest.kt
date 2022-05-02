@@ -370,6 +370,43 @@ class ListViewModelTest {
     }
 
     @Nested
+    inner class ClearAllItems {
+
+        @Test
+        fun `showClearAllDialog shows dialog`() {
+            givenShoppingList()
+
+            viewModel.showClearAllDialog()
+
+            assertThat(viewModel.viewEvent.value).isInstanceOf(DisplayClearAllDialog::class.java)
+        }
+
+        @Test
+        fun `showClearAllDialog callback updates shopping list and repository`() {
+            givenShoppingList()
+
+            viewModel.showClearAllDialog()
+            (viewModel.viewEvent.value as DisplayClearAllDialog).callback()
+
+            val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+            assertThat(updatedShoppingList.items).isEmpty()
+            coVerify { shoppingListRepository.updateShoppingList(updatedShoppingList) }
+        }
+
+        @Test
+        fun `when list is empty, showClearAllDialog callback does not update repository`() {
+            givenShoppingList(shoppingList.copy(items = mutableListOf()))
+
+            viewModel.showClearAllDialog()
+            (viewModel.viewEvent.value as DisplayClearAllDialog).callback()
+
+            val updatedShoppingList = (viewModel.viewState.value as Loaded).shoppingList
+            assertThat(updatedShoppingList.items).isEmpty()
+            coVerify(inverse = true) { shoppingListRepository.updateShoppingList(any()) }
+        }
+    }
+
+    @Nested
     inner class Events {
 
         @Test
