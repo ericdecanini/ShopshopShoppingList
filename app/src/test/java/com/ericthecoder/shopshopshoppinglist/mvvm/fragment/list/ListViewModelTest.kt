@@ -28,6 +28,7 @@ import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
+@Suppress("SameParameterValue")
 @ExperimentalCoroutinesApi
 @ExtendWith(InstantTaskExecutorExtension::class)
 class ListViewModelTest {
@@ -138,6 +139,16 @@ class ListViewModelTest {
             viewModel.addItem(itemName)
 
             assertThat(viewModel.viewEvent.value).isInstanceOf(ShowToast::class.java)
+            coVerify(inverse = true) { shoppingListRepository.updateShoppingList(any()) }
+        }
+
+        @Test
+        fun `adding empty item fails`() {
+            givenShoppingList()
+
+            viewModel.addItem("")
+
+            assertThat(viewModel.viewEvent.value).isEqualTo(ShakeAddItemField)
             coVerify(inverse = true) { shoppingListRepository.updateShoppingList(any()) }
         }
 

@@ -2,11 +2,14 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
+import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -82,8 +85,8 @@ class ListFragment : DaggerFragment() {
 
         setHasOptionsMenu(true)
         initAppBar()
+        initAddItemField()
         initList()
-        configureAddItemField()
         observeState()
         observeEvents()
         inflateList(args.shoppingListId)
@@ -108,6 +111,55 @@ class ListFragment : DaggerFragment() {
         binding.toolbar.setOnClickListener {
             viewModel.showRenameDialog()
         }
+    }
+
+    private fun initAddItemField() {
+        binding.addItemButton.playBreatheAnimation()
+        binding.addItemEdit.addTextChangedColorChanging()
+    }
+
+    private fun ImageView.playBreatheAnimation() {
+        val (colorPrimary, colorSecondary) = getPrimaryAndSecondaryColors()
+
+        createColorAnimator().apply {
+            duration = 500
+            repeatMode = ValueAnimator.REVERSE
+            repeatCount = ValueAnimator.INFINITE
+            setObjectValues(colorPrimary, colorSecondary)
+            start()
+            tag = this
+        }
+    }
+
+    private fun getPrimaryAndSecondaryColors() = MaterialColors.getColor(binding.root, R.attr.colorPrimary) to
+            MaterialColors.getColor(binding.root, R.attr.colorSecondary)
+
+    private fun ImageView.createColorAnimator() =
+        ObjectAnimator.ofObject(this, "colorFilter", ArgbEvaluator(), 0, 0)
+
+    private fun TextInputEditText.addTextChangedColorChanging() {
+        val (colorPrimary, colorSecondary) = getPrimaryAndSecondaryColors()
+        val animator = binding.addItemButton.createColorAnimator().apply { duration = 200 }
+
+        addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                binding.addItemButton.endObjectAnimation()
+            }
+
+            override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
+                val currentColor = animator.animatedValue
+                    ?: if (text.isBlank()) colorPrimary else colorSecondary
+                animator.setObjectValues(currentColor, if (text.isBlank()) colorSecondary else colorPrimary)
+                animator.start()
+            }
+
+            override fun afterTextChanged(s: Editable) = Unit
+        })
+    }
+
+    private fun ImageView.endObjectAnimation() {
+        (tag as? ObjectAnimator)?.end()
+        tag = null
     }
 
     private fun initList() {
@@ -141,36 +193,6 @@ class ListFragment : DaggerFragment() {
         ItemTouchHelper(simpleItemTouchCallback).attachToRecyclerView(binding.shopList)
     }
 
-    private fun configureAddItemField() {
-        val colorAnimator = createColorAnimator()
-        binding.addItemEdit.addTextChangedColorChanging(colorAnimator)
-    }
-
-    private fun createColorAnimator() = ObjectAnimator.ofObject(
-        binding.addItemButton,
-        "colorFilter",
-        ArgbEvaluator(),
-        0, 0,
-    ).setDuration(200)
-
-    private fun TextInputEditText.addTextChangedColorChanging(animator: ObjectAnimator) {
-        val colorPrimary = MaterialColors.getColor(binding.root, R.attr.colorPrimary)
-        val colorSecondary = MaterialColors.getColor(binding.root, R.attr.colorSecondary)
-
-        addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) = Unit
-
-            override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
-                val currentColor = animator.animatedValue
-                    ?: if (text.isBlank()) colorPrimary else colorSecondary
-                animator.setObjectValues(currentColor, if (text.isBlank()) colorSecondary else colorPrimary)
-                animator.start()
-            }
-
-            override fun afterTextChanged(s: Editable) = Unit
-        })
-    }
-
     private fun observeState() {
         viewModel.viewState.observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -186,6 +208,7 @@ class ListFragment : DaggerFragment() {
             ClearFocus -> binding.root.clearFocus()
             ClearEditText -> binding.addItemEdit.setText("")
             HideKeyboard -> hideKeyboard(binding.root)
+            ShakeAddItemField -> binding.addItemEdit.shake()
             is DisplayGenericDialog -> displayGenericDialog(event.title, event.message)
             is DisplayNewListDialog -> displayNewListDialog(event.onNameSet)
             is DisplayRenameDialog -> displayRenameDialog(event.listTitle, event.callback)
@@ -194,6 +217,11 @@ class ListFragment : DaggerFragment() {
             is Share -> share(event.text)
             is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
         }
+    }
+
+    private fun View.shake() {
+        startAnimation(AnimationUtils.loadAnimation(context, R.anim.shake))
+        performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
     }
 
     private fun displayGenericDialog(title: String, message: String) {
@@ -249,6 +277,9 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun renderShoppingList(shoppingList: ShoppingList) {
+        if (shoppingList.items.isNotEmpty()) {
+            binding.addItemButton.endObjectAnimation()
+        }
         binding.title.text = shoppingList.name
         renderShopItems(shoppingList.items)
     }

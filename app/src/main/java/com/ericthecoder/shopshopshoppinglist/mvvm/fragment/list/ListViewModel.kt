@@ -185,7 +185,7 @@ class ListViewModel @Inject constructor(
     }
 
     private fun handleBlankNewItem() {
-        // TODO: do something here
+        viewEventEmitter.postValue(ShakeAddItemField)
     }
 
     private fun handleItemAlreadyInList(itemName: String) {
@@ -360,6 +360,7 @@ class ListViewModel @Inject constructor(
         object ClearFocus : ViewEvent()
         object ClearEditText : ViewEvent()
         object HideKeyboard : ViewEvent()
+        object ShakeAddItemField : ViewEvent()
         class DisplayGenericDialog(val title: String, val message: String) : ViewEvent()
         class DisplayNewListDialog(val onNameSet: (String) -> Unit) : ViewEvent()
         class DisplayRenameDialog(val listTitle: String, val callback: (String) -> Unit) : ViewEvent()

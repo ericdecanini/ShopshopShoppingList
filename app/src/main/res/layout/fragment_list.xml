@@ -120,48 +120,47 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/shop_list" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="56dp"
-                    android:visibility="@{(viewmodel.viewState instanceof ListViewState.Loaded ? (ListViewState.Loaded) viewmodel.viewState : null).shoppingList.items.isEmpty() ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:visibility="gone">
-
-                    <ImageView
-                        android:id="@+id/splash_no_items_image"
-                        android:layout_width="@dimen/splash_no_items_image_size"
-                        android:layout_height="@dimen/splash_no_items_image_size"
-                        android:importantForAccessibility="no"
-                        android:src="@drawable/empty_shopping_bag"
-                        app:layout_constraintBottom_toTopOf="@id/splash_no_items_text"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_chainStyle="packed" />
-
-                    <TextView
-                        android:id="@+id/splash_no_items_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="24dp"
-                        android:gravity="center_horizontal"
-                        android:paddingStart="@dimen/splash_text_horizontal_padding"
-                        android:paddingEnd="@dimen/splash_text_horizontal_padding"
-                        android:text="@string/splash_list_no_items"
-                        android:textAppearance="@style/TextAppearance.App.TitleMedium"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/splash_no_items_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="56dp"
+            android:visibility="@{(viewmodel.viewState instanceof ListViewState.Loaded ? (ListViewState.Loaded) viewmodel.viewState : null).shoppingList.items.isEmpty() ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone">
+
+            <ImageView
+                android:id="@+id/splash_no_items_image"
+                android:layout_width="@dimen/splash_no_items_image_size"
+                android:layout_height="@dimen/splash_no_items_image_size"
+                android:importantForAccessibility="no"
+                android:src="@drawable/empty_shopping_bag"
+                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintBottom_toTopOf="@id/splash_no_items_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/splash_no_items_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:gravity="center_horizontal"
+                android:paddingStart="@dimen/splash_text_horizontal_padding"
+                android:paddingEnd="@dimen/splash_text_horizontal_padding"
+                android:text="@string/splash_list_no_items"
+                android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
