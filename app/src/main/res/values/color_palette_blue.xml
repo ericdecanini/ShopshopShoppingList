@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="md_theme_blue_primary">#6750A4</color>
+    <color name="md_theme_blue_onPrimary">#FFFFFF</color>
+    <color name="md_theme_blue_primaryContainer">#EADDFF</color>
+    <color name="md_theme_blue_onPrimaryContainer">#21005D</color>
+    <color name="md_theme_blue_secondary">#625B71</color>
+    <color name="md_theme_blue_onSecondary">#FFFFFF</color>
+    <color name="md_theme_blue_secondaryContainer">#E8DEF8</color>
+    <color name="md_theme_blue_onSecondaryContainer">#1D192B</color>
+    <color name="md_theme_blue_tertiary">#7D5260</color>
+    <color name="md_theme_blue_onTertiary">#FFFFFF</color>
+    <color name="md_theme_blue_tertiaryContainer">#FFD8E4</color>
+    <color name="md_theme_blue_onTertiaryContainer">#31111D</color>
+    <color name="md_theme_blue_error">#B3261E</color>
+    <color name="md_theme_blue_errorContainer">#F9DEDC</color>
+    <color name="md_theme_blue_onError">#FFFFFF</color>
+    <color name="md_theme_blue_onErrorContainer">#410E0B</color>
+    <color name="md_theme_blue_background">#FFFBFE</color>
+    <color name="md_theme_blue_onBackground">#1C1B1F</color>
+    <color name="md_theme_blue_surface">#FFFBFE</color>
+    <color name="md_theme_blue_onSurface">#1C1B1F</color>
+    <color name="md_theme_blue_surfaceVariant">#E7E0EC</color>
+    <color name="md_theme_blue_onSurfaceVariant">#49454F</color>
+    <color name="md_theme_blue_outline">#79747E</color>
+    <color name="md_theme_blue_inverseOnSurface">#F4EFF4</color>
+    <color name="md_theme_blue_inverseSurface">#313033</color>
+    <color name="md_theme_blue_inversePrimary">#D0BCFF</color>
+    <color name="md_theme_blue_shadow">#000000</color>
+    <color name="md_theme_blue_primaryInverse">#D0BCFF</color>
+</resources>
