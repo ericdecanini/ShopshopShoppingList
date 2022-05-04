@@ -100,11 +100,16 @@ class HomeViewModel @Inject constructor(
         viewEventEmitter.value = ViewEvent.OpenList(shoppingList)
     }
 
+    fun openThemeDialog() {
+        viewEventEmitter.value = ViewEvent.OpenThemeDialog
+    }
+
     //endregion
 
     sealed class ViewEvent {
         data class SetUpsellButtonVisible(val visible: Boolean) : ViewEvent()
         data class OpenList(val shoppingList: ShoppingList?) : ViewEvent()
+        object OpenThemeDialog : ViewEvent()
         object CycleTheme : ViewEvent()
         object OpenUpsell : ViewEvent()
     }

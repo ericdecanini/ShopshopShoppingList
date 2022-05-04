@@ -7,7 +7,7 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="Theme.ShopshopShoppingList.Blue" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.ShopshopShoppingList.Blue">
         <item name="colorPrimary">@color/md_theme_blue_primary</item>
         <item name="colorOnPrimary">@color/md_theme_blue_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_blue_primaryContainer</item>
@@ -37,7 +37,7 @@
         <item name="android:shadowColor">@color/md_theme_blue_shadow</item>
     </style>
 
-    <style name="Theme.ShopshopShoppingList.Green" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.ShopshopShoppingList.Green">
         <item name="colorPrimary">@color/md_theme_green_primary</item>
         <item name="colorOnPrimary">@color/md_theme_green_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_green_primaryContainer</item>
@@ -67,7 +67,7 @@
         <item name="android:shadowColor">@color/md_theme_green_shadow</item>
     </style>
 
-    <style name="Theme.ShopshopShoppingList.Orange" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.ShopshopShoppingList.Orange">
         <item name="colorPrimary">@color/md_theme_orange_primary</item>
         <item name="colorOnPrimary">@color/md_theme_orange_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_orange_primaryContainer</item>
@@ -97,7 +97,7 @@
         <item name="android:shadowColor">@color/md_theme_orange_shadow</item>
     </style>
 
-    <style name="Theme.ShopshopShoppingList.Pink" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.ShopshopShoppingList.Pink">
         <item name="colorPrimary">@color/md_theme_pink_primary</item>
         <item name="colorOnPrimary">@color/md_theme_pink_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_pink_primaryContainer</item>
@@ -127,7 +127,7 @@
         <item name="android:shadowColor">@color/md_theme_pink_shadow</item>
     </style>
 
-    <style name="Theme.ShopshopShoppingList.Purple" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.ShopshopShoppingList.Purple">
         <item name="colorPrimary">@color/md_theme_purple_primary</item>
         <item name="colorOnPrimary">@color/md_theme_purple_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_purple_primaryContainer</item>
@@ -157,7 +157,7 @@
         <item name="android:shadowColor">@color/md_theme_purple_shadow</item>
     </style>
 
-    <style name="Theme.ShopshopShoppingList.Red" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.ShopshopShoppingList.Red">
         <item name="colorPrimary">@color/md_theme_red_primary</item>
         <item name="colorOnPrimary">@color/md_theme_red_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_red_primaryContainer</item>
@@ -187,7 +187,7 @@
         <item name="android:shadowColor">@color/md_theme_red_shadow</item>
     </style>
 
-    <style name="Theme.ShopshopShoppingList.Yellow" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.ShopshopShoppingList.Yellow">
         <item name="colorPrimary">@color/md_theme_yellow_primary</item>
         <item name="colorOnPrimary">@color/md_theme_yellow_onPrimary</item>
         <item name="colorPrimaryContainer">@color/md_theme_yellow_primaryContainer</item>

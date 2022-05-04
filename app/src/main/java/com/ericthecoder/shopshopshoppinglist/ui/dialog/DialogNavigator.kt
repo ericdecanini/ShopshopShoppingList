@@ -1,5 +1,7 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialog
 
+import com.ericthecoder.shopshopshoppinglist.theme.Theme
+
 interface DialogNavigator {
 
     fun displayGenericDialog(
@@ -17,4 +19,6 @@ interface DialogNavigator {
         negativeOnClick: (() -> Unit)? = null,
         cancellable: Boolean = true,
     )
+
+    fun displayThemeDialog(onThemeSelected: (Theme) -> Unit)
 }

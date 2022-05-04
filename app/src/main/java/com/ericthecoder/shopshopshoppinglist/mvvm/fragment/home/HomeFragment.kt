@@ -21,6 +21,7 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Lo
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Search
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.material.color.MaterialColors
 import dagger.android.support.DaggerFragment
@@ -31,6 +32,9 @@ class HomeFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    @Inject
+    lateinit var dialogNavigator: DialogNavigator
 
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
@@ -57,17 +61,12 @@ class HomeFragment : DaggerFragment() {
         binding.setVariable(BR.viewmodel, viewModel)
         binding.lifecycleOwner = this
 
-        initMenuItems()
         initSearchBar()
         initShoppingLists()
         observeState()
         observeEvents()
 
         return binding.root
-    }
-
-    private fun initMenuItems() {
-        binding.upgradeToPremiumButton.setOnClickListener { viewModel.navigateToUpsell() }
     }
 
     private fun initSearchBar() {
@@ -120,6 +119,7 @@ class HomeFragment : DaggerFragment() {
             is OpenList -> goToList(event.shoppingList)
             CycleTheme -> cycleTheme()
             OpenUpsell -> navigator.goToUpsell()
+            OpenThemeDialog -> openThemeDialog()
         }
     }
 
@@ -135,6 +135,11 @@ class HomeFragment : DaggerFragment() {
 
     private fun cycleTheme() {
         themeViewModel.cycleNextTheme()
+    }
+
+    private fun openThemeDialog() {
+        // TODO: add on theme selected functionality
+        dialogNavigator.displayThemeDialog { println("Theme selected: $it") }
     }
 
     override fun onResume() {

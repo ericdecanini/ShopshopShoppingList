@@ -1,9 +1,11 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialog
 
 import androidx.appcompat.app.AppCompatActivity
+import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogBuilder
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.rename.RenameDialogBuilder
+import com.ericthecoder.shopshopshoppinglist.ui.dialog.theme.ThemeDialogBuilder
 
 class DialogNavigatorImpl(
     private val activity: AppCompatActivity,
@@ -32,5 +34,9 @@ class DialogNavigatorImpl(
         RenameDialogBuilder.show(
             activity, header, autofillText, positiveOnClick, negativeOnClick, cancellable
         )
+    }
+
+    override fun displayThemeDialog(onThemeSelected: (Theme) -> Unit) {
+        ThemeDialogBuilder.show(activity, onThemeSelected)
     }
 }
