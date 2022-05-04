@@ -3,6 +3,7 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.activity.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -10,12 +11,14 @@ import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.NavGraphDirections
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityMainBinding
+import com.ericthecoder.shopshopshoppinglist.library.extension.getRootView
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.gms.ads.AdRequest
+import com.google.android.material.color.MaterialColors
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
@@ -77,7 +80,11 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun setTheme(theme: Theme) {
-//        window.statusBarColor = resources.getColor(theme.colorRes, getTheme())
+        val backgroundColor = MaterialColors.getColor(getRootView(), R.attr.backgroundColor)
+        val primaryColor = MaterialColors.getColor(getRootView(), R.attr.colorPrimary)
+        val layeredColor = ColorUtils.blendARGB(backgroundColor, primaryColor, 0.05F)
+        binding.root.setBackgroundColor(layeredColor)
+        window.statusBarColor = layeredColor
     }
 
     private fun observeViewEvents() = viewModel.viewEvent.observe(this) { event ->

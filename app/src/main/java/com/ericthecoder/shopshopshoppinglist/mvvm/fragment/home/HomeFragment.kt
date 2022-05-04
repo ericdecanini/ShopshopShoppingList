@@ -1,11 +1,13 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -22,6 +24,7 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.Shopping
 import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
+import com.google.android.material.color.MaterialColors
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -72,6 +75,14 @@ class HomeFragment : DaggerFragment() {
     }
 
     private fun initSearchBar() {
+        val isDarkMode = resources.getBoolean(R.bool.isDarkMode)
+        if (!isDarkMode) {
+            val surfaceColor = MaterialColors.getColor(binding.root, R.attr.colorSurface)
+            val primaryColor = MaterialColors.getColor(binding.root, R.attr.colorPrimary)
+            val layeredColor = ColorUtils.blendARGB(surfaceColor, primaryColor, 0.15F)
+            binding.searchBarLayout.backgroundTintList = ColorStateList.valueOf(layeredColor)
+        }
+
         binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 

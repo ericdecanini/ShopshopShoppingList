@@ -41,7 +41,7 @@
             android:paddingStart="8dp"
             android:paddingEnd="4dp"
             android:text="@string/ellipsis"
-            android:textColor="?attr/colorOnPrimary"
+            android:textColor="?attr/colorOnSurface"
             android:textAppearance="@style/TextAppearance.App.LabelLarge"
             android:visibility="@{viewstate == null ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"

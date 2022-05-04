@@ -6,6 +6,6 @@
     <color name="textInputEditTextBackgroundColor">#FFFFFF</color>
 
     <color name="elevatedCardBackground">#FFFFFF</color>
-    <color name="searchBarColor">#F0F0F0</color>
-    <color name="colorEditTextHint">#616161</color>
+    <color name="searchBarColor">@color/md_theme_surface</color>
+    <color name="colorEditTextHint">#60000000</color>
 </resources>

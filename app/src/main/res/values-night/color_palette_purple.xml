@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="md_theme_purple_primary">#D0BCFF</color>
+    <color name="md_theme_purple_onPrimary">#381E72</color>
+    <color name="md_theme_purple_primaryContainer">#4F378B</color>
+    <color name="md_theme_purple_onPrimaryContainer">#EADDFF</color>
+    <color name="md_theme_purple_secondary">#CCC2DC</color>
+    <color name="md_theme_purple_onSecondary">#332D41</color>
+    <color name="md_theme_purple_secondaryContainer">#4A4458</color>
+    <color name="md_theme_purple_onSecondaryContainer">#E8DEF8</color>
+    <color name="md_theme_purple_tertiary">#EFB8C8</color>
+    <color name="md_theme_purple_onTertiary">#492532</color>
+    <color name="md_theme_purple_tertiaryContainer">#633B48</color>
+    <color name="md_theme_purple_onTertiaryContainer">#FFD8E4</color>
+    <color name="md_theme_purple_error">#F2B8B5</color>
+    <color name="md_theme_purple_errorContainer">#8C1D18</color>
+    <color name="md_theme_purple_onError">#601410</color>
+    <color name="md_theme_purple_onErrorContainer">#F9DEDC</color>
+    <color name="md_theme_purple_background">#1C1B1F</color>
+    <color name="md_theme_purple_onBackground">#E6E1E5</color>
+    <color name="md_theme_purple_surface">#1C1B1F</color>
+    <color name="md_theme_purple_onSurface">#E6E1E5</color>
+    <color name="md_theme_purple_surfaceVariant">#49454F</color>
+    <color name="md_theme_purple_onSurfaceVariant">#CAC4D0</color>
+    <color name="md_theme_purple_outline">#938F99</color>
+    <color name="md_theme_purple_inverseOnSurface">#1C1B1F</color>
+    <color name="md_theme_purple_inverseSurface">#E6E1E5</color>
+    <color name="md_theme_purple_inversePrimary">#6750A4</color>
+    <color name="md_theme_purple_shadow">#000000</color>
+    <color name="md_theme_purple_primaryInverse">#6750A4</color>
+</resources>
