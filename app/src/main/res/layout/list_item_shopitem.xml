@@ -47,7 +47,7 @@
             android:maxLength="26"
             android:text="@{viewstate.name}"
             android:textAppearance="@style/TextAppearance.App.BodyLarge"
-            android:textColor="@{viewstate.checked ? @color/colorDisabled : @color/colorText}"
+            android:enabled="@{viewstate.checked}"
             app:layout_constraintBottom_toBottomOf="@id/checkbox"
             app:layout_constraintEnd_toStartOf="@id/quantity"
             app:layout_constraintStart_toEndOf="@id/checkbox"

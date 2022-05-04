@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="32dp"
+        tools:background="@color/md_theme_blue_primaryContainer">
+
+        <ImageView
+            android:id="@+id/theme_blue"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:src="@drawable/fg_item_theme"
+            android:background="@drawable/bg_item_theme"
+            android:padding="12dp"
+            android:contentDescription="@string/talkback_theme_blue"
+            app:tint="@color/md_theme_blue_primary"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/theme_green"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/theme_green"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:src="@drawable/fg_item_theme"
+            android:background="@drawable/bg_item_theme"
+            android:padding="12dp"
+            android:contentDescription="@string/talkback_theme_green"
+            app:tint="@color/md_theme_green_primary"
+            app:layout_constraintStart_toEndOf="@id/theme_blue"
+            app:layout_constraintEnd_toStartOf="@id/theme_orange"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/theme_orange"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:src="@drawable/fg_item_theme"
+            android:background="@drawable/bg_item_theme"
+            android:padding="12dp"
+            android:contentDescription="@string/talkback_theme_orange"
+            app:tint="@color/md_theme_orange_primary"
+            app:layout_constraintStart_toEndOf="@id/theme_green"
+            app:layout_constraintEnd_toStartOf="@id/theme_pink"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/theme_pink"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:src="@drawable/fg_item_theme"
+            android:background="@drawable/bg_item_theme"
+            android:padding="12dp"
+            android:contentDescription="@string/talkback_theme_pink"
+            app:tint="@color/md_theme_pink_primary"
+            app:layout_constraintStart_toEndOf="@id/theme_orange"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/theme_purple"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:src="@drawable/fg_item_theme"
+            android:background="@drawable/bg_item_theme"
+            android:padding="12dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/talkback_theme_purple"
+            app:tint="@color/md_theme_purple_primary"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/theme_red"
+            app:layout_constraintTop_toBottomOf="@id/theme_blue" />
+
+        <ImageView
+            android:id="@+id/theme_red"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:src="@drawable/fg_item_theme"
+            android:background="@drawable/bg_item_theme"
+            android:padding="12dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/talkback_theme_red"
+            app:tint="@color/md_theme_red_primary"
+            app:layout_constraintStart_toEndOf="@id/theme_purple"
+            app:layout_constraintEnd_toStartOf="@id/theme_yellow"
+            app:layout_constraintTop_toBottomOf="@id/theme_blue" />
+
+        <ImageView
+            android:id="@+id/theme_yellow"
+            android:layout_width="104dp"
+            android:layout_height="104dp"
+            android:src="@drawable/fg_item_theme"
+            android:background="@drawable/bg_item_theme"
+            android:padding="12dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/talkback_theme_yellow"
+            app:tint="@color/md_theme_yellow_primary"
+            app:layout_constraintStart_toEndOf="@id/theme_red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/theme_blue" />
+
+        <TextView
+            style="@style/Widget.App.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/use_system_dynamic_colors"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/theme_purple" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
