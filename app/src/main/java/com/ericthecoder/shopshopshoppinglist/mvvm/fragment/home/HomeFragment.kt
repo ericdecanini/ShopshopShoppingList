@@ -75,7 +75,7 @@ class HomeFragment : DaggerFragment() {
         if (!isDarkMode) {
             val surfaceColor = MaterialColors.getColor(binding.root, R.attr.colorSurface)
             val primaryColor = MaterialColors.getColor(binding.root, R.attr.colorPrimary)
-            val layeredColor = ColorUtils.blendARGB(surfaceColor, primaryColor, 0.1F)
+            val layeredColor = ColorUtils.blendARGB(surfaceColor, primaryColor, 0.12F)
             binding.searchBarLayout.backgroundTintList = ColorStateList.valueOf(layeredColor)
         }
 
