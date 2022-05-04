@@ -6,5 +6,6 @@ sealed class HomeViewState {
     object Initial : HomeViewState()
     object Loading : HomeViewState()
     data class Loaded(val items: List<ShoppingList>) : HomeViewState()
+    data class Search(val items: List<ShoppingList>) : HomeViewState()
     data class Error(val exception: Throwable) : HomeViewState()
 }

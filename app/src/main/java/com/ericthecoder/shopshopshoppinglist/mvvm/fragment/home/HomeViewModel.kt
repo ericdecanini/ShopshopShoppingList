@@ -69,7 +69,7 @@ class HomeViewModel @Inject constructor(
             viewStateEmitter.postValue(Loaded(shoppingLists))
         } else {
             val filteredList = shoppingLists.makeCopy().searchTerm(searchIndex)
-            viewStateEmitter.postValue(Loaded(filteredList))
+            viewStateEmitter.postValue(Search(filteredList))
         }
     }
 

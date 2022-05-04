@@ -80,7 +80,7 @@
             android:id="@+id/shopping_lists"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loaded ? View.VISIBLE : View.GONE}"
+            android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loaded || viewmodel.viewState instanceof HomeViewState.Search ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/shopping_lists_label_divider"
             tools:itemCount="2"
@@ -142,6 +142,42 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="@{(viewmodel.viewState instanceof HomeViewState.Search ? (HomeViewState.Search) viewmodel.viewState : null).items.isEmpty() ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone">
+
+            <ImageView
+                android:id="@+id/splash_no_search_results_image"
+                android:layout_width="250dp"
+                android:layout_height="250dp"
+                android:importantForAccessibility="no"
+                android:src="@drawable/art_search"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/splash_no_search_results_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center_horizontal"
+                android:paddingStart="@dimen/splash_text_horizontal_padding"
+                android:paddingEnd="@dimen/splash_text_horizontal_padding"
+                android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/splash_no_search_results_image"
+                tools:text="@string/splash_home_no_search_results" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

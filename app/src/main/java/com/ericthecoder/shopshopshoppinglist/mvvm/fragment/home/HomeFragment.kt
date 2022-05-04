@@ -16,10 +16,10 @@ import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
-import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
 import com.ericthecoder.shopshopshoppinglist.library.extension.setStatusBarAttrColor
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Search
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
 import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
@@ -88,6 +88,7 @@ class HomeFragment : DaggerFragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 viewModel.onSearchBarTextChanged(s?.toString().orEmpty())
+                binding.splashNoSearchResultsText.text = getString(R.string.splash_home_no_search_results, s)
             }
 
             override fun afterTextChanged(s: Editable?) = Unit
@@ -117,7 +118,10 @@ class HomeFragment : DaggerFragment() {
         viewModel.viewState.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is Loaded -> updateShoppingLists(state.items)
-                else -> doNothing()
+                is Search -> updateShoppingLists(state.items)
+                is HomeViewState.Error,
+                HomeViewState.Initial,
+                HomeViewState.Loading -> Unit
             }
         }
     }
