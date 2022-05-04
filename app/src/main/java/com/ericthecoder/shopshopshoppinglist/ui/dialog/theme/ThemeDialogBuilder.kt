@@ -1,6 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialog.theme
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogThemeBinding
@@ -9,20 +9,31 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 object ThemeDialogBuilder {
 
-    fun show(activity: Activity, onThemeSelected: (Theme) -> Unit) {
+    var currentTheme = Theme.BLUE
+    var selectedTheme = Theme.BLUE
+
+    fun show(activity: AppCompatActivity, onThemeSelected: (Theme) -> Unit) {
         val binding = DialogThemeBinding.inflate(activity.layoutInflater)
+        binding.setVariable(BR.listener, createThemeSelectedListener(binding))
+        binding.setVariable(BR.selectedTheme, selectedTheme)
 
         MaterialAlertDialogBuilder(activity)
             .setTitle(activity.getString(R.string.theme_dialog_title))
             .setView(binding.root)
+            .setPositiveButton(R.string.restart) { _, _ -> selectTheme(onThemeSelected) }
+            .setNegativeButton(R.string.cancel) { _, _ -> selectedTheme = currentTheme }
             .show()
-            .apply {
-                binding.setVariable(BR.listener, object : ThemeSelectedListener {
-                    override fun onThemeSelected(theme: Theme) {
-                        dismiss()
-                        onThemeSelected(theme)
-                    }
-                })
-            }
+    }
+
+    private fun selectTheme(onThemeSelected: (Theme) -> Unit) {
+        currentTheme = selectedTheme
+        onThemeSelected(selectedTheme)
+    }
+
+    private fun createThemeSelectedListener(binding: DialogThemeBinding) = object : ThemeSelectedListener {
+        override fun onThemeSelected(theme: Theme) {
+            selectedTheme = theme
+            binding.setVariable(BR.selectedTheme, selectedTheme)
+        }
     }
 }

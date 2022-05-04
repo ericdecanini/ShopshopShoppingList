@@ -3,4 +3,6 @@
     <color name="textInputEditTextBackgroundColor">#FFFFFF</color>
     <color name="elevatedCardBackground">#FFFFFF</color>
     <color name="colorEditTextHint">#60000000</color>
+    <color name="selectedThemeForeground">#CCFFFFFF</color>
+    <color name="zeroAlpha">#00FFFFFF</color>
 </resources>

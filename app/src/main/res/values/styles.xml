@@ -11,8 +11,14 @@
 
     <style name="Widget.App.Button" parent="Widget.Material3.Button" />
 
-    <style name="Widget.App.Button.TextButton" parent="Widget.Material3.Button.TextButton">
-        <item name="android:drawableTint">?attr/colorPrimary</item>
+    <style name="Widget.App.Button.Tonal" parent="Widget.Material3.Button.TonalButton" />
+
+    <style name="Widget.App.Button.TextButton" parent="Widget.Material3.Button.TextButton" />
+
+    <style name="Widget.App.Button.TextButton.Dialog" parent="Widget.Material3.Button.TextButton.Dialog" />
+
+    <style name="Widget.App.Button.TextButton.Accent">
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="Widget.App.EditText">

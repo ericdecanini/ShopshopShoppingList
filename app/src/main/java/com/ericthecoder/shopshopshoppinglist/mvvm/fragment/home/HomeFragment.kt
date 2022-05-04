@@ -11,7 +11,6 @@ import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
@@ -92,7 +91,7 @@ class HomeFragment : DaggerFragment() {
 
     private fun initShoppingLists() {
         binding.shoppingLists.adapter = adapter
-        binding.shoppingLists.layoutManager = LinearLayoutManager(context)
+        binding.shoppingLists.layoutManager
     }
 
     private fun observeState() {
