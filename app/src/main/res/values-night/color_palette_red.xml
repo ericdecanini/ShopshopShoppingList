@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="md_theme_red_primary">#FFB3B1</color>
+    <color name="md_theme_red_onPrimary">#5F1318</color>
+    <color name="md_theme_red_primaryContainer">#7E2A2D</color>
+    <color name="md_theme_red_onPrimaryContainer">#FFDAD7</color>
+    <color name="md_theme_red_secondary">#E7BDBB</color>
+    <color name="md_theme_red_onSecondary">#442929</color>
+    <color name="md_theme_red_secondaryContainer">#5D3F3E</color>
+    <color name="md_theme_red_onSecondaryContainer">#FFDAD8</color>
+    <color name="md_theme_red_tertiary">#E3C18C</color>
+    <color name="md_theme_red_onTertiary">#412D05</color>
+    <color name="md_theme_red_tertiaryContainer">#5A431A</color>
+    <color name="md_theme_red_onTertiaryContainer">#FFDEA8</color>
+    <color name="md_theme_red_error">#FFB4A9</color>
+    <color name="md_theme_red_errorContainer">#930006</color>
+    <color name="md_theme_red_onError">#680003</color>
+    <color name="md_theme_red_onErrorContainer">#FFDAD4</color>
+    <color name="md_theme_red_background">#201A1A</color>
+    <color name="md_theme_red_onBackground">#ECDFDE</color>
+    <color name="md_theme_red_surface">#201A1A</color>
+    <color name="md_theme_red_onSurface">#ECDFDE</color>
+    <color name="md_theme_red_surfaceVariant">#534342</color>
+    <color name="md_theme_red_onSurfaceVariant">#D7C1C0</color>
+    <color name="md_theme_red_outline">#A08C8B</color>
+    <color name="md_theme_red_inverseOnSurface">#201A1A</color>
+    <color name="md_theme_red_inverseSurface">#ECDFDE</color>
+    <color name="md_theme_red_inversePrimary">#9C4142</color>
+    <color name="md_theme_red_shadow">#000000</color>
+    <color name="md_theme_red_primaryInverse">#9C4142</color>
+</resources>

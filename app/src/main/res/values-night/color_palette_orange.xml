@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="md_theme_orange_primary">#FFB77E</color>
+    <color name="md_theme_orange_onPrimary">#4F2500</color>
+    <color name="md_theme_orange_primaryContainer">#703800</color>
+    <color name="md_theme_orange_onPrimaryContainer">#FFDCC3</color>
+    <color name="md_theme_orange_secondary">#E3BFA6</color>
+    <color name="md_theme_orange_onSecondary">#422C1B</color>
+    <color name="md_theme_orange_secondaryContainer">#5B412F</color>
+    <color name="md_theme_orange_onSecondaryContainer">#FFDCC3</color>
+    <color name="md_theme_orange_tertiary">#C7CB95</color>
+    <color name="md_theme_orange_onTertiary">#2F330B</color>
+    <color name="md_theme_orange_tertiaryContainer">#464A20</color>
+    <color name="md_theme_orange_onTertiaryContainer">#E3E7AF</color>
+    <color name="md_theme_orange_error">#FFB4A9</color>
+    <color name="md_theme_orange_errorContainer">#930006</color>
+    <color name="md_theme_orange_onError">#680003</color>
+    <color name="md_theme_orange_onErrorContainer">#FFDAD4</color>
+    <color name="md_theme_orange_background">#201A17</color>
+    <color name="md_theme_orange_onBackground">#ECE0DA</color>
+    <color name="md_theme_orange_surface">#201A17</color>
+    <color name="md_theme_orange_onSurface">#ECE0DA</color>
+    <color name="md_theme_orange_surfaceVariant">#51443B</color>
+    <color name="md_theme_orange_onSurfaceVariant">#D6C3B7</color>
+    <color name="md_theme_orange_outline">#9E8D82</color>
+    <color name="md_theme_orange_inverseOnSurface">#201A17</color>
+    <color name="md_theme_orange_inverseSurface">#ECE0DA</color>
+    <color name="md_theme_orange_inversePrimary">#944B00</color>
+    <color name="md_theme_orange_shadow">#000000</color>
+    <color name="md_theme_orange_primaryInverse">#944B00</color>
+</resources>

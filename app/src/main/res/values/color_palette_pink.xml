@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="md_theme_pink_primary">#8F3F8D</color>
+    <color name="md_theme_pink_onPrimary">#FFFFFF</color>
+    <color name="md_theme_pink_primaryContainer">#FFD6F9</color>
+    <color name="md_theme_pink_onPrimaryContainer">#37003A</color>
+    <color name="md_theme_pink_secondary">#6E586A</color>
+    <color name="md_theme_pink_onSecondary">#FFFFFF</color>
+    <color name="md_theme_pink_secondaryContainer">#F6DAEF</color>
+    <color name="md_theme_pink_onSecondaryContainer">#271625</color>
+    <color name="md_theme_pink_tertiary">#815246</color>
+    <color name="md_theme_pink_onTertiary">#FFFFFF</color>
+    <color name="md_theme_pink_tertiaryContainer">#FFDACF</color>
+    <color name="md_theme_pink_onTertiaryContainer">#321209</color>
+    <color name="md_theme_pink_error">#BA1B1B</color>
+    <color name="md_theme_pink_errorContainer">#FFDAD4</color>
+    <color name="md_theme_pink_onError">#FFFFFF</color>
+    <color name="md_theme_pink_onErrorContainer">#410001</color>
+    <color name="md_theme_pink_background">#FCFCFC</color>
+    <color name="md_theme_pink_onBackground">#1E1A1D</color>
+    <color name="md_theme_pink_surface">#FCFCFC</color>
+    <color name="md_theme_pink_onSurface">#1E1A1D</color>
+    <color name="md_theme_pink_surfaceVariant">#EDDEE7</color>
+    <color name="md_theme_pink_onSurfaceVariant">#4E444B</color>
+    <color name="md_theme_pink_outline">#80747C</color>
+    <color name="md_theme_pink_inverseOnSurface">#F8EEF2</color>
+    <color name="md_theme_pink_inverseSurface">#342F32</color>
+    <color name="md_theme_pink_inversePrimary">#FFA9FA</color>
+    <color name="md_theme_pink_shadow">#000000</color>
+    <color name="md_theme_pink_primaryInverse">#FFA9FA</color>
+</resources>

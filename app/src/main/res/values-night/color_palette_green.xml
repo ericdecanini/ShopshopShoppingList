@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="md_theme_green_primary">#7ADA9D</color>
+    <color name="md_theme_green_onPrimary">#00391C</color>
+    <color name="md_theme_green_primaryContainer">#00522B</color>
+    <color name="md_theme_green_onPrimaryContainer">#97F7B8</color>
+    <color name="md_theme_green_secondary">#B6CCB9</color>
+    <color name="md_theme_green_onSecondary">#213527</color>
+    <color name="md_theme_green_secondaryContainer">#384B3D</color>
+    <color name="md_theme_green_onSecondaryContainer">#D2E8D5</color>
+    <color name="md_theme_green_tertiary">#A2CDDA</color>
+    <color name="md_theme_green_onTertiary">#023640</color>
+    <color name="md_theme_green_tertiaryContainer">#214C57</color>
+    <color name="md_theme_green_onTertiaryContainer">#BFEAF7</color>
+    <color name="md_theme_green_error">#FFB4A9</color>
+    <color name="md_theme_green_errorContainer">#930006</color>
+    <color name="md_theme_green_onError">#680003</color>
+    <color name="md_theme_green_onErrorContainer">#FFDAD4</color>
+    <color name="md_theme_green_background">#191C1A</color>
+    <color name="md_theme_green_onBackground">#E1E3DE</color>
+    <color name="md_theme_green_surface">#191C1A</color>
+    <color name="md_theme_green_onSurface">#E1E3DE</color>
+    <color name="md_theme_green_surfaceVariant">#414942</color>
+    <color name="md_theme_green_onSurfaceVariant">#C1C9C0</color>
+    <color name="md_theme_green_outline">#8B938B</color>
+    <color name="md_theme_green_inverseOnSurface">#191C1A</color>
+    <color name="md_theme_green_inverseSurface">#E1E3DE</color>
+    <color name="md_theme_green_inversePrimary">#006D3C</color>
+    <color name="md_theme_green_shadow">#000000</color>
+    <color name="md_theme_green_primaryInverse">#006D3C</color>
+</resources>

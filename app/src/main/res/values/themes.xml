@@ -1,39 +1,220 @@
 <resources>
 
     <style name="Base.Theme.ShopshopShoppingList" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/md_theme_primary</item>
-        <item name="colorOnPrimary">@color/md_theme_onPrimary</item>
-        <item name="colorPrimaryContainer">@color/md_theme_primaryContainer</item>
-        <item name="colorOnPrimaryContainer">@color/md_theme_onPrimaryContainer</item>
-        <item name="colorSecondary">@color/md_theme_secondary</item>
-        <item name="colorOnSecondary">@color/md_theme_onSecondary</item>
-        <item name="colorSecondaryContainer">@color/md_theme_secondaryContainer</item>
-        <item name="colorOnSecondaryContainer">@color/md_theme_onSecondaryContainer</item>
-        <item name="colorTertiary">@color/md_theme_tertiary</item>
-        <item name="colorOnTertiary">@color/md_theme_onTertiary</item>
-        <item name="colorTertiaryContainer">@color/md_theme_tertiaryContainer</item>
-        <item name="colorOnTertiaryContainer">@color/md_theme_onTertiaryContainer</item>
-        <item name="colorError">@color/md_theme_error</item>
-        <item name="colorErrorContainer">@color/md_theme_errorContainer</item>
-        <item name="colorOnError">@color/md_theme_onError</item>
-        <item name="colorOnErrorContainer">@color/md_theme_onErrorContainer</item>
-        <item name="backgroundColor">@color/md_theme_background</item>
-        <item name="colorOnBackground">@color/md_theme_onBackground</item>
-        <item name="colorSurface">@color/md_theme_surface</item>
-        <item name="colorOnSurface">@color/md_theme_onSurface</item>
-        <item name="colorSurfaceVariant">@color/md_theme_surfaceVariant</item>
-        <item name="colorOnSurfaceVariant">@color/md_theme_onSurfaceVariant</item>
-        <item name="colorOutline">@color/md_theme_outline</item>
-        <item name="colorOnSurfaceInverse">@color/md_theme_inverseOnSurface</item>
-        <item name="colorSurfaceInverse">@color/md_theme_inverseSurface</item>
-        <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
-        <item name="android:shadowColor">@color/md_theme_shadow</item>
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="materialAlertDialogTheme">@style/Theme.App.Dialog</item>
         <item name="toolbarStyle">@style/Widget.App.Toolbar</item>
-    </style>
-
-    <style name="Theme.ShopshopShoppingList" parent="Base.Theme.ShopshopShoppingList">
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <style name="Base.Theme.ShopshopShoppingList.Blue" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_blue_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_blue_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_blue_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_blue_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_blue_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_blue_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_blue_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_blue_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_blue_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_blue_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_blue_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_blue_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_blue_error</item>
+        <item name="colorErrorContainer">@color/md_theme_blue_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_blue_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_blue_onErrorContainer</item>
+        <item name="backgroundColor">@color/md_theme_blue_background</item>
+        <item name="colorOnBackground">@color/md_theme_blue_onBackground</item>
+        <item name="colorSurface">@color/md_theme_blue_surface</item>
+        <item name="colorOnSurface">@color/md_theme_blue_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_blue_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_blue_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_blue_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_blue_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_blue_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_blue_inversePrimary</item>
+        <item name="android:shadowColor">@color/md_theme_blue_shadow</item>
+    </style>
+
+    <style name="Base.Theme.ShopshopShoppingList.Green" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_green_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_green_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_green_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_green_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_green_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_green_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_green_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_green_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_green_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_green_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_green_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_green_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_green_error</item>
+        <item name="colorErrorContainer">@color/md_theme_green_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_green_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_green_onErrorContainer</item>
+        <item name="backgroundColor">@color/md_theme_green_background</item>
+        <item name="colorOnBackground">@color/md_theme_green_onBackground</item>
+        <item name="colorSurface">@color/md_theme_green_surface</item>
+        <item name="colorOnSurface">@color/md_theme_green_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_green_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_green_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_green_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_green_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_green_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_green_inversePrimary</item>
+        <item name="android:shadowColor">@color/md_theme_green_shadow</item>
+    </style>
+
+    <style name="Base.Theme.ShopshopShoppingList.Orange" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_orange_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_orange_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_orange_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_orange_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_orange_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_orange_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_orange_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_orange_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_orange_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_orange_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_orange_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_orange_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_orange_error</item>
+        <item name="colorErrorContainer">@color/md_theme_orange_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_orange_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_orange_onErrorContainer</item>
+        <item name="backgroundColor">@color/md_theme_orange_background</item>
+        <item name="colorOnBackground">@color/md_theme_orange_onBackground</item>
+        <item name="colorSurface">@color/md_theme_orange_surface</item>
+        <item name="colorOnSurface">@color/md_theme_orange_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_orange_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_orange_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_orange_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_orange_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_orange_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_orange_inversePrimary</item>
+        <item name="android:shadowColor">@color/md_theme_orange_shadow</item>
+    </style>
+
+    <style name="Base.Theme.ShopshopShoppingList.Pink" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_pink_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_pink_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_pink_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_pink_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_pink_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_pink_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_pink_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_pink_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_pink_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_pink_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_pink_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_pink_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_pink_error</item>
+        <item name="colorErrorContainer">@color/md_theme_pink_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_pink_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_pink_onErrorContainer</item>
+        <item name="backgroundColor">@color/md_theme_pink_background</item>
+        <item name="colorOnBackground">@color/md_theme_pink_onBackground</item>
+        <item name="colorSurface">@color/md_theme_pink_surface</item>
+        <item name="colorOnSurface">@color/md_theme_pink_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_pink_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_pink_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_pink_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_pink_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_pink_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_pink_inversePrimary</item>
+        <item name="android:shadowColor">@color/md_theme_pink_shadow</item>
+    </style>
+
+    <style name="Base.Theme.ShopshopShoppingList.Purple" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_purple_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_purple_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_purple_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_purple_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_purple_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_purple_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_purple_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_purple_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_purple_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_purple_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_purple_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_purple_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_purple_error</item>
+        <item name="colorErrorContainer">@color/md_theme_purple_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_purple_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_purple_onErrorContainer</item>
+        <item name="backgroundColor">@color/md_theme_purple_background</item>
+        <item name="colorOnBackground">@color/md_theme_purple_onBackground</item>
+        <item name="colorSurface">@color/md_theme_purple_surface</item>
+        <item name="colorOnSurface">@color/md_theme_purple_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_purple_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_purple_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_purple_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_purple_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_purple_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_purple_inversePrimary</item>
+        <item name="android:shadowColor">@color/md_theme_purple_shadow</item>
+    </style>
+
+    <style name="Base.Theme.ShopshopShoppingList.Red" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_red_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_red_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_red_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_red_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_red_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_red_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_red_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_red_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_red_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_red_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_red_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_red_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_red_error</item>
+        <item name="colorErrorContainer">@color/md_theme_red_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_red_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_red_onErrorContainer</item>
+        <item name="backgroundColor">@color/md_theme_red_background</item>
+        <item name="colorOnBackground">@color/md_theme_red_onBackground</item>
+        <item name="colorSurface">@color/md_theme_red_surface</item>
+        <item name="colorOnSurface">@color/md_theme_red_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_red_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_red_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_red_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_red_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_red_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_red_inversePrimary</item>
+        <item name="android:shadowColor">@color/md_theme_red_shadow</item>
+    </style>
+
+    <style name="Base.Theme.ShopshopShoppingList.Yellow" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/md_theme_yellow_primary</item>
+        <item name="colorOnPrimary">@color/md_theme_yellow_onPrimary</item>
+        <item name="colorPrimaryContainer">@color/md_theme_yellow_primaryContainer</item>
+        <item name="colorOnPrimaryContainer">@color/md_theme_yellow_onPrimaryContainer</item>
+        <item name="colorSecondary">@color/md_theme_yellow_secondary</item>
+        <item name="colorOnSecondary">@color/md_theme_yellow_onSecondary</item>
+        <item name="colorSecondaryContainer">@color/md_theme_yellow_secondaryContainer</item>
+        <item name="colorOnSecondaryContainer">@color/md_theme_yellow_onSecondaryContainer</item>
+        <item name="colorTertiary">@color/md_theme_yellow_tertiary</item>
+        <item name="colorOnTertiary">@color/md_theme_yellow_onTertiary</item>
+        <item name="colorTertiaryContainer">@color/md_theme_yellow_tertiaryContainer</item>
+        <item name="colorOnTertiaryContainer">@color/md_theme_yellow_onTertiaryContainer</item>
+        <item name="colorError">@color/md_theme_yellow_error</item>
+        <item name="colorErrorContainer">@color/md_theme_yellow_errorContainer</item>
+        <item name="colorOnError">@color/md_theme_yellow_onError</item>
+        <item name="colorOnErrorContainer">@color/md_theme_yellow_onErrorContainer</item>
+        <item name="backgroundColor">@color/md_theme_yellow_background</item>
+        <item name="colorOnBackground">@color/md_theme_yellow_onBackground</item>
+        <item name="colorSurface">@color/md_theme_yellow_surface</item>
+        <item name="colorOnSurface">@color/md_theme_yellow_onSurface</item>
+        <item name="colorSurfaceVariant">@color/md_theme_yellow_surfaceVariant</item>
+        <item name="colorOnSurfaceVariant">@color/md_theme_yellow_onSurfaceVariant</item>
+        <item name="colorOutline">@color/md_theme_yellow_outline</item>
+        <item name="colorOnSurfaceInverse">@color/md_theme_yellow_inverseOnSurface</item>
+        <item name="colorSurfaceInverse">@color/md_theme_yellow_inverseSurface</item>
+        <item name="colorPrimaryInverse">@color/md_theme_yellow_inversePrimary</item>
+        <item name="android:shadowColor">@color/md_theme_yellow_shadow</item>
+    </style>
+
 </resources>
