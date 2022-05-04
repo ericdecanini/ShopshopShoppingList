@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -21,10 +22,7 @@ import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
-import com.ericthecoder.shopshopshoppinglist.library.extension.getSupportActionBar
-import com.ericthecoder.shopshopshoppinglist.library.extension.setStatusBarAttrColor
-import com.ericthecoder.shopshopshoppinglist.library.extension.setStatusBarColor
-import com.ericthecoder.shopshopshoppinglist.library.extension.setSupportActionBar
+import com.ericthecoder.shopshopshoppinglist.library.extension.*
 import com.ericthecoder.shopshopshoppinglist.library.util.hideKeyboard
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
@@ -36,7 +34,6 @@ import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.textfield.TextInputEditText
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
@@ -95,22 +92,18 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun initAppBar() {
-        val toolbarColor = (binding.toolbar.background as MaterialShapeDrawable).resolvedTintColor
         setSupportActionBar(binding.toolbar)
         getSupportActionBar()?.setDisplayShowTitleEnabled(false)
-        setStatusBarColor(toolbarColor)
+        initAppBarColors()
+        binding.toolbar.setOnClickListener { viewModel.showRenameDialog() }
+    }
 
-        binding.scrollView.setOnScrollChangeListener { _, _, scrollY, _, oldScrollY ->
-            if (scrollY > oldScrollY) {
-                setStatusBarAttrColor(R.attr.colorSurface)
-            } else {
-                setStatusBarColor(toolbarColor)
-            }
-        }
-
-        binding.toolbar.setOnClickListener {
-            viewModel.showRenameDialog()
-        }
+    private fun initAppBarColors() {
+        val backgroundColor = MaterialColors.getColor(binding.root, R.attr.backgroundColor)
+        val primaryColor = MaterialColors.getColor(binding.root, R.attr.colorPrimary)
+        val toolbarColor = ColorUtils.blendARGB(backgroundColor, primaryColor, 0.05F)
+        binding.toolbar.setBackgroundColor(toolbarColor)
+        requireActivity().window.statusBarColor = toolbarColor
     }
 
     private fun initAddItemField() {

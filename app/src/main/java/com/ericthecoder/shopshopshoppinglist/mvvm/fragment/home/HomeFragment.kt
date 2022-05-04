@@ -16,12 +16,10 @@ import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
-import com.ericthecoder.shopshopshoppinglist.library.extension.setStatusBarAttrColor
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Search
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
-import com.ericthecoder.shopshopshoppinglist.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.material.color.MaterialColors
@@ -58,12 +56,10 @@ class HomeFragment : DaggerFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
         binding.setVariable(BR.viewmodel, viewModel)
         binding.lifecycleOwner = this
-        setStatusBarAttrColor(R.attr.colorSurface)
 
         initMenuItems()
         initSearchBar()
         initShoppingLists()
-        observeTheme()
         observeState()
         observeEvents()
 
@@ -79,7 +75,7 @@ class HomeFragment : DaggerFragment() {
         if (!isDarkMode) {
             val surfaceColor = MaterialColors.getColor(binding.root, R.attr.colorSurface)
             val primaryColor = MaterialColors.getColor(binding.root, R.attr.colorPrimary)
-            val layeredColor = ColorUtils.blendARGB(surfaceColor, primaryColor, 0.15F)
+            val layeredColor = ColorUtils.blendARGB(surfaceColor, primaryColor, 0.1F)
             binding.searchBarLayout.backgroundTintList = ColorStateList.valueOf(layeredColor)
         }
 
@@ -98,20 +94,6 @@ class HomeFragment : DaggerFragment() {
     private fun initShoppingLists() {
         binding.shoppingLists.adapter = adapter
         binding.shoppingLists.layoutManager = LinearLayoutManager(context)
-    }
-
-    private fun observeTheme() {
-        themeViewModel.theme.observe(viewLifecycleOwner) { theme ->
-            setTheme(theme)
-        }
-    }
-
-    private fun setTheme(theme: Theme) {
-//        binding.toolbar.setBackgroundColor(resources.getColor(theme.colorRes, context?.theme))
-//        binding.fab.apply {
-//            backgroundTintList = ColorStateList.valueOf(resources.getColor(theme.colorContainerRes, context?.theme))
-//            imageTintList = ColorStateList.valueOf(resources.getColor(theme.onColorContainerRes, context?.theme))
-//        }
     }
 
     private fun observeState() {
