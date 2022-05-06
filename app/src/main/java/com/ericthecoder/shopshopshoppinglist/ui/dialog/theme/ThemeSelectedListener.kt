@@ -1,6 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialog.theme
 
-import com.ericthecoder.shopshopshoppinglist.theme.Theme
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 
 interface ThemeSelectedListener {
 

@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogThemeBinding
-import com.ericthecoder.shopshopshoppinglist.theme.Theme
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 object ThemeDialogBuilder {

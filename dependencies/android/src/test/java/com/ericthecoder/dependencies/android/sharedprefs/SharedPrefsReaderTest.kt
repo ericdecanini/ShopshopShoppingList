@@ -2,6 +2,7 @@ package com.ericthecoder.dependencies.android.sharedprefs
 
 import android.content.SharedPreferences
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -37,13 +38,13 @@ class SharedPrefsReaderTest {
 
     @Test
     fun `getCurrentTheme returns from preferences`() {
-        val currentThemeCode = 1
+        val currentTheme = Theme.BLUE
         every { keys.KEY_CURRENT_THEME } returns COMMON_KEY
-        every { sharedPreferences.getInt(COMMON_KEY, 0) } returns currentThemeCode
+        every { sharedPreferences.getString(COMMON_KEY, Theme.BLUE.name) } returns currentTheme.name
 
         val result = persistentStorageReader.getCurrentTheme()
 
-        assertThat(result).isEqualTo(currentThemeCode)
+        assertThat(result).isEqualTo(currentTheme.name)
     }
 
     companion object {

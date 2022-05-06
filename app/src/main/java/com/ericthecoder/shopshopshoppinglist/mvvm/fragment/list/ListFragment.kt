@@ -28,7 +28,6 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.Vi
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemAdapter
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.adapter.ShopItemDiffCallback
-import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
@@ -48,10 +47,6 @@ class ListFragment : DaggerFragment() {
         ViewModelProvider(this, viewModelFactory)[ListViewModel::class.java]
     }
 
-    private val themeViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[ThemeViewModel::class.java]
-    }
-
     @Inject
     lateinit var navigator: Navigator
 
@@ -67,7 +62,7 @@ class ListFragment : DaggerFragment() {
     private lateinit var binding: FragmentListBinding
     private val args: ListFragmentArgs by navArgs()
     private val adapter by lazy {
-        ShopItemAdapter(mutableListOf(), themeViewModel.getTheme(), viewModel)
+        ShopItemAdapter(mutableListOf(), viewModel)
     }
 
     override fun onCreateView(

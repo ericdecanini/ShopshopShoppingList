@@ -1,16 +1,12 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialog
 
 import androidx.appcompat.app.AppCompatActivity
-import com.ericthecoder.shopshopshoppinglist.theme.Theme
-import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogBuilder
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.rename.RenameDialogBuilder
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.theme.ThemeDialogBuilder
 
-class DialogNavigatorImpl(
-    private val activity: AppCompatActivity,
-    private val themeViewModel: ThemeViewModel,
-) : DialogNavigator {
+class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavigator {
 
     override fun displayGenericDialog(
         title: String?,

@@ -1,6 +1,7 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialog.rename
 
 import android.app.Activity
+import android.content.res.ColorStateList
 import android.view.HapticFeedbackConstants
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.EditorInfo
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.DialogRenameBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.elevation.SurfaceColors
 
 object RenameDialogBuilder {
 

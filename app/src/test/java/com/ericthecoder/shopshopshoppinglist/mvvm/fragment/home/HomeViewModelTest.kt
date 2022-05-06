@@ -1,15 +1,18 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
-import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.OpenList
-import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.OpenUpsell
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
+import com.ericthecoder.shopshopshoppinglist.library.extension.observeWithMock
+import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.testdata.testdatabuilders.ShoppingListBuilder.aShoppingList
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import com.ericthecoder.shopshopshoppinglist.util.InstantTaskExecutorExtension
 import com.ericthecoder.shopshopshoppinglist.util.TestCoroutineContextProvider
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import io.mockk.coEvery
 import io.mockk.mockk
+import io.mockk.verifyOrder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.assertj.core.api.Assertions.assertThat
@@ -24,6 +27,7 @@ class HomeViewModelTest {
     private val shoppingListRepository: ShoppingListRepository = mockk()
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
     private val persistentStorageReader: PersistentStorageReader = mockk()
+    private val persistentStorageWriter: PersistentStorageWriter = mockk()
 
     private val shoppingList = aShoppingList()
 
@@ -31,6 +35,7 @@ class HomeViewModelTest {
         shoppingListRepository,
         coroutineContextProvider,
         persistentStorageReader,
+        persistentStorageWriter,
     )
 
     @Nested
@@ -91,6 +96,19 @@ class HomeViewModelTest {
             viewModel.navigateToUpsell()
 
             assertThat(viewModel.viewEvent.value).isEqualTo(OpenUpsell)
+        }
+
+        @Test
+        fun `switchToTheme saves theme and recreates activity`() {
+            val observer = viewModel.viewEvent.observeWithMock()
+            val theme = Theme.GREEN
+
+            viewModel.switchToTheme(theme)
+
+            verifyOrder {
+                persistentStorageWriter.setCurrentTheme(theme.name)
+                observer.onChanged(RecreateActivity)
+            }
         }
     }
 }

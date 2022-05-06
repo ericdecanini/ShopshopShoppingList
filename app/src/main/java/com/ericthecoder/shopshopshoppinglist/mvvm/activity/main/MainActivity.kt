@@ -11,10 +11,9 @@ import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.NavGraphDirections
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityMainBinding
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.library.extension.getRootView
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainViewModel.ViewEvent.*
-import com.ericthecoder.shopshopshoppinglist.theme.Theme
-import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.gms.ads.AdRequest
@@ -33,10 +32,6 @@ class MainActivity : DaggerAppCompatActivity() {
         ViewModelProvider(this, viewModelFactory)[MainViewModel::class.java]
     }
 
-    private val themeViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[ThemeViewModel::class.java]
-    }
-
     @Inject
     lateinit var navigator: Navigator
     @Inject
@@ -46,15 +41,29 @@ class MainActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(viewModel.getTheme())
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.lifecycleOwner = this
         binding.setVariable(BR.viewmodel, viewModel)
 
         loadAd()
         handleNestedNavigation()
-        observeTheme()
+        initBackgroundAndStatusBar()
         observeViewEvents()
         viewModel.launchOnboardingIfNecessary()
+    }
+
+    private fun setTheme(theme: Theme) {
+        when (theme) {
+            Theme.BLUE -> setTheme(R.style.Theme_ShopshopShoppingList_Blue)
+            Theme.GREEN -> setTheme(R.style.Theme_ShopshopShoppingList_Green)
+            Theme.ORANGE -> setTheme(R.style.Theme_ShopshopShoppingList_Orange)
+            Theme.PINK -> setTheme(R.style.Theme_ShopshopShoppingList_Pink)
+            Theme.PURPLE -> setTheme(R.style.Theme_ShopshopShoppingList_Purple)
+            Theme.RED -> setTheme(R.style.Theme_ShopshopShoppingList_Red)
+            Theme.YELLOW -> setTheme(R.style.Theme_ShopshopShoppingList_Yellow)
+            Theme.DYNAMIC -> Unit
+        }
     }
 
     private fun loadAd() {
@@ -73,13 +82,7 @@ class MainActivity : DaggerAppCompatActivity() {
         intent.removeExtra(KEY_NESTED_NAVIGATION_INSTRUCTION)
     }
 
-    private fun observeTheme() {
-        themeViewModel.theme.observe(this) { theme ->
-            setTheme(theme)
-        }
-    }
-
-    private fun setTheme(theme: Theme) {
+    private fun initBackgroundAndStatusBar() {
         val backgroundColor = MaterialColors.getColor(getRootView(), R.attr.backgroundColor)
         val primaryColor = MaterialColors.getColor(getRootView(), R.attr.colorPrimary)
         val layeredColor = ColorUtils.blendARGB(backgroundColor, primaryColor, 0.05F)

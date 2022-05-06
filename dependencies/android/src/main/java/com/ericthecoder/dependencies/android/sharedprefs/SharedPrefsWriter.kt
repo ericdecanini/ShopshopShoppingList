@@ -19,8 +19,8 @@ class SharedPrefsWriter(
         saveInt(keys.KEY_PREMIUM_STATUS, premiumStatus.code)
     }
 
-    override fun setCurrentTheme(index: Int) {
-        saveInt(keys.KEY_CURRENT_THEME, index)
+    override fun setCurrentTheme(theme: String) {
+        saveString(keys.KEY_CURRENT_THEME, theme)
     }
 
     private fun saveBoolean(key: String, value: Boolean) {
@@ -30,6 +30,11 @@ class SharedPrefsWriter(
 
     private fun saveInt(key: String, value: Int) {
         editor.putInt(key, value)
+        editor.apply()
+    }
+
+    private fun saveString(key: String, value: String) {
+        editor.putString(key, value)
         editor.apply()
     }
 }

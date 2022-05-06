@@ -5,7 +5,7 @@
 
     <data>
 
-        <import type="com.ericthecoder.shopshopshoppinglist.theme.Theme" />
+        <import type="com.ericthecoder.shopshopshoppinglist.entities.theme.Theme" />
         <import type="android.view.View" />
 
         <variable

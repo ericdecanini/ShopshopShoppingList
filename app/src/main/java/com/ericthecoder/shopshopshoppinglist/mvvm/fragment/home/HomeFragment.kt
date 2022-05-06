@@ -11,18 +11,20 @@ import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentHomeBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Loaded
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.Search
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListAdapter
-import com.ericthecoder.shopshopshoppinglist.theme.ThemeViewModel
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.elevation.SurfaceColors
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
@@ -37,10 +39,6 @@ class HomeFragment : DaggerFragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(this, viewModelFactory)[HomeViewModel::class.java]
-    }
-
-    private val themeViewModel by lazy {
-        ViewModelProvider(this, viewModelFactory)[ThemeViewModel::class.java]
     }
 
     @Inject
@@ -69,13 +67,8 @@ class HomeFragment : DaggerFragment() {
     }
 
     private fun initSearchBar() {
-        val isDarkMode = resources.getBoolean(R.bool.isDarkMode)
-        if (!isDarkMode) {
-            val surfaceColor = MaterialColors.getColor(binding.root, R.attr.colorSurface)
-            val primaryColor = MaterialColors.getColor(binding.root, R.attr.colorPrimary)
-            val layeredColor = ColorUtils.blendARGB(surfaceColor, primaryColor, 0.12F)
-            binding.searchBarLayout.backgroundTintList = ColorStateList.valueOf(layeredColor)
-        }
+        val surface4 = SurfaceColors.SURFACE_4.getColor(requireContext())
+        binding.searchBarLayout.backgroundTintList = ColorStateList.valueOf(surface4)
 
         binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
@@ -91,7 +84,7 @@ class HomeFragment : DaggerFragment() {
 
     private fun initShoppingLists() {
         binding.shoppingLists.adapter = adapter
-        binding.shoppingLists.layoutManager
+        binding.shoppingLists.layoutManager = LinearLayoutManager(context)
     }
 
     private fun observeState() {
@@ -116,9 +109,9 @@ class HomeFragment : DaggerFragment() {
         when (event) {
             is SetUpsellButtonVisible -> setUpsellButtonVisible(event.visible)
             is OpenList -> goToList(event.shoppingList)
-            CycleTheme -> cycleTheme()
             OpenUpsell -> navigator.goToUpsell()
             OpenThemeDialog -> openThemeDialog()
+            RecreateActivity -> activity?.recreate()
         }
     }
 
@@ -132,13 +125,8 @@ class HomeFragment : DaggerFragment() {
         findNavController().navigate(action)
     }
 
-    private fun cycleTheme() {
-        themeViewModel.cycleNextTheme()
-    }
-
     private fun openThemeDialog() {
-        // TODO: add on theme selected functionality
-        dialogNavigator.displayThemeDialog { println("Theme selected: $it") }
+        dialogNavigator.displayThemeDialog { viewModel.switchToTheme(it) }
     }
 
     override fun onResume() {

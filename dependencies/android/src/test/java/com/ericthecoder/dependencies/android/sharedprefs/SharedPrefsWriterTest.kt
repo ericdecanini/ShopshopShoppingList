@@ -2,6 +2,7 @@ package com.ericthecoder.dependencies.android.sharedprefs
 
 import android.content.SharedPreferences
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import io.mockk.every
 import io.mockk.justRun
 import io.mockk.mockk
@@ -55,13 +56,13 @@ class SharedPrefsWriterTest {
     @Test
     fun `getCurrentTheme saves to preferences`() {
         every { keys.KEY_CURRENT_THEME } returns COMMON_PREF_KEY
-        val currentTheme = 1
+        val currentTheme = Theme.BLUE
 
-        persistentStorageWriter.setCurrentTheme(currentTheme)
+        persistentStorageWriter.setCurrentTheme(currentTheme.name)
 
 
         verifyOrder {
-            editor.putInt(COMMON_PREF_KEY, currentTheme)
+            editor.putString(COMMON_PREF_KEY, currentTheme.name)
             editor.apply()
         }
     }

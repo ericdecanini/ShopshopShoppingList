@@ -6,11 +6,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewState.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.ShoppingListEventHandler
 import com.ericthecoder.shopshopshoppinglist.usecases.repository.ShoppingListRepository
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageWriter
 import com.ericthecoder.shopshopshoppinglist.util.providers.CoroutineContextProvider
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
@@ -20,6 +22,7 @@ class HomeViewModel @Inject constructor(
     private val shoppingListRepository: ShoppingListRepository,
     private val coroutineContextProvider: CoroutineContextProvider,
     private val persistentStorageReader: PersistentStorageReader,
+    private val persistentStorageWriter: PersistentStorageWriter,
 ) : ViewModel(), ShoppingListEventHandler {
 
     private val viewStateEmitter = MutableLiveData<HomeViewState>(Initial)
@@ -60,6 +63,11 @@ class HomeViewModel @Inject constructor(
 
     fun navigateToUpsell() {
         viewEventEmitter.value = ViewEvent.OpenUpsell
+    }
+
+    fun switchToTheme(theme: Theme) {
+        persistentStorageWriter.setCurrentTheme(theme.name)
+        viewEventEmitter.value = ViewEvent.RecreateActivity
     }
 
     //region: ui interaction events
@@ -110,7 +118,7 @@ class HomeViewModel @Inject constructor(
         data class SetUpsellButtonVisible(val visible: Boolean) : ViewEvent()
         data class OpenList(val shoppingList: ShoppingList?) : ViewEvent()
         object OpenThemeDialog : ViewEvent()
-        object CycleTheme : ViewEvent()
         object OpenUpsell : ViewEvent()
+        object RecreateActivity : ViewEvent()
     }
 }

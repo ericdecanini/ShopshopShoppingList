@@ -1,6 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.ui.dialog
 
-import com.ericthecoder.shopshopshoppinglist.theme.Theme
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 
 interface DialogNavigator {
 

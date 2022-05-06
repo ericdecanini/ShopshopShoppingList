@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.PremiumState
 import com.ericthecoder.shopshopshoppinglist.library.livedata.MutableSingleLiveEvent
@@ -64,6 +65,11 @@ class MainViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun getTheme(): Theme {
+        val themeName = persistentStorageReader.getCurrentTheme()
+        return Theme.valueOf(themeName)
     }
 
     sealed class ViewEvent {
