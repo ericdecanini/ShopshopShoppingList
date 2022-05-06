@@ -28,4 +28,5 @@
     <color name="md_theme_green_inversePrimary">#7ADA9D</color>
     <color name="md_theme_green_shadow">#000000</color>
     <color name="md_theme_green_primaryInverse">#7ADA9D</color>
+    <color name="md_theme_green_preview">#00cc70</color>
 </resources>

@@ -28,4 +28,5 @@
     <color name="md_theme_orange_inversePrimary">#FFB77E</color>
     <color name="md_theme_orange_shadow">#000000</color>
     <color name="md_theme_orange_primaryInverse">#FFB77E</color>
+    <color name="md_theme_orange_preview">#ff8000</color>
 </resources>

@@ -28,4 +28,5 @@
     <color name="md_theme_pink_inversePrimary">#FFA9FA</color>
     <color name="md_theme_pink_shadow">#000000</color>
     <color name="md_theme_pink_primaryInverse">#FFA9FA</color>
+    <color name="md_theme_pink_preview">#fc65f7</color>
 </resources>

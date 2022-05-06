@@ -28,4 +28,5 @@
     <color name="md_theme_blue_inversePrimary">#9ECAFF</color>
     <color name="md_theme_blue_shadow">#000000</color>
     <color name="md_theme_blue_primaryInverse">#9ECAFF</color>
+    <color name="md_theme_blue_preview">#0091ff</color>
 </resources>

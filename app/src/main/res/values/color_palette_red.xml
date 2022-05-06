@@ -28,4 +28,5 @@
     <color name="md_theme_red_inversePrimary">#FFB3B1</color>
     <color name="md_theme_red_shadow">#000000</color>
     <color name="md_theme_red_primaryInverse">#FFB3B1</color>
+    <color name="md_theme_red_preview">#f51d20</color>
 </resources>

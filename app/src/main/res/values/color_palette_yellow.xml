@@ -28,4 +28,5 @@
     <color name="md_theme_yellow_inversePrimary">#E7C400</color>
     <color name="md_theme_yellow_shadow">#000000</color>
     <color name="md_theme_yellow_primaryInverse">#E7C400</color>
+    <color name="md_theme_yellow_preview">#ffe100</color>
 </resources>

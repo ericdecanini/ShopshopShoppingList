@@ -28,4 +28,5 @@
     <color name="md_theme_purple_inversePrimary">#D0BCFF</color>
     <color name="md_theme_purple_shadow">#000000</color>
     <color name="md_theme_purple_primaryInverse">#D0BCFF</color>
+    <color name="md_theme_purple_preview">#6e3bf5</color>
 </resources>

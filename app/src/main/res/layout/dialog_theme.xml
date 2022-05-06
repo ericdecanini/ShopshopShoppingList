@@ -32,16 +32,15 @@
             android:layout_height="64dp"
             android:background="@drawable/bg_item_theme"
             android:contentDescription="@string/talkback_theme_blue"
-            android:foreground="@{selectedTheme == Theme.BLUE ? @drawable/bg_item_theme : null}"
-            android:foregroundTint="@color/selectedThemeForeground"
+            android:foreground="@{selectedTheme == Theme.BLUE ? @drawable/fg_item_theme : null}"
             android:onClick="@{_ -> listener.onThemeSelected(Theme.BLUE)}"
             android:padding="8dp"
             android:src="@drawable/src_item_theme"
             app:layout_constraintEnd_toStartOf="@id/theme_green"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/md_theme_blue_primary" />
+            app:tint="@color/md_theme_blue_preview" />
 
         <ImageView
             android:id="@+id/theme_green"
@@ -49,15 +48,14 @@
             android:layout_height="64dp"
             android:background="@drawable/bg_item_theme"
             android:contentDescription="@string/talkback_theme_green"
-            android:foreground="@{selectedTheme == Theme.GREEN ? @drawable/bg_item_theme : null}"
-            android:foregroundTint="@color/selectedThemeForeground"
+            android:foreground="@{selectedTheme == Theme.GREEN ? @drawable/fg_item_theme : null}"
             android:onClick="@{_ -> listener.onThemeSelected(Theme.GREEN)}"
             android:padding="8dp"
             android:src="@drawable/src_item_theme"
             app:layout_constraintEnd_toStartOf="@id/theme_orange"
             app:layout_constraintStart_toEndOf="@id/theme_blue"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/md_theme_green_primary" />
+            app:tint="@color/md_theme_green_preview" />
 
         <ImageView
             android:id="@+id/theme_orange"
@@ -65,15 +63,14 @@
             android:layout_height="64dp"
             android:background="@drawable/bg_item_theme"
             android:contentDescription="@string/talkback_theme_orange"
-            android:foreground="@{selectedTheme == Theme.ORANGE ? @drawable/bg_item_theme : null}"
-            android:foregroundTint="@color/selectedThemeForeground"
+            android:foreground="@{selectedTheme == Theme.ORANGE ? @drawable/fg_item_theme : null}"
             android:onClick="@{_ -> listener.onThemeSelected(Theme.ORANGE)}"
             android:padding="8dp"
             android:src="@drawable/src_item_theme"
-            app:layout_constraintEnd_toStartOf="@id/theme_pink"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/theme_green"
             app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/md_theme_orange_primary" />
+            app:tint="@color/md_theme_orange_preview" />
 
         <ImageView
             android:id="@+id/theme_pink"
@@ -81,33 +78,31 @@
             android:layout_height="64dp"
             android:background="@drawable/bg_item_theme"
             android:contentDescription="@string/talkback_theme_pink"
-            android:foreground="@{selectedTheme == Theme.PINK ? @drawable/bg_item_theme : null}"
-            android:foregroundTint="@color/selectedThemeForeground"
+            android:foreground="@{selectedTheme == Theme.PINK ? @drawable/fg_item_theme : null}"
             android:onClick="@{_ -> listener.onThemeSelected(Theme.PINK)}"
             android:padding="8dp"
             android:src="@drawable/src_item_theme"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/theme_orange"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tint="@color/md_theme_pink_primary" />
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@id/theme_purple"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/theme_blue"
+            app:tint="@color/md_theme_pink_preview" />
 
         <ImageView
             android:id="@+id/theme_purple"
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:layout_marginTop="16dp"
             android:background="@drawable/bg_item_theme"
             android:contentDescription="@string/talkback_theme_purple"
-            android:foreground="@{selectedTheme == Theme.PURPLE ? @drawable/bg_item_theme : null}"
-            android:foregroundTint="@color/selectedThemeForeground"
+            android:foreground="@{selectedTheme == Theme.PURPLE ? @drawable/fg_item_theme : null}"
             android:onClick="@{_ -> listener.onThemeSelected(Theme.PURPLE)}"
             android:padding="8dp"
             android:src="@drawable/src_item_theme"
+            app:layout_constraintStart_toEndOf="@id/theme_pink"
+            app:layout_constraintTop_toTopOf="@id/theme_pink"
             app:layout_constraintEnd_toStartOf="@id/theme_red"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/theme_blue"
-            app:tint="@color/md_theme_purple_primary" />
+            app:tint="@color/md_theme_purple_preview" />
 
         <ImageView
             android:id="@+id/theme_red"
@@ -115,15 +110,14 @@
             android:layout_height="64dp"
             android:background="@drawable/bg_item_theme"
             android:contentDescription="@string/talkback_theme_red"
-            android:foreground="@{selectedTheme == Theme.RED ? @drawable/bg_item_theme : null}"
-            android:foregroundTint="@color/selectedThemeForeground"
+            android:foreground="@{selectedTheme == Theme.RED ? @drawable/fg_item_theme : null}"
             android:onClick="@{_ -> listener.onThemeSelected(Theme.RED)}"
             android:padding="8dp"
             android:src="@drawable/src_item_theme"
-            app:layout_constraintEnd_toStartOf="@id/theme_yellow"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/theme_purple"
-            app:layout_constraintTop_toTopOf="@id/theme_purple"
-            app:tint="@color/md_theme_red_primary" />
+            app:layout_constraintTop_toTopOf="@id/theme_pink"
+            app:tint="@color/md_theme_red_preview" />
 
         <ImageView
             android:id="@+id/theme_yellow"
@@ -131,15 +125,15 @@
             android:layout_height="64dp"
             android:background="@drawable/bg_item_theme"
             android:contentDescription="@string/talkback_theme_yellow"
-            android:foreground="@{selectedTheme == Theme.YELLOW ? @drawable/bg_item_theme : null}"
-            android:foregroundTint="@color/selectedThemeForeground"
+            android:layout_marginTop="16dp"
+            android:foreground="@{selectedTheme == Theme.YELLOW ? @drawable/fg_item_theme : null}"
             android:onClick="@{_ -> listener.onThemeSelected(Theme.YELLOW)}"
             android:padding="8dp"
             android:src="@drawable/src_item_theme"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/theme_purple"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/theme_red"
-            app:layout_constraintTop_toTopOf="@id/theme_purple"
-            app:tint="@color/md_theme_yellow_primary" />
+            app:tint="@color/md_theme_yellow_preview" />
 
         <Button
             android:id="@+id/theme_dynamic"
@@ -154,7 +148,7 @@
             app:isSelected="@{selectedTheme == Theme.DYNAMIC}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/theme_purple" />
+            app:layout_constraintTop_toBottomOf="@id/theme_yellow" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
