@@ -101,7 +101,6 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_marginStart="16dp"
-                    android:alpha="0.5"
                     android:background="@drawable/bg_ripple_gray"
                     android:contentDescription="@string/talkback_add_new_item"
                     android:importantForAccessibility="no"

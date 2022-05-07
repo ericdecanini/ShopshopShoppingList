@@ -3,6 +3,7 @@ package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -107,26 +108,34 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun ImageView.playBreatheAnimation() {
-        val (colorPrimary, colorSecondary) = getPrimaryAndSecondaryColors()
+        val startColor = getActivatedBreatheColor()
+        val endColor = getNeutralBreatheColor()
 
         createColorAnimator().apply {
             duration = 500
             repeatMode = ValueAnimator.REVERSE
             repeatCount = ValueAnimator.INFINITE
-            setObjectValues(colorPrimary, colorSecondary)
+            setObjectValues(startColor, endColor)
             start()
             tag = this
         }
     }
 
-    private fun getPrimaryAndSecondaryColors() = MaterialColors.getColor(binding.root, R.attr.colorPrimary) to
-            MaterialColors.getColor(binding.root, R.attr.colorSecondary)
+    @SuppressLint("PrivateResource")
+    private fun getActivatedBreatheColor(): Int {
+        val isDarkMode = resources.getBoolean(R.bool.isDarkMode)
+        val white = resources.getColor(android.R.color.white, activity?.theme)
+        return if (isDarkMode) white else MaterialColors.getColor(binding.root, R.attr.colorPrimaryContainer)
+    }
+
+    private fun getNeutralBreatheColor() = MaterialColors.getColor(binding.root, R.attr.colorSecondary)
 
     private fun ImageView.createColorAnimator() =
         ObjectAnimator.ofObject(this, "colorFilter", ArgbEvaluator(), 0, 0)
 
     private fun TextInputEditText.addTextChangedColorChanging() {
-        val (colorPrimary, colorSecondary) = getPrimaryAndSecondaryColors()
+        val activatedColor = getActivatedBreatheColor()
+        val neutralColor = getNeutralBreatheColor()
         val animator = binding.addItemButton.createColorAnimator().apply { duration = 200 }
 
         addTextChangedListener(object : TextWatcher {
@@ -135,9 +144,8 @@ class ListFragment : DaggerFragment() {
             }
 
             override fun onTextChanged(text: CharSequence, start: Int, before: Int, count: Int) {
-                val currentColor = animator.animatedValue
-                    ?: if (text.isBlank()) colorPrimary else colorSecondary
-                animator.setObjectValues(currentColor, if (text.isBlank()) colorSecondary else colorPrimary)
+                val currentColor = animator.animatedValue ?: if (text.isBlank()) activatedColor else neutralColor
+                animator.setObjectValues(currentColor, if (text.isBlank()) neutralColor else activatedColor)
                 animator.start()
             }
 
