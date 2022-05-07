@@ -51,7 +51,6 @@
 
     <style name="Widget.App.CardView.Elevated" parent="Widget.Material3.CardView.Elevated">
         <item name="cardElevation">5dp</item>
-        <item name="cardBackgroundColor">@color/elevatedCardBackground</item>
     </style>
 
 </resources>
