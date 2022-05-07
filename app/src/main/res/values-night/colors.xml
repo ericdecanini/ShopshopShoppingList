@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="elevatedCardBackground">#262626</color>
-    <color name="colorEditTextHint">#C9C9C9</color>
 </resources>

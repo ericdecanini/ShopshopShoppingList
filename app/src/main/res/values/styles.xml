@@ -23,7 +23,7 @@
 
     <style name="Widget.App.EditText">
         <item name="android:background">@android:color/transparent</item>
-        <item name="android:textColorHint">@color/colorEditTextHint</item>
+        <item name="android:textColorHint">?attr/colorSecondary</item>
         <item name="android:letterSpacing">0.005</item>
         <item name="android:textAppearance">@style/TextAppearance.App.BodyLarge</item>
     </style>

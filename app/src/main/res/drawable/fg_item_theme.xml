@@ -12,8 +12,8 @@
         </shape>
     </item>
     <item
-        android:width="48dp"
-        android:height="48dp"
+        android:width="40dp"
+        android:height="40dp"
         android:gravity="center"
         android:drawable="@drawable/ic_check" />
 </layer-list>
