@@ -5,8 +5,12 @@ import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.generic.GenericDialogBuilder
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.rename.RenameDialogBuilder
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.theme.ThemeDialogBuilder
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 
-class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavigator {
+class DialogNavigatorImpl(
+    private val activity: AppCompatActivity,
+    private val persistentStorageReader: PersistentStorageReader,
+    ) : DialogNavigator {
 
     override fun displayGenericDialog(
         title: String?,
@@ -33,6 +37,7 @@ class DialogNavigatorImpl(private val activity: AppCompatActivity) : DialogNavig
     }
 
     override fun displayThemeDialog(onThemeSelected: (Theme) -> Unit) {
-        ThemeDialogBuilder.show(activity, onThemeSelected)
+        val currentTheme =  Theme.valueOf(persistentStorageReader.getCurrentTheme())
+        ThemeDialogBuilder.show(activity, currentTheme, onThemeSelected)
     }
 }

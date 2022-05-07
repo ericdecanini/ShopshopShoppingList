@@ -40,7 +40,7 @@ class SharedPrefsReaderTest {
     fun `getCurrentTheme returns from preferences`() {
         val currentTheme = Theme.BLUE
         every { keys.KEY_CURRENT_THEME } returns COMMON_KEY
-        every { sharedPreferences.getString(COMMON_KEY, Theme.BLUE.name) } returns currentTheme.name
+        every { sharedPreferences.getString(COMMON_KEY, any()) } returns currentTheme.name
 
         val result = persistentStorageReader.getCurrentTheme()
 

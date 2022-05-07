@@ -8,6 +8,7 @@ import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.snackbar.SnackbarNavigatorImpl
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigator
 import com.ericthecoder.shopshopshoppinglist.ui.toast.ToastNavigatorImpl
+import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.NavigatorImpl
 import dagger.Module
@@ -23,7 +24,10 @@ class ActivityModule {
         NavigatorImpl(originActivity)
 
     @Provides
-    fun provideDialogNavigator(activity: AppCompatActivity): DialogNavigator = DialogNavigatorImpl(activity)
+    fun provideDialogNavigator(
+        activity: AppCompatActivity,
+        persistentStorageReader: PersistentStorageReader,
+    ): DialogNavigator = DialogNavigatorImpl(activity, persistentStorageReader)
 
     @Provides
     fun provideToastNavigator(activity: AppCompatActivity): ToastNavigator =

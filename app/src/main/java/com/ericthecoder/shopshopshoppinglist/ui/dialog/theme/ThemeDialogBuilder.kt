@@ -12,10 +12,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 object ThemeDialogBuilder {
 
-    var currentTheme = Theme.BLUE
     var selectedTheme = Theme.BLUE
 
-    fun show(activity: AppCompatActivity, onThemeSelected: (Theme) -> Unit) {
+    fun show(activity: AppCompatActivity, currentTheme: Theme, onThemeSelected: (Theme) -> Unit) {
+        selectedTheme = currentTheme
         val binding = inflateBinding(activity.layoutInflater)
 
         MaterialAlertDialogBuilder(activity)
@@ -38,7 +38,6 @@ object ThemeDialogBuilder {
     }
 
     private fun selectTheme(onThemeSelected: (Theme) -> Unit) {
-        currentTheme = selectedTheme
         onThemeSelected(selectedTheme)
     }
 

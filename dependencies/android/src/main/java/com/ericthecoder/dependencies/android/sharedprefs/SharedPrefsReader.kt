@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
 import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.usecases.storage.PersistentStorageReader
+import com.google.android.material.color.DynamicColors
 
 class SharedPrefsReader(
     private val sharedPreferences: SharedPreferences,
@@ -16,5 +17,6 @@ class SharedPrefsReader(
         PremiumStatus.values().first { it.code == premiumCode }
     }
 
-    override fun getCurrentTheme() = sharedPreferences.getString(keys.KEY_CURRENT_THEME, Theme.BLUE.name)!!
+    override fun getCurrentTheme() = sharedPreferences.getString(keys.KEY_CURRENT_THEME,
+        if (DynamicColors.isDynamicColorAvailable()) Theme.DYNAMIC.name else Theme.BLUE.name)!!
 }
