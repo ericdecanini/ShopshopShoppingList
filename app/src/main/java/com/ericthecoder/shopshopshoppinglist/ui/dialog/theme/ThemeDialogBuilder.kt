@@ -21,7 +21,7 @@ object ThemeDialogBuilder {
         MaterialAlertDialogBuilder(activity)
             .setTitle(activity.getString(R.string.theme_dialog_title))
             .setView(binding.root)
-            .setPositiveButton(R.string.restart) { _, _ -> selectTheme(onThemeSelected) }
+            .setPositiveButton(R.string.select) { _, _ -> selectTheme(onThemeSelected) }
             .setNegativeButton(R.string.cancel) { _, _ -> selectedTheme = currentTheme }
             .show()
     }

@@ -87,7 +87,7 @@
     <string name="clear_all_dialog_message">Are you sure you want to clear all items from %1$s?</string>
 
     <!-- Theme Dialog -->
-    <string name="restart">Restart</string>
+    <string name="select">Select</string>
     <string name="theme_dialog_title">Theme</string>
     <string name="use_system_dynamic_colors">Use system dynamic colors</string>
 
