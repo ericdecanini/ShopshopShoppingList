@@ -131,6 +131,7 @@ class ListViewModelTest {
 
         @Test
         fun `adding duplicate item fails`() {
+            val observer = viewModel.viewEvent.observeWithMock()
             val itemName = "existing_item"
             val existingShopItems = mutableListOf(aShopItem().withName(itemName).build())
             val shoppingListWithItem = aShoppingList(items = existingShopItems)
@@ -138,7 +139,10 @@ class ListViewModelTest {
 
             viewModel.addItem(itemName)
 
-            assertThat(viewModel.viewEvent.value).isInstanceOf(ShowToast::class.java)
+            verify(Ordering.ALL) {
+                observer.onChanged(ShakeAddItemField)
+                observer.onChanged(any<ShowToast>())
+            }
             coVerify(inverse = true) { shoppingListRepository.updateShoppingList(any()) }
         }
 

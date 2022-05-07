@@ -190,7 +190,8 @@ class ListViewModel @Inject constructor(
 
     private fun handleItemAlreadyInList(itemName: String) {
         val toastMessage = resourceProvider.getString(R.string.item_already_in_list, itemName, shoppingList.name)
-        viewEventEmitter.postValue(ShowToast(toastMessage))
+        viewEventEmitter.value = ShakeAddItemField
+        viewEventEmitter.value = ShowToast(toastMessage)
     }
 
     //region: ui interaction events
