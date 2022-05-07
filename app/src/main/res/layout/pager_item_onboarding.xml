@@ -11,15 +11,10 @@
             android:id="@+id/bg_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:alpha="0.15"
+            android:alpha="0.05"
             android:importantForAccessibility="no"
             android:scaleType="centerCrop"
             tools:src="@drawable/onboardbg1" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/white_vertical_fade" />
 
         <ImageView
             android:id="@+id/image"
