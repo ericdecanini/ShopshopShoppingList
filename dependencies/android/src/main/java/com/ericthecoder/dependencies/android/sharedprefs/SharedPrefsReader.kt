@@ -18,5 +18,5 @@ class SharedPrefsReader(
     }
 
     override fun getCurrentTheme() = sharedPreferences.getString(keys.KEY_CURRENT_THEME,
-        if (DynamicColors.isDynamicColorAvailable()) Theme.DYNAMIC.name else Theme.BLUE.name)!!
+        if (DynamicColors.isDynamicColorAvailable()) Theme.DYNAMIC.name else Theme.GREEN.name)!!
 }

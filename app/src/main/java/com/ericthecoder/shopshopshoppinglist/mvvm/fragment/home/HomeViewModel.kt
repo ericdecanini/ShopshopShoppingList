@@ -38,9 +38,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun refreshLists() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
-        if (viewState.value !is Loaded
-            || (viewState.value as? Loaded)?.items?.isEmpty() == true
-        ) {
+        if (viewState.value !is Loaded || (viewState.value as? Loaded)?.items?.isEmpty() == true) {
             viewStateEmitter.postValue(Loading)
         }
 
@@ -108,8 +106,12 @@ class HomeViewModel @Inject constructor(
         viewEventEmitter.value = ViewEvent.OpenList(shoppingList)
     }
 
-    fun openThemeDialog() {
-        viewEventEmitter.value = ViewEvent.OpenThemeDialog
+    fun onThemeButtonClicked() {
+        if (persistentStorageReader.getPremiumStatus() == PremiumStatus.PREMIUM) {
+            viewEventEmitter.value = ViewEvent.OpenThemeDialog
+        } else {
+            viewEventEmitter.value = ViewEvent.OpenUpsell
+        }
     }
 
     //endregion
