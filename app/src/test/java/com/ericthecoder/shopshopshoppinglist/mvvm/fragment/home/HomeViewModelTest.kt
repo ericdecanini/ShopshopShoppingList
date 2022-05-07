@@ -14,7 +14,7 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.verifyOrder
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -27,7 +27,7 @@ class HomeViewModelTest {
     private val shoppingListRepository: ShoppingListRepository = mockk()
     private val coroutineContextProvider: CoroutineContextProvider = TestCoroutineContextProvider()
     private val persistentStorageReader: PersistentStorageReader = mockk()
-    private val persistentStorageWriter: PersistentStorageWriter = mockk()
+    private val persistentStorageWriter: PersistentStorageWriter = mockk(relaxUnitFun = true)
 
     private val shoppingList = aShoppingList()
 
@@ -42,7 +42,7 @@ class HomeViewModelTest {
     inner class RefreshLists {
 
         @Test
-        fun `refreshLists posts loaded state with lists`() = runBlockingTest {
+        fun `refreshLists posts loaded state with lists`() = runTest {
             val shoppingLists = listOf(shoppingList)
             coEvery { shoppingListRepository.getShoppingLists() } returns shoppingLists
 
@@ -52,7 +52,7 @@ class HomeViewModelTest {
         }
 
         @Test
-        fun `when no lists are found, refreshLists posts loaded state with empty list`() = runBlockingTest {
+        fun `when no lists are found, refreshLists posts loaded state with empty list`() = runTest {
             coEvery { shoppingListRepository.getShoppingLists() } returns null
 
             viewModel.refreshLists()
@@ -61,7 +61,7 @@ class HomeViewModelTest {
         }
 
         @Test
-        fun `when error is thrown, refreshLists posts error state`() = runBlockingTest {
+        fun `when error is thrown, refreshLists posts error state`() = runTest {
             val exception = RuntimeException()
             coEvery { shoppingListRepository.getShoppingLists() } throws exception
 

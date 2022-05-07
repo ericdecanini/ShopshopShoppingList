@@ -9,7 +9,7 @@ import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -21,7 +21,7 @@ class RoomShoppingListDatabaseServiceTest {
     private val databaseService = RoomShoppingListDatabaseService(dao, mapper)
 
     @Test
-    fun `test getShoppingLists`() = runBlockingTest {
+    fun `test getShoppingLists`() = runTest {
         coEvery { dao.getAll() } returns listOf(aShoppingListEntity())
         coEvery { mapper.mapEntityToShoppingList(any()) } returns aShoppingList()
 
@@ -31,7 +31,7 @@ class RoomShoppingListDatabaseServiceTest {
     }
 
     @Test
-    fun `test getShoppingListById`() = runBlockingTest {
+    fun `test getShoppingListById`() = runTest {
         coEvery { dao.getById(any()) } returns aShoppingListEntity()
         coEvery { mapper.mapEntityToShoppingList(any()) } returns aShoppingList()
 
@@ -41,7 +41,7 @@ class RoomShoppingListDatabaseServiceTest {
     }
 
     @Test
-    fun `test createShoppingList`() = runBlockingTest {
+    fun `test createShoppingList`() = runTest {
         val id = 1L
         coEvery { dao.insert(any()) } returns id
 
@@ -51,7 +51,7 @@ class RoomShoppingListDatabaseServiceTest {
     }
 
     @Test
-    fun `test updateShoppingList`() = runBlockingTest {
+    fun `test updateShoppingList`() = runTest {
         coJustRun { dao.update(aShoppingListEntity()) }
         coEvery { mapper.mapShoppingListToEntity(aShoppingList()) } returns aShoppingListEntity()
 
@@ -61,7 +61,7 @@ class RoomShoppingListDatabaseServiceTest {
     }
 
     @Test
-    fun `test deleteShoppingList`() = runBlockingTest {
+    fun `test deleteShoppingList`() = runTest {
         val id = 1
         coJustRun { dao.deleteById(id) }
 

@@ -22,6 +22,7 @@ class SharedPrefsWriterTest {
         every { sharedPreferences.edit() } returns editor
         every { editor.putInt(any(), any()) } returns editor
         every { editor.putBoolean(any(), any()) } returns editor
+        every { editor.putString(any(), any()) } returns editor
         justRun { editor.apply() }
     }
 

@@ -9,7 +9,7 @@ import com.ericthecoder.dependencies.android.room.dao.ShoppingListDao
 import com.ericthecoder.dependencies.android.room.entity.ShoppingListEntity
 import com.ericthecoder.dependencies.android.room.testbuilders.ShoppingListEntityBuilder.aShoppingListEntity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
@@ -35,7 +35,7 @@ class ShoppingListDaoTest {
     }
 
     @Test
-    fun testInsertAndGet() = runBlockingTest {
+    fun testInsertAndGet() = runTest {
         val entity = aShoppingListEntity()
 
         val id = dao.insert(entity)
@@ -45,7 +45,7 @@ class ShoppingListDaoTest {
     }
 
     @Test
-    fun testInsertUpdateAndGet() = runBlockingTest {
+    fun testInsertUpdateAndGet() = runTest {
         val entity = aShoppingListEntity()
         dao.insert(entity)
 
@@ -58,7 +58,7 @@ class ShoppingListDaoTest {
     }
 
     @Test
-    fun testInsertDeleteAndGetReturningNothing() = runBlockingTest {
+    fun testInsertDeleteAndGetReturningNothing() = runTest {
         val entity = aShoppingListEntity()
 
         val id = dao.insert(entity)

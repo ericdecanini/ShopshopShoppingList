@@ -7,7 +7,7 @@ import io.mockk.coJustRun
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -19,7 +19,7 @@ class ShoppingListRepositoryImplTest {
     private val repository = ShoppingListRepositoryImpl(databaseService)
 
     @Test
-    fun `test getShoppingLists`() = runBlockingTest {
+    fun `test getShoppingLists`() = runTest {
         coEvery { databaseService.getShoppingLists() } returns listOf(aShoppingList())
 
         val result = repository.getShoppingLists()
@@ -28,7 +28,7 @@ class ShoppingListRepositoryImplTest {
     }
 
     @Test
-    fun `test getShoppingListById`() = runBlockingTest {
+    fun `test getShoppingListById`() = runTest {
         val id = 1
         coEvery { databaseService.getShoppingListById(id) } returns aShoppingList()
 
@@ -38,7 +38,7 @@ class ShoppingListRepositoryImplTest {
     }
 
     @Test
-    fun `test createNewShoppingList`() = runBlockingTest {
+    fun `test createNewShoppingList`() = runTest {
         val id = 1
         coEvery { databaseService.createShoppingList(any()) } returns id
         coEvery { databaseService.getShoppingListById(id) } returns aShoppingList()
@@ -49,7 +49,7 @@ class ShoppingListRepositoryImplTest {
     }
 
     @Test
-    fun `test updateShoppingList`() = runBlockingTest {
+    fun `test updateShoppingList`() = runTest {
         coJustRun { databaseService.updateShoppingList(any()) }
 
         repository.updateShoppingList(aShoppingList())
@@ -58,7 +58,7 @@ class ShoppingListRepositoryImplTest {
     }
 
     @Test
-    fun `test deleteShoppingList`() = runBlockingTest {
+    fun `test deleteShoppingList`() = runTest {
         val id = 1
         coJustRun { databaseService.deleteShoppingList(any()) }
 
