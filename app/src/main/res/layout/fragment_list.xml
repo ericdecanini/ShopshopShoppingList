@@ -89,6 +89,7 @@
                     android:inputType="textCapSentences"
                     android:nextFocusDown="@id/add_item_edit"
                     android:paddingStart="76dp"
+                    android:maxLength="@integer/max_shopitem_chars"
                     android:paddingTop="16dp"
                     android:paddingBottom="16dp"
                     android:textAppearance="@style/TextAppearance.App.BodyLarge"

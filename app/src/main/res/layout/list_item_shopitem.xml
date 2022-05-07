@@ -44,7 +44,7 @@
             android:hint="@string/talkback_item_name"
             android:inputType="textCapSentences"
             android:padding="12dp"
-            android:maxLength="26"
+            android:maxLength="@integer/max_shopitem_chars"
             android:text="@{viewstate.name}"
             android:textAppearance="@style/TextAppearance.App.BodyLarge"
             android:enabled="@{!viewstate.checked}"
