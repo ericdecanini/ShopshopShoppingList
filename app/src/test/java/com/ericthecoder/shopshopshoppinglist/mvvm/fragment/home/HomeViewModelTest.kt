@@ -48,7 +48,7 @@ class HomeViewModelTest {
 
             viewModel.refreshLists()
 
-            assertThat(viewModel.viewState.value).isEqualTo(HomeViewState.Loaded(shoppingLists))
+            assertThat(viewModel.viewState.value).isEqualTo(HomeViewState.Loaded(shoppingLists, false))
         }
 
         @Test
@@ -57,7 +57,7 @@ class HomeViewModelTest {
 
             viewModel.refreshLists()
 
-            assertThat(viewModel.viewState.value).isEqualTo(HomeViewState.Loaded(emptyList()))
+            assertThat(viewModel.viewState.value).isEqualTo(HomeViewState.Loaded(emptyList(), false))
         }
 
         @Test

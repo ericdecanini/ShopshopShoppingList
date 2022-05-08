@@ -7,6 +7,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -70,9 +71,9 @@ class HomeFragment : DaggerFragment() {
         binding.searchBar.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.onSearchBarTextChanged(s?.toString().orEmpty())
-                binding.splashNoSearchResultsText.text = getString(R.string.splash_home_no_search_results, s)
+            override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
+                viewModel.onSearchBarTextChanged(text?.toString().orEmpty())
+                binding.splashNoSearchResultsText.text = getString(R.string.splash_home_no_search_results, text)
             }
 
             override fun afterTextChanged(s: Editable?) = Unit
@@ -87,8 +88,8 @@ class HomeFragment : DaggerFragment() {
     private fun observeState() {
         viewModel.viewState.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is Loaded -> updateShoppingLists(state.items)
-                is Search -> updateShoppingLists(state.items)
+                is Loaded -> renderLoadedState(state)
+                is Search -> renderSearchState(state)
                 is HomeViewState.Error,
                 HomeViewState.Initial,
                 HomeViewState.Loading -> Unit
@@ -96,10 +97,24 @@ class HomeFragment : DaggerFragment() {
         }
     }
 
+    private fun renderLoadedState(state: Loaded) {
+        binding.clearSearch.isVisible = false
+        binding.themeButton.isVisible = true
+        binding.upgradeToPremiumButton.isVisible = !state.isPremium
+        updateShoppingLists(state.items)
+    }
+
     private fun updateShoppingLists(lists: List<ShoppingList>) {
         this.shoppingLists.clear()
         this.shoppingLists.addAll(lists)
         adapter.notifyDataSetChanged()
+    }
+
+    private fun renderSearchState(state: Search) {
+        binding.clearSearch.isVisible = true
+        binding.themeButton.isVisible = false
+        binding.upgradeToPremiumButton.isVisible = false
+        updateShoppingLists(state.items)
     }
 
     private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
@@ -128,7 +143,7 @@ class HomeFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.refreshLists()
         viewModel.refreshPremiumState()
+        viewModel.refreshLists()
     }
 }

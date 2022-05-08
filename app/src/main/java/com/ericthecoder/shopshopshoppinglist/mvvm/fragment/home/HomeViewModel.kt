@@ -39,6 +39,11 @@ class HomeViewModel @Inject constructor(
         viewStateEmitter.postValue(Error(throwable))
     }
 
+    fun refreshPremiumState() {
+        isPremium = persistentStorageReader.getPremiumStatus() == PremiumStatus.PREMIUM
+        viewEventEmitter.value = ViewEvent.SetUpsellButtonVisible(!isPremium)
+    }
+
     fun refreshLists() = viewModelScope.launch(coroutineContextProvider.IO + errorHandler) {
         if (viewState.value !is Loaded || (viewState.value as? Loaded)?.items?.isEmpty() == true) {
             viewStateEmitter.postValue(Loading)
@@ -48,12 +53,7 @@ class HomeViewModel @Inject constructor(
             clear()
             shoppingListRepository.getShoppingLists()?.let { addAll(it) }
         }
-        viewStateEmitter.postValue(Loaded(shoppingLists))
-    }
-
-    fun refreshPremiumState() {
-        isPremium = persistentStorageReader.getPremiumStatus() == PremiumStatus.PREMIUM
-        viewEventEmitter.value = ViewEvent.SetUpsellButtonVisible(!isPremium)
+        viewStateEmitter.postValue(Loaded(shoppingLists, isPremium))
     }
 
     fun navigateToListFragment() {
@@ -72,8 +72,8 @@ class HomeViewModel @Inject constructor(
     //region: ui interaction events
 
     fun onSearchBarTextChanged(searchIndex: String) {
-        if (searchIndex.isBlank()) {
-            viewStateEmitter.postValue(Loaded(shoppingLists))
+        if (searchIndex.isEmpty()) {
+            viewStateEmitter.postValue(Loaded(shoppingLists, isPremium))
         } else {
             val filteredList = shoppingLists.makeCopy().searchTerm(searchIndex)
             viewStateEmitter.postValue(Search(filteredList))
