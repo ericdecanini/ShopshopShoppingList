@@ -20,5 +20,5 @@ interface DialogNavigator {
         cancellable: Boolean = true,
     )
 
-    fun displayThemeDialog(onThemeSelected: (Theme) -> Unit)
+    fun displayThemeDialog(isPremium: Boolean, onThemeSelected: (Theme) -> Unit)
 }

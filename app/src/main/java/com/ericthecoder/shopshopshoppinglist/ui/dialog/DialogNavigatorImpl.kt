@@ -36,8 +36,8 @@ class DialogNavigatorImpl(
         )
     }
 
-    override fun displayThemeDialog(onThemeSelected: (Theme) -> Unit) {
+    override fun displayThemeDialog(isPremium: Boolean, onThemeSelected: (Theme) -> Unit) {
         val currentTheme =  Theme.valueOf(persistentStorageReader.getCurrentTheme())
-        ThemeDialogBuilder.show(activity, currentTheme, onThemeSelected)
+        ThemeDialogBuilder.show(activity, currentTheme, isPremium, onThemeSelected)
     }
 }

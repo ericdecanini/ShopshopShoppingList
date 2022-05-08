@@ -114,7 +114,7 @@
                         android:adjustViewBounds="true"
                         android:importantForAccessibility="no"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/onboardbg2"
+                        android:src="@drawable/premium1"
                         app:shapeAppearance="?attr/shapeAppearanceLargeComponent" />
 
                     <TextView
@@ -162,7 +162,7 @@
                         android:adjustViewBounds="true"
                         android:importantForAccessibility="no"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/upsell2"
+                        android:src="@drawable/premium2"
                         app:shapeAppearance="?attr/shapeAppearanceLargeComponent" />
 
                     <TextView
@@ -210,7 +210,7 @@
                         android:adjustViewBounds="true"
                         android:importantForAccessibility="no"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/bison"
+                        android:src="@drawable/premium3"
                         app:shapeAppearance="?attr/shapeAppearanceLargeComponent" />
 
                     <TextView

@@ -33,6 +33,8 @@ class HomeViewModel @Inject constructor(
 
     private val shoppingLists = mutableListOf<ShoppingList>()
 
+    private var isPremium = false
+
     private val errorHandler = CoroutineExceptionHandler { _, throwable ->
         viewStateEmitter.postValue(Error(throwable))
     }
@@ -50,9 +52,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun refreshPremiumState() {
-        viewEventEmitter.value = ViewEvent.SetUpsellButtonVisible(
-            persistentStorageReader.getPremiumStatus() != PremiumStatus.PREMIUM
-        )
+        isPremium = persistentStorageReader.getPremiumStatus() == PremiumStatus.PREMIUM
+        viewEventEmitter.value = ViewEvent.SetUpsellButtonVisible(!isPremium)
     }
 
     fun navigateToListFragment() {
@@ -107,7 +108,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onThemeButtonClicked() {
-        viewEventEmitter.value = ViewEvent.OpenThemeDialog
+        viewEventEmitter.value = ViewEvent.OpenThemeDialog(isPremium)
     }
 
     //endregion
@@ -115,7 +116,7 @@ class HomeViewModel @Inject constructor(
     sealed class ViewEvent {
         data class SetUpsellButtonVisible(val visible: Boolean) : ViewEvent()
         data class OpenList(val shoppingList: ShoppingList?) : ViewEvent()
-        object OpenThemeDialog : ViewEvent()
+        data class OpenThemeDialog(val isPremium: Boolean) : ViewEvent()
         object OpenUpsell : ViewEvent()
         object RecreateActivity : ViewEvent()
     }

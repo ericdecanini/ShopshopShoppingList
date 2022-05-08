@@ -14,9 +14,14 @@ object ThemeDialogBuilder {
 
     var selectedTheme = Theme.BLUE
 
-    fun show(activity: AppCompatActivity, currentTheme: Theme, onThemeSelected: (Theme) -> Unit) {
+    fun show(
+        activity: AppCompatActivity,
+        currentTheme: Theme,
+        isPremium: Boolean,
+        onThemeSelected: (Theme) -> Unit,
+    ) {
         selectedTheme = currentTheme
-        val binding = inflateBinding(activity.layoutInflater)
+        val binding = inflateBinding(activity.layoutInflater, isPremium)
 
         MaterialAlertDialogBuilder(activity)
             .setTitle(activity.getString(R.string.theme_dialog_title))
@@ -26,10 +31,11 @@ object ThemeDialogBuilder {
             .show()
     }
 
-    private fun inflateBinding(layoutInflater: LayoutInflater): DialogThemeBinding {
+    private fun inflateBinding(layoutInflater: LayoutInflater, isPremium: Boolean): DialogThemeBinding {
         val binding = DialogThemeBinding.inflate(layoutInflater)
         binding.setVariable(BR.listener, createThemeSelectedListener(binding))
         binding.setVariable(BR.selectedTheme, selectedTheme)
+        binding.notice.isVisible = !isPremium
         if (!DynamicColors.isDynamicColorAvailable()) {
             binding.themeDynamic.isVisible = false
         }

@@ -106,8 +106,8 @@ class HomeFragment : DaggerFragment() {
         when (event) {
             is SetUpsellButtonVisible -> setUpsellButtonVisible(event.visible)
             is OpenList -> goToList(event.shoppingList)
+            is OpenThemeDialog -> openThemeDialog(event.isPremium)
             OpenUpsell -> navigator.goToUpsell()
-            OpenThemeDialog -> openThemeDialog()
             RecreateActivity -> activity?.recreate()
         }
     }
@@ -122,8 +122,8 @@ class HomeFragment : DaggerFragment() {
         findNavController().navigate(action)
     }
 
-    private fun openThemeDialog() {
-        dialogNavigator.displayThemeDialog { viewModel.switchToTheme(it) }
+    private fun openThemeDialog(isPremium: Boolean) {
+        dialogNavigator.displayThemeDialog(isPremium) { viewModel.switchToTheme(it) }
     }
 
     override fun onResume() {
