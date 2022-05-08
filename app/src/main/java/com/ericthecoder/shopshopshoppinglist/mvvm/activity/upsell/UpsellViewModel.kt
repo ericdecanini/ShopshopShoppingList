@@ -123,12 +123,14 @@ class UpsellViewModel @Inject constructor(
             else -> snackbarNavigator.displaySnackbar(reason.messageRes)
         }
 
-    private fun showConnectionFailedDialog() = dialogNavigator.displayGenericDialog(
-        title = resourceProvider.getString(R.string.purchase_dialog_connection_failed_title),
-        message = resourceProvider.getString(R.string.purchase_dialog_connection_failed_message),
-        cancellable = false,
-        positiveButton = resourceProvider.getString(R.string.ok) to { viewEventEmitter.value = NavigateUp }
-    )
+    private fun showConnectionFailedDialog() = Unit
+
+//    private fun showConnectionFailedDialog() = dialogNavigator.displayGenericDialog(
+//        title = resourceProvider.getString(R.string.purchase_dialog_connection_failed_title),
+//        message = resourceProvider.getString(R.string.purchase_dialog_connection_failed_message),
+//        cancellable = false,
+//        positiveButton = resourceProvider.getString(R.string.ok) to { viewEventEmitter.value = NavigateUp }
+//    )
 
     override fun onCleared() {
         billingInteractor.disconnectBillingClient()

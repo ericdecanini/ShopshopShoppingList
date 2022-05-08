@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".mvvm.activity.upsell.UpsellActivity">
+
+    <data>
+
+        <import type="com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="?attr/backgroundColor">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="48dp">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:gravity="center_horizontal"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/back_button"
+                    android:layout_width="@dimen/toolbar_back_button_size"
+                    android:layout_height="@dimen/toolbar_back_button_size"
+                    android:background="@drawable/bg_ripple_gray_round"
+                    android:contentDescription="@string/talkback_back"
+                    android:onClick="@{() -> viewmodel.onBackButtonPressed()}"
+                    android:padding="4dp"
+                    android:src="@drawable/ic_arrow_back"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/left_guideline"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.25" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/right_guideline"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.75" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:layout_constraintStart_toEndOf="@id/left_guideline"
+                app:layout_constraintEnd_toStartOf="@id/right_guideline">
+
+                <TextView
+                    android:id="@+id/upsell_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:text="@string/upsell_title"
+                    android:textAppearance="@style/TextAppearance.App.HeadlineLarge"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/upsell_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:gravity="center_horizontal"
+                    android:text="@{viewmodel.premiumPrice}"
+                    android:textAppearance="@style/TextAppearance.App.HeadlineMedium"
+                    app:layout_constraintTop_toBottomOf="@id/upsell_title"
+                    tools:text="£0.99" />
+
+                <TextView
+                    android:id="@+id/upsell_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="16dp"
+                    android:gravity="center_horizontal"
+                    android:text="@string/upsell_description"
+                    android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                    app:layout_constraintTop_toBottomOf="@id/upsell_price" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upsell_button_upper"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:enabled="@{viewmodel.premiumStatus != PremiumStatus.PENDING}"
+                    android:onClick="@{() -> viewmodel.onCtaButtonPressed()}"
+                    android:text="@{viewmodel.premiumStatus == PremiumStatus.PENDING ? @string/upsell_cta_pending : @string/upsell_cta}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/upsell_description"
+                    tools:text="@string/upsell_cta" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/upsell_card_1"
+                    style="@style/Widget.App.CardView.Filled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
+                    android:layout_marginTop="32dp"
+                    android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
+                    app:layout_constraintTop_toBottomOf="@id/upsell_button_upper">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="24dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:adjustViewBounds="true"
+                            android:importantForAccessibility="no"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/premium1"
+                            app:shapeAppearance="?attr/shapeAppearanceLargeComponent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/upsell_image_box_one_title"
+                            android:textAppearance="@style/TextAppearance.App.HeadlineSmall"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/upsell_image_box_one_description"
+                            android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                            android:textColor="?attr/colorSecondary"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/upsell_card_2"
+                    style="@style/Widget.App.CardView.Filled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
+                    app:layout_constraintTop_toBottomOf="@id/upsell_card_1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="16dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:adjustViewBounds="true"
+                            android:importantForAccessibility="no"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/premium2"
+                            app:shapeAppearance="?attr/shapeAppearanceLargeComponent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@string/upsell_image_box_two_title"
+                            android:textAppearance="@style/TextAppearance.App.HeadlineSmall"
+                            android:textColor="?attr/colorOnSurface" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/upsell_image_box_two_description"
+                            android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                            android:textColor="?attr/colorSecondary"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/upsell_card_3"
+                    style="@style/Widget.App.CardView.Filled"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
+                    app:layout_constraintTop_toBottomOf="@id/upsell_card_2">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="16dp">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="180dp"
+                            android:adjustViewBounds="true"
+                            android:importantForAccessibility="no"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/premium3"
+                            app:shapeAppearance="?attr/shapeAppearanceLargeComponent" />
+
+                        <TextView
+                            android:id="@+id/upsell_card_price"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="16dp"
+                            android:text="@{String.format(@string/upsell_image_box_three_title, viewmodel.premiumPrice)}"
+                            android:textAppearance="@style/TextAppearance.App.HeadlineSmall"
+                            android:textColor="?attr/colorOnSurface"
+                            tools:text="Only $0.99" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:text="@string/upsell_image_box_three_description"
+                            android:textAppearance="@style/TextAppearance.App.BodyMedium"
+                            android:textColor="?attr/colorSecondary"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/upsell_button_lower"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    android:enabled="@{viewmodel.premiumStatus != PremiumStatus.PENDING}"
+                    android:onClick="@{() -> viewmodel.onCtaButtonPressed()}"
+                    android:text="@{viewmodel.premiumStatus == PremiumStatus.PENDING ? @string/upsell_cta_pending : @string/upsell_cta}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/upsell_card_3"
+                    tools:text="@string/upsell_cta" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</layout>
+

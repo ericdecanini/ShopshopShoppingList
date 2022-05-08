@@ -1,5 +1,6 @@
 package com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
@@ -104,6 +105,7 @@ class HomeFragment : DaggerFragment() {
         updateShoppingLists(state.items)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun updateShoppingLists(lists: List<ShoppingList>) {
         this.shoppingLists.clear()
         this.shoppingLists.addAll(lists)
@@ -124,6 +126,7 @@ class HomeFragment : DaggerFragment() {
             is OpenThemeDialog -> openThemeDialog(event.isPremium)
             OpenUpsell -> navigator.goToUpsell()
             RecreateActivity -> activity?.recreate()
+            ClearSearch -> binding.searchBar.setText("")
         }
     }
 

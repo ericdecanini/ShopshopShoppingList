@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Home Fragment -->
     <dimen name="home_fragment_horizontal_padding">32dp</dimen>
     <dimen name="home_fragment_vertical_padding">16dp</dimen>
+    <dimen name="home_fragment_divider_horizontal_margin">16dp</dimen>
+
+    <!-- Theme Dialog -->
+    <dimen name="theme_dialog_theme_size">64dp</dimen>
+    <dimen name="theme_dialog_theme_horizontal_margin">32dp</dimen>
+
+    <!-- Upsell Activity -->
+    <dimen name="upsell_cards_horizontal_margin">64dp</dimen>
 
 </resources>

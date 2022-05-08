@@ -111,6 +111,10 @@ class HomeViewModel @Inject constructor(
         viewEventEmitter.value = ViewEvent.OpenThemeDialog(isPremium)
     }
 
+    fun onClearSearchButtonClicked() {
+        viewEventEmitter.value = ViewEvent.ClearSearch
+    }
+
     //endregion
 
     sealed class ViewEvent {
@@ -119,5 +123,6 @@ class HomeViewModel @Inject constructor(
         data class OpenThemeDialog(val isPremium: Boolean) : ViewEvent()
         object OpenUpsell : ViewEvent()
         object RecreateActivity : ViewEvent()
+        object ClearSearch : ViewEvent()
     }
 }

@@ -97,9 +97,9 @@
                 style="@style/Widget.App.CardView.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
                 android:layout_marginTop="32dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
                 app:layout_constraintTop_toBottomOf="@id/upsell_button_upper">
 
                 <LinearLayout
@@ -145,9 +145,9 @@
                 style="@style/Widget.App.CardView.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
                 app:layout_constraintTop_toBottomOf="@id/upsell_card_1">
 
                 <LinearLayout
@@ -193,9 +193,9 @@
                 style="@style/Widget.App.CardView.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
+                android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
                 app:layout_constraintTop_toBottomOf="@id/upsell_card_2">
 
                 <LinearLayout

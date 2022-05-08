@@ -14,6 +14,7 @@
     <dimen name="home_fragment_horizontal_padding">16dp</dimen>
     <dimen name="home_fragment_vertical_padding">12dp</dimen>
     <dimen name="home_splash_image_size">150dp</dimen>
+    <dimen name="home_fragment_divider_horizontal_margin">16dp</dimen>
 
     <!-- List Fragment -->
     <dimen name="quantity_padding">24dp</dimen>
@@ -28,5 +29,9 @@
 
     <!-- Theme Dialog -->
     <dimen name="theme_dialog_theme_size">64dp</dimen>
+    <dimen name="theme_dialog_theme_horizontal_margin">16dp</dimen>
+
+    <!-- Upsell Activity -->
+    <dimen name="upsell_cards_horizontal_margin">16dp</dimen>
 
 </resources>

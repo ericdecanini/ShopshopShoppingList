@@ -4,4 +4,7 @@
     <!-- List Fragment -->
     <dimen name="list_splash_image_size">150dp</dimen>
 
+    <!-- Upsell Activity -->
+    <dimen name="upsell_cards_horizontal_margin">32dp</dimen>
+
 </resources>
