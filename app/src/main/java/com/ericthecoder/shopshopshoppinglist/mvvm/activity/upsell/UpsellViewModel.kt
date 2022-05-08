@@ -11,6 +11,7 @@ import com.android.billingclient.api.Purchase.PurchaseState
 import com.ericthecoder.dependencies.android.resources.ResourceProvider
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.entities.premium.PremiumStatus
+import com.ericthecoder.shopshopshoppinglist.entities.theme.Theme
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor.PurchaseResult
 import com.ericthecoder.shopshopshoppinglist.library.billing.BillingInteractor.PurchaseResult.*
@@ -30,7 +31,7 @@ class UpsellViewModel @Inject constructor(
     private val resourceProvider: ResourceProvider,
     private val dialogNavigator: DialogNavigator,
     private val persistentStorageWriter: PersistentStorageWriter,
-    persistentStorageReader: PersistentStorageReader,
+    private val persistentStorageReader: PersistentStorageReader,
     private val snackbarNavigator: SnackbarNavigator,
 ) : ViewModel() {
 
@@ -46,6 +47,11 @@ class UpsellViewModel @Inject constructor(
 
     fun onCtaButtonPressed() = viewModelScope.launch {
         billingInteractor.launchBillingFlow()
+    }
+
+    fun getTheme(): Theme {
+        val themeName = persistentStorageReader.getCurrentTheme()
+        return Theme.valueOf(themeName)
     }
 
     fun onBackButtonPressed() {

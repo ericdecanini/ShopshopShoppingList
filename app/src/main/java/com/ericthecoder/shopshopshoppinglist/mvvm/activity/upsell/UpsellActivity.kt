@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.ActivityUpsellBinding
+import com.ericthecoder.shopshopshoppinglist.library.extension.initColoredBackgroundAndStatusBar
+import com.ericthecoder.shopshopshoppinglist.library.extension.setTheme
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellViewModel.ViewEvent.NavigateUp
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -27,11 +29,13 @@ class UpsellActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setTheme(viewModel.getTheme())
         binding = DataBindingUtil.setContentView(this, R.layout.activity_upsell)
         binding.lifecycleOwner = this
         binding.setVariable(BR.viewmodel, viewModel)
 
         setSupportActionBar(binding.toolbar)
+        initColoredBackgroundAndStatusBar(binding.root)
         observeViewEvents()
         observePurchaseResult()
     }
@@ -47,7 +51,6 @@ class UpsellActivity : DaggerAppCompatActivity() {
     }
 
     companion object {
-
         fun getIntent(context: Context) = Intent(context, UpsellActivity::class.java)
     }
 
