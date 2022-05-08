@@ -25,4 +25,7 @@
     <dimen name="dialog_body_vertical_padding_bottom">32dp</dimen>
     <dimen name="dialog_body_horizontal_padding">16dp</dimen>
 
+    <!-- Theme Dialog -->
+    <dimen name="theme_dialog_theme_size">64dp</dimen>
+
 </resources>
