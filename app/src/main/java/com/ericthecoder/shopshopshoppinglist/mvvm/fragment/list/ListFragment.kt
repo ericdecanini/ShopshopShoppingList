@@ -303,8 +303,8 @@ class ListFragment : DaggerFragment() {
 
     override fun onResume() {
         super.onResume()
-        val shoppingListItems = (viewModel.viewState.value as? Loaded)?.shoppingList?.items
-        if (shoppingListItems?.isNotEmpty() == true) {
+        val listIsEmpty = viewModel.viewState.value is ListViewState.Initial
+        if (listIsEmpty) {
             binding.addItemButton.playBreatheAnimation()
         }
     }

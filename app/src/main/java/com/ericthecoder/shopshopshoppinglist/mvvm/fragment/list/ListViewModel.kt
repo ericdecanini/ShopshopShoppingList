@@ -36,14 +36,18 @@ class ListViewModel @Inject constructor(
 
     private lateinit var shoppingList: ShoppingList
     private var listId = UNSET
+    private var isInitialised = false
 
     fun loadShoppingList(id: Int) {
-        this.listId = id
+        if (!isInitialised) {
+            isInitialised = true
+            this.listId = id
 
-        if (id == UNSET) {
-            startLoadingNewShoppingList()
-        } else {
-            startLoadingExistingShoppingList(id)
+            if (id == UNSET) {
+                startLoadingNewShoppingList()
+            } else {
+                startLoadingExistingShoppingList(id)
+            }
         }
     }
 
