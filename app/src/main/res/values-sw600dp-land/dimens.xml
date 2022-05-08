@@ -2,6 +2,6 @@
 <resources>
 
     <!-- List Fragment -->
-    <dimen name="splash_no_items_image_size">150dp</dimen>
+    <dimen name="list_splash_image_size">150dp</dimen>
 
 </resources>

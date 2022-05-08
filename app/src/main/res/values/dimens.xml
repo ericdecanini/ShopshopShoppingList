@@ -13,11 +13,12 @@
     <dimen name="shopitem_height">60dp</dimen>
     <dimen name="home_fragment_horizontal_padding">16dp</dimen>
     <dimen name="home_fragment_vertical_padding">12dp</dimen>
+    <dimen name="home_splash_image_size">150dp</dimen>
 
     <!-- List Fragment -->
     <dimen name="quantity_padding">24dp</dimen>
     <dimen name="quantity_buttons_padding">16dp</dimen>
-    <dimen name="splash_no_items_image_size">150dp</dimen>
+    <dimen name="list_splash_image_size">150dp</dimen>
 
     <!-- Generic Dialog -->
     <dimen name="dialog_title_padding">8dp</dimen>

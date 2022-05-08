@@ -133,8 +133,8 @@
 
             <ImageView
                 android:id="@+id/splash_no_items_image"
-                android:layout_width="@dimen/splash_no_items_image_size"
-                android:layout_height="@dimen/splash_no_items_image_size"
+                android:layout_width="@dimen/list_splash_image_size"
+                android:layout_height="@dimen/list_splash_image_size"
                 android:importantForAccessibility="no"
                 android:src="@drawable/empty_shopping_bag"
                 app:layout_constraintVertical_bias="0.4"

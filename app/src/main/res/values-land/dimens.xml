@@ -2,7 +2,7 @@
 <resources>
 
     <!-- List Fragment -->
-    <dimen name="splash_no_items_image_size">50dp</dimen>
+    <dimen name="list_splash_image_size">100dp</dimen>
 
     <!-- Theme Dialog -->
     <dimen name="theme_dialog_theme_size">48dp</dimen>
