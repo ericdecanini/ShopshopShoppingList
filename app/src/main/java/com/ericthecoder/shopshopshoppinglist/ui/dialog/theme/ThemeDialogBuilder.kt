@@ -12,7 +12,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 object ThemeDialogBuilder {
 
-    var selectedTheme = Theme.GREEN
+    var selectedTheme = Theme.BLUE
 
     fun show(activity: AppCompatActivity, currentTheme: Theme, onThemeSelected: (Theme) -> Unit) {
         selectedTheme = currentTheme

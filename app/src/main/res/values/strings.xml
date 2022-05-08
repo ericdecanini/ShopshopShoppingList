@@ -91,5 +91,6 @@
     <string name="select">Select</string>
     <string name="theme_dialog_title">Theme</string>
     <string name="use_system_dynamic_colors">Use system dynamic colors</string>
+    <string name="theme_dialog_premium_notice">Themes will be a premium feature in the official release of the app</string>
 
 </resources>

@@ -150,6 +150,20 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/theme_yellow" />
 
+        <TextView
+            android:id="@+id/notice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
+            android:gravity="center_horizontal"
+            android:text="@string/theme_dialog_premium_notice"
+            app:layout_constraintTop_toBottomOf="@id/theme_dynamic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="?attr/colorSecondary" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
