@@ -15,8 +15,8 @@ interface DialogNavigator {
     fun displayRenameDialog(
         header: String,
         autofillText: String,
-        positiveOnClick: ((String) -> Unit),
-        negativeOnClick: (() -> Unit)? = null,
+        positiveButton: Pair<String, (String) -> Unit>,
+        negativeButton: Pair<String, () -> Unit>? = null,
         cancellable: Boolean = true,
     )
 

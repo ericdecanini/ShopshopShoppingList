@@ -27,12 +27,12 @@ class DialogNavigatorImpl(
     override fun displayRenameDialog(
         header: String,
         autofillText: String,
-        positiveOnClick: (String) -> Unit,
-        negativeOnClick: (() -> Unit)?,
+        positiveButton: Pair<String, (String) -> Unit>,
+        negativeButton: Pair<String, () -> Unit>?,
         cancellable: Boolean,
     ) {
         RenameDialogBuilder.show(
-            activity, header, autofillText, positiveOnClick, negativeOnClick, cancellable
+            activity, header, autofillText, positiveButton, negativeButton, cancellable
         )
     }
 

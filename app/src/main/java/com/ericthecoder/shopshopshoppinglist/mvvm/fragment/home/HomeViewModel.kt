@@ -107,11 +107,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onThemeButtonClicked() {
-        if (persistentStorageReader.getPremiumStatus() == PremiumStatus.PREMIUM) {
-            viewEventEmitter.value = ViewEvent.OpenThemeDialog
-        } else {
-            viewEventEmitter.value = ViewEvent.OpenUpsell
-        }
+        viewEventEmitter.value = ViewEvent.OpenThemeDialog
     }
 
     //endregion

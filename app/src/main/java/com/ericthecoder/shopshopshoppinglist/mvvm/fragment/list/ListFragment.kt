@@ -103,7 +103,6 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun initAddItemField() {
-        binding.addItemButton.playBreatheAnimation()
         binding.addItemEdit.addTextChangedColorChanging()
     }
 
@@ -237,7 +236,7 @@ class ListFragment : DaggerFragment() {
         dialogNavigator.displayRenameDialog(
             getString(R.string.header_new_list),
             "",
-            callback
+            getString(R.string.set) to callback
         )
     }
 
@@ -245,7 +244,7 @@ class ListFragment : DaggerFragment() {
         dialogNavigator.displayRenameDialog(
             getString(R.string.rename),
             listTitle,
-            callback
+            getString(R.string.rename) to callback
         )
     }
 
@@ -301,6 +300,19 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun inflateList(id: Int) = viewModel.loadShoppingList(id)
+
+    override fun onResume() {
+        super.onResume()
+        val shoppingListItems = (viewModel.viewState.value as? Loaded)?.shoppingList?.items
+        if (shoppingListItems?.isNotEmpty() == true) {
+            binding.addItemButton.playBreatheAnimation()
+        }
+    }
+
+    override fun onPause() {
+        binding.addItemButton.endObjectAnimation()
+        super.onPause()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_shopping_list, menu)

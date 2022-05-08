@@ -76,6 +76,7 @@
 
     <!-- Rename Dialog -->
     <string name="rename">Rename</string>
+    <string name="set">Set</string>
     <string name="header_new_list">New List</string>
     <string name="hint_list_title">List title</string>
 
