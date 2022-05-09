@@ -11,12 +11,6 @@ import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import javax.inject.Inject
 
-/**
- * Material 3 Migration:
- * Step 1 - Set theme colours and typography for base theme (DONE)
- * Step 2 - Apply dynamic colour UI
- * Step 3 - Change widgets based on theme
- */
 class ShopshopApplication : DaggerApplication() {
 
     @Inject
