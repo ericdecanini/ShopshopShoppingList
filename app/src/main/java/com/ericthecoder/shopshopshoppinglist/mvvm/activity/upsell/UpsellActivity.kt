@@ -62,6 +62,7 @@ class UpsellActivity : DaggerAppCompatActivity() {
         dialogNavigator.displayGenericDialog(
             title = title,
             message = message,
+            cancellable = false, // all dialogs in upsell should be non-cancellable
             positiveButton = positiveButton,
         )
     }

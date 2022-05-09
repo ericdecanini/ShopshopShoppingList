@@ -95,11 +95,13 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/upsell_card_1"
                 style="@style/Widget.App.CardView.Filled"
-                android:layout_width="match_parent"
+                android:layout_width="340dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/upsell_button_upper">
 
                 <LinearLayout
@@ -143,11 +145,13 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/upsell_card_2"
                 style="@style/Widget.App.CardView.Filled"
-                android:layout_width="match_parent"
+                android:layout_width="340dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/upsell_card_1">
 
                 <LinearLayout
@@ -191,11 +195,13 @@
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/upsell_card_3"
                 style="@style/Widget.App.CardView.Filled"
-                android:layout_width="match_parent"
+                android:layout_width="340dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/upsell_cards_horizontal_margin"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="@dimen/upsell_cards_horizontal_margin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/upsell_card_2">
 
                 <LinearLayout
