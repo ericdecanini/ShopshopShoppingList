@@ -294,8 +294,9 @@ class ListFragment : DaggerFragment() {
     }
 
     private fun renderShopItems(items: List<ShopItem>) {
-        val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, items))
-        adapter.replaceItems(items)
+        val sortedItems = items.sortedBy { it.checked }
+        val diffResult = DiffUtil.calculateDiff(ShopItemDiffCallback(adapter.items, sortedItems))
+        adapter.replaceItems(sortedItems)
         diffResult.dispatchUpdatesTo(adapter)
     }
 
