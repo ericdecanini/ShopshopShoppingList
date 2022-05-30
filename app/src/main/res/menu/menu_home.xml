@@ -3,10 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/ic_remove_ads"
+        android:id="@+id/ic_upgrade"
         android:orderInCategory="100"
         android:icon="@drawable/ic_sparkling"
-        android:title="@string/upgrade_to_ad_free"
-        app:showAsAction="always" />
+        android:title="@string/upgrade_to_premium"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/ic_settings"
+        android:orderInCategory="200"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"
+        app:showAsAction="never" />
 
 </menu>

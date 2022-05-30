@@ -91,11 +91,19 @@ class HomeViewModelTest {
         }
 
         @Test
-        fun `navigateToUpsell opens upsell page`() {
+        fun `handleUpgradeMenuItem opens upsell page`() {
 
-            viewModel.navigateToUpsell()
+            viewModel.handleUpgradeMenuItem()
 
             assertThat(viewModel.viewEvent.value).isEqualTo(OpenUpsell)
+        }
+
+        @Test
+        fun `handleSettingsMenuItem opens settings page`() {
+
+            viewModel.handleSettingsMenuItem()
+
+            assertThat(viewModel.viewEvent.value).isEqualTo(OpenSettings)
         }
 
         @Test

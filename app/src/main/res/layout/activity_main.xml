@@ -29,7 +29,7 @@
             app:defaultNavHost="true"
             app:layout_constraintBottom_toTopOf="@id/adView"
             app:layout_constraintTop_toTopOf="parent"
-            app:navGraph="@navigation/nav_graph" />
+            app:navGraph="@navigation/main_nav_graph" />
 
         <com.google.android.gms.ads.AdView
             android:id="@+id/adView"

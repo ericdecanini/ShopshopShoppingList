@@ -27,5 +27,9 @@ class NavigatorImpl(private val originActivity: AppCompatActivity) : Navigator {
         UpsellActivity.getIntent(originActivity).start()
     }
 
+    override fun goToSettings() {
+        TODO("Not yet implemented")
+    }
+
     private fun Intent.start() = originActivity.startActivity(this)
 }

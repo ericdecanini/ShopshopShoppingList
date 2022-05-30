@@ -5,9 +5,8 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -24,11 +23,12 @@ import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.adapter.Shopping
 import com.ericthecoder.shopshopshoppinglist.ui.dialog.DialogNavigator
 import com.ericthecoder.shopshopshoppinglist.util.navigator.Navigator
 import com.google.android.material.elevation.SurfaceColors
+import com.google.android.material.navigation.NavigationView
 import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
 
-class HomeFragment : DaggerFragment() {
+class HomeFragment : DaggerFragment(), NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -57,12 +57,19 @@ class HomeFragment : DaggerFragment() {
         binding.setVariable(BR.viewmodel, viewModel)
         binding.lifecycleOwner = this
 
+        initNavigationDrawer()
         initSearchBar()
         initShoppingLists()
         observeState()
         observeEvents()
 
         return binding.root
+    }
+
+    private fun initNavigationDrawer() = with(binding) {
+        openDrawerButton.setOnClickListener {
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
     }
 
     private fun initSearchBar() {
@@ -93,7 +100,8 @@ class HomeFragment : DaggerFragment() {
                 is Search -> renderSearchState(state)
                 is HomeViewState.Error,
                 HomeViewState.Initial,
-                HomeViewState.Loading -> Unit
+                HomeViewState.Loading,
+                -> Unit
             }
         }
     }
@@ -101,8 +109,13 @@ class HomeFragment : DaggerFragment() {
     private fun renderLoadedState(state: Loaded) {
         binding.clearSearch.isVisible = false
         binding.themeButton.isVisible = true
-        binding.upgradeToPremiumButton.isVisible = !state.isPremium
+        setUpsellButtonVisible(!state.isPremium)
         updateShoppingLists(state.items)
+    }
+
+    private fun setUpsellButtonVisible(visible: Boolean) {
+        val navigationMenu = binding.navigationView.menu
+        navigationMenu.findItem(R.id.ic_upgrade).isVisible = visible
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -115,7 +128,7 @@ class HomeFragment : DaggerFragment() {
     private fun renderSearchState(state: Search) {
         binding.clearSearch.isVisible = true
         binding.themeButton.isVisible = false
-        binding.upgradeToPremiumButton.isVisible = false
+        setUpsellButtonVisible(false)
         updateShoppingLists(state.items)
     }
 
@@ -125,13 +138,10 @@ class HomeFragment : DaggerFragment() {
             is OpenList -> goToList(event.shoppingList)
             is OpenThemeDialog -> openThemeDialog(event.isPremium)
             OpenUpsell -> navigator.goToUpsell()
+            OpenSettings -> navigator.goToSettings()
             RecreateActivity -> activity?.recreate()
             ClearSearch -> binding.searchBar.setText("")
         }
-    }
-
-    private fun setUpsellButtonVisible(visible: Boolean) {
-        binding.upgradeToPremiumButton.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     private fun goToList(shoppingList: ShoppingList? = null) {
@@ -148,5 +158,14 @@ class HomeFragment : DaggerFragment() {
         super.onResume()
         viewModel.refreshPremiumState()
         viewModel.refreshLists()
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.ic_upgrade -> viewModel.handleUpgradeMenuItem()
+            R.id.ic_settings -> viewModel.handleSettingsMenuItem()
+            else -> return false
+        }
+        return true
     }
 }

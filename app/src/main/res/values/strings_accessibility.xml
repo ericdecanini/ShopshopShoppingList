@@ -2,6 +2,7 @@
 <resources>
 
     <string name="talkback_back">Back</string>
+    <string name="talkback_open_menu">Open menu</string>
 
     <string name="talkback_add_new_list">Add new list</string>
     <string name="talkback_add_new_item">Add new item</string>

@@ -14,238 +14,255 @@
             type="com.ericthecoder.shopshopshoppinglist.mvvm.fragment.home.HomeViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/search_bar_layout"
-            style="@style/Widget.App.EditTextLayout.Header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:backgroundTint="?attr/colorPrimaryContainer">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_bar"
-                style="@style/Widget.App.EditText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:hint="@string/home_search_bar_hint"
-                android:maxLength="40"
-                app:layout_constraintEnd_toStartOf="@id/theme_button"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/upgrade_to_premium_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/talkback_premium_page_button"
-                android:src="@drawable/ic_sparkling"
-                android:onClick="@{_ -> viewmodel.navigateToUpsell()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="?attr/colorOnSurface" />
-
-            <ImageView
-                android:id="@+id/theme_button"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/talkback_theme_button"
-                android:src="@drawable/ic_palette"
-                android:layout_marginEnd="8dp"
-                android:onClick="@{_ -> viewmodel.onThemeButtonClicked()}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/upgrade_to_premium_button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="?attr/colorOnSurface" />
-
-            <ImageView
-                android:id="@+id/clear_search"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:contentDescription="@string/talkback_theme_button"
-                android:src="@drawable/ic_clear"
-                android:layout_marginEnd="8dp"
-                android:onClick="@{_ -> viewmodel.onClearSearchButtonClicked()}"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/upgrade_to_premium_button"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="?attr/colorSecondary" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/shopping_lists_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:text="@string/shopping_lists"
-            android:textAppearance="@style/TextAppearance.App.LabelLarge"
-            android:textColor="?android:attr/textColorSecondary"
-            android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loaded ? View.VISIBLE : View.GONE}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_bar_layout" />
-
-        <View
-            android:id="@+id/shopping_lists_label_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="?attr/colorOnBackground"
-            android:alpha="0.1"
-            android:layout_marginTop="8dp"
-            android:layout_marginStart="@dimen/home_fragment_divider_horizontal_margin"
-            android:layout_marginEnd="@dimen/home_fragment_divider_horizontal_margin"
-            app:layout_constraintTop_toBottomOf="@id/shopping_lists_label" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/shopping_lists"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loaded || viewmodel.viewState instanceof HomeViewState.Search ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/shopping_lists_label_divider"
-            tools:itemCount="2"
-            tools:listitem="@layout/list_item_shoppinglist"
-            tools:visibility="visible" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
-            android:contentDescription="@string/talkback_add_new_list"
-            android:onClick="@{() -> viewmodel.navigateToListFragment()}"
-            android:src="@drawable/ic_new_list"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <ProgressBar
-            android:id="@+id/progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loading ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_bar_layout"
-            tools:visibility="gone" />
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{(viewmodel.viewState instanceof HomeViewState.Loaded ? (HomeViewState.Loaded) viewmodel.viewState : null).items.isEmpty() ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/shopping_lists_label_divider"
-            app:layout_constraintVertical_bias="0.1"
-            tools:visibility="gone">
+            android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/splash_no_items_image"
-                android:layout_width="@dimen/home_splash_image_size"
-                android:layout_height="@dimen/home_splash_image_size"
-                android:importantForAccessibility="no"
-                android:src="@drawable/empty_shopping_cart"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/search_bar_layout"
+                style="@style/Widget.App.EditTextLayout.Header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:backgroundTint="?attr/colorPrimaryContainer">
+
+                <ImageView
+                    android:id="@+id/open_drawer_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_menu"
+                    android:background="@drawable/bg_ripple_gray_round"
+                    android:contentDescription="@string/talkback_open_menu"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:tint="?attr/colorOnSurface" />
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/search_bar"
+                    style="@style/Widget.App.EditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/home_search_bar_hint"
+                    android:maxLength="40"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintEnd_toStartOf="@id/theme_button"
+                    app:layout_constraintStart_toEndOf="@id/open_drawer_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+                <ImageView
+                    android:id="@+id/theme_button"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/talkback_theme_button"
+                    android:src="@drawable/ic_palette"
+                    android:onClick="@{_ -> viewmodel.onThemeButtonClicked()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorOnSurface" />
+
+                <ImageView
+                    android:id="@+id/clear_search"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@string/talkback_theme_button"
+                    android:src="@drawable/ic_clear"
+                    android:layout_marginEnd="8dp"
+                    android:onClick="@{_ -> viewmodel.onClearSearchButtonClicked()}"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="?attr/colorSecondary" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
+                android:id="@+id/shopping_lists_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_horizontal"
-                android:paddingStart="@dimen/splash_text_horizontal_padding"
-                android:paddingEnd="@dimen/splash_text_horizontal_padding"
-                android:text="@string/splash_home_no_items"
-                android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:text="@string/shopping_lists"
+                android:textAppearance="@style/TextAppearance.App.LabelLarge"
+                android:textColor="?android:attr/textColorSecondary"
+                android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loaded ? View.VISIBLE : View.GONE}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_bar_layout" />
+
+            <View
+                android:id="@+id/shopping_lists_label_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorOnBackground"
+                android:alpha="0.1"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="@dimen/home_fragment_divider_horizontal_margin"
+                android:layout_marginEnd="@dimen/home_fragment_divider_horizontal_margin"
+                app:layout_constraintTop_toBottomOf="@id/shopping_lists_label" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/shopping_lists"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loaded || viewmodel.viewState instanceof HomeViewState.Search ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shopping_lists_label_divider"
+                tools:itemCount="2"
+                tools:listitem="@layout/list_item_shoppinglist"
+                tools:visibility="visible" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="32dp"
+                android:contentDescription="@string/talkback_add_new_list"
+                android:onClick="@{() -> viewmodel.navigateToListFragment()}"
+                android:src="@drawable/ic_new_list"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewmodel.viewState instanceof HomeViewState.Loading ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
+                app:layout_constraintTop_toBottomOf="@id/search_bar_layout"
+                tools:visibility="gone" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{(viewmodel.viewState instanceof HomeViewState.Loaded ? (HomeViewState.Loaded) viewmodel.viewState : null).items.isEmpty() ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shopping_lists_label_divider"
+                app:layout_constraintVertical_bias="0.1"
+                tools:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/splash_no_items_image"
+                    android:layout_width="@dimen/home_splash_image_size"
+                    android:layout_height="@dimen/home_splash_image_size"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/empty_shopping_cart"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal"
+                    android:paddingStart="@dimen/splash_text_horizontal_padding"
+                    android:paddingEnd="@dimen/splash_text_horizontal_padding"
+                    android:text="@string/splash_home_no_items"
+                    android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/splash_no_items_image" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="@{(viewmodel.viewState instanceof HomeViewState.Search ? (HomeViewState.Search) viewmodel.viewState : null).items.isEmpty() ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shopping_lists_label_divider"
+                app:layout_constraintVertical_bias="0.1"
+                tools:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/splash_no_search_results_image"
+                    android:layout_width="@dimen/home_splash_image_size"
+                    android:layout_height="@dimen/home_splash_image_size"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/art_search"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/splash_no_search_results_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:gravity="center_horizontal"
+                    android:paddingStart="@dimen/splash_text_horizontal_padding"
+                    android:paddingEnd="@dimen/splash_text_horizontal_padding"
+                    android:textAppearance="@style/TextAppearance.App.TitleMedium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/splash_no_search_results_image"
+                    tools:text="@string/splash_home_no_search_results" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="@{viewmodel.viewState instanceof HomeViewState.Error ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/search_bar_layout"
+                tools:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:paddingStart="@dimen/splash_text_horizontal_padding"
+                    android:paddingEnd="@dimen/splash_text_horizontal_padding"
+                    android:text="@string/splash_generic_error"
+                    android:textAppearance="@style/TextAppearance.App.TitleMedium" />
+
+                <com.google.android.material.button.MaterialButton
+                    style="@style/Widget.App.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="32dp"
+                    android:onClick="@{() -> viewmodel.refreshLists()}"
+                    android:text="@string/retry" />
+
+            </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="@{(viewmodel.viewState instanceof HomeViewState.Search ? (HomeViewState.Search) viewmodel.viewState : null).items.isEmpty() ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/shopping_lists_label_divider"
-            app:layout_constraintVertical_bias="0.1"
-            tools:visibility="gone">
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigation_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:menu="@menu/menu_home"
+            android:fitsSystemWindows="true" />
 
-            <ImageView
-                android:id="@+id/splash_no_search_results_image"
-                android:layout_width="@dimen/home_splash_image_size"
-                android:layout_height="@dimen/home_splash_image_size"
-                android:importantForAccessibility="no"
-                android:src="@drawable/art_search"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/splash_no_search_results_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_horizontal"
-                android:paddingStart="@dimen/splash_text_horizontal_padding"
-                android:paddingEnd="@dimen/splash_text_horizontal_padding"
-                android:textAppearance="@style/TextAppearance.App.TitleMedium"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/splash_no_search_results_image"
-                tools:text="@string/splash_home_no_search_results" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:visibility="@{viewmodel.viewState instanceof HomeViewState.Error ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_bar_layout"
-            tools:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_horizontal"
-                android:paddingStart="@dimen/splash_text_horizontal_padding"
-                android:paddingEnd="@dimen/splash_text_horizontal_padding"
-                android:text="@string/splash_generic_error"
-                android:textAppearance="@style/TextAppearance.App.TitleMedium" />
-
-            <com.google.android.material.button.MaterialButton
-                style="@style/Widget.App.Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="32dp"
-                android:onClick="@{() -> viewmodel.refreshLists()}"
-                android:text="@string/retry" />
-
-        </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
 
 </layout>

@@ -60,8 +60,12 @@ class HomeViewModel @Inject constructor(
         viewEventEmitter.value = ViewEvent.OpenList(null)
     }
 
-    fun navigateToUpsell() {
+    fun handleUpgradeMenuItem() {
         viewEventEmitter.value = ViewEvent.OpenUpsell
+    }
+
+    fun handleSettingsMenuItem() {
+        viewEventEmitter.value = ViewEvent.OpenSettings
     }
 
     fun switchToTheme(theme: Theme) {
@@ -122,6 +126,7 @@ class HomeViewModel @Inject constructor(
         data class OpenList(val shoppingList: ShoppingList?) : ViewEvent()
         data class OpenThemeDialog(val isPremium: Boolean) : ViewEvent()
         object OpenUpsell : ViewEvent()
+        object OpenSettings : ViewEvent()
         object RecreateActivity : ViewEvent()
         object ClearSearch : ViewEvent()
     }
