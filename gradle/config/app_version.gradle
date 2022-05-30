@@ -5,9 +5,9 @@ def getAppVersionName() {
 
 ext {
     majorVersionNumber = '0'
-    minorVersionNumber = '7'
-    patchVersionNumber = '1'
+    minorVersionNumber = '8'
+    patchVersionNumber = '0'
     versionSuffix = '-SNAPSHOT'
     appVersionName = getAppVersionName()
-    appVersionCode = 701
+    appVersionCode = 800
 }
