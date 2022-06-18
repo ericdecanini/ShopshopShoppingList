@@ -5,7 +5,10 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -66,10 +69,11 @@ class HomeFragment : DaggerFragment(), NavigationView.OnNavigationItemSelectedLi
         return binding.root
     }
 
-    private fun initNavigationDrawer() = with(binding) {
-        openDrawerButton.setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
+    private fun initNavigationDrawer() {
+        binding.openDrawerButton.setOnClickListener {
+            binding.drawerLayout.openDrawer(GravityCompat.START)
         }
+        binding.navigationView.setNavigationItemSelectedListener(this)
     }
 
     private fun initSearchBar() {

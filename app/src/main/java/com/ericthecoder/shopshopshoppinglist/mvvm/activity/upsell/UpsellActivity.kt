@@ -78,5 +78,4 @@ class UpsellActivity : DaggerAppCompatActivity() {
     companion object {
         fun getIntent(context: Context) = Intent(context, UpsellActivity::class.java)
     }
-
 }

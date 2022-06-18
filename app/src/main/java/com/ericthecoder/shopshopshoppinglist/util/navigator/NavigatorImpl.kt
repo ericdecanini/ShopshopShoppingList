@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.MainActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.main.NestedNavigationInstruction.OpenNewList
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.onboarding.OnboardingActivity
+import com.ericthecoder.shopshopshoppinglist.mvvm.activity.settings.SettingsActivity
 import com.ericthecoder.shopshopshoppinglist.mvvm.activity.upsell.UpsellActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -28,7 +29,7 @@ class NavigatorImpl(private val originActivity: AppCompatActivity) : Navigator {
     }
 
     override fun goToSettings() {
-        TODO("Not yet implemented")
+        SettingsActivity.getIntent(originActivity).start()
     }
 
     private fun Intent.start() = originActivity.startActivity(this)

@@ -3,6 +3,7 @@
 
     <MultiSelectListPreference
         app:key="checkbox_style"
-        app:title="Checkbox Style"/>
-
+        app:title="Checkbox Style"
+        app:entries="@array/checkbox_style_entries"
+        app:entryValues="@array/checkbox_style_values" />
 </PreferenceScreen>

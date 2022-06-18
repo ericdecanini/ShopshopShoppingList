@@ -6,5 +6,4 @@
         android:name="com.ericthecoder.shopshopshoppinglist.mvvm.activity.settings.SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </layout>

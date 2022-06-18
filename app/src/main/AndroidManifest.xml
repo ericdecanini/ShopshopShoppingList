@@ -38,6 +38,8 @@
             android:label=""
             android:parentActivityName=".mvvm.activity.main.MainActivity" />
 
+        <activity android:name=".mvvm.activity.settings.SettingsActivity" />
+
         <!-- Firebase Cloud Messaging -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"

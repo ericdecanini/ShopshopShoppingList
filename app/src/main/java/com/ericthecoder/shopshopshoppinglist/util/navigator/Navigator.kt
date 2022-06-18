@@ -11,5 +11,4 @@ interface Navigator {
     fun goToUpsell()
 
     fun goToSettings()
-
 }
