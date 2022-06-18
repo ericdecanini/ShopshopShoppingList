@@ -51,6 +51,7 @@
     <string name="zero">0</string>
     <string name="deleted_item">Deleted %1$s</string>
     <string name="empty_item_name_entered">Please enter a valid item name</string>
+    <string name="empty_list_deleted_toast">Empty list deleted</string>
 
     <!-- Upsell Activity -->
     <string name="upsell_title">Shopshop Premium</string>

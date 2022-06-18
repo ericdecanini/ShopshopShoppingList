@@ -414,9 +414,9 @@ class ListViewModelTest {
     inner class Events {
 
         @Test
-        fun `onBackButtonPressed emits navigateUp event`() {
+        fun `goBack emits navigateUp event`() {
 
-            viewModel.onBackButtonPressed()
+            viewModel.goBack()
 
             assertThat(viewModel.viewEvent.value).isEqualTo(NavigateUp)
         }

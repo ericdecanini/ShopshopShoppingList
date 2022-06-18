@@ -362,12 +362,12 @@ class ListViewModel @Inject constructor(
         }
     }.toString()
 
-    fun onBackButtonPressed() {
-        navigateUp()
-    }
-
-    private fun navigateUp() {
-        viewEventEmitter.postValue(NavigateUp)
+    fun goBack() = viewModelScope.launch {
+        if (shoppingList.items.isEmpty()) {
+            shoppingListRepository.deleteShoppingList(shoppingList.id)
+            viewEventEmitter.value = ShowEmptyListDeletedToast
+        }
+        viewEventEmitter.value = NavigateUp
     }
 
     fun hideKeyboard() {
@@ -384,6 +384,7 @@ class ListViewModel @Inject constructor(
 
     sealed class ViewEvent {
         object NavigateUp : ViewEvent()
+        object ShowEmptyListDeletedToast : ViewEvent()
         object ClearFocus : ViewEvent()
         object ResetEditText : ViewEvent()
         object HideKeyboard : ViewEvent()

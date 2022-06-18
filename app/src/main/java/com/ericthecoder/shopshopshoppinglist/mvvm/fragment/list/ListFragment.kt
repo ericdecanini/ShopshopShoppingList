@@ -11,19 +11,24 @@ import android.text.TextWatcher
 import android.view.*
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.activity.addCallback
 import androidx.core.graphics.ColorUtils
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.*
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ericthecoder.shopshopshoppinglist.BR
 import com.ericthecoder.shopshopshoppinglist.R
 import com.ericthecoder.shopshopshoppinglist.databinding.FragmentListBinding
 import com.ericthecoder.shopshopshoppinglist.entities.ShopItem
 import com.ericthecoder.shopshopshoppinglist.entities.ShoppingList
 import com.ericthecoder.shopshopshoppinglist.entities.extension.doNothing
-import com.ericthecoder.shopshopshoppinglist.library.extension.*
+import com.ericthecoder.shopshopshoppinglist.library.extension.getSupportActionBar
+import com.ericthecoder.shopshopshoppinglist.library.extension.setSupportActionBar
 import com.ericthecoder.shopshopshoppinglist.library.util.hideKeyboard
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewModel.ViewEvent.*
 import com.ericthecoder.shopshopshoppinglist.mvvm.fragment.list.ListViewState.Loaded
@@ -80,6 +85,7 @@ class ListFragment : DaggerFragment() {
         initAppBar()
         initAddItemField()
         initList()
+        initBackPressed()
         observeState()
         observeEvents()
         inflateList(args.shoppingListId)
@@ -163,6 +169,12 @@ class ListFragment : DaggerFragment() {
         setupItemTouchHelper()
     }
 
+    private fun initBackPressed() {
+        requireActivity().onBackPressedDispatcher.addCallback {
+            viewModel.goBack()
+        }
+    }
+
     private fun setupItemTouchHelper() {
         val simpleItemTouchCallback = object : ItemTouchHelper.SimpleCallback(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN,
@@ -199,6 +211,7 @@ class ListFragment : DaggerFragment() {
     private fun observeEvents() = viewModel.viewEvent.observe(viewLifecycleOwner) { event ->
         when (event) {
             NavigateUp -> findNavController().navigateUp()
+            ShowEmptyListDeletedToast -> showEmptyListDeletedToast()
             ClearFocus -> binding.root.clearFocus()
             ResetEditText -> binding.addItemEdit.reset()
             HideKeyboard -> hideKeyboard(binding.root)
@@ -212,6 +225,10 @@ class ListFragment : DaggerFragment() {
             is Share -> share(event.text)
             is ShowUndoRemoveItemSnackbar -> showUndoRemoveSnackbar(event.item, event.position)
         }
+    }
+
+    private fun showEmptyListDeletedToast() {
+        toastNavigator.show(getString(R.string.empty_list_deleted_toast))
     }
 
     private fun TextInputEditText.reset() {
@@ -321,7 +338,7 @@ class ListFragment : DaggerFragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> findNavController().navigateUp()
+            android.R.id.home -> viewModel.goBack()
             R.id.ic_delete -> viewModel.showDeleteDialog()
             R.id.ic_clear_checked -> viewModel.clearCheckedItems()
             R.id.ic_clear_all -> viewModel.showClearAllDialog()

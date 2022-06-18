@@ -32,6 +32,7 @@ class MainActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var navigator: Navigator
+
     @Inject
     lateinit var dialogNavigator: DialogNavigator
 
@@ -99,7 +100,6 @@ class MainActivity : DaggerAppCompatActivity() {
             .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         fun getIntent(context: Context, nestedNavigationInstruction: NestedNavigationInstruction) =
-            getIntent(context)
-                .putExtra(KEY_NESTED_NAVIGATION_INSTRUCTION, nestedNavigationInstruction)
+            getIntent(context).putExtra(KEY_NESTED_NAVIGATION_INSTRUCTION, nestedNavigationInstruction)
     }
 }
