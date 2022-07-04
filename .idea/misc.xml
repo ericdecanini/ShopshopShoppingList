@@ -20,6 +20,7 @@
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/dark_green_vertical_fade.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/fg_dynamic_theme.xml" value="0.1" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/fg_item_theme.xml" value="0.1" />
+        <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/header_layout.xml" value="0.1" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_arrow_back.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_check.xml" value="0.139" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_circle_unchecked.xml" value="0.149" />
@@ -27,6 +28,7 @@
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_return_24dp.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_share.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/ic_sticky_note.xml" value="0.158" />
+        <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/navigation_header.xml" value="0.139" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/pager_dot_selected.xml" value="0.1045" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/rounded_checkbox.xml" value="0.149" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/drawable/rounded_checked.xml" value="0.149" />
@@ -45,6 +47,7 @@
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/dialog_theme.xml" value="0.2" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/fragment_home.xml" value="0.1" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/fragment_list.xml" value="0.1" />
+        <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/header_layout.xml" value="0.1911073108165883" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/list_item_delete.xml" value="0.17617753623188406" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/list_item_previewitem.xml" value="0.268" />
         <entry key="..\:/Users/eddec/AndroidStudioProjects/ShopshopShoppingList/app/src/main/res/layout/list_item_shopitem.xml" value="0.17617753623188406" />
