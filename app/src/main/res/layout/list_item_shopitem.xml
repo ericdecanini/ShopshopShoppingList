@@ -28,7 +28,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:button="@drawable/rounded_checkbox"
             android:checked="@{viewstate.checked}"
             app:clearsFocusOnCheck="@{true}"
             app:layout_constraintBottom_toBottomOf="parent"

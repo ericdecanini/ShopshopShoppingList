@@ -5,6 +5,7 @@
     <string name="firebase_notification_channel" translatable="false">FIREBASE_NOTIFICATION_CHANNEL</string>
 
     <!-- Generics -->
+    <string name="empty" />
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="ellipsis">…</string>
@@ -35,6 +36,7 @@
     <string name="no_items">No items</string>
     <string name="home_search_bar_hint">Search your lists</string>
     <string name="shopping_lists">Shopping lists</string>
+    <string name="preview_checked">\u2713&#160;</string>
 
     <!-- List Fragment -->
     <string name="new_list">New List</string>
@@ -96,13 +98,18 @@
     <string name="theme_dialog_premium_notice">Themes will be a premium feature in the official release of the app</string>
     
     <!-- Settings -->
+    <string name="checkbox_style_dialog_title">Checkbox style</string>
+    <string name="checkbox_style_key">CHECKBOXSTYLE</string>
     <string-array name="checkbox_style_entries">
         <item>Square</item>
         <item>Circular</item>
     </string-array>
 
     <string-array name="checkbox_style_values">
-        <item>square</item>
-        <item>circular</item>
+        <item>@string/checkbox_style_value_square</item>
+        <item>@string/checkbox_style_value_circular</item>
     </string-array>
+
+    <string name="checkbox_style_value_square">square</string>
+    <string name="checkbox_style_value_circular">circular</string>
 </resources>

@@ -20,10 +20,11 @@ class PreviewItemsAdapter : RecyclerView.Adapter<PreviewItemsAdapter.ViewHolder>
     override fun getItemCount(): Int = min(4, items.size)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if (position < 3)
+        if (position < 3) {
             holder.binding.setVariable(BR.viewstate, items[position])
-        else
+        } else {
             holder.binding.setVariable(BR.viewstate, null)
+        }
     }
 
     fun replaceItems(items: List<ShopItem>) {

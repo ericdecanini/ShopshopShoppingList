@@ -8,11 +8,15 @@ class ShoppingListRepositoryImpl(
     private val databaseService: ShoppingListDatabaseService,
 ) : ShoppingListRepository {
 
-    override suspend fun getShoppingLists() =
-        databaseService.getShoppingLists()
+    override suspend fun getShoppingLists() = databaseService.getShoppingLists()
+        .onEach(::sortItems)
 
-    override suspend fun getShoppingListById(id: Int) =
-        databaseService.getShoppingListById(id)
+    private fun sortItems(shoppingList: ShoppingList) {
+        shoppingList.items.sortBy { it.checked }
+    }
+
+    override suspend fun getShoppingListById(id: Int) = databaseService.getShoppingListById(id)
+        .also(::sortItems)
 
     override suspend fun createNewShoppingList(name: String): ShoppingList {
         val id = databaseService.createShoppingList(name)

@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <MultiSelectListPreference
-        app:key="checkbox_style"
-        app:title="Checkbox Style"
+    <ListPreference
+        app:defaultValue="@string/checkbox_style_value_square"
+        app:dialogTitle="@string/checkbox_style_dialog_title"
         app:entries="@array/checkbox_style_entries"
-        app:entryValues="@array/checkbox_style_values" />
+        app:entryValues="@array/checkbox_style_values"
+        app:key="@string/checkbox_style_key"
+        app:title="Checkbox Style"
+        app:useSimpleSummaryProvider="true" />
 </PreferenceScreen>
