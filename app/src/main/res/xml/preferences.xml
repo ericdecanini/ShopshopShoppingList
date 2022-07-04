@@ -9,4 +9,9 @@
         app:key="@string/checkbox_style_key"
         app:title="Checkbox Style"
         app:useSimpleSummaryProvider="true" />
+
+    <Preference
+        app:enabled="true"
+        app:summary="Shopshop is currently in Beta. More customisation options will be available soon" />
+
 </PreferenceScreen>
